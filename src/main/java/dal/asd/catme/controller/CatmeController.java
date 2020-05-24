@@ -3,7 +3,7 @@ package dal.asd.catme.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import dal.asd.service.ICatmeService;
+import dal.asd.catme.service.ICatmeService;
 
 @Controller
 @RequestMapping("/")

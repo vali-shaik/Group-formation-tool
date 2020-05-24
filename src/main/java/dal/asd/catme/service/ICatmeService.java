@@ -1,4 +1,4 @@
-package dal.asd.service;
+package dal.asd.catme.service;
 
 public interface ICatmeService {
 
