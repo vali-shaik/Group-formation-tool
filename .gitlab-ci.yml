@@ -25,3 +25,13 @@ build:
   artifacts:
     paths:
       - target/*.jar
+
+staging:
+  stage: deploy
+  script:
+  - apt-get update -yq
+  - apt-get install -y ruby-dev
+  - gem install dpl
+  - dpl --provider=heroku --app=catmedal --api-key=$HEROKU_API_KEY
+  only:
+  - master
