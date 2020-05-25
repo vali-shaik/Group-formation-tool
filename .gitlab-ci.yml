@@ -20,7 +20,7 @@ build:
     paths:
       - .m2/repository
   tags:
-    - TNEsp9-F
+    - dalfcs_gitlab_docker_ci
   script: ./mvnw package
   artifacts:
     paths:
