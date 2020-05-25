@@ -20,7 +20,7 @@ build:
     paths:
       - .m2/repository
   tags:
-    - vali
+    - TNEsp9-F
   script: ./mvnw package
   artifacts:
     paths:
