@@ -20,6 +20,18 @@ public class CatmeController {
 	{
 		return "login";
 	}
+	
+	@RequestMapping("admin")
+	public String adminPage()
+	{
+		return "adminPage";
+	}
+	
+	@RequestMapping("addCourse")
+	public String addCourse()
+	{
+		return "addCourse";
+	}
 
 
 }
