@@ -25,7 +25,8 @@ build:
  # artifacts:
   #  paths:
    #   - target/*.jar
-      
+   
+#Comment below script after creating features brnach   
 deploy:
  stage: deploy
  image: ruby:2.3
