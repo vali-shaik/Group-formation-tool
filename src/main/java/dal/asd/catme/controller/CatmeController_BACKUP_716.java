@@ -17,12 +17,26 @@ public class CatmeController {
 		log.info("Controller home page!!");
 		return CatmeUtil.HOME_PAGE;
 	}
-
+<<<<<<< HEAD
 	@RequestMapping("login")
 	public String loginPage()
 	{
 		return "login";
 	}
 	
+	@RequestMapping("admin")
+	public String adminPage()
+	{
+		return "adminPage";
+	}
+	
+	@RequestMapping("addCourse")
+	public String addCourse()
+	{
+		return "addCourse";
+	}
 
+
+=======
+>>>>>>> cecb4c87ed55d55605addaf1952fe9e2b576de7a
 }

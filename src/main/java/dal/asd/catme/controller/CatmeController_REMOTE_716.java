@@ -17,12 +17,4 @@ public class CatmeController {
 		log.info("Controller home page!!");
 		return CatmeUtil.HOME_PAGE;
 	}
-
-	@RequestMapping("login")
-	public String loginPage()
-	{
-		return "login";
-	}
-	
-
 }
