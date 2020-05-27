@@ -28,12 +28,12 @@ build:
    
 #Comment below script after creating features branch   
 deploy:
-stage: deploy
+ stage: deploy
  image: ruby:2.3
  script:
  - apt-get update -qy
  - apt-get install -y ruby-dev
  - gem install dpl
- - dpl --provider=heroku --app=$SERVER_TEST --api-key=$HEROKU_API_KEY
+ - dpl --provider=heroku --app=$SERVER_PROD --api-key=$HEROKU_API_KEY
  tags:
  - dalfcs_gitlab_docker_ci
