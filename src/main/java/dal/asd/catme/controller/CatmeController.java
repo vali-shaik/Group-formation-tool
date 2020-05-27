@@ -24,6 +24,7 @@ public class CatmeController {
 	@RequestMapping("login")
 	public String loginPage()
 	{
+		log.info("CatmeController login page!!");
 		return "login";
 	}
 
