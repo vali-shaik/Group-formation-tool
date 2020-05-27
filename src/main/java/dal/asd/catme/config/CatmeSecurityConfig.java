@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class CatmeSecurityConfig extends WebSecurityConfigurerAdapter{
 	private static final Logger log = LoggerFactory.getLogger(CatmeSecurityConfig.class);
+	
 	//overrides the default security
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
