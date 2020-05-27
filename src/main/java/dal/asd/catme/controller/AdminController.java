@@ -18,11 +18,7 @@ public class AdminController {
 
 	IAdminService service = new AdminService();
 	IAdminDao admin = new AdminDao();
-	@RequestMapping("")
-	public String adminPage()
-	{
-		return "adminPage";
-	}
+	
 	
 	@RequestMapping("addCourse")
 	public String addCourse()
