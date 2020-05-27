@@ -1,4 +1,4 @@
-package dal.asd.exception;
+package dal.asd.catme.exception;
 
 public class CatmeException extends Exception{
 	/**
