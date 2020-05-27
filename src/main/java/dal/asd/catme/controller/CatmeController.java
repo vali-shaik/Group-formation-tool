@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import dal.asd.catme.service.ICatmeService;
+import dal.asd.catme.util.CatmeUtil;
 
 @Controller
 @RequestMapping("/")
@@ -19,13 +20,13 @@ public class CatmeController {
 	public String homePage()
 	{
 		log.info("Controller home page!!");
-		return "home";
+		return CatmeUtil.HOME_PAGE;
 	}
 	@RequestMapping("login")
 	public String loginPage()
 	{
 		log.info("CatmeController login page!!");
-		return "login";
+		return CatmeUtil.LOGIN_PAGE;
 	}
 
 
