@@ -3,9 +3,7 @@ package dal.asd.catme.studentlistimport;
 import dal.asd.catme.beans.Student;
 import org.junit.jupiter.api.Test;
 
-import java.sql.SQLOutput;
 import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
