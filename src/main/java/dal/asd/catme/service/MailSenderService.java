@@ -5,11 +5,8 @@ import dal.asd.catme.beans.Student;
 import dal.asd.catme.beans.User;
 import dal.asd.catme.util.CatmeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
-import org.springframework.core.env.EnvironmentCapable;
 import org.springframework.mail.MailException;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -17,8 +14,6 @@ import org.springframework.stereotype.Service;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ArrayList;
 
 @Service
@@ -28,9 +23,6 @@ public class MailSenderService implements IMailSenderService
 
     @Autowired
     private Environment env;
-
-    @Value("${spring.mail.username}")
-    private static String FROM = "wrongid.correctit@gmail.com";
 
     @Autowired
     public MailSenderService(JavaMailSender mailSender)
@@ -53,8 +45,7 @@ public class MailSenderService implements IMailSenderService
         helper.setText(bodyText, true);
         helper.setTo(user.getEmail());
         helper.setSubject(subject);
-//        helper.setFrom(env.getProperty("spring.mail.username"));
-        helper.setFrom(FROM);
+        helper.setFrom(env.getProperty("spring.mail.username"));
 
         mailSender.send(mimeMessage);
     }
