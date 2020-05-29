@@ -12,17 +12,18 @@
 
 	<select id="course" name="course">
 		<option value="">Choose Course to delete</option>
-		<option value="SDC">SDC</option>
-		<option value="Web">Web</option>
-		<option value="Cloud">Cloud</option>
+		<option th:each="course : ${courses}"
+		th:value="${course.courseId}"
+		th:text="${course.courseName}"></option>
+		
 	</select>
  	<button type="submit">Delete Course</button><br/><br/>
  	
  	<select id="course" name="course">
 		<option value="">Choose Course</option>
-		<option value="SDC">SDC</option>
-		<option value="Web">Web</option>
-		<option value="Cloud">Cloud</option>
+		<option th:each="course : ${courses}"
+		th:value="${course.courseId}"
+		th:text="${course.courseName}"></option>
 	</select>
 	
 	<select id="user" name="user">

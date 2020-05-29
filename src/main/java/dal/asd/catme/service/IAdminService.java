@@ -14,3 +14,4 @@ public interface IAdminService {
 	List<User> getUsersNotAssignedForCourse(Course course);
 	int addInstructorToCourse(User user);
 }
+

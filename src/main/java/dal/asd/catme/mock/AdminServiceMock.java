@@ -1,25 +1,17 @@
-package dal.asd.catme.dao;
+package dal.asd.catme.mock;
 
-import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import dal.asd.catme.beans.Course;
 import dal.asd.catme.beans.User;
-import dal.asd.catme.database.DatabaseAccess;
-import dal.asd.catme.util.CatmeUtil;
+import dal.asd.catme.service.IAdminService;
 
-@Component
-public class AdminDao implements IAdminDao{
+public class AdminServiceMock implements IAdminService{
 
-	@Autowired
-	DatabaseAccess db;
-	
 	@Override
 	public int addCourse(Course Course) {
 		// TODO Auto-generated method stub
-		
 		return 0;
 	}
 
@@ -30,10 +22,11 @@ public class AdminDao implements IAdminDao{
 	}
 
 	@Override
-	public ResultSet getAllCourses() {
-		db.getConnection();
-		ResultSet rs = db.executeQuery(CatmeUtil.SELECT_COURSE);
-		return rs;
+	public List<Course> getAllCourses() {
+		List<Course> courses = new ArrayList<Course>();
+		Course course = new Course("5308","ASDC");
+		courses.add(course);
+		return courses;
 	}
 
 	@Override
