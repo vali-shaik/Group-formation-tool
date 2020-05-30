@@ -1,5 +1,10 @@
 package dal.asd.catme.dao;
 
-public class CatmeDaoImpl implements ICatmeDao {
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+import dal.asd.catme.database.DatabaseAccess;
+
+@Component
+public class CatmeDaoImpl implements ICatmeDao {	
 }
