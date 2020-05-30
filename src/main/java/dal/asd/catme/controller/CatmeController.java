@@ -52,11 +52,18 @@ public class CatmeController {
 	}
 		
 	
-	
-	@RequestMapping("taEnrollment")
-	public String enrollTa(@RequestParam(name="courseId", required=true) String courseId, @ModelAttribute Enrollment use) {
+	@GetMapping("taEnrollment")
+	public String enrollTa(Model model) {
 		//user.courseId = courseId;
 		//System.out.print(user.bannerId+"\t"+user.courseId);
+		model.addAttribute("user", new User());
+		return CatmeUtil.TA_ENROLLMENT_PAGE;
+	}
+	
+	@PostMapping("enrollTa")
+	public String enrollTa(@ModelAttribute User user) {
+		//user.courseId = courseId;
+		System.out.print(user.getBannerId());
 		return CatmeUtil.TA_ENROLLMENT_PAGE;
 	}
 }
