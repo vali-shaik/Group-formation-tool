@@ -1,5 +1,6 @@
 package dal.asd.catme.dao;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,14 +26,15 @@ public class AdminDao implements IAdminDao{
 
 	@Override
 	public int deleteCourse(String courseId) {
-		// TODO Auto-generated method stub
+		db.getConnection();
 		return 0;
 	}
 
 	@Override
 	public ResultSet getAllCourses() {
-		db.getConnection();
+		Connection connection = db.getConnection();
 		ResultSet rs = db.executeQuery(CatmeUtil.SELECT_COURSE);
+		db.closeConnection(connection);
 		return rs;
 	}
 

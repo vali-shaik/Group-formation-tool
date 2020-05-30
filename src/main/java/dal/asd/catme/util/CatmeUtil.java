@@ -11,6 +11,7 @@ public class CatmeUtil {
 	public static final String ASDC="ASDC";
 	public static final String ADMIN="adminPage";
 	public static final String ADD_COURSE="addCourse";
+	public static final String DELETE_COURSE="deleteCourse";
 	public static final String SELECT_COURSE = "Select * from Course;";
 			
 

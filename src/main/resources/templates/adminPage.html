@@ -10,6 +10,7 @@
 	
 	<a href="/admin/addCourse">Add New Course</a><br/><br/>
 
+	<form th:action="@{/admin/deleteCourse}" th:object="${course}" method="post">
 	<select id="course" name="course">
 		<option value="">Choose Course to delete</option>
 		<option th:each="course : ${courses}"

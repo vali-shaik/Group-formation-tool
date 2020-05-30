@@ -1,7 +1,9 @@
 package dal.asd.catme.mock;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import dal.asd.catme.beans.Course;
 import dal.asd.catme.beans.User;
@@ -17,12 +19,28 @@ public class AdminServiceMock implements IAdminService{
 
 	@Override
 	public int deleteCourse(String courseId) {
-		// TODO Auto-generated method stub
-		return 0;
+		Map courses=createCourseList();
+		courses.remove(courseId);
+		if(courses.get(courseId) == null)
+			return 1;
+		else
+			return 0;
+		
+		
 	}
 
 	@Override
 	public List<Course> getAllCourses() {
+		return createList();
+	}
+	
+	public Map createCourseList(){
+		Map courses = new HashMap<>();
+		courses.put("5308", "ASDC");
+		return courses;
+	}
+	
+	public List<Course> createList(){
 		List<Course> courses = new ArrayList<Course>();
 		Course course = new Course("5308","ASDC");
 		courses.add(course);
