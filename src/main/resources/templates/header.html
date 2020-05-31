@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+<style>
+ ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333;
+}
+
+li {
+  float: left;
+}
+
+li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+/* Change the link color to #111 (black) on hover */
+li a:hover {
+  background-color: white;
+  color:black
+}
+.active {
+  background-color: #4CAF50;
+}
+</style>
+</head>
+<body>
+<div>
+<ul>
+  <li><a href="home"><b>Home</b></a></li>
+  <li sec:authorize="hasAuthority('ROLE_STUDENT') or hasAuthority('ROLE_TA')"><a href="mycourse"><b>My Courses</b></a></li>
+  <li sec:authorize="hasAuthority('ROLE_INSTRUCTOR') or hasAuthority('ROLE_TA')"><a href="course"><b>Tutor</b></a></li>
+  <li sec:authorize="hasAuthority('ROLE_ADMIN')"><a href="course"><b>Manage</b></a></li>
+  <li style="float:right"><a href="/logout"><b>Logout</b></a></li>
+</ul>
+</div>
+
+</body>
+</html>

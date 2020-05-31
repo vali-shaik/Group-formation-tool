@@ -34,5 +34,23 @@ public class CatmeServiceImplTest {
 		
 	}
 	
+	@Test
+	public void testGetAllCoursesBySize()
+	{
+		List<Course> courseList=new ArrayList<>();
+		int i=0;
+		while(i<5)
+		{
+			Course course=new Course();
+			course.setCourseId("5309");
+			course.setCourseName("Advanced Web Services");
+			courseList.add(course);
+			i++;
+		}
+		when(catmeDaoMock.getAllCourses()).thenReturn(courseList);
+		assertEquals(5,catmeServiceMock.getAllCourses().size());
+		
+	}
+	
 
 }
