@@ -29,6 +29,7 @@ public class CatmeController {
 		}
 		else
 		{
+			//logic for populating data on Admin page
 			modelAndView.setViewName(CatmeUtil.ADMIN_PAGE);
 		}
 		return modelAndView;
