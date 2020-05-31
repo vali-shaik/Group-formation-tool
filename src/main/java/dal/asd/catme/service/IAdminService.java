@@ -12,6 +12,6 @@ public interface IAdminService {
 	int deleteCourse(String courseId);
 	List<Course> getAllCourses();
 	List<User> getUsersNotAssignedForCourse(Course course);
-	int addInstructorToCourse(User user);
+	int addInstructorToCourse(String user,String course);
 }
 

@@ -8,20 +8,22 @@
 <div align='center'>
 	
 	<h1>Add Course</h1><br/>
-	<table cellpadding="10">
-	<tr>
-		<td><label>Course ID</label></td>
-		<td><input type="text"/></td>
-	</tr>
-	<tr>
-		<td><label>Course Name</label></td>
-		<td><input type="text"/></td>
-	</tr>
-	
-	<tr>
-		<td ><button type="submit">Add Course</button></td>
-	</tr>
-	</table>
+	<form th:action="@{/admin/addCourseToDatabase}" th:object="${course}" method="post">
+		<table cellpadding="10">
+		<tr>
+			<td><label>Course ID</label></td>
+			<td><input type="text" th:field="*{courseId}"/></td>
+		</tr>
+		<tr>
+			<td><label>Course Name</label></td>
+			<td><input type="text" th:field="*{courseName}"/></td>
+		</tr>
+		
+		<tr>
+			<td ><button type="submit">Add Course</button></td>
+		</tr>
+		</table>
+	</form>
 </div>
 </body>
 </html>

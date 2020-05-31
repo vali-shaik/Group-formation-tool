@@ -26,9 +26,8 @@ public class AdminService implements IAdminService{
 	
 	
 	@Override
-	public int addCourse(Course Course) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int addCourse(Course course) {
+		return admin.addCourse(course);
 	}
 
 	@Override
@@ -56,14 +55,27 @@ public class AdminService implements IAdminService{
 
 	@Override
 	public List<User> getUsersNotAssignedForCourse(Course course) {
-		// TODO Auto-generated method stub
-		return null;
+		List<User> users = new ArrayList<User>();
+		ResultSet resultSet = admin.getUsersNotAssignedForCourse(course);
+		try {
+			while(resultSet.next()){
+				User user = new User();
+				user.setBannerId(resultSet.getString(CatmeUtil.BANNER_ID));
+				user.setFirstName(resultSet.getString(CatmeUtil.FIRST_NAME));
+				user.setLastName(resultSet.getString(CatmeUtil.LAST_NAME));
+				users.add(user);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return users;
 	}
 
 	@Override
-	public int addInstructorToCourse(User user) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int addInstructorToCourse(String user,String course) {
+		return admin.addInstructorToCourse(user,course);
+		
 	}
 
 	

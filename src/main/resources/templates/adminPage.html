@@ -19,7 +19,9 @@
 		
 	</select>
  	<button type="submit">Delete Course</button><br/><br/>
+ 	</form>
  	
+ 	<form th:action="@{/admin/addInstructor}"  method="post">
  	<select id="course" name="course">
 		<option value="">Choose Course</option>
 		<option th:each="course : ${courses}"
@@ -27,14 +29,17 @@
 		th:text="${course.courseName}"></option>
 	</select>
 	
+	
 	<select id="user" name="user">
 		<option value="">Choose User</option>
-		<option value="Shwetha">Shwetha</option>
-		<option value="Nishant">Nishant</option>
-		<option value="Vali">Vali</option>
+		<option th:each="user : ${users}"
+		th:value="${user.bannerId}"
+		th:text="${user.firstName}"></option>
 	</select>
 	
+	
 	<button type="submit">Add Course Instructor</button>
+	</form>
 	
  </div>
 </body>

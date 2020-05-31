@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import dal.asd.catme.beans.Course;
+import dal.asd.catme.beans.User;
 import dal.asd.catme.service.IAdminService;
 import dal.asd.catme.util.CatmeUtil;
 
@@ -38,17 +39,36 @@ public class AdminController {
 	}
 	
 	@RequestMapping("addCourse")
-	public String addCourse()
+	public String addCourse(Model model)
 	{
 		logger.info("****Admin Controller - Add Course Invoked*****");
+		model.addAttribute("course", new Course());
 		return CatmeUtil.ADD_COURSE;
 	}
+	
+	@PostMapping("addCourseToDatabase")
+	public String addCourseToDatabase(@ModelAttribute Course course)
+	{
+		logger.info("****Admin Controller - Add Course to Database Invoked*****");
+		int result =service.addCourse(course);
+		if(result>0)
+			return CatmeUtil.SUCCESS_PAGE;
+		else
+			return CatmeUtil.ERROR_PAGE;
+	}
+	
 
 	@ModelAttribute("courses")
 	public List<Course> getCourseList(){
 		return service.getAllCourses();
-		
 	}
+	
+	@ModelAttribute("users")
+	public List<User> getUsersList(){
+		Course course = new Course();
+		return service.getUsersNotAssignedForCourse(course);	
+	}
+	
 	
 	@PostMapping(value="deleteCourse")
 	public String deleteCourse(@RequestParam String course)
@@ -56,9 +76,19 @@ public class AdminController {
 		logger.info("****Admin Controller - Delete Course Invoked*****");
 		int result=service.deleteCourse(course.substring(0, course.length()-1));
 		if(result>0)
-			return CatmeUtil.DELETE_COURSE;
+			return CatmeUtil.SUCCESS_PAGE;
 		else
 			return CatmeUtil.ERROR_PAGE;
 		
+	}
+	
+	@PostMapping("addInstructor")
+	public String addInstructor(@RequestParam String course,@RequestParam String user) {
+		logger.info("****Admin Controller - Add Instructor Invoked*****");
+		int result=service.addInstructorToCourse(user,course);
+		if(result>0)
+			return CatmeUtil.SUCCESS_PAGE;
+		else
+			return CatmeUtil.ERROR_PAGE;
 	}
 }
