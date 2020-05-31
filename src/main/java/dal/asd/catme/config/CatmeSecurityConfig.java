@@ -44,7 +44,7 @@ public class CatmeSecurityConfig extends WebSecurityConfigurerAdapter{
         			.anyRequest().authenticated()
         .and()
         	.formLogin()
-        	//this url should match with action url in login.html
+        	//.loginPage("/login")//this url should match with action url in login.html
             .loginProcessingUrl("/catme")//url to submit username and password
             .successForwardUrl("/home")//landing page after successful login 
             .and()
@@ -85,10 +85,6 @@ public class CatmeSecurityConfig extends WebSecurityConfigurerAdapter{
 						s.getAuthority().equalsIgnoreCase(CatmeUtil.INSTRUCTOR_ROLE))
 				{
 					page= CatmeUtil.HOME_PAGE;
-				}
-				else
-				{
-					page= CatmeUtil.ADMIN_PAGE;
 				}
 			}
 			return page;

@@ -13,5 +13,11 @@ public class CatmeUtil {
 	public static final String TA_ROLE="ROLE_TA"; 
 	public static final String INSTRUCTOR_ROLE="ROLE_INSTRUCTOR";
 	public static final String ADMIN_ROLE="ROLE_ADMIN";	
+	//SQL queries
+	public static final String SELECT_COURSE_QUERY = "Select * from Course;";
+	//Course table
+	public static final String COURSE_ID_FIELD="courseId";
+	public static final String COURSE_NAME_FIELD="courseName";
+
 
 }

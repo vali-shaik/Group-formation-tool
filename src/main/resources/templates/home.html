@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 <style>
  ul {
   list-style-type: none;
@@ -30,6 +31,25 @@ li a:hover {
 .active {
   background-color: #4CAF50;
 }
+
+.table{
+width:50%;
+}
+.textCenter{
+text-align:center;
+
+}
+.rowHover:hover{
+background-color:#bbb8b88c;
+font-weight:bold;
+color:black;
+}
+tr:hover{
+color:white
+}
+p{
+font-size:20px;
+}
 </style>
 </head>
 <body>
@@ -41,9 +61,24 @@ li a:hover {
   <li style="float:right"><a href="/logout"><b>Logout</b></a></li>
 </ul>
 <div align="center">
+<br>
 <h1>Welcome to Catme...</h1>
 <br>
-<h3>List of courses available...!</h3>
+<table border="1" class="table">
+<thead class="thead-dark">
+    <tr>
+      <th class="textCenter">Course ID</th>
+      <th class="textCenter">Course Name</th>
+    </tr>
+  </thead>
+  
+   <tbody>
+     <tr th:each="message : ${listOfCourses}" class="rowHover">
+        <td class="textCenter"><p th:text="${message.courseId}"/></td>
+        <td class="textCenter"><p th:text="${message.courseName}"/></td>
+   </tr>
+    </tbody>
+</table>
 </div>
 </body>
 </html>
