@@ -33,8 +33,7 @@ public class AdminService implements IAdminService{
 
 	@Override
 	public int deleteCourse(String courseId) {
-		// TODO Auto-generated method stub
-		return 0;
+		return admin.deleteCourse(courseId);
 	}
 
 	@Override
@@ -42,8 +41,9 @@ public class AdminService implements IAdminService{
 		List<Course> courses = new ArrayList<>();
 		ResultSet resultSet  = admin.getAllCourses();
 		try {
-			Course course = new Course();
+			
 			while(resultSet.next()) {
+				Course course = new Course();
 				course.setCourseId(resultSet.getString(CatmeUtil.COURSE_ID));
 				course.setCourseName(resultSet.getString(CatmeUtil.COURSE_NAME));
 				courses.add(course);

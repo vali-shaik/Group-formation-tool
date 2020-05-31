@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,6 +33,7 @@ public class AdminController {
 	public String adminPage() 
 	{
 		logger.info("****Admin Controller - Admin Page Invoked*****");
+		
 		return CatmeUtil.ADMIN;
 	}
 	
@@ -45,14 +47,18 @@ public class AdminController {
 	@ModelAttribute("courses")
 	public List<Course> getCourseList(){
 		return service.getAllCourses();
+		
 	}
 	
 	@PostMapping(value="deleteCourse")
 	public String deleteCourse(@RequestParam String course)
 	{
 		logger.info("****Admin Controller - Delete Course Invoked*****");
-		service.deleteCourse(course);
-		return CatmeUtil.DELETE_COURSE;
+		int result=service.deleteCourse(course.substring(0, course.length()-1));
+		if(result>0)
+			return CatmeUtil.DELETE_COURSE;
+		else
+			return CatmeUtil.ERROR_PAGE;
 		
 	}
 }

@@ -11,8 +11,12 @@ public class CatmeUtil {
 	public static final String ASDC="ASDC";
 	public static final String ADMIN="adminPage";
 	public static final String ADD_COURSE="addCourse";
+	public static final String ERROR_PAGE="errorPage";
 	public static final String DELETE_COURSE="deleteCourse";
 	public static final String SELECT_COURSE = "Select * from Course;";
+	public static final String DELETE_COURSE_INSTRUCTOR_QUERY = "delete from CourseInstructor where CourseId=?";
+	public static final String DELETE_ENROLLMENT_QUERY = "delete from Enrollment where CourseId=?";
+	public static final String DELETE_COURSE_QUERY = "delete from Course where CourseId=?";
 			
 
 }
