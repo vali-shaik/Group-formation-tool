@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Locale.Category;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
 import dal.asd.catme.beans.Course;
@@ -16,6 +18,7 @@ import dal.asd.catme.dao.IAdminDao;
 import dal.asd.catme.util.CatmeUtil;
 
 @Component
+@Qualifier("adminService")
 public class AdminService implements IAdminService{
 
 	@Autowired

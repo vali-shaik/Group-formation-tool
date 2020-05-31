@@ -5,10 +5,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
+
 import dal.asd.catme.beans.Course;
 import dal.asd.catme.beans.User;
 import dal.asd.catme.service.IAdminService;
 
+@Component
+@Qualifier("mockServiceTest")
 public class AdminServiceMock implements IAdminService{
 
 	@Override

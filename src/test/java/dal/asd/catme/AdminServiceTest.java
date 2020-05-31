@@ -3,6 +3,12 @@ package dal.asd.catme;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
+
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.samePropertyValuesAs;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -12,9 +18,19 @@ import dal.asd.catme.mock.AdminServiceMock;
 import dal.asd.catme.service.IAdminService;
 import dal.asd.catme.util.CatmeUtil;
 
+@Component
 public class AdminServiceTest {
 
+//	@Autowired
+//	@Qualifier("mockServiceTest")
 	IAdminService mockService = new AdminServiceMock();
+	
+//	@Autowired
+//	public AdminServiceTest(@Qualifier("mockServiceTest")IAdminService mockService) {
+//		this.mockService=mockService;
+//	}
+	
+	
 	
 	@Test
 	public void getAllCoursesTest() {
