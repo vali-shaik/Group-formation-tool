@@ -1,4 +1,4 @@
-package dal.asd.catme.studentlistimport;
+package dal.asd.catme.service;
 
 import dal.asd.catme.beans.Course;
 import dal.asd.catme.beans.Student;
@@ -16,12 +16,7 @@ public class MailSenderServiceTest
     void getFormattedMailTest()
     {
 
-        Student s = new Student();
-        s.setFirstName("Tapan");
-        s.setLastName("Prajapati");
-        s.setBannerId("B00851820");
-        s.setPassword("ABCD@1234");
-        s.setEmail("Tapan.Prajapati@dal.ca");
+        Student s = new Student("B00851820","Prajapati","Tapan","Tapan.Prajapati@dal.ca","ABCE@1234");
 
         Course c = new Course();
         c.setCourseName("CSCI5308");

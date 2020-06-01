@@ -5,6 +5,9 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.samePropertyValuesAs;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class CSVReaderTest
@@ -14,23 +17,22 @@ public class CSVReaderTest
     {
         CSVReader csvReader = new CSVReader();
 
-        ArrayList<Student> test1 = createDataList1();
-        ArrayList<Student> test2 = createDataList2();
-
-//        try
-//        {
-//            assertEquals(test1,csvReader.readFile("/home/dracula/Documents/test.csv"));
-//        } catch (Exception e)
-//        {
-//            e.printStackTrace();
-//        }
+        ArrayList<Student> test = createDataList();
 
         try
         {
-            csvReader.readFile("/home/dracula/Documents/test1.csv");
+            assertThat(test,samePropertyValuesAs(csvReader.readFile("src/test/java/dal/asd/catme/studentlistimport/test.csv")));
         } catch (Exception e)
         {
-            System.out.println("Passed");
+            fail();
+        }
+
+        try
+        {
+            csvReader.readFile("src/test/java/dal/asd/catme/studentlistimport/test1.csv");
+            fail();
+        } catch (Exception e)
+        {
         }
 
     }
@@ -85,37 +87,14 @@ public class CSVReaderTest
         assertFalse(csvReader.validEmailId("abc@234"));
     }
 
-    ArrayList<Student> createDataList1()
+    ArrayList<Student> createDataList()
     {
         ArrayList<Student> list = new ArrayList<>();
 
-        list.add(createStudent("B00851820","Tapan","Prajapati","tp890953@dal.ca"));
-        list.add(createStudent("B00121212","Test","Test","test@test.com"));
-        list.add(createStudent("B0085154","  Test1","Test1   "," test1@test1.com\n"));
+        list.add(new Student("B00851820","Prajapati","Tapan","tp890953@dal.ca"));
+        list.add(new Student("B00121212","Test","Test","test@test.com"));
+        list.add(new Student("B00851542","  Test1","Test1   "," test1@test1.com"));
 
         return list;
-    }
-
-    ArrayList<Student> createDataList2()
-    {
-        ArrayList<Student> list = new ArrayList<>();
-
-        list.add(createStudent("B00851820","Tapan","Prajapati","tp890953@dal.ca"));
-        list.add(createStudent("a00123258","ABC","TAV","abc@dge"));
-        list.add(createStudent("B12121212","","",""));
-
-        return list;
-    }
-
-    Student createStudent(String b,String l, String f, String email)
-    {
-        Student s  = new Student();
-
-        s.setBannerId(b);
-        s.setFirstName(f);
-        s.setLastName(l);
-        s.setEmail(email);
-
-        return s;
     }
 }

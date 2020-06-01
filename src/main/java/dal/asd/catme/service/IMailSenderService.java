@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
 
-@Service
 public interface IMailSenderService
 {
     void sendMail(User user, String subject, String messageText) throws MailException, MessagingException;

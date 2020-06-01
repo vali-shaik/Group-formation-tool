@@ -15,6 +15,9 @@ public class CSVReader
     static int FIRSTNAME = 2;
     static int EMAILID = 3;
 
+    static int BANNERID_LENGTH = 9;
+    static int CSV_COLUMNS = 4;
+
     public List<Student> readFile(String fileName) throws InvalidFileFormatException, FileNotFoundException, IOException
     {
 
@@ -35,7 +38,7 @@ public class CSVReader
             //number of columns are 4
             String[] parts = line.split(",");
 
-            if (parts.length != 4)
+            if (parts.length != CSV_COLUMNS)
                 throw new InvalidFileFormatException("Invalid File Format");
             if (skip)
             {
@@ -47,7 +50,7 @@ public class CSVReader
             if (!validLine(parts))
                 throw new InvalidFileFormatException("Invalid File Format");
 
-            newStudents.add(createStudent(parts));
+            newStudents.add(new Student(parts[BANNERID],parts[LASTNAME],parts[FIRSTNAME],parts[EMAILID]));
         }
 
         return newStudents;
@@ -72,7 +75,7 @@ public class CSVReader
         bannerId = bannerId.trim();
 
         //9 characters long
-        if (bannerId.length() != 9)
+        if (bannerId.length() != BANNERID_LENGTH)
         {
             System.out.println("Invalid Lenght of BannerID");
             return false;
@@ -125,17 +128,5 @@ public class CSVReader
         }
 
         return true;
-    }
-
-    public Student createStudent(String[] data)
-    {
-        Student t = new Student();
-
-        t.setBannerId(data[BANNERID]);
-        t.setFirstName(data[FIRSTNAME]);
-        t.setLastName(data[LASTNAME]);
-        t.setEmail(data[EMAILID]);
-
-        return t;
     }
 }

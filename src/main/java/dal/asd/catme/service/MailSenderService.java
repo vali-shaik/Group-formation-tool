@@ -30,9 +30,6 @@ public class MailSenderService implements IMailSenderService
         this.mailSender = mailSender;
     }
 
-    //for test case purpose
-    public MailSenderService(){}
-
     @Override
     public void sendMail(User user, String subject, String bodyText) throws MailException, MessagingException
     {
