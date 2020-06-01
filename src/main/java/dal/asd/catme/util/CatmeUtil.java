@@ -8,4 +8,5 @@ public class CatmeUtil {
 	public static final String TA_ENROLLMENT_PAGE="taEnrollment";
 	public static final String SIGNUP_PAGE = "signup";
 	public static final int GUEST_ROLE_ID = 1;
+	public static final int TA_ROLE_ID = 3;
 }

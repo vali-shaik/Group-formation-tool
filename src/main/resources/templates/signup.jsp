@@ -14,9 +14,9 @@
   <label for="bannerid">Banner Id:</label><br>
   <input type="text" id="bannerid" name="bannerid" required th:field="*{bannerId}"><br>
   <label for="emailid">Email:</label><br>
-  <input type="text" id="emailid" name="emailid" required th:field="*{email}"><br>
+  <input type="email" id="emailid" name="emailid" required th:field="*{email}"><br>
   <label for="password">Password:</label><br>
-  <input type="password" id="password" name="password" required th:field="*{password}"><br>
+  <input type="password" id="password" name="password" required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Min Length: 8 including UpperCase, LowerCase and Number" th:field="*{password}"><br>
   <label for="confirmpassword">Confirm Password:</label><br>
   <input type="password" id="confirmpassword" name="confirmpassword" required oninput="validatePassword()"><br><br>
   <input type="submit" value="Submit">
