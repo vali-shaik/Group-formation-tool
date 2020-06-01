@@ -66,7 +66,6 @@ public class AdminService implements IAdminService{
 				users.add(user);
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return users;

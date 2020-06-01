@@ -44,7 +44,7 @@ public class DatabaseAccess {
 			return resultSet;
 	}
 	
-	public void closeConnection(Connection connection) {
+	public void closeConnection() {
 		try {
 			connection.close();
 		} catch (SQLException e) {

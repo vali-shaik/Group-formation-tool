@@ -21,67 +21,73 @@ public class AdminDao implements IAdminDao{
 	
 	PreparedStatement preparedStatement;
 	ResultSet rs;
+	Connection connection;
+	
 	
 	@Override
 	public int addCourse(Course course) {
-		Connection connection = db.getConnection();
-		return addCourse(connection, CatmeUtil.ADD_COURSE_QUERY, course);
+		connection = db.getConnection();
+		int result= addCourse(connection, CatmeUtil.ADD_COURSE_QUERY, course);
+		db.closeConnection();
+		return result;
 	}
 
 	@Override
 	public int deleteCourse(String courseId) {
 		int result;
-		Connection connection = db.getConnection();
+		connection = db.getConnection();
 		updateQuery(connection,CatmeUtil.DELETE_ENROLLMENT_QUERY,courseId);
 		updateQuery(connection,CatmeUtil.DELETE_COURSE_INSTRUCTOR_QUERY,courseId);
 		result=updateQuery(connection, CatmeUtil.DELETE_COURSE_QUERY, courseId);
-		
+		db.closeConnection();
 		
 		return result;
 	}
 
 	@Override
 	public ResultSet getAllCourses() {
-		Connection connection = db.getConnection();
+		connection = db.getConnection();
 		ResultSet rs = db.executeQuery(CatmeUtil.SELECT_COURSE);
 		return rs;
 	}
 
 	@Override
 	public ResultSet getUsersNotAssignedForCourse(Course course) {
-		Connection connection = db.getConnection();
+		connection = db.getConnection();
 		return listUsers(connection, CatmeUtil.LIST_USER_QUERY, course);
 	}
 
 	@Override
 	public int addInstructorToCourse(String user,String course) {
-		Connection connection = db.getConnection();
+		connection = db.getConnection();
 		//rs = db.executeQuery(CatmeUtil.SELECT_TA_ROLE);
 		int result = 0;
 		//System.out.println("rs****"+rs.getString("roleId"));
-		int roleId = selectTARole(connection);
+		int roleId = selectInstructorRole(connection);
 		//Add TA Role to user
 		int userRole=insertTARole(connection,user,roleId);
 		//Add the user as instructor to course
 		result=addAsCourseInstructor(connection,course,userRole);
-		
+		db.closeConnection();
 		
 		return result;
 	}
 	
-	public int selectTARole(Connection connection) {
+	public int selectInstructorRole(Connection connection) {
+		int result=0;
 		try {
-			preparedStatement = connection.prepareStatement(CatmeUtil.SELECT_TA_ROLE);
-			preparedStatement.setString(1, CatmeUtil.TA);
+			preparedStatement = connection.prepareStatement(CatmeUtil.SELECT_ROLE_BY_ROLENAME);
+			preparedStatement.setString(1, CatmeUtil.ROLE_INSTRUCTOR);
 			rs=preparedStatement.executeQuery();
 			if(rs.next())
-			System.out.println(rs.getString("roleId"));
+				result = Integer.parseInt(rs.getString("roleId"));
+			System.out.println(result);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
-		return 0;
+		return result;
 		
 	}
 	
@@ -97,7 +103,10 @@ public class AdminDao implements IAdminDao{
 				preparedStatement.setInt(2, userRole);
 				preparedStatement.setString(1, course);
 				result=preparedStatement.executeUpdate();
-			
+			}
+			else
+			{
+				result = rs.getInt("userRoleId");
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -112,6 +121,7 @@ public class AdminDao implements IAdminDao{
 		int result = 0;
 		try {
 			preparedStatement = connection.prepareStatement(query);
+			System.out.println(query+" "+courseId);
 			preparedStatement.setString(1, courseId);
 			result = preparedStatement.executeUpdate();
 			} catch (SQLException e) {

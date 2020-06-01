@@ -74,7 +74,8 @@ public class AdminController {
 	public String deleteCourse(@RequestParam String course)
 	{
 		logger.info("****Admin Controller - Delete Course Invoked*****");
-		int result=service.deleteCourse(course.substring(0, course.length()-1));
+		System.out.println(course);
+		int result=service.deleteCourse(course);
 		if(result>0)
 			return CatmeUtil.SUCCESS_PAGE;
 		else
@@ -86,8 +87,10 @@ public class AdminController {
 	public String addInstructor(@RequestParam String course,@RequestParam String user) {
 		logger.info("****Admin Controller - Add Instructor Invoked*****");
 		int result=service.addInstructorToCourse(user,course);
-		if(result>0)
+		if(result==1)
 			return CatmeUtil.SUCCESS_PAGE;
+		else if(result>1)
+			return CatmeUtil.USER_PAGE;
 		else
 			return CatmeUtil.ERROR_PAGE;
 	}

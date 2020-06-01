@@ -58,8 +58,9 @@ public class AdminServiceMock implements IAdminService{
 		return null;
 	}
 
+
 	@Override
-	public int addInstructorToCourse(User user) {
+	public int addInstructorToCourse(String user, String course) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
