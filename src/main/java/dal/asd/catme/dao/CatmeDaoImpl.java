@@ -1,5 +1,6 @@
 package dal.asd.catme.dao;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -22,8 +23,10 @@ public class CatmeDaoImpl implements ICatmeDao {
 	public List<Course> getAllCourses() {
 		List<Course> listOfCourses=new ArrayList<>();
 		ResultSet resultSet;
+		Connection connection=null;
 		try {
-			resultSet = database.getConnection().createStatement().executeQuery(CatmeUtil.SELECT_COURSE_QUERY);
+			connection=database.getConnection();
+			resultSet = connection.createStatement().executeQuery(CatmeUtil.SELECT_COURSE_QUERY);
 			
 			while(resultSet.next()) {
 				Course course = new Course();
@@ -31,8 +34,21 @@ public class CatmeDaoImpl implements ICatmeDao {
 				course.setCourseName(resultSet.getString(CatmeUtil.COURSE_NAME_FIELD));
 				listOfCourses.add(course);
 			}
-		} catch (SQLException e) {
+		} catch (SQLException|NullPointerException e) {
 			e.printStackTrace();
+		}
+		finally
+		{
+			try {
+						if(connection==null)
+						{
+						connection.close();
+						}
+				
+			} catch (SQLException|NullPointerException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 
 
