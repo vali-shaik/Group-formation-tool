@@ -26,6 +26,8 @@ public class CatmeDaoImpl implements ICatmeDao {
 		Connection connection=null;
 		try {
 			connection=database.getConnection();
+			if(connection!=null)
+			{
 			resultSet = connection.createStatement().executeQuery(CatmeUtil.SELECT_COURSE_QUERY);
 			
 			while(resultSet.next()) {
@@ -34,17 +36,14 @@ public class CatmeDaoImpl implements ICatmeDao {
 				course.setCourseName(resultSet.getString(CatmeUtil.COURSE_NAME_FIELD));
 				listOfCourses.add(course);
 			}
+			}
 		} catch (SQLException|NullPointerException e) {
 			e.printStackTrace();
 		}
 		finally
 		{
 			try {
-						if(connection==null)
-						{
-						connection.close();
-						}
-				
+				connection.close();
 			} catch (SQLException|NullPointerException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
