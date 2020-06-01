@@ -10,8 +10,6 @@ public interface IAdminService {
 
 	int addCourse(Course Course);
 	int deleteCourse(String courseId);
-	List<Course> getAllCourses();
-	List<User> getUsersNotAssignedForCourse(Course course);
 	int addInstructorToCourse(String user,String course);
 }
 

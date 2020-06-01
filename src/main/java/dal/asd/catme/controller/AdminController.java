@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import dal.asd.catme.beans.Course;
 import dal.asd.catme.beans.User;
 import dal.asd.catme.service.IAdminService;
+import dal.asd.catme.service.IListDetails;
 import dal.asd.catme.util.CatmeUtil;
 
 @Controller
@@ -27,6 +28,9 @@ public class AdminController {
 	@Autowired
 	@Qualifier("adminService")
 	IAdminService service;
+	
+	@Autowired
+	IListDetails listDetail;
 	
 	private static final Logger logger = LoggerFactory.getLogger(AdminController.class);
 	
@@ -60,13 +64,13 @@ public class AdminController {
 
 	@ModelAttribute("courses")
 	public List<Course> getCourseList(){
-		return service.getAllCourses();
+		return listDetail.getAllCourses();
 	}
 	
 	@ModelAttribute("users")
 	public List<User> getUsersList(){
 		Course course = new Course();
-		return service.getUsersNotAssignedForCourse(course);	
+		return listDetail.getUsersNotAssignedForCourse(course);	
 	}
 	
 	

@@ -15,15 +15,22 @@ import dal.asd.catme.beans.Course;
 import dal.asd.catme.beans.User;
 import dal.asd.catme.dao.AdminDao;
 import dal.asd.catme.dao.IAdminDao;
+import dal.asd.catme.dao.IListDetailsDao;
+import dal.asd.catme.database.DatabaseAccess;
 import dal.asd.catme.util.CatmeUtil;
 
 @Component
 @Qualifier("adminService")
-public class AdminService implements IAdminService{
+public class AdminService implements IAdminService,IListDetails{
 
 	@Autowired
 	IAdminDao admin;
 	
+	@Autowired
+	IListDetailsDao listDetails;
+	
+	@Autowired
+	DatabaseAccess db; 
 	
 	@Override
 	public int addCourse(Course course) {
@@ -37,38 +44,15 @@ public class AdminService implements IAdminService{
 
 	@Override
 	public List<Course> getAllCourses() {
-		List<Course> courses = new ArrayList<>();
-		ResultSet resultSet  = admin.getAllCourses();
-		try {
-			
-			while(resultSet.next()) {
-				Course course = new Course();
-				course.setCourseId(resultSet.getString(CatmeUtil.COURSE_ID));
-				course.setCourseName(resultSet.getString(CatmeUtil.COURSE_NAME));
-				courses.add(course);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return courses;
+		return listDetails.getAllCourses();
+		
 	}
 
 	@Override
 	public List<User> getUsersNotAssignedForCourse(Course course) {
-		List<User> users = new ArrayList<User>();
-		ResultSet resultSet = admin.getUsersNotAssignedForCourse(course);
-		try {
-			while(resultSet.next()){
-				User user = new User();
-				user.setBannerId(resultSet.getString(CatmeUtil.BANNER_ID));
-				user.setFirstName(resultSet.getString(CatmeUtil.FIRST_NAME));
-				user.setLastName(resultSet.getString(CatmeUtil.LAST_NAME));
-				users.add(user);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return users;
+		
+		return listDetails.getUsersNotAssignedForCourse(course);
+		
 	}
 
 	@Override

@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -14,7 +15,7 @@ import dal.asd.catme.database.DatabaseAccess;
 import dal.asd.catme.util.CatmeUtil;
 
 @Component
-public class AdminDao implements IAdminDao{
+public class AdminDao implements IAdminDao,IListDetailsDao{
 
 	@Autowired
 	DatabaseAccess db;
@@ -40,23 +41,9 @@ public class AdminDao implements IAdminDao{
 		updateQuery(connection,CatmeUtil.DELETE_COURSE_INSTRUCTOR_QUERY,courseId);
 		result=updateQuery(connection, CatmeUtil.DELETE_COURSE_QUERY, courseId);
 		db.closeConnection();
-		
 		return result;
 	}
-
-	@Override
-	public ResultSet getAllCourses() {
-		connection = db.getConnection();
-		ResultSet rs = db.executeQuery(CatmeUtil.SELECT_COURSE);
-		return rs;
-	}
-
-	@Override
-	public ResultSet getUsersNotAssignedForCourse(Course course) {
-		connection = db.getConnection();
-		return listUsers(connection, CatmeUtil.LIST_USER_QUERY, course);
-	}
-
+	
 	@Override
 	public int addInstructorToCourse(String user,String course) {
 		connection = db.getConnection();
@@ -72,6 +59,50 @@ public class AdminDao implements IAdminDao{
 		
 		return result;
 	}
+
+	@Override
+	public List<Course> getAllCourses() {
+		List<Course> courses = new ArrayList<>();
+		connection = db.getConnection();
+		System.out.println("conn "+connection);
+		ResultSet resultSet = db.executeQuery(CatmeUtil.SELECT_COURSE);
+		try {
+			
+			while(resultSet.next()) {
+				Course course = new Course();
+				course.setCourseId(resultSet.getString(CatmeUtil.COURSE_ID));
+				course.setCourseName(resultSet.getString(CatmeUtil.COURSE_NAME));
+				courses.add(course);
+			}
+			db.closeConnection();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return courses;
+	}
+
+	@Override
+	public List<User> getUsersNotAssignedForCourse(Course course) {
+		connection = db.getConnection();
+		ResultSet resultSet = listUsers(connection, CatmeUtil.LIST_USER_QUERY, course);
+		 List<User> users = new ArrayList<User>();
+			try {
+				while(resultSet.next()){
+					User user = new User();
+					user.setBannerId(resultSet.getString(CatmeUtil.BANNER_ID));
+					user.setFirstName(resultSet.getString(CatmeUtil.FIRST_NAME));
+					user.setLastName(resultSet.getString(CatmeUtil.LAST_NAME));
+					users.add(user);
+				}
+				db.closeConnection();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			return users;
+	}
+	
+
+	
 	
 	public int selectInstructorRole(Connection connection) {
 		int result=0;
@@ -121,7 +152,6 @@ public class AdminDao implements IAdminDao{
 		int result = 0;
 		try {
 			preparedStatement = connection.prepareStatement(query);
-			System.out.println(query+" "+courseId);
 			preparedStatement.setString(1, courseId);
 			result = preparedStatement.executeUpdate();
 			} catch (SQLException e) {

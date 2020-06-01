@@ -9,7 +9,5 @@ public interface IAdminDao {
 
 	int addCourse(Course Course);
 	int deleteCourse(String courseId);
-	ResultSet getAllCourses();
-	ResultSet getUsersNotAssignedForCourse(Course course);
 	int addInstructorToCourse(String user,String course);
 }
