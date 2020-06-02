@@ -5,9 +5,10 @@
 <body>
 <h1 align="center">TA enrollment</h1>
 <center>
-<form th:action="@{/enrollTa}" th:object="${user}" method = "post">
+<form th:action="@{/taEnrollment/{courseId}(courseId=${courseId})}"  method = "post">
   <label >Enter the Banner Id of the user:</label><br/>
-   <input type="text" class="form-control" th:field="*{bannerId}">
+  
+   <input type="text" id="bannerId" name="bannerId" class="form-control" th:value=${bannerId}>
    <input type="submit" value="Submit">
 </form>
 </center>

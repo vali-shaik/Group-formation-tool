@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -57,19 +58,17 @@ public class CatmeController {
 		return CatmeUtil.SIGNUP_PAGE;			
 	}	
 	
-	@GetMapping("taEnrollment")
-	public String enrollTa(Model model) {
-		model.addAttribute("user", new Enrollment());
+	@GetMapping("taEnrollment/{courseId}")
+	public String enrollTa(@PathVariable("courseId")int courseId,Model model) {
+		model.addAttribute("courseId", courseId);
 		return CatmeUtil.TA_ENROLLMENT_PAGE;
 	}
 	
-	@PostMapping("taEnrollment")
-	public String enrollTa(@ModelAttribute Enrollment user) {
-		//user.courseId = courseId;
-		System.out.print(user.getBannerId());
+	@PostMapping("taEnrollment/{courseId}")
+	public String enrollTa(@PathVariable("courseId")int courseId,@RequestParam String bannerId,Model model) {
+		model.addAttribute("user", new Enrollment(bannerId,courseId));
 		return "enrollTa";
 	}
 
 	
 }
-// @RequestParam(name="courseId", required=true) String courseId, @ModelAttribute Enrollment user

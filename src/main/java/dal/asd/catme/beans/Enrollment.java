@@ -1,8 +1,18 @@
 package dal.asd.catme.beans;
 
 public class Enrollment {
+
 	public String bannerId;
 	public int courseId;
+	
+	public Enrollment() {}
+	
+	public Enrollment(String bannerId, int courseId) {
+		super();
+		this.bannerId = bannerId;
+		this.courseId = courseId;
+	}
+	
 	public String getBannerId() {
 		return bannerId;
 	}
