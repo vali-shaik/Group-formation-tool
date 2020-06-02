@@ -14,11 +14,28 @@ public class CourseDaoImpl implements ICourseDao{
 	DatabaseAccess db;
 
 	@Override
-	public int checkCourseRegistration(String bannerId, int courseId) {
+	public int checkCourseRegistration(String bannerId, String courseId) {
 		int rowCount = 0;
 		// TODO Auto-generated method stub
 		try {
 			String query = "SELECT EXISTS(SELECT * FROM Enrollment WHERE BannerId = '" + bannerId + "' AND CourseId = '" + courseId + "');";
+			ResultSet rs = db.executeQuery(query);
+			rs.next();
+			rowCount = rs.getInt(1);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return rowCount;
+	}
+
+	@Override
+	public int checkCourseExists(String courseId) {
+		int rowCount = 0;
+		// TODO Auto-generated method stub
+		try {
+			String query = "SELECT EXISTS(SELECT * FROM Course WHERE CourseId  = '" + courseId + "');";
 			ResultSet rs = db.executeQuery(query);
 			rs.next();
 			rowCount = rs.getInt(1);

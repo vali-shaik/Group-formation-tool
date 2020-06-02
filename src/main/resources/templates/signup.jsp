@@ -21,7 +21,7 @@
   <input type="password" id="confirmpassword" name="confirmpassword" required oninput="validatePassword()"><br><br>
   <input type="submit" value="Submit">
 </form> 
-<p>Already a user? <a href="login.jsp"> LogIn</a></p>
+<p>Already a user? <a href="/login.jsp"> LogIn</a></p>
  
 </center>
 

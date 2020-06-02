@@ -41,7 +41,7 @@ public class RoleDaoImpl implements IRoleDao{
 	}
 	
 	@Override
-	public int addInstructor(int courseId, int userRoleId) {
+	public int addInstructor(String courseId, int userRoleId) {
 		// TODO Auto-generated method stub
 		String query = "INSERT IGNORE INTO CourseInstructor (CourseInstructorId, CourseId, UserRoleId) VALUES ( NULL,'" +
 				courseId + "' , '" + userRoleId +"' );";
@@ -57,12 +57,12 @@ public class RoleDaoImpl implements IRoleDao{
 	}
 	
 	@Override
-	public int checkCourseInstructor(String bannerId, int courseId) {
+	public int checkCourseInstructor(String bannerId, String courseId) {
 		// TODO Auto-generated method stub
 		int rowCount = 0;
 		// TODO Auto-generated method stub
 		try {
-			String query = "SELECT EXISTS(WITH temp AS ( SELECT ci.UserRoleId,ci.CourseId, ur.BannerId FROM CourseInstructor ci INNER JOIN UserRole ur ON ci.UserRoleId = ur.UserRoleId ) SELECT * FROM temp WHERE temp.BannerId = '"+ bannerId +"' AND temp.CourseId = "+courseId+");";
+			String query = "SELECT EXISTS(WITH temp AS ( SELECT ci.UserRoleId,ci.CourseId, ur.BannerId FROM CourseInstructor ci INNER JOIN UserRole ur ON ci.UserRoleId = ur.UserRoleId ) SELECT * FROM temp WHERE temp.BannerId = '"+ bannerId +"' AND temp.CourseId = '"+courseId+"');";
 			ResultSet rs = db.executeQuery(query);
 			rs.next();
 			rowCount = rs.getInt(1);
@@ -113,9 +113,9 @@ public class RoleDaoImpl implements IRoleDao{
 	}
 	
 	@Override
-	public int assignTa(Enrollment user) {
+	public String assignTa(Enrollment user) {
 		// TODO Auto-generated method stub
-		int isAssigned = 0;
+		String isAssigned = "";
 		
 		try {
 			con = db.getConnection();
@@ -123,41 +123,54 @@ public class RoleDaoImpl implements IRoleDao{
 			//If the user exists
 			if(0 != userDao.checkExistingUser(user.bannerId)){
 				
-				//If the user is not currently taking the course
-				if(0 == courseDao.checkCourseRegistration(user.bannerId, user.courseId)){
+				//If the course exists
+				if (0 != courseDao.checkCourseExists(user.courseId)) {
 					
-					//If the user is not already registered as an instructor for the course
-					if(0 == checkCourseInstructor(user.bannerId, user.courseId)){
+					//If the user is not currently taking the course
+					if(0 == courseDao.checkCourseRegistration(user.bannerId, user.courseId)){
 						
-						//If the UserRoleId already exists for the role
-						if(0 != checkUserRole(user.bannerId, CatmeUtil.TA_ROLE_ID)) {
+						//If the user is not already registered as an instructor for the course
+						if(0 == checkCourseInstructor(user.bannerId, user.courseId)){
 							
-							//Get the UserRoleId
-							int userRoleId = getUserRoleId(user.bannerId, CatmeUtil.TA_ROLE_ID);
+							//If the UserRoleId already exists for the role
+							if(0 != checkUserRole(user.bannerId, CatmeUtil.TA_ROLE_ID)) {
+								
+								//Get the UserRoleId
+								int userRoleId = getUserRoleId(user.bannerId, CatmeUtil.TA_ROLE_ID);
+								
+								//Add the user to the CourseInstructor Table
+								addInstructor(user.courseId, userRoleId);
+								
+								
+							}
 							
-							//Add the user to the CourseInstructor Table
-							addInstructor(user.courseId, userRoleId);
-							isAssigned = 1;
+							//If the UserRoleId doesn't exist for the role
+							else {
+								
+								//Assign the TA role to the user in UserRole relation
+								assignRole(user.bannerId, CatmeUtil.TA_ROLE_ID);
+								
+								//Get the UserRoleId
+								int userRoleId = getUserRoleId(user.bannerId, CatmeUtil.TA_ROLE_ID);
+								
+								//Add the user to the CourseInstructor Table
+								addInstructor(user.courseId, userRoleId);
+								
+							}
+							isAssigned = "The user is successfully assigned as TA.";
 							
+						} else {
+							isAssigned = "This user is already an instructor for this course.";
 						}
-						
-						//If the UserRoleId doesn't exist for the role
-						else {
-							
-							//Assign the TA role to the user in UserRole relation
-							assignRole(user.bannerId, CatmeUtil.TA_ROLE_ID);
-							
-							//Get the UserRoleId
-							int userRoleId = getUserRoleId(user.bannerId, CatmeUtil.TA_ROLE_ID);
-							
-							//Add the user to the CourseInstructor Table
-							addInstructor(user.courseId, userRoleId);
-							isAssigned = 1;
-							
-						}
-						
+					} else {
+						isAssigned = "This user is currently registered in this course. Failed to assign.";
 					}
+				} else {
+					isAssigned = "No course exists with this Course Id. Failed to assign.";
 				}
+				
+			} else {
+				isAssigned = "No user exists with this Banner Id. Failed to assign.";
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

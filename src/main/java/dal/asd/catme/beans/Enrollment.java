@@ -3,11 +3,11 @@ package dal.asd.catme.beans;
 public class Enrollment {
 
 	public String bannerId;
-	public int courseId;
+	public String courseId;
 	
 	public Enrollment() {}
 	
-	public Enrollment(String bannerId, int courseId) {
+	public Enrollment(String bannerId, String courseId) {
 		super();
 		this.bannerId = bannerId;
 		this.courseId = courseId;
@@ -19,10 +19,10 @@ public class Enrollment {
 	public void setBannerId(String bannerId) {
 		this.bannerId = bannerId;
 	}
-	public int getCourseId() {
+	public String getCourseId() {
 		return courseId;
 	}
-	public void setCourseId(int courseId) {
+	public void setCourseId(String courseId) {
 		this.courseId = courseId;
 	}
 	

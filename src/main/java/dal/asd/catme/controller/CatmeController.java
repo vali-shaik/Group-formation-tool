@@ -13,10 +13,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import dal.asd.catme.beans.Enrollment;
 import dal.asd.catme.beans.User;
-import dal.asd.catme.dao.IRoleDao;
-import dal.asd.catme.dao.IUserDao;
 import dal.asd.catme.database.DatabaseAccess;
 import dal.asd.catme.service.ICatmeService;
+import dal.asd.catme.service.IRoleService;
+import dal.asd.catme.service.IUserService;
 import dal.asd.catme.util.CatmeUtil;
 @Controller
 @RequestMapping("/")
@@ -27,9 +27,9 @@ public class CatmeController {
 	@Autowired
 	DatabaseAccess database;
 	@Autowired
-	IUserDao userDao;
+	IUserService userService;
 	@Autowired
-	IRoleDao roleDao;
+	IRoleService roleService;
 	
 	
 	private static final Logger log = LoggerFactory.getLogger(CatmeController.class);
@@ -43,31 +43,38 @@ public class CatmeController {
 	@RequestMapping("admin")
 	public String adminPage() 
 	{
-		//Enrollment o = new Enrollment();
-		//o.bannerId = "B00835717";
-		//o.courseId = 5406;
-		//System.out.print(roleDao.assignTa(o));
 		return CatmeUtil.ADMIN_PAGE;
 	}
 	
-	@RequestMapping("signup")
+	
+	@GetMapping("signup")
+	public String signupPage(Model model) {
+		model.addAttribute("user",new User());
+		
+		return CatmeUtil.SIGNUP_PAGE;
+	}
+	
+	@PostMapping("signup")
 	public String signupPage(@ModelAttribute User user, Model model) {
-		if(1==userDao.addUser(user)){
-			return CatmeUtil.LOGIN_PAGE;
-		}
-		return CatmeUtil.SIGNUP_PAGE;			
-	}	
+		String message = userService.addUser(user);
+		model.addAttribute("message", message);
+		return CatmeUtil.SIGNEDUP_PAGE;
+	}
+	
 	
 	@GetMapping("taEnrollment/{courseId}")
-	public String enrollTa(@PathVariable("courseId")int courseId,Model model) {
+	public String enrollTa(@PathVariable("courseId")String courseId,Model model) {
 		model.addAttribute("courseId", courseId);
 		return CatmeUtil.TA_ENROLLMENT_PAGE;
 	}
 	
 	@PostMapping("taEnrollment/{courseId}")
-	public String enrollTa(@PathVariable("courseId")int courseId,@RequestParam String bannerId,Model model) {
-		model.addAttribute("user", new Enrollment(bannerId,courseId));
-		return "enrollTa";
+	public String enrollTa(@PathVariable("courseId")String courseId,@RequestParam String bannerId,Model model) {
+		Enrollment user = new Enrollment(bannerId,courseId);
+		model.addAttribute("user", user);
+		String message = roleService.assignTa(user);
+		model.addAttribute("message", message);
+		return CatmeUtil.TA_ENROLLED_PAGE;
 	}
 
 	
