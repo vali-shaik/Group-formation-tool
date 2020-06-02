@@ -2,6 +2,8 @@ package dal.asd.catme.util;
 
 //Utility class for constants and Utility methods
 public class CatmeUtil {
+	public static final int ZERO = 0;
+	public static final int ONE = 1;
 	public static final String HOME_PAGE="home";
 	public static final String LOGIN_PAGE="login";
 	public static final String ADMIN_PAGE="admin";
@@ -10,11 +12,10 @@ public class CatmeUtil {
 	public static final String BANNER_ID="bannerId";
 	public static final String FIRST_NAME="firstName";
 	public static final String LAST_NAME="lastName";
-	public static final String ASDC_ID="5308";
 	public static final String ROLE_ID="roleId";
 	public static final String ROLE_INSTRUCTOR="ROLE_INSTRUCTOR";
-	
-	public static final String ASDC="ASDC";
+	public static final String ADVANCED_WEB_SERVICES="Advanced Web Services";
+	public static final String WEB_ID="CSCI5309";
 	public static final String ADMIN="adminPage";
 	public static final String USER_ROLE_ID="UserRoleId";
 	public static final String ADD_COURSE="addCourse";

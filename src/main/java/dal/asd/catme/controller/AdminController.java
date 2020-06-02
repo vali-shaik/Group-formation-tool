@@ -26,7 +26,6 @@ import dal.asd.catme.util.CatmeUtil;
 public class AdminController {
 
 	@Autowired
-	@Qualifier("adminService")
 	IAdminService service;
 	
 	@Autowired
@@ -70,7 +69,7 @@ public class AdminController {
 	@ModelAttribute("users")
 	public List<User> getUsersList(){
 		Course course = new Course();
-		return listDetail.getUsersNotAssignedForCourse(course);	
+		return listDetail.getUsers(course);	
 	}
 	
 	

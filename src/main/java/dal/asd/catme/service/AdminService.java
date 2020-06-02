@@ -20,7 +20,6 @@ import dal.asd.catme.database.DatabaseAccess;
 import dal.asd.catme.util.CatmeUtil;
 
 @Component
-@Qualifier("adminService")
 public class AdminService implements IAdminService,IListDetails{
 
 	@Autowired
@@ -49,9 +48,9 @@ public class AdminService implements IAdminService,IListDetails{
 	}
 
 	@Override
-	public List<User> getUsersNotAssignedForCourse(Course course) {
+	public List<User> getUsers(Course course) {
 		
-		return listDetails.getUsersNotAssignedForCourse(course);
+		return listDetails.getUsers(course);
 		
 	}
 

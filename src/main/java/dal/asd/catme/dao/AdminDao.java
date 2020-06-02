@@ -82,7 +82,7 @@ public class AdminDao implements IAdminDao,IListDetailsDao{
 	}
 
 	@Override
-	public List<User> getUsersNotAssignedForCourse(Course course) {
+	public List<User> getUsers(Course course) {
 		connection = db.getConnection();
 		ResultSet resultSet = listUsers(connection, CatmeUtil.LIST_USER_QUERY, course);
 		 List<User> users = new ArrayList<User>();
@@ -112,7 +112,7 @@ public class AdminDao implements IAdminDao,IListDetailsDao{
 			rs=preparedStatement.executeQuery();
 			if(rs.next())
 				result = Integer.parseInt(rs.getString("roleId"));
-			System.out.println(result);
+			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -158,7 +158,7 @@ public class AdminDao implements IAdminDao,IListDetailsDao{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			}
-			System.out.println(result);
+			
 			return result;
 	}
 	

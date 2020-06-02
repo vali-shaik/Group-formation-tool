@@ -7,5 +7,5 @@ import dal.asd.catme.beans.User;
 
 public interface IListDetails {
 	List<Course> getAllCourses();
-	List<User> getUsersNotAssignedForCourse(Course course);
+	List<User> getUsers(Course course);
 }

@@ -1,45 +1,92 @@
-/*
- * package dal.asd.catme;
- * 
- * import java.util.ArrayList; import java.util.List; import
- * org.junit.jupiter.api.Test; import
- * org.springframework.beans.factory.annotation.Autowired; import
- * org.springframework.beans.factory.annotation.Qualifier; import
- * org.springframework.context.annotation.ComponentScan; import
- * org.springframework.context.annotation.Configuration; import
- * org.springframework.stereotype.Component;
- * 
- * import static org.hamcrest.MatcherAssert.assertThat; import static
- * org.hamcrest.Matchers.samePropertyValuesAs; import static
- * org.junit.jupiter.api.Assertions.assertEquals;
- * 
- * import dal.asd.catme.beans.Course; import
- * dal.asd.catme.mock.AdminServiceMock; import
- * dal.asd.catme.service.IAdminService; import dal.asd.catme.util.CatmeUtil;
- * 
- * @Component public class AdminServiceTest {
- * 
- * // @Autowired // @Qualifier("mockServiceTest") IAdminService mockService =
- * new AdminServiceMock();
- * 
- * // @Autowired // public
- * AdminServiceTest(@Qualifier("mockServiceTest")IAdminService mockService) { //
- * this.mockService=mockService; // }
- * 
- * 
- * 
- * @Test public void getAllCoursesTest() { List<Course> testData =
- * formCourseList();
- * 
- * assertThat(testData, samePropertyValuesAs((mockService.getAllCourses())));
- * 
- * }
- * 
- * @Test public void deleteCourseTest(){
- * assertEquals(1,mockService.deleteCourse("5308")); }
- * 
- * private List<Course> formCourseList(){ List<Course> courses = new
- * ArrayList<Course>(); Course course = new
- * Course(CatmeUtil.ASDC_ID,CatmeUtil.ASDC); courses.add(course); return
- * courses; } }
- */
+
+  package dal.asd.catme;
+  
+  import static org.junit.Assert.assertEquals;
+  import static org.mockito.Mockito.when;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.junit.jupiter.api.Test;
+  import org.mockito.InjectMocks;
+  import org.mockito.Mock;
+  import org.springframework.boot.test.context.SpringBootTest;
+
+import dal.asd.catme.beans.Course;
+import dal.asd.catme.beans.User;
+import dal.asd.catme.dao.AdminDao;
+import dal.asd.catme.service.AdminService;
+import dal.asd.catme.util.CatmeUtil;
+  
+  @SpringBootTest
+  public class AdminServiceTest {
+  
+		@Mock
+		AdminDao adminDaoMock;
+	  
+		@InjectMocks
+		AdminService adminServiceMock;
+		
+		@Test
+		public void getAllCoursesTest()
+		{
+			List<Course> courseList=formCourseList();
+			when(adminDaoMock.getAllCourses()).thenReturn(courseList);
+			assertEquals(courseList,adminServiceMock.getAllCourses());
+			assertEquals(CatmeUtil.WEB_ID,adminServiceMock.getAllCourses().get(CatmeUtil.ZERO).getCourseId());
+			assertEquals(CatmeUtil.ADVANCED_WEB_SERVICES,adminServiceMock.getAllCourses().get(CatmeUtil.ZERO).getCourseName());
+		}
+		
+		@Test
+		public void getUsersTest()
+		{
+			List<User> users = formUserList();
+			Course course = new Course(CatmeUtil.WEB_ID, CatmeUtil.ADVANCED_WEB_SERVICES);
+			when(adminDaoMock.getUsers(course)).thenReturn(users);
+			assertEquals(users,adminServiceMock.getUsers(course));
+			assertEquals(CatmeUtil.BANNER_ID,adminServiceMock.getUsers(course).get(CatmeUtil.ZERO).getBannerId());
+			assertEquals(CatmeUtil.FIRST_NAME,adminServiceMock.getUsers(course).get(CatmeUtil.ZERO).getFirstName());
+			
+		}
+		
+		
+ 
+	  @Test 
+	  public void deleteCourseTest(){
+		  int result=CatmeUtil.ONE;
+		  when(adminDaoMock.deleteCourse(CatmeUtil.ADVANCED_WEB_SERVICES)).thenReturn(result);
+		  assertEquals(CatmeUtil.ONE,adminServiceMock.deleteCourse(CatmeUtil.ADVANCED_WEB_SERVICES)); 
+	  }
+	  
+	  @Test
+	  public void addCourseTest(){
+		  Course course = new Course(CatmeUtil.WEB_ID, CatmeUtil.ADVANCED_WEB_SERVICES);
+		  int result=CatmeUtil.ONE;
+		  when(adminDaoMock.addCourse(course)).thenReturn(result);
+		  assertEquals(CatmeUtil.ONE,adminServiceMock.addCourse(course)); 
+		  
+	  }
+	  
+	  @Test
+	  public void addInstructorToCourseTest(){
+		  int result=CatmeUtil.ONE;
+		  when(adminDaoMock.addInstructorToCourse(CatmeUtil.FIRST_NAME, CatmeUtil.WEB_ID)).thenReturn(result);
+		  assertEquals(CatmeUtil.ONE,adminServiceMock.addInstructorToCourse(CatmeUtil.FIRST_NAME, CatmeUtil.WEB_ID)); 
+		  
+	  }
+	  
+	  
+	  
+	  private List<Course> formCourseList(){ 
+		  List<Course> courseList=new ArrayList<>();
+			courseList.add(new Course(CatmeUtil.WEB_ID, CatmeUtil.ADVANCED_WEB_SERVICES));
+			return courseList;
+	  }
+	  
+	  private List<User> formUserList(){ 
+		  List<User> users=new ArrayList<>();
+		  users.add(new User(CatmeUtil.BANNER_ID,CatmeUtil.LAST_NAME,CatmeUtil.FIRST_NAME));
+		  return users;
+	  }
+  }
+ 
