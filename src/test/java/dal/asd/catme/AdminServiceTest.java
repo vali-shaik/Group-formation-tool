@@ -15,7 +15,9 @@ import org.junit.jupiter.api.Test;
 import dal.asd.catme.beans.Course;
 import dal.asd.catme.beans.User;
 import dal.asd.catme.dao.AdminDao;
+import dal.asd.catme.dao.ListDetailsDao;
 import dal.asd.catme.service.AdminService;
+import dal.asd.catme.service.ListDetailsService;
 import dal.asd.catme.util.CatmeUtil;
   
   @SpringBootTest
@@ -23,18 +25,24 @@ import dal.asd.catme.util.CatmeUtil;
   
 		@Mock
 		AdminDao adminDaoMock;
+		
+		@Mock
+		ListDetailsDao listDetailDaoMock;
 	  
 		@InjectMocks
 		AdminService adminServiceMock;
+		
+		@InjectMocks
+		ListDetailsService listDetailService;
 		
 		@Test
 		public void getAllCoursesTest()
 		{
 			List<Course> courseList=formCourseList();
-			when(adminDaoMock.getAllCourses()).thenReturn(courseList);
-			assertEquals(courseList,adminServiceMock.getAllCourses());
-			assertEquals(CatmeUtil.WEB_ID,adminServiceMock.getAllCourses().get(CatmeUtil.ZERO).getCourseId());
-			assertEquals(CatmeUtil.ADVANCED_WEB_SERVICES,adminServiceMock.getAllCourses().get(CatmeUtil.ZERO).getCourseName());
+			when(listDetailDaoMock.getAllCourses()).thenReturn(courseList);
+			assertEquals(courseList,listDetailService.getAllCourses());
+			assertEquals(CatmeUtil.WEB_ID,listDetailService.getAllCourses().get(CatmeUtil.ZERO).getCourseId());
+			assertEquals(CatmeUtil.ADVANCED_WEB_SERVICES,listDetailService.getAllCourses().get(CatmeUtil.ZERO).getCourseName());
 		}
 		
 		@Test
@@ -42,10 +50,10 @@ import dal.asd.catme.util.CatmeUtil;
 		{
 			List<User> users = formUserList();
 			Course course = new Course(CatmeUtil.WEB_ID, CatmeUtil.ADVANCED_WEB_SERVICES);
-			when(adminDaoMock.getUsers(course)).thenReturn(users);
-			assertEquals(users,adminServiceMock.getUsers(course));
-			assertEquals(CatmeUtil.BANNER_ID,adminServiceMock.getUsers(course).get(CatmeUtil.ZERO).getBannerId());
-			assertEquals(CatmeUtil.FIRST_NAME,adminServiceMock.getUsers(course).get(CatmeUtil.ZERO).getFirstName());
+			when(listDetailDaoMock.getUsers(course)).thenReturn(users);
+			assertEquals(users,listDetailService.getUsers(course));
+			assertEquals(CatmeUtil.BANNER_ID,listDetailService.getUsers(course).get(CatmeUtil.ZERO).getBannerId());
+			assertEquals(CatmeUtil.FIRST_NAME,listDetailService.getUsers(course).get(CatmeUtil.ZERO).getFirstName());
 			
 		}
 		

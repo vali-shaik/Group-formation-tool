@@ -20,16 +20,13 @@ import dal.asd.catme.database.DatabaseAccess;
 import dal.asd.catme.util.CatmeUtil;
 
 @Component
-public class AdminService implements IAdminService,IListDetails{
+public class AdminService implements IAdminService{
 
 	@Autowired
 	IAdminDao admin;
 	
-	@Autowired
-	IListDetailsDao listDetails;
 	
-	@Autowired
-	DatabaseAccess db; 
+	 
 	
 	@Override
 	public int addCourse(Course course) {
@@ -41,18 +38,8 @@ public class AdminService implements IAdminService,IListDetails{
 		return admin.deleteCourse(courseId);
 	}
 
-	@Override
-	public List<Course> getAllCourses() {
-		return listDetails.getAllCourses();
-		
-	}
-
-	@Override
-	public List<User> getUsers(Course course) {
-		
-		return listDetails.getUsers(course);
-		
-	}
+	
+	
 
 	@Override
 	public int addInstructorToCourse(String user,String course) {
