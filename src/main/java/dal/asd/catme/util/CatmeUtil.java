@@ -20,7 +20,7 @@ public class CatmeUtil
 	public static final String ADMIN="adminPage";
 	public static final String USER_ROLE_ID="UserRoleId";
 	public static final String ADD_COURSE="addCourse";
-	public static final String STUDENT="Student";
+	public static final String STUDENT="Role_Student";
 	public static final String ERROR="errorPage";
 	public static final String SUCCESS_PAGE="successPage";
 	public static final String USER_PAGE="userPage";

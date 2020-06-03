@@ -22,7 +22,7 @@ import dal.asd.catme.service.IListDetails;
 import dal.asd.catme.util.CatmeUtil;
 
 @Controller
-@RequestMapping("/admin")
+@RequestMapping("admin/")
 public class AdminController {
 
 	@Autowired

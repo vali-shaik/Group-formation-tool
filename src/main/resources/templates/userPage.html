@@ -1,13 +1,18 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
-<meta charset="ISO-8859-1">
-<title>Insert title here</title>
+<style>
+.aTry{
+text-decoration: underline;
+color:blue;
+}
+</style>
 </head>
 <body>
+<div th:insert="header"></div>
 <div align="center">
 	<h1>User already added as an Instructor</h1>
-	<h2><a href="/admin/dashboard">Go Back to Dashboard</a></h2>
+	<h2><a href="/admin/dashboard" class="aTry">Go Back to Dashboard</a></h2>
 </div>
 </body>
 </html>

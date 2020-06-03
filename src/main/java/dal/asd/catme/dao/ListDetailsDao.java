@@ -90,7 +90,7 @@ public class ListDetailsDao implements IListDetailsDao{
 		
 		try {
 			preparedStatement = connection.prepareStatement(query);
-			preparedStatement.setString(1, CatmeUtil.STUDENT);
+			preparedStatement.setString(1, CatmeUtil.STUDENT_ROLE);
 			rs = preparedStatement.executeQuery();
 			} catch (SQLException e) {
 			// TODO Auto-generated catch block
