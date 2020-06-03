@@ -1,56 +1,13 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
 <style>
- ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-  background-color: #333;
-}
 
-li {
-  float: left;
-}
-
-li a {
-  display: block;
-  color: white;
-  text-align: center;
-  padding: 14px 16px;
-  text-decoration: none;
-}
-
-/* Change the link color to #111 (black) on hover */
-li a:hover {
-  background-color: white;
-  color:black
-}
-.active {
-  background-color: #4CAF50;
-}
-
-.table{
-width:50%;
-}
-.textCenter{
-text-align:center;
-
-}
-.rowHover:hover{
-background-color:#bbb8b88c;
-font-weight:bold;
-color:black;
-}
-tr:hover{
-color:white
-}
-p{
-font-size:20px;
-}
 </style>
+<script>
+
+</script>
 </head>
 <body>
 <div th:insert="header"></div>
@@ -60,18 +17,17 @@ font-size:20px;
 </h1>
 <h1>Welcome to Catme...</h1>
 <br>
-<table border="1" class="table">
-<thead class="thead-dark">
-    <tr>
-      <th class="textCenter">Course ID</th>
-      <th class="textCenter">Course Name</th>
-    </tr>
-  </thead>
+<table class="table">
    <tbody>
-     <tr th:each="message : ${listOfCourses}" class="rowHover">
-        <td class="textCenter"><p th:text="${message.courseId}"/></td>
-        <td class="textCenter"><p th:text="${message.courseName}"/></td>
-   </tr>
+   		
+     <tr th:each="message : ${listOfCourses}" class="rowHover Card">
+     	
+     	<td><a th:href = "@{/courseDisplay(courseId=${message.courseId})}" class="textCenter"><p th:text="${message.courseId}"/></a></td>
+     	<td><a th:href = "@{/courseDisplay(courseId=${message.courseId})}" class="textCenter"><p th:text="${message.courseName}"/></a></td>
+       
+        </a>
+   	</tr>
+  
     </tbody>
 </table>
 </div>
