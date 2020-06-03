@@ -19,13 +19,13 @@
 <br>
 <table class="table">
    <tbody>
-   		
-     <tr th:each="message : ${listOfCourses}" class="rowHover Card">
-     	
+     <tr sec:authorize="hasAuthority('ROLE_STUDENT') or hasAuthority('ROLE_TA') or hasAuthority('ROLE_INSTRUCTOR')" th:each="message : ${listOfCourses}" class="rowHover Card">
      	<td><a th:href = "@{/courseDisplay(courseId=${message.courseId})}" class="textCenter"><p th:text="${message.courseId}"/></a></td>
      	<td><a th:href = "@{/courseDisplay(courseId=${message.courseId})}" class="textCenter"><p th:text="${message.courseName}"/></a></td>
-       
-        </a>
+   	</tr>
+   	<tr sec:authorize="hasAuthority('ROLE_GUEST')" th:each="message : ${listOfCourses}" class="rowHover Card">
+     	<td><a class="textCenter"><p th:text="${message.courseId}"/></a></td>
+     	<td><a class="textCenter"><p th:text="${message.courseName}"/></a></td>
    	</tr>
   
     </tbody>

@@ -42,7 +42,7 @@ public class CourseController
 			
 		case CatmeUtil.INSTRUCTOR_ROLE:
 			
-			//Enabling access as Instructor and disabling Ta access
+			//Enabling access as Instructor and disabling TA access
 			log.info("Identified as Instructor for the selected course");
 			modelAndView.addObject("isInstructor",true);
 			modelAndView.addObject("isTa",false);

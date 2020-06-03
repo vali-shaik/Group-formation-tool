@@ -96,7 +96,6 @@ color:black;
 <div>
 <ul>
   <li sec:authorize="hasAuthority('ROLE_STUDENT') or hasAuthority('ROLE_TA') or hasAuthority('ROLE_GUEST') or hasAuthority('ROLE_INSTRUCTOR')"><a href="access"><b>Home</b></a></li>
-  <!-- <li sec:authorize="hasAuthority('ROLE_INSTRUCTOR')"><a href="tutor"><b>Tutor</b></a></li> -->
   <li sec:authorize="hasAuthority('ROLE_ADMIN')"><a href="dashboard"><b>Manage</b></a></li>
   <li style="float:right"><a href="/logout"><b>Logout</b></a></li>
 </ul>
