@@ -1,7 +1,6 @@
 package dal.asd.catme.dao;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -14,12 +13,14 @@ public class CourseDaoImpl implements ICourseDao{
 	DatabaseAccess db;
 
 	@Override
-	public int checkCourseRegistration(String bannerId, String courseId) {
+	public int checkCourseRegistration(String bannerId, String courseId, Connection con) {
 		int rowCount = 0;
 		// TODO Auto-generated method stub
 		try {
 			String query = "SELECT EXISTS(SELECT * FROM Enrollment WHERE BannerId = '" + bannerId + "' AND CourseId = '" + courseId + "');";
-			ResultSet rs = db.executeQuery(query);
+
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
 			rs.next();
 			rowCount = rs.getInt(1);
 		} catch (SQLException e) {
@@ -31,7 +32,7 @@ public class CourseDaoImpl implements ICourseDao{
 	}
 
 	@Override
-	public int checkCourseExists(String courseId) {
+	public int checkCourseExists(String courseId, Connection con) {
 		int rowCount = 0;
 		// TODO Auto-generated method stub
 		try {
