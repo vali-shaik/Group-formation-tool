@@ -8,7 +8,7 @@ public class CatmeUtil {
 	public static final String ADMIN_PAGE="admin";
 	public static final String ERROR_PAGE="error";
 	public static final String FORGOT_PASSWORD_PAGE="forgot-password";
-	public static final String UPLOAD_CSV_PAGE="file-upload";
+	public static final String UPLOAD_CSV_PAGE="manageCourse";
 	//Roles
 	public static final String GUEST_ROLE="ROLE_GUEST";
 	public static final String STUDENT_ROLE="ROLE_STUDENT";

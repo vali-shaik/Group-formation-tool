@@ -2,6 +2,7 @@ package dal.asd.catme.controller;
 import dal.asd.catme.beans.Course;
 import dal.asd.catme.beans.Student;
 import dal.asd.catme.beans.User;
+import dal.asd.catme.dao.CourseDaoImpl;
 import dal.asd.catme.database.DatabaseAccess;
 import dal.asd.catme.exception.InvalidFileFormatException;
 import dal.asd.catme.service.*;
@@ -23,6 +24,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.mail.MessagingException;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 
@@ -44,6 +47,9 @@ public class CatmeController {
 
 	@Autowired
 	IEnrollStudentService enrollStudentService;
+
+	@Autowired
+	CourseDaoImpl courseDao;
 
 	CatmeSecurityConfig catmeSecurityConfig;
 
@@ -72,7 +78,31 @@ public class CatmeController {
 	}
 
 	@RequestMapping("upload")
-	public String uploadFilePage(){ return CatmeUtil.UPLOAD_CSV_PAGE; }
+	public ModelAndView uploadFilePage()
+	{
+		ModelAndView uploadPage = new ModelAndView();
+		uploadPage.setViewName(CatmeUtil.UPLOAD_CSV_PAGE);
+
+		String courseId = "5307";
+
+		Connection con=null;
+		try
+		{
+			con = database.getConnection();
+			uploadPage.addObject("courseId",courseId);
+			uploadPage.addObject("studentList",courseDao.getRegisteredStudents(courseId,con));
+		} catch (SQLException throwables)
+		{
+			try
+			{
+				con.close();
+			} catch (SQLException|NullPointerException e)
+			{
+				e.printStackTrace();
+			}
+		}
+		return uploadPage;
+	}
 
 	@PostMapping("upload")
 	public String uploadFile(@RequestParam("student-list-csv") MultipartFile file, Model model) {

@@ -4,7 +4,9 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
+import dal.asd.catme.beans.Student;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -32,6 +34,34 @@ public class CourseDaoImpl implements ICourseDao{
 		}
 		
 		return rowCount;
+	}
+
+	@Override
+	public ArrayList<Student> getRegisteredStudents(String courseId, Connection con)
+	{
+		ArrayList<Student> registeredStudents = new ArrayList<>();
+
+		String selectStudetns = "select BannerId, FirstName, LastName from Enrollment join(`User`) using(BannerId) where CourseId='"+courseId+"'";
+
+		try
+		{
+			Statement stmt = con.createStatement();
+
+			ResultSet rs = stmt.executeQuery(selectStudetns);
+
+			while(rs.next())
+			{
+				Student s = new Student(rs.getString(1), rs.getString(2),rs.getString(3),"");
+				registeredStudents.add(s);
+			}
+
+			return registeredStudents;
+
+		} catch (SQLException throwables)
+		{
+			throwables.printStackTrace();
+		}
+		return null;
 	}
 
 }
