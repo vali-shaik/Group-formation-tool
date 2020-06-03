@@ -37,7 +37,8 @@ public class CourseDaoImpl implements ICourseDao{
 		// TODO Auto-generated method stub
 		try {
 			String query = "SELECT EXISTS(SELECT * FROM Course WHERE CourseId  = '" + courseId + "');";
-			ResultSet rs = db.executeQuery(query);
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
 			rs.next();
 			rowCount = rs.getInt(1);
 		} catch (SQLException e) {
