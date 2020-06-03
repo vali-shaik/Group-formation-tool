@@ -59,10 +59,11 @@ public class ListDetailsDao implements IListDetailsDao{
 	public List<User> getUsers(Course course) {
 		
 		
-		ResultSet resultSet = listUsers(connection, CatmeUtil.LIST_USER_QUERY, course);
 		 List<User> users = new ArrayList<User>();
 			try {
 				connection = db.getConnection();
+				ResultSet resultSet = listUsers(connection, CatmeUtil.LIST_USER_QUERY, course);
+
 				while(resultSet.next()){
 					User user = new User();
 					user.setBannerId(resultSet.getString(CatmeUtil.BANNER_ID));

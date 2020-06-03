@@ -27,7 +27,7 @@ public class CatmeUtil
 	public static final String ERROR_PAGE="error";
 	public static final String COURSE_PAGE="course";
 	//Landing pages
-	public static final String ADMIN_HOME="admin/home";
+	public static final String ADMIN_HOME="admin/dashboard";
 	public static final String INSTRUCTOR_HOME="profile/instructor";
 	public static final String TA_HOME="profile/ta";
 	public static final String STUDENT_HOME="profile/student";
