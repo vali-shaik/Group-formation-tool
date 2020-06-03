@@ -11,16 +11,17 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
+import dal.asd.catme.config.CatmeSecurityConfig;
+import dal.asd.catme.service.ICatmeService;
 import dal.asd.catme.util.CatmeUtil;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.mail.MessagingException;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -44,23 +45,34 @@ public class CatmeController {
 	@Autowired
 	IEnrollStudentService enrollStudentService;
 
-	private static final Logger log = LoggerFactory.getLogger(CatmeController.class);
-	@RequestMapping("")
-	public String homePage()
-	{
-		log.info("Controller home page!!");
+	CatmeSecurityConfig catmeSecurityConfig;
 
-		return CatmeUtil.HOME_PAGE;
-	}
+	private static final Logger log = LoggerFactory.getLogger(CatmeController.class);
 	
 	@RequestMapping("admin")
-	public String adminPage() 
+	public String adminPage()
 	{
 		return CatmeUtil.ADMIN_PAGE;
 	}
+	@RequestMapping("home")
+	public ModelAndView homePage()
+	{
+		ModelAndView modelAndView=new ModelAndView();
+		if(catmeSecurityConfig.fetchRolesHomePage().equals(CatmeUtil.HOME_PAGE))
+		{
+			modelAndView.addObject("listOfCourses",catmeService.getAllCourses());
+			modelAndView.setViewName(CatmeUtil.HOME_PAGE);
+		}
+		else
+		{
+			//logic for populating data on Admin page
+			modelAndView.setViewName(CatmeUtil.ADMIN_PAGE);
+		}
+		return modelAndView;
+	}
 
 	@RequestMapping("upload")
-	public String uploadFilePage(){ return "file-upload"; }
+	public String uploadFilePage(){ return CatmeUtil.UPLOAD_CSV_PAGE; }
 
 	@PostMapping("upload")
 	public String uploadFile(@RequestParam("student-list-csv") MultipartFile file, Model model) {
@@ -96,7 +108,7 @@ public class CatmeController {
 			{
 				Course c= new Course();
 				c.setCourseName("Advance SDC");
-				c.setCourseId("CSCI5308");
+				c.setCourseId("5308");
 				ArrayList<Student> students =  reader.readFile(file.getInputStream());
 
 				if(enrollStudentService.enrollStudentsIntoCourse(students,c))
@@ -120,12 +132,14 @@ public class CatmeController {
 		}
 
 
-		return "file-upload";
+		return CatmeUtil.UPLOAD_CSV_PAGE;
 	}
 
 	@RequestMapping("forgot-password")
-	public String forgotPassword(){ return "forgot-password"; }
-
+	public String forgotPassword()
+	{
+		return CatmeUtil.FORGOT_PASSWORD_PAGE;
+	}
 	@PostMapping("forgot-password")
 	public String resetPassword(@RequestParam("bannerid") String bannerid,Model model)
 	{
@@ -135,18 +149,18 @@ public class CatmeController {
 		if(u==null)
 		{
 			model.addAttribute("message","User does not exist");
-			return "forgot-password";
+			return CatmeUtil.FORGOT_PASSWORD_PAGE;
 		}
 
 		try
 		{
 			mailSenderService.sendNewPassword(u);
 			model.addAttribute("success","Password Updated Successfully");
-			return "forgot-password";
+			return CatmeUtil.FORGOT_PASSWORD_PAGE;
 		} catch (MessagingException e)
 		{
 			model.addAttribute("message","Error sending mail. Try again");
-			return "forgot-password";
+			return CatmeUtil.FORGOT_PASSWORD_PAGE;
 		}
 	}
 

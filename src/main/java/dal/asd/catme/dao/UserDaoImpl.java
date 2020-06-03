@@ -1,9 +1,6 @@
 package dal.asd.catme.dao;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,24 +12,22 @@ import dal.asd.catme.util.CatmeUtil;
 
 @Component
 public class UserDaoImpl implements IUserDao{
-	
-	@Autowired
-	DatabaseAccess db;	
 
 	@Autowired
 	IRoleDao roleDao;
 
-	Connection con = null;
+	@Autowired
+	PasswordEncoder p;
+
 
 
 	@Override
-	public int checkExistingUser(String bannerId) {
+	public int checkExistingUser(String bannerId, Connection con) {
 		int rowCount = 0;
 		try{
-
-			con = db.getConnection();
 			String query = "SELECT EXISTS(SELECT * FROM User WHERE BannerId = '" + bannerId + "' );";
-			ResultSet rs = db.executeQuery(query);
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
 			rs.next();
 			rowCount = rs.getInt(1);
 		}
@@ -41,16 +36,16 @@ public class UserDaoImpl implements IUserDao{
 	}
 	
 	@Override
-	public int addUser(User user) {
+	public int addUser(User user, Connection con) {
 		String bannerId = user.getBannerId();
 		try {
-			con = db.getConnection();
-			if(0 == checkExistingUser(bannerId)){
+			if(0 == checkExistingUser(bannerId, con)){
 				String query = "INSERT IGNORE INTO User (BannerId, FirstName, LastName, EmailId, Password) VALUES ( '" +
-						bannerId + "' , '" + user.getFirstName() + "' , '" + user.getLastName() + "' , '" + user.getEmail() + "' , '" + user.getPassword() + "' );";
+						bannerId + "' , '" + user.getFirstName() + "' , '" + user.getLastName() + "' , '" + user.getEmail() + "' , '" + p.encode(user.getPassword()) + "' );";
 
-				db.executeUpdate(query);
-				roleDao.assignRole(bannerId, CatmeUtil.GUEST_ROLE_ID);
+				Statement stmt = con.createStatement();
+				stmt.executeUpdate(query);
+				roleDao.assignRole(bannerId, CatmeUtil.GUEST_ROLE_ID, con);
 				return 1;
 			}
 		} catch (Exception e) {
@@ -58,21 +53,12 @@ public class UserDaoImpl implements IUserDao{
 			e.printStackTrace();
 		}
 		
-		finally {
-			if (con != null) {
-		        try {
-		            con.close();
-		        } catch (SQLException e) { e.printStackTrace(); }
-		    }
-		}
-		
 		return 0;
 	}
 
 	@Override
-	public User getUser(String bannerId) {
+	public User getUser(String bannerId, Connection con) {
 		try {
-			con = db.getConnection();
 
 			String getUserSQL = "SELECT * FROM User WHERE BannerId=?";
 
@@ -94,44 +80,32 @@ public class UserDaoImpl implements IUserDao{
 			e.printStackTrace();
 		}
 
-		finally {
-			if (con != null) {
-				try {
-					con.close();
-				} catch (SQLException e) { e.printStackTrace(); }
-			}
-		}
-
 		return null;
 	}
 
 	@Override
-	public boolean resetPassword(User u)
+	public boolean resetPassword(User u, Connection con)
 	{
 		try {
-			con = db.getConnection();
+			String encodedPassword = p.encode(u.getPassword());
 
 			String resetPasswordSQL = "UPDATE `User` SET `Password`=? WHERE `BannerId`=?";
 
 			PreparedStatement resetPasswordStmt = con.prepareStatement(resetPasswordSQL);
-			resetPasswordStmt.setString(1,u.getPassword());
+			resetPasswordStmt.setString(1,encodedPassword);
 			resetPasswordStmt.setString(2,u.getBannerId());
 
-//			int status = resetPasswordStmt.executeUpdate();
+			int status = resetPasswordStmt.executeUpdate();
 
-			System.out.println("Status of Password Update");
+			if(status==0)
+				return false;
+
+			System.out.println("Password Reset Successful");
+//			System.out.println("Status of Password Update");
 			return true;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-
-		finally {
-			if (con != null) {
-				try {
-					con.close();
-				} catch (SQLException e) { e.printStackTrace(); }
-			}
 		}
 
 		return false;

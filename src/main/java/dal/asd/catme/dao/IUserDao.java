@@ -2,11 +2,13 @@ package dal.asd.catme.dao;
 
 import dal.asd.catme.beans.User;
 
-public interface IUserDao {
-	public int checkExistingUser(String bannerId);
-	public int addUser(User user);
-	public User getUser(String bannerId);
+import java.sql.Connection;
 
-	public boolean resetPassword(User u);
+public interface IUserDao {
+	public int checkExistingUser(String bannerId, Connection con);
+	public int addUser(User user, Connection con);
+	public User getUser(String bannerId, Connection con);
+
+	public boolean resetPassword(User u, Connection con);
 
 }

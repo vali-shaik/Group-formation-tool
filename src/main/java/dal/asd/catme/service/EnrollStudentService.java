@@ -6,6 +6,7 @@ import dal.asd.catme.beans.User;
 import dal.asd.catme.dao.IRoleDao;
 import dal.asd.catme.dao.IStudentDao;
 import dal.asd.catme.dao.IUserDao;
+import dal.asd.catme.database.DatabaseAccess;
 import dal.asd.catme.exception.EnrollmentException;
 import dal.asd.catme.util.CatmeUtil;
 import dal.asd.catme.util.RandomPasswordGenerator;
@@ -15,11 +16,16 @@ import org.springframework.mail.MailSendException;
 import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 @Service
 public class EnrollStudentService implements IEnrollStudentService
 {
+    @Autowired
+    DatabaseAccess db;
+
     @Autowired
     IUserDao userDao;
 
@@ -31,6 +37,8 @@ public class EnrollStudentService implements IEnrollStudentService
 
     @Autowired
     IMailSenderService mailSenderService;
+
+    Connection con;
 
 
     public EnrollStudentService(IUserDao userDao, IRoleDao roleDao, IStudentDao studentDao, IMailSenderService mailSenderService)
@@ -44,52 +52,72 @@ public class EnrollStudentService implements IEnrollStudentService
     @Override
     public boolean enrollStudentsIntoCourse(ArrayList<Student> students, Course c)
     {
-        for(Student s: students)
+        try
         {
-            if(userDao.checkExistingUser(s.getBannerId())==0)
+            con = db.getConnection();
+            System.out.println("Database Connected");
+
+            for (Student s : students)
             {
+                if (userDao.checkExistingUser(s.getBannerId(),con) == 0)
+                {
+                    try
+                    {
+                        createNewStudent(s);
+                        sendCredentials(s, c);
+                    } catch (EnrollmentException e)
+                    {
+                        System.out.println(e.getMessage() + " " + s);
+                        return false;
+                    } catch (MailException e)
+                    {
+                        System.out.println(e.getMessage() + " " + s);
+                    }
+                }
+
                 try
                 {
-                    createNewStudent(s);
-                    sendCredentials(s,c);
-                }
-                catch (EnrollmentException e)
+                    assignStudentRole(s);
+                    enrollStudent(s, c);
+                } catch (EnrollmentException e)
                 {
-                    System.out.println(e.getMessage()+" "+s);
+                    System.out.println(e.getMessage() + " " + s);
                     return false;
                 }
-                catch (MailException e)
-                {
-                    System.out.println(e.getMessage()+" "+s);
-                }
             }
-
+            return true;
+        }
+        catch (SQLException e)
+        {
+            System.out.println("Error connecting database");
+        }
+        finally
+        {
             try
             {
-                assignStudentRole(s);
-                enrollStudent(s,c);
-            } catch (EnrollmentException e)
+                con.close();
+                System.out.println("Connection closed");
+            } catch (Exception e)
             {
-                System.out.println(e.getMessage()+" "+s);
-                return false;
+                e.printStackTrace();
             }
         }
-        return true;
+        return false;
     }
 
     @Override
     public void enrollStudent(Student s, Course c) throws EnrollmentException
     {
-        if(!studentDao.enroll(s,c))
+        if(!studentDao.enroll(s,c,con))
             throw new EnrollmentException("Error making entry in Enrollment table");
     }
 
     @Override
     public void assignStudentRole(User student) throws EnrollmentException
     {
-        if(!studentDao.isStudent(student))
+        if(roleDao.checkUserRole(student.getBannerId(),CatmeUtil.STUDENT_ROLE_ID,con)==0)
         {
-            if(roleDao.assignRole(student.getBannerId(), CatmeUtil.STUDENT_ROLE_ID)==0)
+            if(roleDao.assignRole(student.getBannerId(), CatmeUtil.STUDENT_ROLE_ID,con)==0)
                 throw new EnrollmentException("Error assigning student role");
         }
     }
@@ -99,7 +127,7 @@ public class EnrollStudentService implements IEnrollStudentService
     {
         student.setPassword(RandomPasswordGenerator.generateRandomPassword(CatmeUtil.RANDOM_PASSWORD_LENGTH));
 
-        if(userDao.addUser(student)==0)
+        if(userDao.addUser(student,con)==0)
             throw new EnrollmentException("Error creating new user for student");
     }
 
