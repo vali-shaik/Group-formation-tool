@@ -4,12 +4,6 @@ import java.util.List;
 
 public class Course {
 	String courseId;
-	public Course() {}
-	public Course(String courseId, String courseName) {
-		super();
-		this.courseId = courseId;
-		this.courseName = courseName;
-	}
 	String courseName;
 	List<Student> students; //null when course is initially created
 	List<TInstructor> tInstructors;//null when course is initially created
@@ -44,6 +38,12 @@ public class Course {
 	public void setInstructors(List<Instructor> instructors) {
 		this.instructors = instructors;
 	}
+	@Override
+	public String toString() {
+		return "Course [courseId=" + courseId + ", courseName=" + courseName + ", students=" + students
+				+ ", tInstructors=" + tInstructors + ", instructors=" + instructors + "]";
+	}
+	
 	
 	
 }

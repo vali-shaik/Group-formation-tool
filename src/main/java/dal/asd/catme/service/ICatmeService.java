@@ -1,8 +1,10 @@
 package dal.asd.catme.service;
 
-import org.springframework.stereotype.Service;
+import java.util.List;
 
-@Service
+import dal.asd.catme.beans.Course;
+
 public interface ICatmeService {
 
+	List<Course> getAllCourses();
 }
