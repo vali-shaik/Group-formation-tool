@@ -2,8 +2,10 @@ package dal.asd.catme.database;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLFeatureNotSupportedException;
+import java.sql.Statement;
 import java.util.logging.Logger;
 import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,7 +16,8 @@ public class DatabaseAccess implements DataSource
 {
 	
 	private Connection connection;
-
+	private Statement statement; 
+	private ResultSet resultSet;
 	@Value("${spring.datasource.driver-class-name}")
 	String driver;
 	
@@ -52,6 +55,12 @@ public class DatabaseAccess implements DataSource
 		return connection;
 	
 	}
+	public ResultSet executeQuery(String query) { try { statement =
+			  connection.createStatement(); resultSet = statement.executeQuery(query); }
+			  catch (SQLException e) { // TODO Auto-generated catch block
+			  e.printStackTrace(); }
+			  
+			  return resultSet; }
 
 
 
