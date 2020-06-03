@@ -14,7 +14,7 @@ public class AdminController {
 	private static final Logger log = LoggerFactory.getLogger(CatmeController.class);
 	
 	//Displaying Admin home page
-	@RequestMapping("home")
+	@RequestMapping("dashboard")
 	public String adminHomePage()
 	{
 		log.info("Displaying Admin page");
