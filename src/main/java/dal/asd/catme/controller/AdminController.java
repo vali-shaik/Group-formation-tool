@@ -57,7 +57,7 @@ public class AdminController {
 		if(result>0)
 			return CatmeUtil.SUCCESS_PAGE;
 		else
-			return CatmeUtil.ERROR_PAGE;
+			return CatmeUtil.ERROR;
 	}
 	
 
@@ -82,7 +82,7 @@ public class AdminController {
 		if(result>0)
 			return CatmeUtil.SUCCESS_PAGE;
 		else
-			return CatmeUtil.ERROR_PAGE;
+			return CatmeUtil.ERROR;
 		
 	}
 	
@@ -95,6 +95,6 @@ public class AdminController {
 		else if(result>1)
 			return CatmeUtil.USER_PAGE;
 		else
-			return CatmeUtil.ERROR_PAGE;
+			return CatmeUtil.ERROR;
 	}
 }

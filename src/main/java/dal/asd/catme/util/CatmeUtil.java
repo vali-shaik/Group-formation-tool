@@ -20,9 +20,26 @@ public class CatmeUtil {
 	public static final String USER_ROLE_ID="UserRoleId";
 	public static final String ADD_COURSE="addCourse";
 	public static final String STUDENT="Student";
-	public static final String ERROR_PAGE="errorPage";
+	public static final String ERROR="errorPage";
 	public static final String SUCCESS_PAGE="successPage";
 	public static final String USER_PAGE="userPage";
+	public static final String ERROR_PAGE="error";
+	
+	public static final String SELECT_COURSE_QUERY = "Select * from Course;";
+	//Course table
+	public static final String COURSE_ID_FIELD="courseId";
+	public static final String COURSE_NAME_FIELD="courseName";
+
+	
+	
+	//Roles
+	public static final String GUEST_ROLE="ROLE_GUEST";
+	public static final String STUDENT_ROLE="ROLE_STUDENT";
+	public static final String TA_ROLE="ROLE_TA"; 
+	public static final String INSTRUCTOR_ROLE="ROLE_INSTRUCTOR";
+	public static final String ADMIN_ROLE="ROLE_ADMIN";	
+
+	//Queries
 	public static final String SELECT_COURSE = "Select * from Course;";
 	public static final String SELECT_COURSE_INSTRUCTOR_BY_USER_ROLE_COURSEID="select * from CourseInstructor where userRoleId=? and courseId=?";
 	public static final String DELETE_COURSE_INSTRUCTOR_QUERY = "delete from CourseInstructor where CourseId=?";

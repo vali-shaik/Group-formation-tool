@@ -27,35 +27,74 @@ public class AdminDao implements IAdminDao{
 	
 	@Override
 	public int addCourse(Course course) {
+		int result = 0;
+		try {
 		connection = db.getConnection();
-		int result= addCourse(connection, CatmeUtil.ADD_COURSE_QUERY, course);
-		db.closeConnection();
+		result= addCourse(connection, CatmeUtil.ADD_COURSE_QUERY, course);
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			if(connection!=null) {
+				try {
+					connection.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
 		return result;
 	}
 
 	@Override
 	public int deleteCourse(String courseId) {
-		int result;
+		int result = 0;
+		try {
 		connection = db.getConnection();
 		updateQuery(connection,CatmeUtil.DELETE_ENROLLMENT_QUERY,courseId);
 		updateQuery(connection,CatmeUtil.DELETE_COURSE_INSTRUCTOR_QUERY,courseId);
 		result=updateQuery(connection, CatmeUtil.DELETE_COURSE_QUERY, courseId);
-		db.closeConnection();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		finally {
+			if(connection!=null) {
+				try {
+					connection.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
 		return result;
 	}
 	
 	@Override
 	public int addInstructorToCourse(String user,String course) {
-		connection = db.getConnection();
-		//rs = db.executeQuery(CatmeUtil.SELECT_TA_ROLE);
+	
+		
 		int result = 0;
-		//System.out.println("rs****"+rs.getString("roleId"));
+		try {
+			connection = db.getConnection();
 		int roleId = selectInstructorRole(connection);
 		//Add TA Role to user
 		int userRole=insertTARole(connection,user,roleId);
 		//Add the user as instructor to course
 		result=addAsCourseInstructor(connection,course,userRole);
-		db.closeConnection();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		finally {
+			if(connection!=null) {
+				try {
+					connection.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
 		
 		return result;
 	}

@@ -29,30 +29,40 @@ public class ListDetailsDao implements IListDetailsDao{
 	@Override
 	public List<Course> getAllCourses() {
 		List<Course> courses = new ArrayList<>();
-		connection = db.getConnection();
-		System.out.println("conn "+connection);
-		ResultSet resultSet = db.executeQuery(CatmeUtil.SELECT_COURSE);
+	
 		try {
+			connection = db.getConnection();
 			
+			ResultSet resultSet = db.executeQuery(CatmeUtil.SELECT_COURSE);
 			while(resultSet.next()) {
 				Course course = new Course();
 				course.setCourseId(resultSet.getString(CatmeUtil.COURSE_ID));
 				course.setCourseName(resultSet.getString(CatmeUtil.COURSE_NAME));
 				courses.add(course);
 			}
-			db.closeConnection();
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}finally {
+			if(connection!=null) {
+				try {
+					connection.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
 		}
 		return courses;
 	}
 
 	@Override
 	public List<User> getUsers(Course course) {
-		connection = db.getConnection();
+		
+		
 		ResultSet resultSet = listUsers(connection, CatmeUtil.LIST_USER_QUERY, course);
 		 List<User> users = new ArrayList<User>();
 			try {
+				connection = db.getConnection();
 				while(resultSet.next()){
 					User user = new User();
 					user.setBannerId(resultSet.getString(CatmeUtil.BANNER_ID));
@@ -60,9 +70,17 @@ public class ListDetailsDao implements IListDetailsDao{
 					user.setLastName(resultSet.getString(CatmeUtil.LAST_NAME));
 					users.add(user);
 				}
-				db.closeConnection();
 			} catch (SQLException e) {
 				e.printStackTrace();
+			}finally {
+				if(connection!=null) {
+					try {
+						connection.close();
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
 			}
 			return users;
 	}
