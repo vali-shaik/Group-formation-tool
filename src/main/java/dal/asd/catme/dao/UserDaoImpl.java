@@ -36,7 +36,7 @@ public class UserDaoImpl implements IUserDao{
 	}
 	
 	@Override
-	public String addUser(User user, Connection con) {
+	public int addUser(User user, Connection con) {
 		String bannerId = user.getBannerId();
 		try {
 			if(0 == checkExistingUser(bannerId, con)){
@@ -46,14 +46,14 @@ public class UserDaoImpl implements IUserDao{
 				Statement stmt = con.createStatement();
 				stmt.executeUpdate(query);
 				roleDao.assignRole(bannerId, CatmeUtil.GUEST_ROLE_ID, con);
-				return "Successfully Signed Up.";
+				return 1;
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
-		return "An account already exists with this BannerId.";
+		return 0;
 	}
 
 

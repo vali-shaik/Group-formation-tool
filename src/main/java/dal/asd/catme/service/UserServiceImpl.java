@@ -21,10 +21,13 @@ public class UserServiceImpl implements IUserService{
 
 	@Override
 	public String addUser(User user) {
+		String isUserAdded = "An account already exists with this BannerId.";
 		// TODO Auto-generated method stub
 		Connection con = db.getConnection();
 		try {
-			return (userDao.addUser(user,con));
+			if (1 == userDao.addUser(user,con)){
+				isUserAdded = "Successfully Signed Up.";
+			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -40,7 +43,7 @@ public class UserServiceImpl implements IUserService{
 				}
 			}
 		}
-		return "";
+		return isUserAdded;
 	}
 
 }
