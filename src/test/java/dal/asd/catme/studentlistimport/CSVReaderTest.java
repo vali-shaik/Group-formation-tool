@@ -3,6 +3,8 @@ package dal.asd.catme.studentlistimport;
 import dal.asd.catme.beans.Student;
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.util.ArrayList;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -18,10 +20,11 @@ public class CSVReaderTest
         CSVReader csvReader = new CSVReader();
 
         ArrayList<Student> test = createDataList();
-
+        File file1 = new File("src/test/java/dal/asd/catme/studentlistimport/test.csv");
+        File file2 = new File("src/test/java/dal/asd/catme/studentlistimport/test1.csv");
         try
         {
-            assertThat(test,samePropertyValuesAs(csvReader.readFile("src/test/java/dal/asd/catme/studentlistimport/test.csv")));
+            assertThat(test,samePropertyValuesAs(csvReader.readFile(new FileInputStream(file1))));
         } catch (Exception e)
         {
             fail();
@@ -29,7 +32,7 @@ public class CSVReaderTest
 
         try
         {
-            csvReader.readFile("src/test/java/dal/asd/catme/studentlistimport/test1.csv");
+            csvReader.readFile(new FileInputStream(file2));
             fail();
         } catch (Exception e)
         {

@@ -16,4 +16,6 @@ public interface IMailSenderService
 
     void sendCredentialsToStudent(Student s, Course c) throws MessagingException;
 
+    void sendNewPassword(User u) throws MessagingException;
+
 }

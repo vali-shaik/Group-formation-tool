@@ -1,0 +1,22 @@
+<html xmlns:th="http://www.thymeleaf.org">
+
+<title>File Upload</title>
+<head></head>
+<body>
+
+    <h1 align="center">Mock Upload Page</h1>
+    <form method="post" th:action="@{/upload}" enctype="multipart/form-data">
+
+        <input type="file" name="student-list-csv">
+        <br><br>
+        <button type="submit">Submit</button>
+
+    </form>
+
+    <div th:if="${message}">
+        <h3 th:text="${message}"/>
+    </div>
+
+</body>
+
+</html>

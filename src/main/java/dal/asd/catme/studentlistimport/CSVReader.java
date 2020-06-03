@@ -18,16 +18,15 @@ public class CSVReader
     static int BANNERID_LENGTH = 9;
     static int CSV_COLUMNS = 4;
 
-    public List<Student> readFile(String fileName) throws InvalidFileFormatException, FileNotFoundException, IOException
+    public ArrayList<Student> readFile(InputStream inputStream) throws InvalidFileFormatException, FileNotFoundException, IOException
     {
 
-        List<Student> newStudents = new ArrayList<>();
+        ArrayList<Student> newStudents = new ArrayList<>();
 
-        File file = new File(fileName);
         boolean skip = true;
 
-        FileReader fileReader = new FileReader(file);
-        BufferedReader reader = new BufferedReader(fileReader);
+//        FileReader fileReader = new FileReader(file);
+        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
 
         String line;
         while ((line = reader.readLine()) != null)
