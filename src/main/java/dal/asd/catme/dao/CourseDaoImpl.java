@@ -286,8 +286,38 @@ public class CourseDaoImpl implements ICourseDao
 		return null;
 	}
 
+	/*
+	 * @Override public int checkCourseRegistration(String bannerId, int courseId,
+	 * Connection con) { int rowCount = 0; // TODO Auto-generated method stub try {
+	 * String query = "SELECT EXISTS(SELECT * FROM Enrollment WHERE BannerId = '" +
+	 * bannerId + "' AND CourseId = '" + courseId + "');";
+	 * 
+	 * Statement stmt = con.createStatement(); ResultSet rs =
+	 * stmt.executeQuery(query); rs.next(); rowCount = rs.getInt(1); } catch
+	 * (SQLException e) { // TODO Auto-generated catch block e.printStackTrace(); }
+	 * 
+	 * return rowCount; }
+	 */
+@Override
+	public int checkCourseExists(String courseId, Connection con) {
+		int rowCount = 0;
+		// TODO Auto-generated method stub
+		try {
+			String query = "SELECT EXISTS(SELECT * FROM Course WHERE CourseId  = '" + courseId + "');";
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			rs.next();
+			rowCount = rs.getInt(1);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return rowCount;
+	}
+
 	@Override
-	public int checkCourseRegistration(String bannerId, int courseId, Connection con) {
+	public int checkCourseRegistration(String bannerId, String courseId, Connection con) {
 		int rowCount = 0;
 		// TODO Auto-generated method stub
 		try {
@@ -301,7 +331,7 @@ public class CourseDaoImpl implements ICourseDao
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
+		
 		return rowCount;
 	}
 

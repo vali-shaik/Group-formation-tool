@@ -42,8 +42,18 @@ public class RoleDaoImpl implements IRoleDao{
 		return rs;
 	}
 	
+	/*
+	 * @Override public int addInstructor(int courseId, int userRoleId, Connection
+	 * con) { // TODO Auto-generated method stub String query =
+	 * "INSERT IGNORE INTO CourseInstructor (CourseInstructorId, CourseId, UserRoleId) VALUES ( NULL,'"
+	 * + courseId + "' , '" + userRoleId +"' );";
+	 * 
+	 * int rs = 0; try { Statement stmt = con.createStatement();
+	 * stmt.executeUpdate(query); } catch (Exception e) { // TODO Auto-generated
+	 * catch block e.printStackTrace(); } return rs; }
+	 */
 	@Override
-	public int addInstructor(int courseId, int userRoleId, Connection con) {
+	public int addInstructor(String courseId, int userRoleId, Connection con) {
 		// TODO Auto-generated method stub
 		String query = "INSERT IGNORE INTO CourseInstructor (CourseInstructorId, CourseId, UserRoleId) VALUES ( NULL,'" +
 				courseId + "' , '" + userRoleId +"' );";
@@ -59,8 +69,23 @@ public class RoleDaoImpl implements IRoleDao{
 		return rs;
 	}
 	
+	
+	/*
+	 * @Override public int checkCourseInstructor(String bannerId, int courseId,
+	 * Connection con) { // TODO Auto-generated method stub int rowCount = 0; //
+	 * TODO Auto-generated method stub try { String query =
+	 * "SELECT EXISTS(WITH temp AS ( SELECT ci.UserRoleId,ci.CourseId, ur.BannerId FROM CourseInstructor ci INNER JOIN UserRole ur ON ci.UserRoleId = ur.UserRoleId ) SELECT * FROM temp WHERE temp.BannerId = '"
+	 * + bannerId +"' AND temp.CourseId = "+courseId+");";
+	 * 
+	 * Statement stmt = con.createStatement(); ResultSet rs =
+	 * stmt.executeQuery(query); rs.next(); rowCount = rs.getInt(1); } catch
+	 * (SQLException e) { // TODO Auto-generated catch block e.printStackTrace(); }
+	 * 
+	 * return rowCount; }
+	 */
+	
 	@Override
-	public int checkCourseInstructor(String bannerId, int courseId, Connection con) {
+	public int checkCourseInstructor(String bannerId, String courseId, Connection con) {
 		// TODO Auto-generated method stub
 		int rowCount = 0;
 		// TODO Auto-generated method stub
@@ -121,51 +146,64 @@ public class RoleDaoImpl implements IRoleDao{
 		
 	}
 	
-	@Override
-	public int assignTa(Enrollment user, Connection con) {
+@Override
+	public String assignTa(Enrollment user, Connection con) {
 		// TODO Auto-generated method stub
-		int isAssigned = 0;
+		String isAssigned = "";
 		
 		try {
 			
 			//If the user exists
 			if(0 != userDao.checkExistingUser(user.bannerId, con)){
 				
-				//If the user is not currently taking the course
-				if(0 == courseDao.checkCourseRegistration(user.bannerId, user.courseId,con)){
+				//If the course exists
+				if (0 != courseDao.checkCourseExists(user.courseId, con)) {
 					
-					//If the user is not already registered as an instructor for the course
-					if(0 == checkCourseInstructor(user.bannerId, user.courseId,con)){
+					//If the user is not currently taking the course
+					if(0 == courseDao.checkCourseRegistration(user.bannerId, user.courseId, con)){
 						
-						//If the UserRoleId already exists for the role
-						if(0 != checkUserRole(user.bannerId, CatmeUtil.TA_ROLE_ID,con)) {
+						//If the user is not already registered as an instructor for the course
+						if(0 == checkCourseInstructor(user.bannerId, user.courseId, con)){
 							
-							//Get the UserRoleId
-							int userRoleId = getUserRoleId(user.bannerId, CatmeUtil.TA_ROLE_ID,con);
+							//If the UserRoleId already exists for the role
+							if(0 != checkUserRole(user.bannerId, CatmeUtil.TA_ROLE_ID, con)) {
+								
+								//Get the UserRoleId
+								int userRoleId = getUserRoleId(user.bannerId, CatmeUtil.TA_ROLE_ID, con);
+								
+								//Add the user to the CourseInstructor Table
+								addInstructor(user.courseId, userRoleId, con);
+								
+								
+							}
 							
-							//Add the user to the CourseInstructor Table
-							addInstructor(user.courseId, userRoleId,con);
-							isAssigned = 1;
+							//If the UserRoleId doesn't exist for the role
+							else {
+								
+								//Assign the TA role to the user in UserRole relation
+								assignRole(user.bannerId, CatmeUtil.TA_ROLE_ID, con);
+								
+								//Get the UserRoleId
+								int userRoleId = getUserRoleId(user.bannerId, CatmeUtil.TA_ROLE_ID, con);
+								
+								//Add the user to the CourseInstructor Table
+								addInstructor(user.courseId, userRoleId, con);
+								
+							}
+							isAssigned = "The user is successfully assigned as TA.";
 							
+						} else {
+							isAssigned = "This user is already an instructor for this course.";
 						}
-						
-						//If the UserRoleId doesn't exist for the role
-						else {
-							
-							//Assign the TA role to the user in UserRole relation
-							assignRole(user.bannerId, CatmeUtil.TA_ROLE_ID,con);
-							
-							//Get the UserRoleId
-							int userRoleId = getUserRoleId(user.bannerId, CatmeUtil.TA_ROLE_ID,con);
-							
-							//Add the user to the CourseInstructor Table
-							addInstructor(user.courseId, userRoleId,con);
-							isAssigned = 1;
-							
-						}
-						
+					} else {
+						isAssigned = "This user is currently registered in this course. Failed to assign.";
 					}
+				} else {
+					isAssigned = "No course exists with this Course Id. Failed to assign.";
 				}
+				
+			} else {
+				isAssigned = "No user exists with this Banner Id. Failed to assign.";
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -182,6 +220,7 @@ public class RoleDaoImpl implements IRoleDao{
 		
 		return isAssigned;
 	}
+	
 
 }
 

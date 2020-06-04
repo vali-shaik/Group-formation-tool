@@ -1,16 +1,28 @@
 package dal.asd.catme.dao;
 import java.sql.Connection;
+import java.util.ArrayList;
 import java.util.List;
 
 import dal.asd.catme.beans.Course;
 import dal.asd.catme.beans.Student;
 import dal.asd.catme.beans.User;
-import dal.asd.catme.dao.ICourseDao;
 import dal.asd.catme.exception.CatmeException;
 import dal.asd.catme.util.CatmeUtil;
 
 public class CourseDaoMock implements ICourseDao
 {
+
+	ArrayList<Course> courses;
+	
+	public CourseDaoMock() {
+		
+	}
+
+    public CourseDaoMock(ArrayList<Course> courses)
+    {
+        this.courses = courses;
+    }	
+
 	List<Course> listOfCourses;
 	
 	public CourseDaoMock(List<Course> listOfCourses)
@@ -72,11 +84,43 @@ public class CourseDaoMock implements ICourseDao
 		return null;
 	}
 
+	/*
+	 * @Override public int checkCourseRegistration(String bannerId, int courseId,
+	 * Connection con) { return 0; }
+	 */
+	
+
+
 	@Override
-	public int checkCourseRegistration(String bannerId, int courseId, Connection con)
-	{
-		return 0;
+	public int checkCourseRegistration(String bannerId, String courseId, Connection con) {
+		// TODO Auto-generated method stub
+		for(Course c: courses)
+        {
+            if(c.getCourseId().equalsIgnoreCase(courseId))
+            {
+                for(User u: c.getStudents())
+                {
+                    if(u.getBannerId().equalsIgnoreCase(bannerId))
+                    {
+                        return 1;
+                    }
+                }
+            }
+        }
+        return 0;
 	}
+
+	@Override
+	public int checkCourseExists(String courseId, Connection con) {
+		// TODO Auto-generated method stub
+		for(Course c: courses)
+        {
+            if(c.getCourseId().equalsIgnoreCase(courseId))
+                return 1;
+        }
+        return 0;
+	}
+
 
 
 }
