@@ -208,7 +208,7 @@ public class AdminDao implements IAdminDao{
 				preparedStatement.setString(1, user);
 				preparedStatement.setInt(2, roleId);
 				rs = preparedStatement.executeQuery();
-				
+				rs.next();
 			
 			
 			}
