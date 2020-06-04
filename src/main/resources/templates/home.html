@@ -1,0 +1,34 @@
+
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<style>
+
+</style>
+<script>
+
+</script>
+</head>
+<body>
+<div th:insert="header"></div>
+<div align="center">
+<br>
+<h1>
+</h1>
+<h1>Welcome to Catme...</h1>
+<br>
+<table class="table table-course">
+   <tbody>
+   		
+     <tr th:each="message : ${listOfCourses}" class="rowHover Card">
+     	
+     	<td><a th:href = "@{/courseDisplay(courseId=${message.courseId})}" class="textCenter"><p th:text="${message.courseId}"/></a></td>
+     	<td><a th:href = "@{/courseDisplay(courseId=${message.courseId})}" class="textCenter"><p th:text="${message.courseName}"/></a></td>
+       
+        </a>
+   	</tr>
+  
+    </tbody>
+</table>
+</div>
+</body>
+</html>

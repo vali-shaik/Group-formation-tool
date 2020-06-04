@@ -1,7 +1,13 @@
 package dal.asd.catme.service;
 
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
-@Service
-public class CatmeServiceImpl implements ICatmeService{
+@Component
+public class CatmeServiceImpl implements ICatmeService
+{
+
+	
+	
+	
+	
 }

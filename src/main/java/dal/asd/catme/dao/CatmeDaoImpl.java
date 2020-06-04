@@ -1,5 +1,8 @@
 package dal.asd.catme.dao;
 
-public class CatmeDaoImpl implements ICatmeDao {
+import org.springframework.stereotype.Component;
 
+@Component
+public class CatmeDaoImpl implements ICatmeDao {
+	
 }

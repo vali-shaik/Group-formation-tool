@@ -1,6 +1,9 @@
 package dal.asd.catme.dao;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -19,7 +22,9 @@ public class RoleDaoImpl implements IRoleDao{
 	
 	@Autowired
 	ICourseDao courseDao;
-		
+	
+	Connection con = null;
+	
 		
 	@Override
 	public int assignRole(String bannerId, int roleId, Connection con) {
@@ -38,7 +43,7 @@ public class RoleDaoImpl implements IRoleDao{
 	}
 	
 	@Override
-	public int addInstructor(String courseId, int userRoleId, Connection con) {
+	public int addInstructor(int courseId, int userRoleId, Connection con) {
 		// TODO Auto-generated method stub
 		String query = "INSERT IGNORE INTO CourseInstructor (CourseInstructorId, CourseId, UserRoleId) VALUES ( NULL,'" +
 				courseId + "' , '" + userRoleId +"' );";
@@ -55,7 +60,7 @@ public class RoleDaoImpl implements IRoleDao{
 	}
 	
 	@Override
-	public int checkCourseInstructor(String bannerId, String courseId, Connection con) {
+	public int checkCourseInstructor(String bannerId, int courseId, Connection con) {
 		// TODO Auto-generated method stub
 		int rowCount = 0;
 		// TODO Auto-generated method stub
@@ -72,7 +77,6 @@ public class RoleDaoImpl implements IRoleDao{
 		}
 		
 		return rowCount;
-
 	}
 	
 	@Override
@@ -117,7 +121,7 @@ public class RoleDaoImpl implements IRoleDao{
 		
 	}
 	
-	@Override
+@Override
 	public String assignTa(Enrollment user, Connection con) {
 		// TODO Auto-generated method stub
 		String isAssigned = "";
@@ -191,6 +195,7 @@ public class RoleDaoImpl implements IRoleDao{
 		
 		return isAssigned;
 	}
+	
 
 }
 

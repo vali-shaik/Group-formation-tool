@@ -3,6 +3,7 @@ package dal.asd.catme.dao;
 import java.sql.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import dal.asd.catme.beans.User;
@@ -11,15 +12,15 @@ import dal.asd.catme.util.CatmeUtil;
 
 @Component
 public class UserDaoImpl implements IUserDao{
-	
+
 	@Autowired
-	DatabaseAccess db;	
-	
+	IRoleDao roleDao;
+
 	@Autowired
-	IRoleDao roleDao;	
-	
-	Connection con = null;
-		
+	PasswordEncoder p;
+
+
+
 	@Override
 	public int checkExistingUser(String bannerId, Connection con) {
 		int rowCount = 0;
@@ -32,7 +33,6 @@ public class UserDaoImpl implements IUserDao{
 		}
 		catch(SQLException e){e.printStackTrace();}		
 		return rowCount;
-
 	}
 	
 	@Override
@@ -41,7 +41,7 @@ public class UserDaoImpl implements IUserDao{
 		try {
 			if(0 == checkExistingUser(bannerId, con)){
 				String query = "INSERT IGNORE INTO User (BannerId, FirstName, LastName, EmailId, Password) VALUES ( '" +
-						bannerId + "' , '" + user.getFirstName() + "' , '" + user.getLastName() + "' , '" + user.getEmail() + "' , '" + user.getPassword() + "' );";
+						bannerId + "' , '" + user.getFirstName() + "' , '" + user.getLastName() + "' , '" + user.getEmail() + "' , '" + p.encode(user.getPassword()) + "' );";
 
 				Statement stmt = con.createStatement();
 				stmt.executeUpdate(query);
@@ -54,6 +54,61 @@ public class UserDaoImpl implements IUserDao{
 		}
 		
 		return 0;
+	}
+
+	@Override
+	public User getUser(String bannerId, Connection con) {
+		try {
+
+			String getUserSQL = "SELECT * FROM User WHERE BannerId=?";
+
+			PreparedStatement getUser = con.prepareStatement(getUserSQL);
+			getUser.setString(1,bannerId);
+
+			ResultSet rs = getUser.executeQuery();
+
+			rs.next();
+			String firstname = rs.getString(2);
+			String lastname = rs.getString(3);
+			String emailid = rs.getString(4);
+
+			User u = new User(bannerId,lastname,firstname,emailid);
+
+			return u;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	@Override
+	public boolean resetPassword(User u, Connection con)
+	{
+		try {
+			String encodedPassword = p.encode(u.getPassword());
+
+			String resetPasswordSQL = "UPDATE `User` SET `Password`=? WHERE `BannerId`=?";
+
+			PreparedStatement resetPasswordStmt = con.prepareStatement(resetPasswordSQL);
+			resetPasswordStmt.setString(1,encodedPassword);
+			resetPasswordStmt.setString(2,u.getBannerId());
+
+			int status = resetPasswordStmt.executeUpdate();
+
+			if(status==0)
+				return false;
+
+			System.out.println("Password Reset Successful");
+//			System.out.println("Status of Password Update");
+			return true;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return false;
 	}
 
 
