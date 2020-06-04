@@ -1,3 +1,4 @@
+
 package dal.asd.catme.dao;
 
 import java.sql.Connection;
@@ -6,6 +7,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+
+import dal.asd.catme.beans.Student;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -242,4 +245,64 @@ public class CourseDaoImpl implements ICourseDao
 		}	
 		return role;
 	}
+
+	@Override
+	public ArrayList<Student> getRegisteredStudents(String courseId)
+	{
+		ArrayList<Student> registeredStudents = new ArrayList<>();
+
+		String selectStudetns = "select BannerId, FirstName, LastName from Enrollment join(`User`) using(BannerId) where CourseId='"+courseId+"'";
+
+		Connection con = null;
+		try
+		{
+			con = database.getConnection();
+			Statement stmt = con.createStatement();
+
+			ResultSet rs = stmt.executeQuery(selectStudetns);
+
+			while(rs.next())
+			{
+				Student s = new Student(rs.getString(1), rs.getString(2),rs.getString(3),"");
+				registeredStudents.add(s);
+			}
+
+			return registeredStudents;
+
+		} catch (SQLException throwables)
+		{
+			throwables.printStackTrace();
+		}
+		finally
+		{
+			try
+			{
+				con.close();
+			} catch (SQLException|NullPointerException throwables)
+			{
+				throwables.printStackTrace();
+			}
+		}
+		return null;
+	}
+
+	@Override
+	public int checkCourseRegistration(String bannerId, int courseId, Connection con) {
+		int rowCount = 0;
+		// TODO Auto-generated method stub
+		try {
+			String query = "SELECT EXISTS(SELECT * FROM Enrollment WHERE BannerId = '" + bannerId + "' AND CourseId = '" + courseId + "');";
+
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			rs.next();
+			rowCount = rs.getInt(1);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return rowCount;
+	}
+
 }

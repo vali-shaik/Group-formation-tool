@@ -8,6 +8,7 @@ public class Course {
 	List<Student> students; //null when course is initially created
 	List<TInstructor> tInstructors;//null when course is initially created
 	List<Instructor> instructors;//null when course is initially created
+
 	public Course() {}
 	public Course(String webId, String advancedWebServices) {
 		this.courseId = webId;
@@ -49,6 +50,5 @@ public class Course {
 				+ ", tInstructors=" + tInstructors + ", instructors=" + instructors + "]";
 	}
 	
-	
-	
+
 }

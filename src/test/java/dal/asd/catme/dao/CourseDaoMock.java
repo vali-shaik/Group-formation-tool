@@ -1,7 +1,9 @@
 package dal.asd.catme.dao;
+import java.sql.Connection;
 import java.util.List;
 
 import dal.asd.catme.beans.Course;
+import dal.asd.catme.beans.Student;
 import dal.asd.catme.beans.User;
 import dal.asd.catme.dao.ICourseDao;
 import dal.asd.catme.exception.CatmeException;
@@ -63,6 +65,18 @@ public class CourseDaoMock implements ICourseDao
 		}
 		return role;
 	}
-	
+
+	@Override
+	public List<Student> getRegisteredStudents(String courseId)
+	{
+		return null;
+	}
+
+	@Override
+	public int checkCourseRegistration(String bannerId, int courseId, Connection con)
+	{
+		return 0;
+	}
+
 
 }
