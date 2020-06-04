@@ -15,8 +15,7 @@ public interface ICourseDao {
 	public Course displayCourseById(String courseId) throws CatmeException;
 	public String findRoleByCourse(User user,String courseId) throws CatmeException;
 	public List<Student> getRegisteredStudents(String courseId);
-
-	public int checkCourseRegistration(String bannerId, int courseId, Connection con);
+	public int checkCourseRegistration(String bannerId, String courseId, Connection con);
 	public int checkCourseExists(String courseId, Connection con);
 
 }

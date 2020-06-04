@@ -40,4 +40,16 @@ public class UserDaoMock implements IUserDao{
 
 	}
 
+	@Override
+	public User getUser(String bannerId, Connection con) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean resetPassword(User u, Connection con) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

@@ -23,7 +23,13 @@ public class UserServiceImpl implements IUserService{
 	public String addUser(User user) {
 		String isUserAdded = "An account already exists with this BannerId.";
 		// TODO Auto-generated method stub
-		Connection con = db.getConnection();
+		Connection con = null;
+		try {
+			con = db.getConnection();
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		try {
 			if (1 == userDao.addUser(user,con)){
 				isUserAdded = "Successfully Signed Up.";

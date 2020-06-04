@@ -96,7 +96,17 @@
             </div>
         </div>
         <div id="enroll" style="display: none;">
-            TA ENROLLMENT PART
+            
+<h1 align="center">TA enrollment</h1>
+<center>
+<form th:action="@{/taEnrollment/{courseId}(courseId=${courseId})}"  method = "post">
+  <label >Enter the Banner Id of the user:</label><br/>
+  
+   <input type="text" id="bannerId" name="bannerId" class="form-control" th:value=${bannerId}>
+   <br>
+   <input type="submit" class="btn btn-primary" value="Submit">
+</form>
+</center>
         </div>
     </div>
 

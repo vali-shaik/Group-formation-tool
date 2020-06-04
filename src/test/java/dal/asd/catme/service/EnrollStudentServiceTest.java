@@ -1,5 +1,10 @@
 package dal.asd.catme.service;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
+import java.util.ArrayList;
+import java.util.List;
+import org.junit.jupiter.api.Test;
 import dal.asd.catme.beans.Course;
 import dal.asd.catme.beans.Role;
 import dal.asd.catme.beans.Student;
@@ -7,19 +12,12 @@ import dal.asd.catme.beans.User;
 import dal.asd.catme.dao.IRoleDao;
 import dal.asd.catme.dao.IStudentDao;
 import dal.asd.catme.dao.IUserDao;
+import dal.asd.catme.dao.RoleDaoMock;
 import dal.asd.catme.exception.EnrollmentException;
 import dal.asd.catme.mock.JavaMailSenderMock;
-import dal.asd.catme.mock.RoleDaoMock;
 import dal.asd.catme.mock.StudentDaoMock;
 import dal.asd.catme.mock.UserDaoMock;
 import dal.asd.catme.util.CatmeUtil;
-import org.junit.jupiter.api.Test;
-
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class EnrollStudentServiceTest
 {

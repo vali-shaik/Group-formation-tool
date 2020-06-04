@@ -42,8 +42,18 @@ public class RoleDaoImpl implements IRoleDao{
 		return rs;
 	}
 	
+	/*
+	 * @Override public int addInstructor(int courseId, int userRoleId, Connection
+	 * con) { // TODO Auto-generated method stub String query =
+	 * "INSERT IGNORE INTO CourseInstructor (CourseInstructorId, CourseId, UserRoleId) VALUES ( NULL,'"
+	 * + courseId + "' , '" + userRoleId +"' );";
+	 * 
+	 * int rs = 0; try { Statement stmt = con.createStatement();
+	 * stmt.executeUpdate(query); } catch (Exception e) { // TODO Auto-generated
+	 * catch block e.printStackTrace(); } return rs; }
+	 */
 	@Override
-	public int addInstructor(int courseId, int userRoleId, Connection con) {
+	public int addInstructor(String courseId, int userRoleId, Connection con) {
 		// TODO Auto-generated method stub
 		String query = "INSERT IGNORE INTO CourseInstructor (CourseInstructorId, CourseId, UserRoleId) VALUES ( NULL,'" +
 				courseId + "' , '" + userRoleId +"' );";
@@ -59,8 +69,23 @@ public class RoleDaoImpl implements IRoleDao{
 		return rs;
 	}
 	
+	
+	/*
+	 * @Override public int checkCourseInstructor(String bannerId, int courseId,
+	 * Connection con) { // TODO Auto-generated method stub int rowCount = 0; //
+	 * TODO Auto-generated method stub try { String query =
+	 * "SELECT EXISTS(WITH temp AS ( SELECT ci.UserRoleId,ci.CourseId, ur.BannerId FROM CourseInstructor ci INNER JOIN UserRole ur ON ci.UserRoleId = ur.UserRoleId ) SELECT * FROM temp WHERE temp.BannerId = '"
+	 * + bannerId +"' AND temp.CourseId = "+courseId+");";
+	 * 
+	 * Statement stmt = con.createStatement(); ResultSet rs =
+	 * stmt.executeQuery(query); rs.next(); rowCount = rs.getInt(1); } catch
+	 * (SQLException e) { // TODO Auto-generated catch block e.printStackTrace(); }
+	 * 
+	 * return rowCount; }
+	 */
+	
 	@Override
-	public int checkCourseInstructor(String bannerId, int courseId, Connection con) {
+	public int checkCourseInstructor(String bannerId, String courseId, Connection con) {
 		// TODO Auto-generated method stub
 		int rowCount = 0;
 		// TODO Auto-generated method stub

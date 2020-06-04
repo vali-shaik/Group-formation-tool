@@ -45,7 +45,7 @@ public class CatmeSecurityConfig extends WebSecurityConfigurerAdapter
 			http
 			.csrf().disable()
 				.authorizeRequests()
-						.antMatchers("/login","/register","/forgotPassword").permitAll()
+						.antMatchers("/login","/register","/forgotPassword","/signup").permitAll()
 						.anyRequest().authenticated()
 			.and()
 				.formLogin()
