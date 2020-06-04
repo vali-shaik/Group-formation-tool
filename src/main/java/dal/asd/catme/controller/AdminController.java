@@ -54,8 +54,10 @@ public class AdminController {
 	{
 		logger.info("****Admin Controller - Add Course to Database Invoked*****");
 		int result =service.addCourse(course);
-		if(result>0)
+		if(result==1)
 			return CatmeUtil.SUCCESS_PAGE;
+		else if(result>1)
+			return CatmeUtil.USER_PAGE;
 		else
 			return CatmeUtil.ERROR;
 	}
