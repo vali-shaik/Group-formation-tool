@@ -1,8 +1,8 @@
 package dal.asd.catme.config;
 
+import java.util.ArrayList;
 import java.util.Collection;
-
-import javax.sql.DataSource;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,12 +14,13 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import dal.asd.catme.database.DatabaseAccess;
+import dal.asd.catme.exception.CatmeException;
 import dal.asd.catme.util.CatmeUtil;
 
 @Configuration
@@ -28,65 +29,80 @@ import dal.asd.catme.util.CatmeUtil;
 		  securedEnabled = true, 
 		  jsr250Enabled = true)
 @EnableWebSecurity
-public class CatmeSecurityConfig extends WebSecurityConfigurerAdapter{
+public class CatmeSecurityConfig extends WebSecurityConfigurerAdapter
+{
 	private static final Logger log = LoggerFactory.getLogger(CatmeSecurityConfig.class);
+
 	@Autowired
-	DataSource dataSource;
+	DatabaseAccess dataSource;
+	
 	//overrides the default security
 	@Override
-	protected void configure(HttpSecurity http) throws Exception 
+	protected void configure(HttpSecurity http) throws CatmeException 
 	{
-		log.info("CatmeSecurity.class");
-//		http
-//		.csrf().disable();
-//			.authorizeRequests()
-//        			.antMatchers("/login","/register").permitAll()
-//        			.anyRequest().authenticated()
-//        .and()
-//        	.formLogin()
-////        	.loginPage("/login")//this url should match with action url in login.html
-//            .loginProcessingUrl("/catme")//url to submit username and password
-//            .successForwardUrl("/home")//landing page after successful login
-//            .and()
-//            .logout()
-//            .logoutUrl("/logout")
-//            .logoutSuccessUrl("/login")
-//            .permitAll()
-//            .and()
-//            .csrf().disable();
+		log.info("Configuring authentication and authorization");
+		try {
+			http
+			.csrf().disable()
+				.authorizeRequests()
+						.antMatchers("/login","/register","/forgotPassword").permitAll()
+						.anyRequest().authenticated()
+			.and()
+				.formLogin()
+				.loginPage("/login")//this URL should match with action URL in login.html
+			    .loginProcessingUrl("/catme")//URL to submit User name and password
+			   // .successForwardUrl("/home")//landing page after successful login
+			    .successForwardUrl("/access")//redirecting to controller to decide the landing page
+			.and()
+			    .logout()
+			    .logoutUrl("/logout") 
+			    .logoutSuccessUrl("/login")
+			    .permitAll()
+			.and()
+			    .csrf().disable();
+		} catch (Exception e) {
+			throw new CatmeException("URL Security configuration failed!! "+e.getMessage());
+		}
 	}
-	 @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+	
+	
+	  @Bean public PasswordEncoder passwordEncoder() 
+	  { 
+		  return new BCryptPasswordEncoder(); 
+	  }
 	 
-	 @Autowired
-	 protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		 auth.jdbcAuthentication().dataSource(dataSource)
-			.usersByUsernameQuery(
-				"select BannerId,password, enabled from User where BannerId=?")
-			.authoritiesByUsernameQuery(
-				"select UR.BannerId, R.RoleName from UserRole UR,Role R where BannerId=? and UR.RoleId=R.RoleId");
-		 log.info("Configuring authentication");
+	 
+	@Autowired
+	protected void configure(AuthenticationManagerBuilder auth) throws CatmeException 
+	{
+		 try {
+			auth.jdbcAuthentication().dataSource(dataSource)
+				 .usersByUsernameQuery(CatmeUtil.SELECT_USER_SECURITY_QUERY)
+				 .authoritiesByUsernameQuery(CatmeUtil.SELECT_ROLE_SECURITY_QUERY);
+		} catch (Exception e) {
+			throw new CatmeException("Authentication failed to fetch username and password!! "+e.getMessage());
+		}
 	 }
 	 
-	 
 	//Method for displaying home page of application
-		public String fetchRolesHomePage()
+	public List<String> fetchRolesHomePage() throws CatmeException
+	{
+		List<String> currentUserRoles=new ArrayList<>();
+		
+		try 
 		{
-			String page="";
-			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-			Collection<GrantedAuthority> currentRoles = (Collection<GrantedAuthority>) authentication.getAuthorities();
+			Collection<GrantedAuthority> currentRoles = (Collection<GrantedAuthority>) SecurityContextHolder.getContext().getAuthentication().getAuthorities();
 			for(GrantedAuthority s: currentRoles)
 			{
-				if(s.getAuthority().equalsIgnoreCase(CatmeUtil.TA_ROLE)||
-						s.getAuthority().equalsIgnoreCase(CatmeUtil.GUEST_ROLE)||
-						s.getAuthority().equalsIgnoreCase(CatmeUtil.STUDENT_ROLE)||
-						s.getAuthority().equalsIgnoreCase(CatmeUtil.INSTRUCTOR_ROLE))
-				{
-					page= CatmeUtil.HOME_PAGE;
-				}
+					currentUserRoles.add(s.getAuthority());
 			}
-			return page;
+		} 
+		catch (Exception e) 
+		{
+			throw new CatmeException("Failed to fetch User roles from database!! "+e.getMessage());
 		}
+		
+		return currentUserRoles;
+	}
+	 
 }

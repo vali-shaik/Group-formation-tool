@@ -83,7 +83,7 @@ public class MailSenderService implements IMailSenderService
             str = str.replace(CatmeUtil.TEMPLATE_USERNAME,s.getFirstName());
             str = str.replace(CatmeUtil.TEMPLATE_BANNERID,s.getBannerId());
             str = str.replace(CatmeUtil.TEMPLATE_PASSWORD,s.getPassword());
-            str = str.replace(CatmeUtil.TEMPLATE_COURSE,c.getCourseName());
+            str = str.replace(CatmeUtil.TEMPLATE_COURSE,c.getCourseId());
 
             return str;
         }

@@ -9,6 +9,11 @@ public class Course {
 	List<TInstructor> tInstructors;//null when course is initially created
 	List<Instructor> instructors;//null when course is initially created
 
+	public Course() {}
+	public Course(String webId, String advancedWebServices) {
+		this.courseId = webId;
+		this.courseName=advancedWebServices;
+	}
 	public String getCourseId() {
 		return courseId;
 	}

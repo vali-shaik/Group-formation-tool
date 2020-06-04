@@ -1,4 +1,5 @@
 package dal.asd.catme.controller;
+
 import dal.asd.catme.beans.Course;
 import dal.asd.catme.beans.Student;
 import dal.asd.catme.beans.User;
@@ -7,6 +8,8 @@ import dal.asd.catme.database.DatabaseAccess;
 import dal.asd.catme.exception.InvalidFileFormatException;
 import dal.asd.catme.service.*;
 import dal.asd.catme.studentlistimport.CSVReader;
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,13 +17,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
 
 import dal.asd.catme.config.CatmeSecurityConfig;
-import dal.asd.catme.service.ICatmeService;
+import dal.asd.catme.exception.CatmeException;
 import dal.asd.catme.util.CatmeUtil;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.mail.MessagingException;
 import java.io.IOException;
@@ -51,8 +54,6 @@ public class CatmeController {
 	@Autowired
 	CourseDaoImpl courseDao;
 
-	CatmeSecurityConfig catmeSecurityConfig;
-
 	private static final Logger log = LoggerFactory.getLogger(CatmeController.class);
 	
 	@RequestMapping("admin")
@@ -60,48 +61,73 @@ public class CatmeController {
 	{
 		return CatmeUtil.ADMIN_PAGE;
 	}
-	@RequestMapping("home")
-	public ModelAndView homePage()
+
+	@Autowired
+	CatmeSecurityConfig catmeServiceConfig;
+
+	//Creating Logger
+
+	//Decides landing page of application based on user authorization
+	@RequestMapping("access")
+	public String findLandingPage() throws CatmeException
 	{
-		ModelAndView modelAndView=new ModelAndView();
-		if(catmeSecurityConfig.fetchRolesHomePage().equals(CatmeUtil.HOME_PAGE))
+		log.info("Finding the landing page of application based on access level"); 
+		
+		//Defining home page for user
+		String page="";
+		
+		//Fetching the all roles of current user
+		List<String> roles= catmeServiceConfig.fetchRolesHomePage();
+		
+		//Checking for current user role and redirecting to respective landing page
+		if(roles!=null)
 		{
-			modelAndView.addObject("listOfCourses",catmeService.getAllCourses());
-			modelAndView.setViewName(CatmeUtil.HOME_PAGE);
-		}
-		else
-		{
-			//logic for populating data on Admin page
-			modelAndView.setViewName(CatmeUtil.ADMIN_PAGE);
-		}
-		return modelAndView;
-	}
-
-	@RequestMapping("upload")
-	public ModelAndView uploadFilePage()
-	{
-		ModelAndView uploadPage = new ModelAndView();
-		uploadPage.setViewName(CatmeUtil.UPLOAD_CSV_PAGE);
-
-		String courseId = "5307";
-
-		Connection con=null;
-		try
-		{
-			con = database.getConnection();
-			uploadPage.addObject("courseId",courseId);
-			uploadPage.addObject("studentList",courseDao.getRegisteredStudents(courseId,con));
-		} catch (SQLException throwables)
-		{
-			try
+			if(roles.contains("ROLE_ADMIN"))
 			{
-				con.close();
-			} catch (SQLException|NullPointerException e)
+				//Admin role
+				log.info("User idetified as Admin"); 
+				return "redirect:/"+CatmeUtil.ADMIN_HOME;
+			}
+			if(roles.contains("ROLE_INSTRUCTOR"))
 			{
-				e.printStackTrace();
+				//Instructor role
+				log.info("User idetified as Instructor");
+				return "redirect:/"+CatmeUtil.INSTRUCTOR_HOME;
+			}
+			if(roles.contains("ROLE_TA"))
+			{
+				//TA role
+				log.info("User idetified as TA");
+				return "redirect:/"+CatmeUtil.TA_HOME;
+			}
+			if(roles.contains("ROLE_STUDENT"))
+			{
+				//Student role
+				log.info("User idetified as Student");
+				return "redirect:/"+CatmeUtil.STUDENT_HOME;
+			}
+			if(roles.contains("ROLE_GUEST"))
+			{
+				//Guest role
+				log.info("User idetified as Guest");
+				return "redirect:/"+CatmeUtil.GUEST_HOME;
 			}
 		}
-		return uploadPage;
+		//If User does not have any of the defined roles, leads to error page
+		if(page.trim().length()==0)
+		{
+			page="error";
+			throw new CatmeException("User Role is not found in Database");
+		}
+		return page;
+	}
+
+	//Displaying Login page for authentication
+	@RequestMapping("login")
+	public String loginPage()
+	{
+		log.info("Redirected to Login page");
+		return CatmeUtil.LOGIN_PAGE;
 	}
 
 	@PostMapping("upload")
@@ -162,15 +188,15 @@ public class CatmeController {
 		}
 
 
-		return CatmeUtil.UPLOAD_CSV_PAGE;
+		return CatmeUtil.MANAGE_COURSE_PAGE;
 	}
 
-	@RequestMapping("forgot-password")
+	@RequestMapping("forgotPassword")
 	public String forgotPassword()
 	{
 		return CatmeUtil.FORGOT_PASSWORD_PAGE;
 	}
-	@PostMapping("forgot-password")
+	@PostMapping("forgotPassword")
 	public String resetPassword(@RequestParam("bannerid") String bannerid,Model model)
 	{
 		System.out.println("Reseting password");

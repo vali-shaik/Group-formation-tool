@@ -12,6 +12,13 @@ public class User
 	String password;
 	List<Role> role;
 
+	public User(String bannerId, String lastName, String firstName) {
+		super();
+		this.bannerId = bannerId;
+		this.lastName = lastName;
+		this.firstName = firstName;
+	}
+
 	public User(){}
 
 	public User(String bannerId, String lastName, String firstName, String email, String password, List<Role> role)
