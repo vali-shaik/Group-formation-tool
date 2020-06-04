@@ -43,7 +43,7 @@ public class MailSenderServiceTest
         Student s = new Student("B00851820","Prajapati","Tapan","Tapan.Prajapati@dal.ca","ABCE@1234");
 
         Course c = new Course();
-        c.setCourseName("CSCI5308");
+        c.setCourseId("5308");
 
         try
         {
