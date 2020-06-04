@@ -78,8 +78,10 @@ public class AdminDao implements IAdminDao{
 		try {
 			connection = db.getConnection();
 		int roleId = selectInstructorRole(connection);
+		System.out.println("roleId "+roleId);
 		//Add TA Role to user
 		int userRole=insertInstructorRole(connection,user,roleId);
+		System.out.println("userRole "+userRole);
 		//Add the user as instructor to course
 		result=addAsCourseInstructor(connection,course,userRole);
 		}catch(Exception e) {
@@ -137,7 +139,9 @@ public class AdminDao implements IAdminDao{
 			}
 			else
 			{
+				
 				result = rs.getInt("userRoleId");
+				System.out.println("result "+result);
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -204,9 +208,10 @@ public class AdminDao implements IAdminDao{
 				preparedStatement.setString(1, user);
 				preparedStatement.setInt(2, roleId);
 				rs = preparedStatement.executeQuery();
+				
+			
 			
 			}
-			if(rs.next())
 				userRoleId = Integer.parseInt(rs.getString(CatmeUtil.USER_ROLE_ID));
 			
 		} catch (SQLException e) {
