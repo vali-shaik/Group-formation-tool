@@ -3,6 +3,7 @@ package dal.asd.catme.util;
 //Utility class for constants and Utility methods
 public class CatmeUtil 
 {
+	public static final int TWO = 2;
 	public static final int ZERO = 0;
 	public static final int ONE = 1;
 	public static final String HOME_PAGE="home";
@@ -70,10 +71,11 @@ public class CatmeUtil
 	public static final String DELETE_COURSE_QUERY = "delete from Course where CourseId=?";
 	public static final String ADD_COURSE_QUERY="insert into Course values(?,?)";
 	public static final String SELECT_ROLE_BY_ROLENAME="select * from Role where roleName=?";
-	public static final String SELECT_USER_ROLE_BY_BANNERID="select * from UserRole where bannerId=?";
+	public static final String SELECT_USER_ROLE_BY_BANNERID="select * from UserRole where bannerId=? and RoleId=?";
 	public static final String INSERT_INTO_USER_ROLE="insert into UserRole(RoleId,BannerId) values(?,?)";
 	public static final String INSERT_INTO_COURSE_INSTRUCTOR="insert into CourseInstructor(CourseId,UserRoleId) values(?,?)";
 	public static final String LIST_USER_QUERY="select * from User where BannerId not in (select BannerId from UserRole where RoleId in (select RoleId from Role where RoleName=?))";
+	public static final String CHECK_INSTRUCTOR="select * from Course where CourseId=?";
 			
 
 	public static final String TEMPLATE_USERNAME = "{username}";

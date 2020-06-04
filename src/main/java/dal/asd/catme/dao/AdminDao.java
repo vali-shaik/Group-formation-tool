@@ -79,7 +79,7 @@ public class AdminDao implements IAdminDao{
 			connection = db.getConnection();
 		int roleId = selectInstructorRole(connection);
 		//Add TA Role to user
-		int userRole=insertTARole(connection,user,roleId);
+		int userRole=insertInstructorRole(connection,user,roleId);
 		//Add the user as instructor to course
 		result=addAsCourseInstructor(connection,course,userRole);
 		}catch(Exception e) {
@@ -163,12 +163,18 @@ public class AdminDao implements IAdminDao{
 	}
 	
 	public int addCourse(Connection connection,String query,Course course) {
-		int result = 0;
+		int result = CatmeUtil.ZERO;
 		try {
-			preparedStatement = connection.prepareStatement(query);
+			preparedStatement=connection.prepareStatement(CatmeUtil.CHECK_INSTRUCTOR);
 			preparedStatement.setString(1, course.getCourseId());
-			preparedStatement.setString(2, course.getCourseName());
-			result = preparedStatement.executeUpdate();
+			ResultSet rs = preparedStatement.executeQuery();
+			if(rs==null) {
+				preparedStatement = connection.prepareStatement(query);
+				preparedStatement.setString(1, course.getCourseId());
+				preparedStatement.setString(2, course.getCourseName());
+				result = preparedStatement.executeUpdate();
+			}else
+				result=CatmeUtil.TWO;
 			} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -178,15 +184,17 @@ public class AdminDao implements IAdminDao{
 	
 	
 	
-	public int insertTARole(Connection connection,String user,int roleId) {
+	public int insertInstructorRole(Connection connection,String user,int roleId) {
 		
 		int userRoleId=0;
 		//Check if user has TA role
 		try {
 			preparedStatement = connection.prepareStatement(CatmeUtil.SELECT_USER_ROLE_BY_BANNERID);
 			preparedStatement.setString(1, user);
+			preparedStatement.setInt(2, roleId);
 			rs = preparedStatement.executeQuery();
-			if(rs==null) {
+			
+			if(!rs.next()) {
 				preparedStatement=connection.prepareStatement(CatmeUtil.INSERT_INTO_USER_ROLE);
 				preparedStatement.setInt(1, roleId);
 				preparedStatement.setString(2, user);
@@ -194,6 +202,7 @@ public class AdminDao implements IAdminDao{
 			
 				preparedStatement = connection.prepareStatement(CatmeUtil.SELECT_USER_ROLE_BY_BANNERID);
 				preparedStatement.setString(1, user);
+				preparedStatement.setInt(2, roleId);
 				rs = preparedStatement.executeQuery();
 			
 			}
