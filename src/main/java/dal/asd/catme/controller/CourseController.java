@@ -122,6 +122,7 @@ public class CourseController
 			if(!roles.contains(CatmeUtil.INSTRUCTOR_ROLE) && !roles.contains(CatmeUtil.TA_ROLE))
 			{
 				uploadPage.setViewName(CatmeUtil.LOGIN_PAGE);
+				return uploadPage;
 			}
 
 			uploadPage.setViewName(CatmeUtil.MANAGE_COURSE_PAGE);
