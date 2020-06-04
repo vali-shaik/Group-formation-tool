@@ -42,12 +42,6 @@
 		</dependency>
 
 		<dependency>
-			<groupId>de.saly</groupId>
-			<artifactId>javamail-mock2-halfmock</artifactId>
-			<version>0.5-beta4</version>
-		</dependency>
-
-		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
