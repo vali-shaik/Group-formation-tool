@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.sql.SQLFeatureNotSupportedException;
 import java.sql.Statement;
 import java.util.logging.Logger;
@@ -11,13 +12,16 @@ import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
+
 @Configuration
 public class DatabaseAccess implements DataSource
 {
 	
 	private Connection connection;
-	private Statement statement; 
+	private Statement statement;
 	private ResultSet resultSet;
+	private int result;
+
 	@Value("${spring.datasource.driver-class-name}")
 	String driver;
 	
@@ -55,12 +59,12 @@ public class DatabaseAccess implements DataSource
 		return connection;
 	
 	}
-	public ResultSet executeQuery(String query) { try { statement =
-			  connection.createStatement(); resultSet = statement.executeQuery(query); }
-			  catch (SQLException e) { // TODO Auto-generated catch block
-			  e.printStackTrace(); }
-			  
-			  return resultSet; }
+//	public ResultSet executeQuery(String query) { try { statement =
+//			  connection.createStatement(); resultSet = statement.executeQuery(query); }
+//			  catch (SQLException e) { // TODO Auto-generated catch block
+//			  e.printStackTrace(); }
+//
+//			  return resultSet; }
 
 
 
@@ -119,10 +123,46 @@ public class DatabaseAccess implements DataSource
 	}
 
 
-
 	@Override
 	public Connection getConnection(String username, String password) throws SQLException {
 		// TODO Auto-generated method stub
-		return null;
+		try {
+			Class.forName("com.mysql.jdbc.driver");
+//			Class.forName(driver);
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		try {
+			connection = DriverManager.getConnection(url, user, password);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return connection;
+	
 	}
+
+
+	public ResultSet executeQuery(String query) {
+		try {
+			statement = connection.createStatement();
+			resultSet = statement.executeQuery(query);
+			} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			}
+
+			return resultSet;
+	}
+
+	public int executeUpdate(String query) {
+		try {
+			statement = connection.createStatement();
+			result = statement.executeUpdate(query);
+			} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			}
+			return result;
+	}
+
 }

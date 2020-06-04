@@ -19,19 +19,19 @@
 </script>
 </head>
 <body>
-<form action="instructor/manageCourse/">
+<!--<form th:action="@{/instructor/manageCourse(courseId=${course.courseId})}">-->
 <div th:insert="header"></div>
 <div align="center">
 <h1 align="center">Course</h1>
 <h2 th:text="${course.courseId}"></h2><h3 th:text="${course.courseName}"></h3>
 	<th:block th:if ="${isInstructor}">
-    <button class="btn btn-lg buttonPrim">Manage as Instructor</button>
+        <button class="btn btn-lg buttonPrim"><a th:href = "@{/manageCourse(courseId=${course.courseId})}">Manage as Instructor</a></button>
     </th:block>
     <th:block th:if ="${isTa}">
-    <button class="btn btn-lg buttonPrim">Manage as TA</button>
+        <button class="btn btn-lg buttonPrim"><a th:href = "@{/manageCourse(courseId=${course.courseId})}">Manage as TA</a></button>
     </th:block>
 </div>
-</form>
+<!--</form>-->
 
 </body>
 </html>

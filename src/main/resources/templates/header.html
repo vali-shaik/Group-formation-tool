@@ -3,7 +3,35 @@
 <head>
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 <style>
- ul {
+ .navigation {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333;
+}
+
+.navigation li {
+  float: left;
+}
+
+.navigation li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+/* Change the link color to #111 (black) on hover */
+li a:hover {
+  background-color: white;
+  color:black
+}
+.active {
+  background-color: #4CAF50;
+}
+.navigation {
   list-style-type: none;
   margin: 0;
   padding: 0;
@@ -24,43 +52,15 @@ li a {
 }
 
 /* Change the link color to #111 (black) on hover */
-li a:hover {
+.navigation li a:hover {
   background-color: white;
   color:black
 }
-.active {
-  background-color: #4CAF50;
-}
- ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-  background-color: #333;
-}
-
-li {
-  float: left;
-}
-
-li a {
-  display: block;
-  color: white;
-  text-align: center;
-  padding: 14px 16px;
-  text-decoration: none;
-}
-
-/* Change the link color to #111 (black) on hover */
-li a:hover {
-  background-color: white;
-  color:black
-}
-.active {
+.navgiation .active {
   background-color: #4CAF50;
 }
 
-.table{
+.table-course{
 width:70%;
 align:center;
 }
@@ -94,7 +94,7 @@ color:black;
 </head>
 <body>
 <div>
-<ul>
+<ul class="navigation">
   <li sec:authorize="hasAuthority('ROLE_STUDENT') or hasAuthority('ROLE_TA') or hasAuthority('ROLE_GUEST') or hasAuthority('ROLE_INSTRUCTOR')"><a href="access"><b>Home</b></a></li>
   <!-- <li sec:authorize="hasAuthority('ROLE_INSTRUCTOR')"><a href="tutor"><b>Tutor</b></a></li> -->
   <li sec:authorize="hasAuthority('ROLE_ADMIN')"><a href="dashboard"><b>Manage</b></a></li>

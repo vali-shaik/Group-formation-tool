@@ -2,6 +2,7 @@ package dal.asd.catme.service;
 
 import java.util.List;
 
+import dal.asd.catme.beans.Student;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,5 +46,11 @@ public class CourseServiceImpl implements ICourseService
 		return courseDao.findRoleByCourse(user,courseId);
 	}
 
-	
+	@Override
+	public List<Student> getEnrolledStudents(String courseId)
+	{
+		return courseDao.getRegisteredStudents(courseId);
+	}
+
+
 }
