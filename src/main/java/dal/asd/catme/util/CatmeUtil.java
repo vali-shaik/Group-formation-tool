@@ -81,10 +81,10 @@ public class CatmeUtil
 	public static final String TEMPLATE_PASSWORD = "{password}";
 	public static final String TEMPLATE_COURSE = "{course}";
 
-	public static final String PATH_TO_NEW_STUDENT_TEMPLATE = "src/main/java/dal/asd/catme/util/new_student_template.html";
+	public static final String PATH_TO_NEW_STUDENT_TEMPLATE = "src/main/resources/templates/new_student_template.html";
 	public static final String NEW_STUDENT_EMAIL_SUBJECT = "Registration of new course in CATME";
 
-	public static final String PATH_TO_FORGOT_PASSWORD_TEMPLATE = "src/main/java/dal/asd/catme/util/forgot_password_template.html";
+	public static final String PATH_TO_FORGOT_PASSWORD_TEMPLATE = "src/main/resources/templates/forgot_password_template.html";
 	public static final String FORGOT_PASSWORD_EMAIL_SUBJECT = "Your Password Has Been Reset Successfully";
 
 	public static final int RANDOM_PASSWORD_LENGTH = 8;
