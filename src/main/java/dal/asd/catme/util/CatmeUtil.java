@@ -6,6 +6,8 @@ public class CatmeUtil
 	public static final int TWO = 2;
 	public static final int ZERO = 0;
 	public static final int ONE = 1;
+	
+	//html files
 	public static final String HOME_PAGE="home";
 	public static final String LOGIN_PAGE="login";
 	public static final String ADMIN_PAGE="admin";
@@ -30,12 +32,10 @@ public class CatmeUtil
 	public static final String TA_ENROLLED_PAGE="taEnrolled";
 	public static final String SIGNUP_PAGE = "signup";
 	public static final String SIGNEDUP_PAGE = "signedUp";
-	public static final int GUEST_ROLE_ID = 1;
-	public static final int TA_ROLE_ID = 3;
 	public static final String FORGOT_PASSWORD_PAGE="forgot-password";
 	public static final String MANAGE_COURSE_PAGE ="manageCourse";
-
 	public static final String COURSE_PAGE="course";
+	
 	//Landing pages
 	public static final String ADMIN_HOME="admin/dashboard";
 	public static final String INSTRUCTOR_HOME="profile/instructor";
