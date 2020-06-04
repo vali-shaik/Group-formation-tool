@@ -172,7 +172,7 @@ public class AdminDao implements IAdminDao{
 			preparedStatement=connection.prepareStatement(CatmeUtil.CHECK_INSTRUCTOR);
 			preparedStatement.setString(1, course.getCourseId());
 			ResultSet rs = preparedStatement.executeQuery();
-			if(rs==null) {
+			if(!rs.next()) {
 				preparedStatement = connection.prepareStatement(query);
 				preparedStatement.setString(1, course.getCourseId());
 				preparedStatement.setString(2, course.getCourseName());
