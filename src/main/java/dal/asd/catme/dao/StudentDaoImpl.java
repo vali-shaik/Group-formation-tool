@@ -1,19 +1,12 @@
 package dal.asd.catme.dao;
 
-import dal.asd.catme.beans.Course;
-import dal.asd.catme.beans.Student;
-import dal.asd.catme.beans.User;
-import dal.asd.catme.database.DatabaseAccess;
-import dal.asd.catme.util.CatmeUtil;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
 
-@Component
+import dal.asd.catme.beans.Course;
+import dal.asd.catme.beans.Student;
+import dal.asd.catme.database.DatabaseAccess;
+
 public class StudentDaoImpl implements IStudentDao
 {
     DatabaseAccess db;

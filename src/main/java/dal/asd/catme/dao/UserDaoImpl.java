@@ -1,17 +1,17 @@
 package dal.asd.catme.dao;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Component;
 
 import dal.asd.catme.beans.User;
 import dal.asd.catme.config.SystemConfig;
-import dal.asd.catme.database.DatabaseAccess;
 import dal.asd.catme.util.CatmeUtil;
 
-@Component
 public class UserDaoImpl implements IUserDao{
 
 	IRoleDao roleDao;

@@ -3,14 +3,11 @@ package dal.asd.catme.service;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import org.springframework.stereotype.Component;
-
 import dal.asd.catme.beans.User;
 import dal.asd.catme.config.SystemConfig;
 import dal.asd.catme.dao.IUserDao;
 import dal.asd.catme.database.DatabaseAccess;
 
-@Component
 public class UserServiceImpl implements IUserService{
 	
 	DatabaseAccess db;

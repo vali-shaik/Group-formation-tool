@@ -72,7 +72,7 @@ public class SystemConfig
 		adminDao=new AdminDao();
 		adminServie=new AdminService();
 		courseDao=new CourseDaoImpl();
-		courseService=new CourseServiceImpl();
+		courseService=new CourseServiceImpl(courseDao);
 		roleDao=new RoleDaoImpl();
 		roleService=new RoleServiceImpl();
 		listDetailsDao=new ListDetailsDao();
@@ -84,8 +84,8 @@ public class SystemConfig
 		userDao=new UserDaoImpl();
 		userService=new UserServiceImpl();
 		passwordResetService=new PasswordResetService();
-		enrollStudentService=new EnrollStudentService();
 		javaMailSender=new JavaMailSenderImpl();
+		enrollStudentService=new EnrollStudentService(userDao,roleDao,studentDao,mailSenderService);
 	}
 	
 	public static SystemConfig instance()

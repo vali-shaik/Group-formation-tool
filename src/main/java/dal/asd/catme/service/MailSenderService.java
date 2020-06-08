@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.stereotype.Service;
 
 import dal.asd.catme.beans.Course;
 import dal.asd.catme.beans.Student;
@@ -21,7 +20,6 @@ import dal.asd.catme.beans.User;
 import dal.asd.catme.config.SystemConfig;
 import dal.asd.catme.util.CatmeUtil;
 
-@Service
 public class MailSenderService implements IMailSenderService
 {
     private JavaMailSender mailSender;

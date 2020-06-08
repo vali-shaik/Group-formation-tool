@@ -11,7 +11,6 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Component;
 
 import dal.asd.catme.beans.Course;
 import dal.asd.catme.beans.Student;
@@ -21,7 +20,6 @@ import dal.asd.catme.database.DatabaseAccess;
 import dal.asd.catme.exception.CatmeException;
 import dal.asd.catme.util.CatmeUtil;
 
-@Component
 public class CourseDaoImpl implements ICourseDao
 {
 	public CourseDaoImpl(DatabaseAccess database)
@@ -53,13 +51,7 @@ public class CourseDaoImpl implements ICourseDao
 		{
 			//Create database connection
 			database=SystemConfig.instance().getDatabaseAccess();
-			System.out.println("##database "+database);
-		//	DatabaseUtil dbutil=new DatabaseUtil();
-			
 			connection=database.getConnection();
-		//	connection=dbutil.getConnection();
-			
-			System.out.println("##Connection "+database);
 			//Creating statement for executing query
 			statement=connection.createStatement();
 			

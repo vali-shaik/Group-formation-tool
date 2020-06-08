@@ -3,8 +3,6 @@ package dal.asd.catme.service;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import org.springframework.stereotype.Service;
-
 import dal.asd.catme.beans.User;
 import dal.asd.catme.config.SystemConfig;
 import dal.asd.catme.dao.IUserDao;
@@ -13,7 +11,6 @@ import dal.asd.catme.util.CatmeUtil;
 import dal.asd.catme.util.RandomPasswordGenerator;
 
 
-@Service
 public class PasswordResetService implements IPasswordResetService
 {
     IUserDao userDao;

@@ -5,13 +5,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import dal.asd.catme.beans.Enrollment;
 import dal.asd.catme.database.DatabaseAccess;
 import dal.asd.catme.util.CatmeUtil;
-@Component
 public class RoleDaoImpl implements IRoleDao{
 	
 	
