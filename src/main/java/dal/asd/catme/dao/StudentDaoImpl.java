@@ -16,7 +16,6 @@ import java.sql.Statement;
 @Component
 public class StudentDaoImpl implements IStudentDao
 {
-    @Autowired
     DatabaseAccess db;
 
     Connection con;

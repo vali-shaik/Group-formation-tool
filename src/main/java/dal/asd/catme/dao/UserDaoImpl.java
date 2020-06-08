@@ -7,16 +7,15 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import dal.asd.catme.beans.User;
+import dal.asd.catme.config.SystemConfig;
 import dal.asd.catme.database.DatabaseAccess;
 import dal.asd.catme.util.CatmeUtil;
 
 @Component
 public class UserDaoImpl implements IUserDao{
 
-	@Autowired
 	IRoleDao roleDao;
 
-	@Autowired
 	PasswordEncoder p;
 
 
@@ -40,11 +39,13 @@ public class UserDaoImpl implements IUserDao{
 		String bannerId = user.getBannerId();
 		try {
 			if(0 == checkExistingUser(bannerId, con)){
+				p=SystemConfig.instance().getPasswordEncoder();
 				String query = "INSERT IGNORE INTO User (BannerId, FirstName, LastName, EmailId, Password) VALUES ( '" +
 						bannerId + "' , '" + user.getFirstName() + "' , '" + user.getLastName() + "' , '" + user.getEmail() + "' , '" + p.encode(user.getPassword()) + "' );";
 
 				Statement stmt = con.createStatement();
 				stmt.executeUpdate(query);
+				roleDao=SystemConfig.instance().getRoleDao();
 				roleDao.assignRole(bannerId, CatmeUtil.GUEST_ROLE_ID, con);
 				return 1;
 			}

@@ -4,14 +4,13 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.sql.SQLFeatureNotSupportedException;
 import java.sql.Statement;
 import java.util.logging.Logger;
-import javax.sql.DataSource;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Configuration;
 
+import javax.sql.DataSource;
+
+import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class DatabaseAccess implements DataSource
@@ -21,52 +20,26 @@ public class DatabaseAccess implements DataSource
 	private Statement statement;
 	private ResultSet resultSet;
 	private int result;
-
-	@Value("${spring.datasource.driver-class-name}")
-	String driver;
 	
-	@Value("${spring.datasource.url}")
-	String url;
 	
-	@Value("${spring.datasource.username}")
-	String user;
-	
-	@Value("${spring.datasource.password}")
-	String password;
-
-	
+	String driver,url,user,password;
 	
 	public Connection getConnection() throws SQLException
 	{
 		try 
 		{
-			//Class.forName("com.mysql.jdbc.driver");
-			Class.forName(driver);
-		} 
-		catch (ClassNotFoundException e) 
-		{
-			e.printStackTrace();
-		}
-		try 
-		{
+			url="jdbc:mysql://db-5308.cs.dal.ca:3306/CSCI5308_16_DEVINT?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
+			user="CSCI5308_16_DEVINT_USER";
+			password="CSCI5308_16_DEVINT_16175";
 			connection = DriverManager.getConnection(url, user, password);
 		} 
 		catch (SQLException e) 
 		{
 			e.printStackTrace();
 		}
-		
 		return connection;
 	
 	}
-//	public ResultSet executeQuery(String query) { try { statement =
-//			  connection.createStatement(); resultSet = statement.executeQuery(query); }
-//			  catch (SQLException e) { // TODO Auto-generated catch block
-//			  e.printStackTrace(); }
-//
-//			  return resultSet; }
-
-
 
 	@Override
 	public PrintWriter getLogWriter() throws SQLException {

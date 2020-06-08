@@ -1,16 +1,10 @@
 package dal.asd.catme.controller;
 
-import dal.asd.catme.beans.Course;
-import dal.asd.catme.beans.Student;
-import dal.asd.catme.beans.User;
-import dal.asd.catme.config.CatmeSecurityConfig;
-import dal.asd.catme.dao.CourseDaoImpl;
-import dal.asd.catme.database.DatabaseAccess;
-import dal.asd.catme.exception.CatmeException;
-import dal.asd.catme.exception.InvalidFileFormatException;
-import dal.asd.catme.service.*;
-import dal.asd.catme.studentlistimport.CSVReader;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+
+import javax.mail.MessagingException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,86 +17,78 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
+import dal.asd.catme.beans.Course;
 import dal.asd.catme.beans.Enrollment;
+import dal.asd.catme.beans.Student;
 import dal.asd.catme.beans.User;
-import dal.asd.catme.database.DatabaseAccess;
-import dal.asd.catme.service.ICatmeService;
+import dal.asd.catme.config.CatmeSecurityConfig;
+import dal.asd.catme.config.SystemConfig;
+import dal.asd.catme.dao.CourseDaoImpl;
+import dal.asd.catme.exception.CatmeException;
+import dal.asd.catme.exception.InvalidFileFormatException;
+import dal.asd.catme.service.IEnrollStudentService;
+import dal.asd.catme.service.IMailSenderService;
+import dal.asd.catme.service.IPasswordResetService;
 import dal.asd.catme.service.IRoleService;
 import dal.asd.catme.service.IUserService;
+import dal.asd.catme.studentlistimport.CSVReader;
 import dal.asd.catme.util.CatmeUtil;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.ModelAndView;
-
-import javax.mail.MessagingException;
-import java.io.IOException;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.ArrayList;
 
 
 @Controller
 @RequestMapping("/")
 public class CatmeController {
 
-	@Autowired
-	ICatmeService catmeService;
 
-	@Autowired
-	DatabaseAccess database;
-	@Autowired
 	IUserService userService;
-	@Autowired
+
 	IRoleService roleService;
 
-	@Autowired
 	IPasswordResetService passwordResetService;
 
-	@Autowired
 	IMailSenderService mailSenderService;
 
-	@Autowired
 	IEnrollStudentService enrollStudentService;
 
-	@Autowired
 	CourseDaoImpl courseDao;
-	
-	@Autowired
+
+
 	CatmeSecurityConfig catmeServiceConfig;
 
 
 	private static final Logger log = LoggerFactory.getLogger(CatmeController.class);
-	
+
 	@RequestMapping("admin")
 	public String adminPage()
 	{
-		
+
 		return CatmeUtil.ADMIN_PAGE;
 	}
-	
-	
+
+
 	@GetMapping("register")
 	public String signupPage(Model model) {
 		model.addAttribute("user",new User());
-		
 		return CatmeUtil.SIGNUP_PAGE;
 	}
-	
+
 	@RequestMapping("signup")
 	public String signupPage(@ModelAttribute User user, Model model) {
+		userService=SystemConfig.instance().getUserService();
 		String message = userService.addUser(user);
 		model.addAttribute("message", message);
 		return CatmeUtil.SIGNEDUP_PAGE;
 	}
-	
-	
+
+
 	@GetMapping("taEnrollment/{courseId}")
 	public String enrollTa(@PathVariable("courseId")String courseId,Model model) {
 		model.addAttribute("courseId", courseId);
 		return CatmeUtil.TA_ENROLLMENT_PAGE;
 	}
-	
+
 	@RequestMapping("taEnrollment/access")
 	public String  redirectHomePage()
 	{
@@ -110,17 +96,18 @@ public class CatmeController {
 		log.info("Finding the Role of User and redirecting to respetive User's home page");
 		return "redirect:/access";
 	}
-	
+
 	@RequestMapping("taEnrollment/{courseId}")
 	public String enrollTa(@PathVariable("courseId")String courseId,@RequestParam String bannerId,Model model) {
 		Enrollment user = new Enrollment(bannerId,courseId);
 		model.addAttribute("user", user);
+		roleService=SystemConfig.instance().getRoleService();
 		String message = roleService.assignTa(user);
 		model.addAttribute("message", message);
 		return CatmeUtil.TA_ENROLLED_PAGE;
 	}
 
-	
+
 
 
 	//Creating Logger
@@ -130,13 +117,14 @@ public class CatmeController {
 	public String findLandingPage() throws CatmeException
 	{
 		log.info("Finding the landing page of application based on access level"); 
-		
+
 		//Defining home page for user
 		String page="";
-		
+
 		//Fetching the all roles of current user
+		catmeServiceConfig=SystemConfig.instance().getCatmeServiceConfig();
 		List<String> roles= catmeServiceConfig.fetchRolesHomePage();
-		
+
 		//Checking for current user role and redirecting to respective landing page
 		if(roles!=null)
 		{
@@ -225,6 +213,7 @@ public class CatmeController {
 				c.setCourseId("5308");
 				ArrayList<Student> students =  reader.readFile(file.getInputStream());
 
+				enrollStudentService=SystemConfig.instance().getEnrollStudentService();
 				if(enrollStudentService.enrollStudentsIntoCourse(students,c))
 				{
 					model.addAttribute("message","Students Enrolled");
@@ -258,6 +247,7 @@ public class CatmeController {
 	public String resetPassword(@RequestParam("bannerid") String bannerid,Model model)
 	{
 		System.out.println("Reseting password");
+		passwordResetService=SystemConfig.instance().getPasswordResetService();
 		User u = passwordResetService.resetPassword(bannerid);
 
 		if(u==null)
@@ -268,6 +258,7 @@ public class CatmeController {
 
 		try
 		{
+			mailSenderService=SystemConfig.instance().getMailSenderService();
 			mailSenderService.sendNewPassword(u);
 			model.addAttribute("success","Password Updated Successfully");
 			return CatmeUtil.FORGOT_PASSWORD_PAGE;

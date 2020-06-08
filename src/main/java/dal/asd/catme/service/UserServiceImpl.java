@@ -3,20 +3,18 @@ package dal.asd.catme.service;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import dal.asd.catme.beans.User;
+import dal.asd.catme.config.SystemConfig;
 import dal.asd.catme.dao.IUserDao;
 import dal.asd.catme.database.DatabaseAccess;
 
 @Component
 public class UserServiceImpl implements IUserService{
 	
-	@Autowired
 	DatabaseAccess db;
 	
-	@Autowired
 	IUserDao userDao;
 
 	@Override
@@ -25,12 +23,14 @@ public class UserServiceImpl implements IUserService{
 		// TODO Auto-generated method stub
 		Connection con = null;
 		try {
+			db=SystemConfig.instance().getDatabaseAccess();
 			con = db.getConnection();
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		try {
+			userDao=SystemConfig.instance().getUserDao();
 			if (1 == userDao.addUser(user,con)){
 				isUserAdded = "Successfully Signed Up.";
 			}

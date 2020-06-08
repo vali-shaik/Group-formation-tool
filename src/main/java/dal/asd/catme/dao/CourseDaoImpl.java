@@ -8,14 +8,15 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import dal.asd.catme.beans.Student;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
+
 import dal.asd.catme.beans.Course;
+import dal.asd.catme.beans.Student;
 import dal.asd.catme.beans.User;
+import dal.asd.catme.config.SystemConfig;
 import dal.asd.catme.database.DatabaseAccess;
 import dal.asd.catme.exception.CatmeException;
 import dal.asd.catme.util.CatmeUtil;
@@ -23,15 +24,17 @@ import dal.asd.catme.util.CatmeUtil;
 @Component
 public class CourseDaoImpl implements ICourseDao
 {
-	CourseDaoImpl(DatabaseAccess database)
+	public CourseDaoImpl(DatabaseAccess database)
 	{
 		this.database=database;
+	}
+	public CourseDaoImpl()
+	{
 	}
 	
 	//Creating Logger
 	private static final Logger log = LoggerFactory.getLogger(CourseDaoImpl.class);
 	
-	@Autowired
 	DatabaseAccess database;
 	
 	@Override
@@ -49,8 +52,14 @@ public class CourseDaoImpl implements ICourseDao
 		try 
 		{
 			//Create database connection
-			connection=database.getConnection();
+			database=SystemConfig.instance().getDatabaseAccess();
+			System.out.println("##database "+database);
+		//	DatabaseUtil dbutil=new DatabaseUtil();
 			
+			connection=database.getConnection();
+		//	connection=dbutil.getConnection();
+			
+			System.out.println("##Connection "+database);
 			//Creating statement for executing query
 			statement=connection.createStatement();
 			
@@ -147,6 +156,7 @@ public class CourseDaoImpl implements ICourseDao
 		try 
 		{
 			//Creating connection
+			database=SystemConfig.instance().getDatabaseAccess();
 			connection=database.getConnection();
 			
 			//Creating statement for executing query
@@ -203,6 +213,7 @@ public class CourseDaoImpl implements ICourseDao
 		try 
 		{
 			//Creating connection
+			database=SystemConfig.instance().getDatabaseAccess();
 			connection=database.getConnection();
 			
 			//Creating statement for executing query
@@ -256,6 +267,7 @@ public class CourseDaoImpl implements ICourseDao
 		Connection con = null;
 		try
 		{
+			database=SystemConfig.instance().getDatabaseAccess();
 			con = database.getConnection();
 			Statement stmt = con.createStatement();
 

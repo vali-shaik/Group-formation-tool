@@ -1,48 +1,42 @@
 package dal.asd.catme.controller;
 
-import dal.asd.catme.beans.Course;
-import dal.asd.catme.beans.Role;
-import dal.asd.catme.beans.Student;
-import dal.asd.catme.config.CatmeSecurityConfig;
-import dal.asd.catme.exception.InvalidFileFormatException;
-import dal.asd.catme.service.IEnrollStudentService;
-import dal.asd.catme.service.IMailSenderService;
-import dal.asd.catme.studentlistimport.CSVReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import dal.asd.catme.beans.Course;
+import dal.asd.catme.beans.Student;
 import dal.asd.catme.beans.User;
+import dal.asd.catme.config.CatmeSecurityConfig;
+import dal.asd.catme.config.SystemConfig;
 import dal.asd.catme.exception.CatmeException;
+import dal.asd.catme.exception.InvalidFileFormatException;
 import dal.asd.catme.service.ICourseService;
+import dal.asd.catme.service.IEnrollStudentService;
+import dal.asd.catme.service.IMailSenderService;
+import dal.asd.catme.studentlistimport.CSVReader;
 import dal.asd.catme.util.CatmeUtil;
-
-import java.io.IOException;
-import java.sql.Connection;
-import java.util.ArrayList;
-import java.util.List;
 
 @Controller
 public class CourseController 
 {
-	@Autowired
 	ICourseService courseService;
 
-	@Autowired
 	IEnrollStudentService enrollStudentService;
 
-	@Autowired
 	IMailSenderService mailSenderService;
 
-	@Autowired
 	CatmeSecurityConfig catmeSecurityConfig;
 	
 	//Creating Logger
@@ -98,6 +92,7 @@ public class CourseController
 		ModelAndView modelAndView=new ModelAndView();
 		
 		//Fetching course based on selected course id
+		courseService=SystemConfig.instance().getCourseService();
 		modelAndView.addObject("course",courseService.displayCourseById(courseId));
 		log.info("Checking Database to identify "+currentUser.getBannerId()+" access to Course :"+courseId);
 		
@@ -117,6 +112,7 @@ public class CourseController
 
 		try
 		{
+			catmeSecurityConfig=SystemConfig.instance().getCatmeServiceConfig();
 			List<String> roles = catmeSecurityConfig.fetchRolesHomePage();
 
 			if(!roles.contains(CatmeUtil.INSTRUCTOR_ROLE) && !roles.contains(CatmeUtil.TA_ROLE))
@@ -128,6 +124,7 @@ public class CourseController
 			uploadPage.setViewName(CatmeUtil.MANAGE_COURSE_PAGE);
 
 			uploadPage.addObject("courseId",courseId);
+			courseService=SystemConfig.instance().getCourseService();
 			uploadPage.addObject("studentList",courseService.getEnrolledStudents(courseId));
 		}
 		catch (CatmeException e)
@@ -174,7 +171,9 @@ public class CourseController
 				Course c= new Course();
 				c.setCourseId(courseId);
 				ArrayList<Student> students =  reader.readFile(file.getInputStream());
-
+				
+				enrollStudentService=SystemConfig.instance().getEnrollStudentService();
+				
 				if(enrollStudentService.enrollStudentsIntoCourse(students,c))
 				{
 					model.addObject("message","Students Enrolled");

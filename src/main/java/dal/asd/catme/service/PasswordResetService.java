@@ -1,25 +1,23 @@
 package dal.asd.catme.service;
 
+import java.sql.Connection;
+import java.sql.SQLException;
+
+import org.springframework.stereotype.Service;
+
 import dal.asd.catme.beans.User;
+import dal.asd.catme.config.SystemConfig;
 import dal.asd.catme.dao.IUserDao;
 import dal.asd.catme.database.DatabaseAccess;
 import dal.asd.catme.util.CatmeUtil;
 import dal.asd.catme.util.RandomPasswordGenerator;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
-
-import java.sql.Connection;
-import java.sql.SQLException;
 
 
 @Service
 public class PasswordResetService implements IPasswordResetService
 {
-    @Autowired
     IUserDao userDao;
 
-    @Autowired
     DatabaseAccess db;
 
     Connection con;
@@ -28,10 +26,14 @@ public class PasswordResetService implements IPasswordResetService
     {
         this.userDao = userDao;
     }
+    public PasswordResetService()
+    {
+    }
 
     @Override
     public boolean userExists(String bannerid)
     {
+    	userDao=SystemConfig.instance().getUserDao();
         if(userDao.checkExistingUser(bannerid,con)==0)
             return false;
         return true;
@@ -42,6 +44,7 @@ public class PasswordResetService implements IPasswordResetService
     {
         try
         {
+        	db=SystemConfig.instance().getDatabaseAccess();
             con = db.getConnection();
             System.out.println("Database Connected");
 
@@ -51,7 +54,7 @@ public class PasswordResetService implements IPasswordResetService
                 return null;
 
             }
-
+            userDao=SystemConfig.instance().getUserDao();
             User u = userDao.getUser(bannerid,con);
 
             if (u == null)

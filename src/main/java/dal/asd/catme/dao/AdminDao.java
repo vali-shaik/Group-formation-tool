@@ -4,20 +4,18 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Component;
 
 import dal.asd.catme.beans.Course;
-import dal.asd.catme.beans.User;
+import dal.asd.catme.config.SystemConfig;
 import dal.asd.catme.database.DatabaseAccess;
 import dal.asd.catme.util.CatmeUtil;
 
 @Component
 public class AdminDao implements IAdminDao{
 
-	@Autowired
+	
 	DatabaseAccess db;
 	
 	PreparedStatement preparedStatement;
@@ -29,6 +27,7 @@ public class AdminDao implements IAdminDao{
 	public int addCourse(Course course) {
 		int result = 0;
 		try {
+		db=SystemConfig.instance().getDatabaseAccess();
 		connection = db.getConnection();
 		result= addCourse(connection, CatmeUtil.ADD_COURSE_QUERY, course);
 		}catch(Exception e) {
@@ -50,6 +49,7 @@ public class AdminDao implements IAdminDao{
 	public int deleteCourse(String courseId) {
 		int result = 0;
 		try {
+			db=SystemConfig.instance().getDatabaseAccess();
 		connection = db.getConnection();
 		updateQuery(connection,CatmeUtil.DELETE_ENROLLMENT_QUERY,courseId);
 		updateQuery(connection,CatmeUtil.DELETE_COURSE_INSTRUCTOR_QUERY,courseId);
@@ -76,6 +76,7 @@ public class AdminDao implements IAdminDao{
 		
 		int result = 0;
 		try {
+			db=SystemConfig.instance().getDatabaseAccess();
 			connection = db.getConnection();
 		int roleId = selectInstructorRole(connection);
 		System.out.println("roleId "+roleId);

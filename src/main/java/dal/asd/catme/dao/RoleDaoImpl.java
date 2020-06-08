@@ -14,13 +14,11 @@ import dal.asd.catme.util.CatmeUtil;
 @Component
 public class RoleDaoImpl implements IRoleDao{
 	
-	@Autowired
+	
 	DatabaseAccess db;
 	
-	@Autowired
 	IUserDao userDao;
 	
-	@Autowired
 	ICourseDao courseDao;
 	
 	Connection con = null;

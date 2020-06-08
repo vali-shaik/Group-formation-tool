@@ -1,11 +1,11 @@
 package dal.asd.catme.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import dal.asd.catme.config.SystemConfig;
 import dal.asd.catme.exception.CatmeException;
 import dal.asd.catme.service.ICatmeService;
 import dal.asd.catme.service.ICourseService;
@@ -18,10 +18,8 @@ public class ProfileController
 	//Creating Logger
 	private static final Logger log = LoggerFactory.getLogger(ProfileController.class);
 	
-	@Autowired
 	ICourseService courseService;
 	
-	@Autowired
 	ICatmeService catmeServie;
 	
 	@RequestMapping("access")
@@ -40,6 +38,7 @@ public class ProfileController
 		ModelAndView modelAndView =new ModelAndView();
 		
 		//Fetching courses of current Student
+		courseService=SystemConfig.instance().getCourseService();
 		modelAndView.addObject("listOfCourses",courseService.getCourses(CatmeUtil.STUDENT_ROLE));
 		modelAndView.setViewName(CatmeUtil.HOME_PAGE);
 		return modelAndView;
@@ -53,6 +52,7 @@ public class ProfileController
 		ModelAndView modelAndView =new ModelAndView();
 		
 		//Fetching courses of current Student
+		courseService=SystemConfig.instance().getCourseService();
 		modelAndView.addObject("listOfCourses",courseService.getCourses(CatmeUtil.TA_ROLE));
 		modelAndView.setViewName(CatmeUtil.HOME_PAGE);
 		return modelAndView;
@@ -66,6 +66,7 @@ public class ProfileController
 		ModelAndView modelAndView =new ModelAndView();
 		
 		//Fetching courses of current Student
+		courseService=SystemConfig.instance().getCourseService();
 		modelAndView.addObject("listOfCourses",courseService.getCourses(CatmeUtil.INSTRUCTOR_ROLE));
 		modelAndView.setViewName(CatmeUtil.HOME_PAGE);
 		return modelAndView;
@@ -79,6 +80,7 @@ public class ProfileController
 		ModelAndView modelAndView =new ModelAndView();
 		
 		//Fetching courses of current Student
+		courseService=SystemConfig.instance().getCourseService();
 		modelAndView.addObject("listOfCourses",courseService.getCourses(CatmeUtil.GUEST_ROLE));
 		modelAndView.setViewName(CatmeUtil.HOME_PAGE);
 		return modelAndView;

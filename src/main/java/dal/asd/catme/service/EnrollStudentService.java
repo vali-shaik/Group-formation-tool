@@ -1,8 +1,19 @@
 package dal.asd.catme.service;
 
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+import javax.mail.MessagingException;
+
+import org.springframework.mail.MailException;
+import org.springframework.mail.MailSendException;
+import org.springframework.stereotype.Service;
+
 import dal.asd.catme.beans.Course;
 import dal.asd.catme.beans.Student;
 import dal.asd.catme.beans.User;
+import dal.asd.catme.config.SystemConfig;
 import dal.asd.catme.dao.IRoleDao;
 import dal.asd.catme.dao.IStudentDao;
 import dal.asd.catme.dao.IUserDao;
@@ -10,35 +21,26 @@ import dal.asd.catme.database.DatabaseAccess;
 import dal.asd.catme.exception.EnrollmentException;
 import dal.asd.catme.util.CatmeUtil;
 import dal.asd.catme.util.RandomPasswordGenerator;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.MailException;
-import org.springframework.mail.MailSendException;
-import org.springframework.stereotype.Service;
-
-import javax.mail.MessagingException;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.ArrayList;
 
 @Service
 public class EnrollStudentService implements IEnrollStudentService
 {
-    @Autowired
     DatabaseAccess db;
 
-    @Autowired
     IUserDao userDao;
 
-    @Autowired
     IRoleDao roleDao;
 
-    @Autowired
     IStudentDao studentDao;
 
-    @Autowired
     IMailSenderService mailSenderService;
 
     Connection con;
+
+    public EnrollStudentService()
+    {
+       
+    }
 
 
     public EnrollStudentService(IUserDao userDao, IRoleDao roleDao, IStudentDao studentDao, IMailSenderService mailSenderService)
@@ -54,9 +56,11 @@ public class EnrollStudentService implements IEnrollStudentService
     {
         try
         {
+        	db=SystemConfig.instance().getDatabaseAccess();
             con = db.getConnection();
             System.out.println("Database Connected");
 
+            userDao=SystemConfig.instance().getUserDao();
             for (Student s : students)
             {
                 if (userDao.checkExistingUser(s.getBannerId(),con) == 0)
@@ -108,6 +112,7 @@ public class EnrollStudentService implements IEnrollStudentService
     @Override
     public void enrollStudent(Student s, Course c) throws EnrollmentException
     {
+    	studentDao=SystemConfig.instance().getStudentDao();
         if(!studentDao.enroll(s,c,con))
             throw new EnrollmentException("Error making entry in Enrollment table");
     }
@@ -115,6 +120,7 @@ public class EnrollStudentService implements IEnrollStudentService
     @Override
     public void assignStudentRole(User student) throws EnrollmentException
     {
+    	roleDao=SystemConfig.instance().getRoleDao();
         if(roleDao.checkUserRole(student.getBannerId(),CatmeUtil.STUDENT_ROLE_ID,con)==0)
         {
             if(roleDao.assignRole(student.getBannerId(), CatmeUtil.STUDENT_ROLE_ID,con)==0)
@@ -126,7 +132,7 @@ public class EnrollStudentService implements IEnrollStudentService
     public void createNewStudent(User student) throws EnrollmentException
     {
         student.setPassword(RandomPasswordGenerator.generateRandomPassword(CatmeUtil.RANDOM_PASSWORD_LENGTH));
-
+        userDao=SystemConfig.instance().getUserDao();
         if(userDao.addUser(student,con)==0)
             throw new EnrollmentException("Error creating new user for student");
     }
@@ -136,6 +142,7 @@ public class EnrollStudentService implements IEnrollStudentService
     {
         try
         {
+        	mailSenderService=SystemConfig.instance().getMailSenderService();
             mailSenderService.sendCredentialsToStudent((Student) student,c);
         } catch (MessagingException e)
         {

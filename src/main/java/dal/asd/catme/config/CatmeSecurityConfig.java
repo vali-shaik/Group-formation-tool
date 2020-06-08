@@ -33,7 +33,6 @@ public class CatmeSecurityConfig extends WebSecurityConfigurerAdapter
 {
 	private static final Logger log = LoggerFactory.getLogger(CatmeSecurityConfig.class);
 
-	@Autowired
 	DatabaseAccess dataSource;
 	
 	//overrides the default security
@@ -70,15 +69,16 @@ public class CatmeSecurityConfig extends WebSecurityConfigurerAdapter
 	}
 	
 	
-	  @Bean public PasswordEncoder passwordEncoder() 
-	  { 
-		  return new BCryptPasswordEncoder(); 
-	  }
+	
+	  @Bean 
+	  public PasswordEncoder passwordEncoder() { return new
+	  BCryptPasswordEncoder(); }
 	 
 	 
-	@Autowired
+	 
 	protected void configure(AuthenticationManagerBuilder auth) throws CatmeException 
 	{
+		dataSource=SystemConfig.instance().getDatabaseAccess();
 		 try {
 			auth.jdbcAuthentication().dataSource(dataSource)
 				 .usersByUsernameQuery(CatmeUtil.SELECT_USER_SECURITY_QUERY)
@@ -88,6 +88,7 @@ public class CatmeSecurityConfig extends WebSecurityConfigurerAdapter
 		}
 	 }
 	 
+	
 	//Method for displaying home page of application
 	public List<String> fetchRolesHomePage() throws CatmeException
 	{

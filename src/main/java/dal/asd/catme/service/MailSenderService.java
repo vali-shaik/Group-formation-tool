@@ -1,21 +1,25 @@
 package dal.asd.catme.service;
 
-import dal.asd.catme.beans.Course;
-import dal.asd.catme.beans.Student;
-import dal.asd.catme.beans.User;
-import dal.asd.catme.util.CatmeUtil;
-import org.springframework.beans.factory.annotation.Autowired;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
+
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.env.Environment;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
-import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
-import java.io.*;
-import java.util.ArrayList;
+import dal.asd.catme.beans.Course;
+import dal.asd.catme.beans.Student;
+import dal.asd.catme.beans.User;
+import dal.asd.catme.config.SystemConfig;
+import dal.asd.catme.util.CatmeUtil;
 
 @Service
 public class MailSenderService implements IMailSenderService
@@ -25,17 +29,22 @@ public class MailSenderService implements IMailSenderService
     @Value("${spring.mail.username}")
     private String from = "adv.sdc.g.16@gmail.com";
 
-    @Autowired
     public MailSenderService(JavaMailSender mailSender)
     {
         this.mailSender = mailSender;
+    }
+   
+    public MailSenderService()
+    {
     }
 
     @Override
     public void sendMail(User user, String subject, String bodyText) throws MailException, MessagingException
     {
         //code taken from https://stackoverflow.com/questions/5289849/how-do-i-send-html-email-in-spring-mvc
-        MimeMessage mimeMessage = mailSender.createMimeMessage();
+    	mailSender=SystemConfig.instance().getJavaMailSender();
+    	
+    	MimeMessage mimeMessage = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
 
         helper.setText(bodyText, true);
