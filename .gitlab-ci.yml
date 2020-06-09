@@ -8,6 +8,7 @@ variables:
 
 stages:
   - build
+  - deploy
 
 before_script:
   - chmod +x mvnw
@@ -21,6 +22,17 @@ build:
   tags:
     - dalfcs_gitlab_docker_ci
   script: ./mvnw package
- artifacts:
-    paths:
-      - target/*.jar
+ # artifacts:
+  #  paths:
+   #   - target/*.jar
+      
+# deploy:
+#  stage: deploy
+#  image: ruby:2.3
+#  script:
+#  - apt-get update -qy
+#  - apt-get install -y ruby-dev
+#  - gem install dpl
+#  - dpl --provider=heroku --app=$SERVER_TEST --api-key=$HEROKU_API_KEY
+#  tags:
+#  - dalfcs_gitlab_docker_ci
