@@ -36,5 +36,5 @@ deploy:
  - gem install dpl
  - dpl --provider=heroku --app=$SERVER_TEST --api-key=$HEROKU_API_KEY
  tags:
-#  - dalfcs_gitlab_docker_ci
-- grad
+  - grad
+  #  - dalfcs_gitlab_docker_ci
