@@ -20,7 +20,8 @@ build:
     paths:
       - .m2/repository
   tags:
-    - dalfcs_gitlab_docker_ci
+    # - dalfcs_gitlab_docker_ci
+    - grad
   script: ./mvnw package
  # artifacts:
   #  paths:
@@ -35,4 +36,5 @@ deploy:
  - gem install dpl
  - dpl --provider=heroku --app=$SERVER_TEST --api-key=$HEROKU_API_KEY
  tags:
- - dalfcs_gitlab_docker_ci
+#  - dalfcs_gitlab_docker_ci
+- grad
