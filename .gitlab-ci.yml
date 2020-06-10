@@ -20,7 +20,8 @@ build:
     paths:
       - .m2/repository
   tags:
-    - dalfcs_gitlab_docker_ci
+    # - dalfcs_gitlab_docker_ci
+    - grad
   script: ./mvnw package
  # artifacts:
   #  paths:
