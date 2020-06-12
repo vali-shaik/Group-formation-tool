@@ -10,6 +10,8 @@ import dal.asd.catme.database.DatabaseAccess;
 import dal.asd.catme.util.CatmeUtil;
 import dal.asd.catme.util.RandomPasswordGenerator;
 
+import static dal.asd.catme.util.MailSenderUtil.RANDOM_PASSWORD_LENGTH;
+
 
 public class PasswordResetService implements IPasswordResetService
 {
@@ -60,7 +62,7 @@ public class PasswordResetService implements IPasswordResetService
                 return null;
             }
 
-            String newPassword = RandomPasswordGenerator.generateRandomPassword(CatmeUtil.RANDOM_PASSWORD_LENGTH);
+            String newPassword = RandomPasswordGenerator.generateRandomPassword(RANDOM_PASSWORD_LENGTH);
 
             u.setPassword(newPassword);
 
