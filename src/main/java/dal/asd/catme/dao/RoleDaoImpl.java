@@ -1,34 +1,29 @@
 package dal.asd.catme.dao;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 import dal.asd.catme.beans.Enrollment;
-import dal.asd.catme.database.DatabaseAccess;
 import dal.asd.catme.util.CatmeUtil;
+import static dal.asd.catme.util.DBQueriesUtil.*;
 public class RoleDaoImpl implements IRoleDao{
-	
-	
-	DatabaseAccess db;
-	
+
 	IUserDao userDao;
 	
 	ICourseDao courseDao;
-	
-	Connection con = null;
+
 	
 		
 	@Override
 	public int assignRole(String bannerId, int roleId, Connection con) {
-		String query = "INSERT IGNORE INTO UserRole (UserRoleId, BannerId, RoleId) VALUES ( NULL, '" +
-				bannerId + "' , '" + roleId + "' );";
 
 		int rs = 0;
 		try {
-			Statement stmt = con.createStatement();
-			return stmt.executeUpdate(query);
+			PreparedStatement stmt = con.prepareStatement(ASSIGN_ROLE_QUERY);
+			stmt.setString(1,bannerId);
+			stmt.setInt(2,roleId);
+
+			rs = stmt.executeUpdate();
+			return rs;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -49,13 +44,14 @@ public class RoleDaoImpl implements IRoleDao{
 	@Override
 	public int addInstructor(String courseId, int userRoleId, Connection con) {
 		// TODO Auto-generated method stub
-		String query = "INSERT IGNORE INTO CourseInstructor (CourseInstructorId, CourseId, UserRoleId) VALUES ( NULL,'" +
-				courseId + "' , '" + userRoleId +"' );";
 
 		int rs = 0;
 		try {
-			Statement stmt = con.createStatement();
-			stmt.executeUpdate(query);
+			PreparedStatement stmt = con.prepareStatement(INSERT_COURSE_INSTRUCTOR_QUERY);
+			stmt.setString(1,courseId);
+			stmt.setInt(2,userRoleId);
+
+			rs = stmt.executeUpdate();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -84,10 +80,11 @@ public class RoleDaoImpl implements IRoleDao{
 		int rowCount = 0;
 		// TODO Auto-generated method stub
 		try {
-			String query = "SELECT EXISTS(WITH temp AS ( SELECT ci.UserRoleId,ci.CourseId, ur.BannerId FROM CourseInstructor ci INNER JOIN UserRole ur ON ci.UserRoleId = ur.UserRoleId ) SELECT * FROM temp WHERE temp.BannerId = '"+ bannerId +"' AND temp.CourseId = "+courseId+");";
+			PreparedStatement stmt = con.prepareStatement(CHECK_COURSE_INSTRUCTOR_QUERY);
+			stmt.setString(1,bannerId);
+			stmt.setString(2,courseId);
 
-			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery(query);
+			ResultSet rs = stmt.executeQuery();
 			rs.next();
 			rowCount = rs.getInt(1);
 		} catch (SQLException e) {
@@ -104,10 +101,10 @@ public class RoleDaoImpl implements IRoleDao{
 		int rowCount = 0;
 		// TODO Auto-generated method stub
 		try {
-			String query = "SELECT EXISTS(SELECT * FROM UserRole WHERE BannerId = '"+ bannerId +"' AND RoleId = "+roleId+");";
-
-			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery(query);
+			PreparedStatement stmt = con.prepareStatement(CHECK_USER_ROLE);
+			stmt.setString(1,bannerId);
+			stmt.setInt(2,roleId);
+			ResultSet rs = stmt.executeQuery();
 			rs.next();
 			rowCount = rs.getInt(1);
 		} catch (SQLException e) {
@@ -125,10 +122,10 @@ public class RoleDaoImpl implements IRoleDao{
 		int userRoleId = -1;
 		// TODO Auto-generated method stub
 		try {
-			String query = "SELECT UserRoleId FROM UserRole WHERE BannerId = '"+ bannerId +"' AND RoleId = "+roleId+";";
-
-			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery(query);
+			PreparedStatement stmt = con.prepareStatement(GET_USER_ROLEID_QUERY);
+			stmt.setString(1,bannerId);
+			stmt.setInt(2,roleId);
+			ResultSet rs = stmt.executeQuery();
 			rs.next();
 			userRoleId = rs.getInt(1);
 		} catch (SQLException e) {

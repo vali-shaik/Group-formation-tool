@@ -14,6 +14,7 @@ import dal.asd.catme.beans.User;
 import dal.asd.catme.config.SystemConfig;
 import dal.asd.catme.database.DatabaseAccess;
 import dal.asd.catme.util.CatmeUtil;
+import static dal.asd.catme.util.DBQueriesUtil.*;
 
 @Component
 public class ListDetailsDao implements IListDetailsDao{
@@ -34,7 +35,7 @@ public class ListDetailsDao implements IListDetailsDao{
 			db=SystemConfig.instance().getDatabaseAccess();
 			connection = db.getConnection();
 			
-			ResultSet resultSet = db.executeQuery(CatmeUtil.SELECT_COURSE);
+			ResultSet resultSet = db.executeQuery(SELECT_COURSE);
 			while(resultSet.next()) {
 				Course course = new Course();
 				course.setCourseId(resultSet.getString(CatmeUtil.COURSE_ID));
@@ -64,7 +65,7 @@ public class ListDetailsDao implements IListDetailsDao{
 			try {
 				db=SystemConfig.instance().getDatabaseAccess();
 				connection = db.getConnection();
-				ResultSet resultSet = listUsers(connection, CatmeUtil.LIST_USER_QUERY, course);
+				ResultSet resultSet = listUsers(connection, LIST_USER_QUERY, course);
 
 				while(resultSet.next()){
 					User user = new User();

@@ -11,6 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import dal.asd.catme.beans.User;
 import dal.asd.catme.config.SystemConfig;
 import dal.asd.catme.util.CatmeUtil;
+import static dal.asd.catme.util.DBQueriesUtil.*;
 
 public class UserDaoImpl implements IUserDao{
 
@@ -24,9 +25,10 @@ public class UserDaoImpl implements IUserDao{
 	public int checkExistingUser(String bannerId, Connection con) {
 		int rowCount = 0;
 		try{
-			String query = "SELECT EXISTS(SELECT * FROM User WHERE BannerId = '" + bannerId + "' );";
-			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery(query);
+			PreparedStatement stmt = con.prepareStatement(CHECK_EXISTING_USER_QUERY);
+			stmt.setString(1,bannerId);
+
+			ResultSet rs = stmt.executeQuery();
 			rs.next();
 			rowCount = rs.getInt(1);
 		}
@@ -40,11 +42,14 @@ public class UserDaoImpl implements IUserDao{
 		try {
 			if(0 == checkExistingUser(bannerId, con)){
 				p=SystemConfig.instance().getPasswordEncoder();
-				String query = "INSERT IGNORE INTO User (BannerId, FirstName, LastName, EmailId, Password) VALUES ( '" +
-						bannerId + "' , '" + user.getFirstName() + "' , '" + user.getLastName() + "' , '" + user.getEmail() + "' , '" + p.encode(user.getPassword()) + "' );";
+				PreparedStatement stmt = con.prepareStatement(ADD_USER_QUERY);
+				stmt.setString(1,user.getBannerId());
+				stmt.setString(2,user.getFirstName());
+				stmt.setString(3,user.getLastName());
+				stmt.setString(4,user.getEmail());
+				stmt.setString(5,p.encode(user.getPassword()));
 
-				Statement stmt = con.createStatement();
-				stmt.executeUpdate(query);
+				stmt.executeUpdate();
 				roleDao=SystemConfig.instance().getRoleDao();
 				roleDao.assignRole(bannerId, CatmeUtil.GUEST_ROLE_ID, con);
 				return 1;
@@ -61,9 +66,7 @@ public class UserDaoImpl implements IUserDao{
 	public User getUser(String bannerId, Connection con) {
 		try {
 
-			String getUserSQL = "SELECT * FROM User WHERE BannerId=?";
-
-			PreparedStatement getUser = con.prepareStatement(getUserSQL);
+			PreparedStatement getUser = con.prepareStatement(GET_USER_QUERY);
 			getUser.setString(1,bannerId);
 
 			ResultSet rs = getUser.executeQuery();
@@ -79,6 +82,7 @@ public class UserDaoImpl implements IUserDao{
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			System.out.println("Error Getting User");
 		}
 
 		return null;
@@ -87,12 +91,12 @@ public class UserDaoImpl implements IUserDao{
 	@Override
 	public boolean resetPassword(User u, Connection con)
 	{
+		p=SystemConfig.instance().getPasswordEncoder();
 		try {
 			String encodedPassword = p.encode(u.getPassword());
 
-			String resetPasswordSQL = "UPDATE `User` SET `Password`=? WHERE `BannerId`=?";
 
-			PreparedStatement resetPasswordStmt = con.prepareStatement(resetPasswordSQL);
+			PreparedStatement resetPasswordStmt = con.prepareStatement(RESET_PASSWORD_QUERY);
 			resetPasswordStmt.setString(1,encodedPassword);
 			resetPasswordStmt.setString(2,u.getBannerId());
 

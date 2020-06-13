@@ -8,6 +8,8 @@ import dal.asd.catme.util.RandomPasswordGenerator;
 import java.sql.Connection;
 import java.util.ArrayList;
 
+import static dal.asd.catme.util.MailSenderUtil.RANDOM_PASSWORD_LENGTH;
+
 public class UserDaoMock implements IUserDao
 {
     ArrayList<User> users;
@@ -49,7 +51,7 @@ public class UserDaoMock implements IUserDao
     @Override
     public boolean resetPassword(User u, Connection con)
     {
-        u.setPassword(RandomPasswordGenerator.generateRandomPassword(CatmeUtil.RANDOM_PASSWORD_LENGTH));
+        u.setPassword(RandomPasswordGenerator.generateRandomPassword(RANDOM_PASSWORD_LENGTH));
         return true;
     }
 }

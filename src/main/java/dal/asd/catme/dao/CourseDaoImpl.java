@@ -1,10 +1,7 @@
 
 package dal.asd.catme.dao;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +16,7 @@ import dal.asd.catme.config.SystemConfig;
 import dal.asd.catme.database.DatabaseAccess;
 import dal.asd.catme.exception.CatmeException;
 import dal.asd.catme.util.CatmeUtil;
+import static dal.asd.catme.util.DBQueriesUtil.*;
 
 public class CourseDaoImpl implements ICourseDao
 {
@@ -68,28 +66,28 @@ public class CourseDaoImpl implements ICourseDao
 							
 							//Executing query to fetch all courses
 							log.info("Fetching courses of User "+currentUser+": GUEST");
-							resultSet = statement.executeQuery(CatmeUtil.SELECT_GUEST_COURSES_QUERY);
+							resultSet = statement.executeQuery(SELECT_GUEST_COURSES_QUERY);
 							break;
 							
 				case CatmeUtil.TA_ROLE:
 					
 							//Executing query to fetch all Enrolled courses and Teaching courses
 							log.info("Fetching courses of User "+currentUser+": TA");
-							resultSet = statement.executeQuery(CatmeUtil.SELECT_STUDENT_COURSES_QUERY+"'"+currentUser+"'"+" UNION "+CatmeUtil.SELECT_INSTRUTOR_COURSES_QUERY+"'"+currentUser+"'");
+							resultSet = statement.executeQuery(SELECT_STUDENT_COURSES_QUERY+"'"+currentUser+"'"+" UNION "+SELECT_INSTRUTOR_COURSES_QUERY+"'"+currentUser+"'");
 							break;
 							
 				case CatmeUtil.INSTRUCTOR_ROLE:
 					
 							//Executing query to fetch all courses as Instructor
 							log.info("Fetching courses of User "+currentUser+": INSTRUCTOR");
-							resultSet = statement.executeQuery(CatmeUtil.SELECT_INSTRUTOR_COURSES_QUERY+""+"'"+currentUser+"'");
+							resultSet = statement.executeQuery(SELECT_INSTRUTOR_COURSES_QUERY+""+"'"+currentUser+"'");
 							break;
 							
 				case CatmeUtil.STUDENT_ROLE:
 					
 							//Executing query to fetch all courses as Student
 							log.info("Fetching courses of User "+currentUser+": STUDENT");
-							resultSet = statement.executeQuery(CatmeUtil.SELECT_STUDENT_COURSES_QUERY+""+"'"+currentUser+"'");
+							resultSet = statement.executeQuery(SELECT_STUDENT_COURSES_QUERY+""+"'"+currentUser+"'");
 							break;
 							
 				default:
@@ -157,7 +155,7 @@ public class CourseDaoImpl implements ICourseDao
 			if(connection!=null)
 			{	
 				//Executing query to get Course details by passing course id
-				resultSet = statement.executeQuery(CatmeUtil.SELECT_COURSE_QUERY+"'"+courseId+"'");
+				resultSet = statement.executeQuery(SELECT_COURSE_QUERY+"'"+courseId+"'");
 
 				while(resultSet.next()) 
 				{
@@ -214,7 +212,7 @@ public class CourseDaoImpl implements ICourseDao
 			if(connection!=null)
 			{	
 				//Executing query to fetch enrolled courses and teaching courses
-				resultSet = statement.executeQuery(CatmeUtil.SELECT_COURSE_ROLE_QUERY+"'"+user.getBannerId()+"' and  c.courseId='"+courseId+"'");
+				resultSet = statement.executeQuery(SELECT_COURSE_ROLE_QUERY+"'"+user.getBannerId()+"' and  c.courseId='"+courseId+"'");
 				
 				while(resultSet.next()) 
 				{
@@ -254,16 +252,16 @@ public class CourseDaoImpl implements ICourseDao
 	{
 		ArrayList<Student> registeredStudents = new ArrayList<>();
 
-		String selectStudetns = "select BannerId, FirstName, LastName from Enrollment join(`User`) using(BannerId) where CourseId='"+courseId+"'";
-
 		Connection con = null;
 		try
 		{
 			database=SystemConfig.instance().getDatabaseAccess();
 			con = database.getConnection();
-			Statement stmt = con.createStatement();
 
-			ResultSet rs = stmt.executeQuery(selectStudetns);
+			PreparedStatement stmt = con.prepareStatement(SEELCT_ENROLLED_STUDENTS_QUERY);
+			stmt.setString(1,courseId);
+
+			ResultSet rs = stmt.executeQuery();
 
 			while(rs.next())
 			{
@@ -307,9 +305,11 @@ public class CourseDaoImpl implements ICourseDao
 		int rowCount = 0;
 		// TODO Auto-generated method stub
 		try {
-			String query = "SELECT EXISTS(SELECT * FROM Course WHERE CourseId  = '" + courseId + "');";
-			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery(query);
+			PreparedStatement stmt = con.prepareStatement(CHECK_COURSE_QUERY);
+			stmt.setString(1,courseId);
+
+			ResultSet rs = stmt.executeQuery();
+
 			rs.next();
 			rowCount = rs.getInt(1);
 		} catch (SQLException e) {
@@ -325,10 +325,11 @@ public class CourseDaoImpl implements ICourseDao
 		int rowCount = 0;
 		// TODO Auto-generated method stub
 		try {
-			String query = "SELECT EXISTS(SELECT * FROM Enrollment WHERE BannerId = '" + bannerId + "' AND CourseId = '" + courseId + "');";
+			PreparedStatement stmt = con.prepareStatement(CHECK_COURSE_REGISTRATION_QUERY);
+			stmt.setString(1,bannerId);
+			stmt.setString(2,courseId);
 
-			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery(query);
+			ResultSet rs = stmt.executeQuery();
 			rs.next();
 			rowCount = rs.getInt(1);
 		} catch (SQLException e) {

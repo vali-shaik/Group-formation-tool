@@ -20,20 +20,23 @@ build:
     paths:
       - .m2/repository
   tags:
-    # - dalfcs_gitlab_docker_ci
-    - grad
+    -  dalfcs_gitlab_docker_ci
   script: ./mvnw package
  # artifacts:
   #  paths:
    #   - target/*.jar
-      
-# deploy:
-#  stage: deploy
-#  image: ruby:2.3
-#  script:
-#  - apt-get update -qy
-#  - apt-get install -y ruby-dev
-#  - gem install dpl
-#  - dpl --provider=heroku --app=$SERVER_TEST --api-key=$HEROKU_API_KEY
-#  tags:
-#  - dalfcs_gitlab_docker_ci
+   
+#Comment below script after creating features branch   
+deploy:
+ image: ruby:2.3
+ stage: deploy
+ script:
+ - apt-get update -qy
+ - apt-get install -y ruby-dev
+ - gem install dpl
+ - dpl --provider=heroku --app=$SERVER_TEST --api-key=$HEROKU_API_KEY
+ tags:
+ -  dalfcs_gitlab_docker_ci
+ only:
+  refs:
+    - development

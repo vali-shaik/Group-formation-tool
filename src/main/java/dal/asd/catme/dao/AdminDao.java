@@ -12,6 +12,7 @@ import dal.asd.catme.config.SystemConfig;
 import dal.asd.catme.database.DatabaseAccess;
 import dal.asd.catme.util.CatmeUtil;
 
+import static dal.asd.catme.util.DBQueriesUtil.*;
 @Component
 public class AdminDao implements IAdminDao{
 
@@ -29,7 +30,7 @@ public class AdminDao implements IAdminDao{
 		try {
 		db=SystemConfig.instance().getDatabaseAccess();
 		connection = db.getConnection();
-		result= addCourse(connection, CatmeUtil.ADD_COURSE_QUERY, course);
+		result= addCourse(connection, ADD_COURSE_QUERY, course);
 		}catch(Exception e) {
 			e.printStackTrace();
 		}finally {
@@ -51,9 +52,9 @@ public class AdminDao implements IAdminDao{
 		try {
 			db=SystemConfig.instance().getDatabaseAccess();
 		connection = db.getConnection();
-		updateQuery(connection,CatmeUtil.DELETE_ENROLLMENT_QUERY,courseId);
-		updateQuery(connection,CatmeUtil.DELETE_COURSE_INSTRUCTOR_QUERY,courseId);
-		result=updateQuery(connection, CatmeUtil.DELETE_COURSE_QUERY, courseId);
+		updateQuery(connection,DELETE_ENROLLMENT_QUERY,courseId);
+		updateQuery(connection,DELETE_COURSE_INSTRUCTOR_QUERY,courseId);
+		result=updateQuery(connection, DELETE_COURSE_QUERY, courseId);
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -110,7 +111,7 @@ public class AdminDao implements IAdminDao{
 	public int selectInstructorRole(Connection connection) {
 		int result=0;
 		try {
-			preparedStatement = connection.prepareStatement(CatmeUtil.SELECT_ROLE_BY_ROLENAME);
+			preparedStatement = connection.prepareStatement(SELECT_ROLE_BY_ROLENAME);
 			preparedStatement.setString(1, CatmeUtil.ROLE_INSTRUCTOR);
 			rs=preparedStatement.executeQuery();
 			if(rs.next())
@@ -128,12 +129,12 @@ public class AdminDao implements IAdminDao{
 	public int addAsCourseInstructor(Connection connection,String course,int userRole) {
 		int result=0;
 		try {
-			preparedStatement = connection.prepareStatement(CatmeUtil.SELECT_COURSE_INSTRUCTOR_BY_USER_ROLE_COURSEID);
+			preparedStatement = connection.prepareStatement(SELECT_COURSE_INSTRUCTOR_BY_USER_ROLE_COURSEID);
 			preparedStatement.setInt(1, userRole);
 			preparedStatement.setString(2, course);
 			rs = preparedStatement.executeQuery();
 			if(!rs.next()) {
-				preparedStatement=connection.prepareStatement(CatmeUtil.INSERT_INTO_COURSE_INSTRUCTOR);
+				preparedStatement=connection.prepareStatement(INSERT_INTO_COURSE_INSTRUCTOR);
 				preparedStatement.setInt(2, userRole);
 				preparedStatement.setString(1, course);
 				result=preparedStatement.executeUpdate();
@@ -170,7 +171,7 @@ public class AdminDao implements IAdminDao{
 	public int addCourse(Connection connection,String query,Course course) {
 		int result = CatmeUtil.ZERO;
 		try {
-			preparedStatement=connection.prepareStatement(CatmeUtil.CHECK_INSTRUCTOR);
+			preparedStatement=connection.prepareStatement(CHECK_INSTRUCTOR);
 			preparedStatement.setString(1, course.getCourseId());
 			ResultSet rs = preparedStatement.executeQuery();
 			if(!rs.next()) {
@@ -194,18 +195,18 @@ public class AdminDao implements IAdminDao{
 		int userRoleId=0;
 		//Check if user has TA role
 		try {
-			preparedStatement = connection.prepareStatement(CatmeUtil.SELECT_USER_ROLE_BY_BANNERID);
+			preparedStatement = connection.prepareStatement(SELECT_USER_ROLE_BY_BANNERID);
 			preparedStatement.setString(1, user);
 			preparedStatement.setInt(2, roleId);
 			rs = preparedStatement.executeQuery();
 			
 			if(!rs.next()) {
-				preparedStatement=connection.prepareStatement(CatmeUtil.INSERT_INTO_USER_ROLE);
+				preparedStatement=connection.prepareStatement(INSERT_INTO_USER_ROLE);
 				preparedStatement.setInt(1, roleId);
 				preparedStatement.setString(2, user);
 				preparedStatement.executeUpdate();
 			
-				preparedStatement = connection.prepareStatement(CatmeUtil.SELECT_USER_ROLE_BY_BANNERID);
+				preparedStatement = connection.prepareStatement(SELECT_USER_ROLE_BY_BANNERID);
 				preparedStatement.setString(1, user);
 				preparedStatement.setInt(2, roleId);
 				rs = preparedStatement.executeQuery();

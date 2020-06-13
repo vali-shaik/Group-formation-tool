@@ -1,11 +1,14 @@
 package dal.asd.catme.dao;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.Statement;
 
 import dal.asd.catme.beans.Course;
 import dal.asd.catme.beans.Student;
 import dal.asd.catme.database.DatabaseAccess;
+
+import static dal.asd.catme.util.DBQueriesUtil.*;
 
 public class StudentDaoImpl implements IStudentDao
 {
@@ -17,12 +20,11 @@ public class StudentDaoImpl implements IStudentDao
     public boolean enroll(Student s, Course c, Connection con)
     {
         try {
-            String enrollQuery = "INSERT INTO Enrollment " +
-                    "(BannerId, CourseId) " +
-                    "VALUES('"+s.getBannerId()+"', '"+c.getCourseId()+"');";
+            PreparedStatement stmt = con.prepareStatement(STUDENT_ENROLL_QUERY);
+            stmt.setString(1,s.getBannerId());
+            stmt.setString(2,c.getCourseId());
 
-            Statement stmt = con.createStatement();
-            stmt.executeUpdate(enrollQuery);
+            stmt.executeUpdate();
             return true;
         } catch (Exception e) {
             e.printStackTrace();

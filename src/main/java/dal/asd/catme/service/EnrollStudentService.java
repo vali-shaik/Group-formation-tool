@@ -21,6 +21,8 @@ import dal.asd.catme.exception.EnrollmentException;
 import dal.asd.catme.util.CatmeUtil;
 import dal.asd.catme.util.RandomPasswordGenerator;
 
+import static dal.asd.catme.util.MailSenderUtil.RANDOM_PASSWORD_LENGTH;
+
 public class EnrollStudentService implements IEnrollStudentService
 {
     DatabaseAccess db;
@@ -126,7 +128,7 @@ public class EnrollStudentService implements IEnrollStudentService
     @Override
     public void createNewStudent(User student) throws EnrollmentException
     {
-        student.setPassword(RandomPasswordGenerator.generateRandomPassword(CatmeUtil.RANDOM_PASSWORD_LENGTH));
+        student.setPassword(RandomPasswordGenerator.generateRandomPassword(RANDOM_PASSWORD_LENGTH));
         if(userDao.addUser(student,con)==0)
             throw new EnrollmentException("Error creating new user for student");
     }

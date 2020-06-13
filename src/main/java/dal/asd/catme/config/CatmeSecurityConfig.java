@@ -22,6 +22,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import dal.asd.catme.database.DatabaseAccess;
 import dal.asd.catme.exception.CatmeException;
 import dal.asd.catme.util.CatmeUtil;
+import static dal.asd.catme.util.DBQueriesUtil.*;
 
 @Configuration
 @EnableGlobalMethodSecurity(
@@ -81,8 +82,8 @@ public class CatmeSecurityConfig extends WebSecurityConfigurerAdapter
 		dataSource=SystemConfig.instance().getDatabaseAccess();
 		 try {
 			auth.jdbcAuthentication().dataSource(dataSource)
-				 .usersByUsernameQuery(CatmeUtil.SELECT_USER_SECURITY_QUERY)
-				 .authoritiesByUsernameQuery(CatmeUtil.SELECT_ROLE_SECURITY_QUERY);
+				 .usersByUsernameQuery(SELECT_USER_SECURITY_QUERY)
+				 .authoritiesByUsernameQuery(SELECT_ROLE_SECURITY_QUERY);
 		} catch (Exception e) {
 			throw new CatmeException("Authentication failed to fetch username and password!! "+e.getMessage());
 		}

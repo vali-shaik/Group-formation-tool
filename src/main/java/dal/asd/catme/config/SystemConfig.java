@@ -61,7 +61,6 @@ public class SystemConfig
 	private DatabaseAccess databaseAccess;
 	private CatmeSecurityConfig catmeServiceConfig;
 	private PasswordEncoder passwordEncoder;
-	private JavaMailSender javaMailSender; 
 	
 	
 	public SystemConfig()
@@ -84,7 +83,6 @@ public class SystemConfig
 		userDao=new UserDaoImpl();
 		userService=new UserServiceImpl();
 		passwordResetService=new PasswordResetService();
-		javaMailSender=new JavaMailSenderImpl();
 		enrollStudentService=new EnrollStudentService(userDao,roleDao,studentDao,mailSenderService);
 	}
 	
@@ -99,15 +97,7 @@ public class SystemConfig
 		return uniqueInstance;
 	}
 	
-	
-	
-	public JavaMailSender getJavaMailSender() {
-		return javaMailSender;
-	}
 
-	public void setJavaMailSender(JavaMailSender javaMailSender) {
-		this.javaMailSender = javaMailSender;
-	}
 
 	public PasswordEncoder getPasswordEncoder() {
 		return passwordEncoder;

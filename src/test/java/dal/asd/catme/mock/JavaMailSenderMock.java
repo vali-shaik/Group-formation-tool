@@ -4,10 +4,7 @@ import dal.asd.catme.beans.User;
 import org.springframework.mail.MailException;
 import org.springframework.mail.MailPreparationException;
 import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMailMessage;
-import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.mail.javamail.MimeMessagePreparator;
+import org.springframework.mail.javamail.*;
 
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -18,7 +15,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-public class JavaMailSenderMock implements JavaMailSender
+public class JavaMailSenderMock extends JavaMailSenderImpl
 {
     private User u;
     private String subject;
