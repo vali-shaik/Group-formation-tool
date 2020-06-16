@@ -173,6 +173,7 @@ public class CatmeController {
 	public String loginPage()
 	{
 		log.info("Redirected to Login page");
+		System.out.println("####System Environment Vars: "+System.getenv());
 		return CatmeUtil.LOGIN_PAGE;
 	}
 

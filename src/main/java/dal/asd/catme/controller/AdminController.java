@@ -22,7 +22,7 @@ import dal.asd.catme.util.CatmeUtil;
 @RequestMapping("admin/")
 public class AdminController {
 
-	IAdminService service;
+	IAdminService adminServiceImpl;
 	
 	IListDetails listDetail;
 	
@@ -48,8 +48,8 @@ public class AdminController {
 	public String addCourseToDatabase(@ModelAttribute Course course)
 	{
 		logger.info("****Admin Controller - Add Course to Database Invoked*****");
-		service=SystemConfig.instance().getAdminServie();
-		int result =service.addCourse(course);
+		adminServiceImpl=SystemConfig.instance().getAdminServie();
+		int result =adminServiceImpl.addCourse(course);
 		if(result==1)
 			return CatmeUtil.SUCCESS_PAGE;
 		else if(result>1)
@@ -78,8 +78,8 @@ public class AdminController {
 	{
 		logger.info("****Admin Controller - Delete Course Invoked*****");
 		System.out.println(course);
-		service=SystemConfig.instance().getAdminServie();
-		int result=service.deleteCourse(course);
+		adminServiceImpl=SystemConfig.instance().getAdminServie();
+		int result=adminServiceImpl.deleteCourse(course);
 		if(result>0)
 			return CatmeUtil.SUCCESS_PAGE;
 		else
@@ -90,8 +90,8 @@ public class AdminController {
 	@PostMapping("addInstructor")
 	public String addInstructor(@RequestParam String course,@RequestParam String user) {
 		logger.info("****Admin Controller - Add Instructor Invoked*****");
-		service=SystemConfig.instance().getAdminServie();
-		int result=service.addInstructorToCourse(user,course);
+		adminServiceImpl=SystemConfig.instance().getAdminServie();
+		int result=adminServiceImpl.addInstructorToCourse(user,course);
 		if(result==1)
 			return CatmeUtil.SUCCESS_PAGE;
 		else if(result>1)
