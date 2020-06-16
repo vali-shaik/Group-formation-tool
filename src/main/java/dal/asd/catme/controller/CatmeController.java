@@ -176,6 +176,7 @@ public class CatmeController {
 		log.info("Redirected to Login page");
 		System.out.println("####System Environment Vars: "+System.getenv());
 		System.out.println("####PASSWORD ENC: "+System.getenv().get("PASSWORD_ENC"));
+		
 		return CatmeUtil.LOGIN_PAGE;
 	}
 
