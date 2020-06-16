@@ -1,20 +1,15 @@
 package dal.asd.catme.beans;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 public class Question {
-	String questionTitle;
+	
 	String question;
 	String questionType;
-	Map<Integer,String> optionOrder = new HashMap<Integer,String>();
+	Map<Integer,String> optionWithOrder = new TreeMap<Integer,String>();
 	
-	public String getQuestionTitle() {
-		return questionTitle;
-	}
-	public void setQuestionTitle(String questionTitle) {
-		this.questionTitle = questionTitle;
-	}
+	
 	public String getQuestion() {
 		return question;
 	}
@@ -28,10 +23,10 @@ public class Question {
 		this.questionType = questionType;
 	}
 	public Map<Integer, String> getOptionOrder() {
-		return optionOrder;
+		return optionWithOrder;
 	}
 	public void setOptionOrder(Map<Integer, String> optionOrder) {
-		this.optionOrder = optionOrder;
+		this.optionWithOrder = optionOrder;
 	}
 	
 
