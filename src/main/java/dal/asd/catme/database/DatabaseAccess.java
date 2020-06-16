@@ -7,9 +7,7 @@ import java.sql.SQLException;
 import java.sql.SQLFeatureNotSupportedException;
 import java.sql.Statement;
 import java.util.logging.Logger;
-
 import javax.sql.DataSource;
-
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
@@ -20,18 +18,23 @@ public class DatabaseAccess implements DataSource
 	private Statement statement;
 	private ResultSet resultSet;
 	private int result;
+
+
+	private static final String url=System.getenv("URL");
+	private static final String username=System.getenv("USERNAME");
+	private static final String password=System.getenv("PASSWORD");
 	
-	
-	String driver,url,user,password;
 	
 	public Connection getConnection() throws SQLException
 	{
 		try 
 		{
-			url="jdbc:mysql://db-5308.cs.dal.ca:3306/CSCI5308_16_DEVINT?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
-			user="CSCI5308_16_DEVINT_USER";
-			password="CSCI5308_16_DEVINT_16175";
-			connection = DriverManager.getConnection(url, user, password);
+			/*
+			 * url=
+			 * "jdbc:mysql://db-5308.cs.dal.ca:3306/CSCI5308_16_DEVINT?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
+			 * user="CSCI5308_16_DEVINT_USER"; password="CSCI5308_16_DEVINT_16175";
+			 */
+			connection = DriverManager.getConnection(url, username, password);
 		} 
 		catch (SQLException e) 
 		{
@@ -99,18 +102,13 @@ public class DatabaseAccess implements DataSource
 	@Override
 	public Connection getConnection(String username, String password) throws SQLException {
 		// TODO Auto-generated method stub
-		try {
-			Class.forName("com.mysql.jdbc.driver");
-//			Class.forName(driver);
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
-		try {
-			connection = DriverManager.getConnection(url, user, password);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return connection;
+		/*
+		 * try { Class.forName("com.mysql.jdbc.driver"); // Class.forName(driver); }
+		 * catch (ClassNotFoundException e) { e.printStackTrace(); } try { connection =
+		 * DriverManager.getConnection(url, user, password); } catch (SQLException e) {
+		 * e.printStackTrace(); } return connection;
+		 */
+		return null;
 	
 	}
 
