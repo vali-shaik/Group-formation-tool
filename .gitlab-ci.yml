@@ -34,7 +34,7 @@ deploy:
  - apt-get update -qy
  - apt-get install -y ruby-dev
  - gem install dpl
- - dpl --provider=heroku --app=local-catme --api-key=$HEROKU_API_KEY
+ - dpl --provider=heroku --app=lcatme --api-key=$HEROKU_API_KEY
  tags:
  -  dalfcs_gitlab_docker_ci
  only:
