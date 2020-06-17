@@ -1,5 +1,6 @@
 package dal.asd.catme.beans;
 
+import java.util.Date;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -8,7 +9,7 @@ public class Question {
 	String question;
 	String questionType;
 	Map<Integer,String> optionWithOrder = new TreeMap<Integer,String>();
-	
+	Date createdDate;
 	
 	public String getQuestion() {
 		return question;
