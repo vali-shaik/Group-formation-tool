@@ -35,6 +35,8 @@ public class CatmeUtil
 	public static final String FORGOT_PASSWORD_PAGE="forgot-password";
 	public static final String MANAGE_COURSE_PAGE ="manageCourse";
 	public static final String COURSE_PAGE="course";
+	public static final String  QUESTION_CREATION_SUCCESS="questionCreationSuccess";
+	public static final String OPTION_EDITOR="optionEditor";
 	
 	//Landing pages
 	public static final String ADMIN_HOME="admin/dashboard";
@@ -58,7 +60,15 @@ public class CatmeUtil
 	public static final String ROLE_NAME_FIELD = "RoleName";
 
 
-
+	//Question Types
+	public static final String NUMERIC = "numeric";
+	public static final String FREE_TEXT = "Free Text";
+	public static final String MCQ_CHOOSE_ONE = "MCQ Choose One";
+	public static final String MCQ_CHOOSE_MULTIPLE = "MCQ Choose Multiple";
+	
+	public static final String FREETEXT = "freeText";
+	public static final String MCQCHOOSEONE = "mcqChooseOne";
+	public static final String MCQCHOOSEMULTIPLE = "mcqChooseMultiple";
 
 	public static final int GUEST_ROLE_ID = 1;
 	public static final int STUDENT_ROLE_ID = 2;

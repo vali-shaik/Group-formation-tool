@@ -1,21 +1,22 @@
 package dal.asd.catme.beans;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
 public class Question {
 	
-	String question;
+	String questionText;
 	String questionType;
-	Map<Integer,String> optionWithOrder = new TreeMap<Integer,String>();
+	List<Option> optionWithOrder = new ArrayList<Option>();
 	Date createdDate;
-	
-	public String getQuestion() {
-		return question;
+	public String getQuestionText() {
+		return questionText;
 	}
-	public void setQuestion(String question) {
-		this.question = question;
+	public void setQuestionText(String questionText) {
+		this.questionText = questionText;
 	}
 	public String getQuestionType() {
 		return questionType;
@@ -23,12 +24,27 @@ public class Question {
 	public void setQuestionType(String questionType) {
 		this.questionType = questionType;
 	}
-	public Map<Integer, String> getOptionOrder() {
+	public List<Option> getOptionWithOrder() {
 		return optionWithOrder;
 	}
-	public void setOptionOrder(Map<Integer, String> optionOrder) {
-		this.optionWithOrder = optionOrder;
+	public void setOptionWithOrder(List<Option> optionWithOrder) {
+		this.optionWithOrder = optionWithOrder;
 	}
+	public Date getCreatedDate() {
+		return createdDate;
+	}
+	public void setCreatedDate(Date createdDate) {
+		this.createdDate = createdDate;
+	}
+	@Override
+	public String toString() {
+		return "Question [questionText=" + questionText + ", questionType=" + questionType + ", optionWithOrder="
+				+ optionWithOrder + ", createdDate=" + createdDate + ", getQuestionText()=" + getQuestionText()
+				+ ", getQuestionType()=" + getQuestionType() + ", getOptionWithOrder()=" + getOptionWithOrder()
+				+ ", getCreatedDate()=" + getCreatedDate() + ", getClass()=" + getClass() + ", hashCode()=" + hashCode()
+				+ ", toString()=" + super.toString() + "]";
+	}
+	
 	
 
 }

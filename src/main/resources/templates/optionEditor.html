@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+	<div th:insert="header"></div>
+		<div align="center">
+		<form  th:action="@{/question/addQuestion}" th:object="${question}" method="post">
+		    <div><p th:text="${question.questionText}"/></div>
+		   <!--  <div th:each="option : *{question.optionWithOrder}">
+			    Display Text <input type="text" th.field="*{option.displayText}"  />
+			   	Stored As <input type="text" th.field="*{option.storedAs}"  />
+			</div> -->
+			<table>
+			<tbody>
+			 <tr th:each="option : *{optionWithOrder}" name="optionWithOrder" id="optionWithOrder">
+			<td>Display Text <input type="text" th.field="*{option.displayText}"  /></td>
+			<td>Stored As <input type="text" th.field="*{option.storedAs}"  /></td>
+			</tr> 
+<!-- 			
+<tr th:each="option, itemStat : *{optionWithOrder}">
+
+<td><input th:field="*{question.optionWithOrder[__${itemStat.index}__].displayText}" /></td>
+
+<td><input th:field="*{question.optionWithOrder[__${itemStat.index}__].storedAs}" /></td>
+
+</tr> -->
+			</tbody>
+			</table>
+			
+			
+
+
+			
+			
+			
+		    <div style="margin-top:30px">
+		    <u>Add Option</u>
+		    </div>
+		    <div style="margin-top:30px">
+		    <button>Create Question</button>
+		    </div>
+		 </form>
+	    </div>
+</body>
+</html>
