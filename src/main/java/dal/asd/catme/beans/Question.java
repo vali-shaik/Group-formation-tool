@@ -5,10 +5,18 @@ import java.util.TreeMap;
 
 public class Question {
 	
+	int questionId;
 	String question;
 	String questionType;
 	Map<Integer,String> optionWithOrder = new TreeMap<Integer,String>();
 	
+	public int getQuestionId() {
+		return questionId;
+	}
+	public void setQuestionId(int questionId) {
+		this.questionId = questionId;
+	}
+		
 	
 	public String getQuestion() {
 		return question;
