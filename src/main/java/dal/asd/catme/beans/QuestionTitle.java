@@ -6,8 +6,14 @@ public class QuestionTitle {
 	
 	String questionTitle;
 	List<Question> questions;
-	
-	public String getQuestionTitle() {
+
+    public QuestionTitle(String questionTitle)
+    {
+    	this.questionTitle = questionTitle;
+    }
+    public QuestionTitle(){}
+
+    public String getQuestionTitle() {
 		return questionTitle;
 	}
 	public void setQuestionTitle(String questionTitle) {

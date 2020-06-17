@@ -176,68 +176,6 @@ public class CatmeController {
 		return CatmeUtil.LOGIN_PAGE;
 	}
 
-	@PostMapping("upload")
-	public String uploadFile(@RequestParam("student-list-csv") MultipartFile file, Model model) {
-
-
-		if(file.isEmpty())
-		{
-			log.info("File is Empty");
-			model.addAttribute("message","Please Upload File");
-		}
-
-
-		else if(file.getSize()>=10*1024*1024)
-		{
-			log.info("File is Big");
-			model.addAttribute("message","Please Upload File less than 10 mb");
-		}
-
-		else if(!file.getContentType().equals("text/csv")){
-
-			model.addAttribute("message","Please Select CSV File");
-		}
-
-		else
-		{
-			String dis = "Type: "+file.getContentType();
-			dis+="\nName: "+file.getOriginalFilename();
-			model.addAttribute("message",dis);
-
-			CSVReader reader = new CSVReader();
-
-			try
-			{
-				Course c= new Course();
-				c.setCourseName("Advance SDC");
-				c.setCourseId("5308");
-				ArrayList<Student> students =  reader.readFile(file.getInputStream());
-
-				enrollStudentService=SystemConfig.instance().getEnrollStudentService();
-				if(enrollStudentService.enrollStudentsIntoCourse(students,c))
-				{
-					model.addAttribute("message","Students Enrolled");
-				}
-				else
-				{
-					model.addAttribute("message","Error Enrolling Students");
-				}
-
-
-
-			} catch (InvalidFileFormatException e)
-			{
-				e.printStackTrace();
-			} catch (IOException e)
-			{
-				e.printStackTrace();
-			}
-		}
-
-
-		return CatmeUtil.MANAGE_COURSE_PAGE;
-	}
-
 	@RequestMapping("forgotPassword")
 	public String forgotPassword()
 	{

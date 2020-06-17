@@ -35,6 +35,9 @@ public class CatmeUtil
 	public static final String FORGOT_PASSWORD_PAGE="forgot-password";
 	public static final String MANAGE_COURSE_PAGE ="manageCourse";
 	public static final String COURSE_PAGE="course";
+
+	//QuestionManager
+	public static final String QUESTION_MANAGER_HOME = "questions";
 	
 	//Landing pages
 	public static final String ADMIN_HOME="admin/dashboard";

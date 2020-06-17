@@ -1,0 +1,42 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Question Manager</title>
+    <style>
+        tr:hover{
+		color:black !important
+		}
+
+    </style>
+</head>
+<body>
+    <div th:insert="header"/>
+    <div class="container">
+        <h2 align="center">List of Questions</h2>
+        <div th:if="!${message}" class="container">
+            <table class="table">
+                <thead class="thead-dark">
+                <tr>
+                    <th>Title</th>
+                    <th>Question</th>
+                    <th>Date</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tbody th:each="questionTitle: ${questionTitles}">
+                <tr th:each="question: ${questionTitle.questions}">
+                    <td th:text="${questionTitle.questionTitle}"></td>
+                    <td th:text="${question.question}"></td>
+                    <td>16 JUN</td>
+                    <td>
+                        <button type="button" class="btn btn-danger">Delete</button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <h4 th:if="${questionTitles.empty}">No Questions Created</h4>
+        </div>
+        <h4 th:if="${message}" th:text="${message}" align="center"></h4>
+    </div>
+</body>
+</html>

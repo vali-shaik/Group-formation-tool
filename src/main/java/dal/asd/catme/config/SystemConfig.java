@@ -1,43 +1,13 @@
 package dal.asd.catme.config;
 
+import dal.asd.catme.dao.*;
+import dal.asd.catme.service.*;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import dal.asd.catme.dao.AdminDao;
-import dal.asd.catme.dao.CatmeDaoImpl;
-import dal.asd.catme.dao.CourseDaoImpl;
-import dal.asd.catme.dao.IAdminDao;
-import dal.asd.catme.dao.ICatmeDao;
-import dal.asd.catme.dao.ICourseDao;
-import dal.asd.catme.dao.IListDetailsDao;
-import dal.asd.catme.dao.IRoleDao;
-import dal.asd.catme.dao.IStudentDao;
-import dal.asd.catme.dao.IUserDao;
-import dal.asd.catme.dao.ListDetailsDao;
-import dal.asd.catme.dao.RoleDaoImpl;
-import dal.asd.catme.dao.StudentDaoImpl;
-import dal.asd.catme.dao.UserDaoImpl;
 import dal.asd.catme.database.DatabaseAccess;
-import dal.asd.catme.service.AdminService;
-import dal.asd.catme.service.CatmeServiceImpl;
-import dal.asd.catme.service.CourseServiceImpl;
-import dal.asd.catme.service.EnrollStudentService;
-import dal.asd.catme.service.IAdminService;
-import dal.asd.catme.service.ICatmeService;
-import dal.asd.catme.service.ICourseService;
-import dal.asd.catme.service.IEnrollStudentService;
-import dal.asd.catme.service.IListDetails;
-import dal.asd.catme.service.IMailSenderService;
-import dal.asd.catme.service.IPasswordResetService;
-import dal.asd.catme.service.IRoleService;
-import dal.asd.catme.service.IUserService;
-import dal.asd.catme.service.ListDetailsService;
-import dal.asd.catme.service.MailSenderService;
-import dal.asd.catme.service.PasswordResetService;
-import dal.asd.catme.service.RoleServiceImpl;
-import dal.asd.catme.service.UserServiceImpl;
 
 public class SystemConfig 
 {
@@ -61,8 +31,13 @@ public class SystemConfig
 	private DatabaseAccess databaseAccess;
 	private CatmeSecurityConfig catmeServiceConfig;
 	private PasswordEncoder passwordEncoder;
-	
-	
+
+	//question manager
+	private IQuestionDao questionDao;
+	private IListQuestionsService listQuestionsService;
+
+
+
 	public SystemConfig()
 	{
 		passwordEncoder=new BCryptPasswordEncoder();
@@ -84,6 +59,11 @@ public class SystemConfig
 		userService=new UserServiceImpl();
 		passwordResetService=new PasswordResetService();
 		enrollStudentService=new EnrollStudentService(userDao,roleDao,studentDao,mailSenderService);
+
+		//question manager
+
+		questionDao = new QuestionDaoImpl();
+		listQuestionsService = new ListQuestionsServiceImpl(questionDao);
 	}
 	
 	public static SystemConfig instance()
@@ -259,6 +239,16 @@ public class SystemConfig
 		this.enrollStudentService = enrollStudentService;
 	}
 
-	
+
+	//question manager
+	public IListQuestionsService getListQuestionsService()
+	{
+		return listQuestionsService;
+	}
+
+	public void setListQuestionsService(IListQuestionsService listQuestionsService)
+	{
+		this.listQuestionsService = listQuestionsService;
+	}
 	
 }
