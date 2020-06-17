@@ -48,6 +48,10 @@ public class DBQueriesUtil
     public static String ADD_USER_QUERY = "INSERT IGNORE INTO User (BannerId, FirstName, LastName, EmailId, Password) VALUES ( ? , ? , ? , ? , ? );";
     public static String GET_USER_QUERY = "SELECT * FROM User WHERE BannerId=?";
     public static String RESET_PASSWORD_QUERY = "UPDATE `User` SET `Password`=? WHERE `BannerId`=?";
+    
+    //QuestionDaoImpl
+    public static String CHECK_EXISTING_QUESTION_QUERY = "SELECT EXISTS(SELECT * FROM Question WHERE QuestionId = ? );";
+    public static String DELETE_QUESTION_QUERY = "DELETE FROM Question WHERE QuestionId = ? ;";
 
 
 
