@@ -14,6 +14,20 @@
     <div class="container">
         <h2 align="center">List of Questions</h2>
         <div th:if="!${message}" class="container">
+            <div class="form-group">
+                <form method="get" th:action="@{/questions/sort}">
+                    <label for="sort">Sort By:</label>
+                    <select class="" id="sort" name="with" onchange="this.form.submit()">
+                        <option>Title</option>
+                        <th:block th:if="${sortBy}==Date">
+                            <option selected>Date</option>
+                        </th:block>
+                        <th:block th:if="${sortBy}!=Date">
+                            <option>Date</option>
+                        </th:block>
+                    </select>
+                </form>
+            </div>
             <table class="table">
                 <thead class="thead-dark">
                 <tr>
@@ -27,7 +41,7 @@
                 <tr th:each="question: ${questionTitle.questions}">
                     <td th:text="${questionTitle.questionTitle}"></td>
                     <td th:text="${question.question}"></td>
-                    <td>16 JUN</td>
+                    <td th:text="*{#calendars.format(question.createdDate,'dd MMM yyyy')}"></td>
                     <td>
                         <button type="button" class="btn btn-danger">Delete</button>
                     </td>

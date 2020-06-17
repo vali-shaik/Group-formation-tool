@@ -35,6 +35,8 @@ text-decoration:none;
 <h2 th:text="${course.courseId}"></h2><h3 th:text="${course.courseName}"></h3>
 	<th:block th:if ="${isInstructor}">
         <button class="btn btn-lg buttonPrim"><a th:href = "@{/manageCourse(courseId=${course.courseId})}">Manage as Instructor</a></button>
+        <br><br>
+        <button class="btn btn-lg buttonPrim"><a th:href = "@{/questions}">Manage Questions</a></button>
     </th:block>
     <th:block th:if ="${isTa}">
         <button class="btn btn-lg buttonPrim"><a th:href = "@{/manageCourse(courseId=${course.courseId})}">Manage as TA</a></button>

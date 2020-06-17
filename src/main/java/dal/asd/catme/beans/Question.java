@@ -29,6 +29,14 @@ public class Question {
 	public void setOptionOrder(Map<Integer, String> optionOrder) {
 		this.optionWithOrder = optionOrder;
 	}
-	
 
+	public Date getCreatedDate()
+	{
+		return createdDate;
+	}
+
+	public void setCreatedDate(Date createdDate)
+	{
+		this.createdDate = createdDate;
+	}
 }
