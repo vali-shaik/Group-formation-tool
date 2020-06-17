@@ -6,6 +6,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import dal.asd.catme.database.DatabaseAccess;
+import dal.asd.catme.exception.CatmeException;
+import dal.asd.catme.util.DBQueriesUtil;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import dal.asd.catme.beans.User;
@@ -116,5 +119,101 @@ public class UserDaoImpl implements IUserDao{
 		return false;
 	}
 
+	public void generatePasswordResetToken(User u, String token) throws CatmeException
+	{
+		DatabaseAccess db = SystemConfig.instance().getDatabaseAccess();
+		Connection con = null;
+		try
+		{
+			con = db.getConnection();
 
+			PreparedStatement stmt = con.prepareStatement(GENERATE_PASSWORD_RESET_TOKEN);
+			stmt.setString(1,u.getBannerId());
+			stmt.setString(2,token);
+
+			stmt.executeUpdate();
+		} catch (SQLException throwables)
+		{
+			throwables.printStackTrace();
+			throw new CatmeException("Error Generating Token.. Try Again");
+		}
+		finally
+		{
+			try
+			{
+				con.close();
+			}
+			catch (SQLException | NullPointerException e)
+			{
+
+			}
+		}
+	}
+
+	public String readBannerIdFromToken(String token) throws CatmeException
+	{
+		DatabaseAccess db = SystemConfig.instance().getDatabaseAccess();
+		Connection con = null;
+		try
+		{
+			con = db.getConnection();
+
+			PreparedStatement stmt = con.prepareStatement(READ_BANNERID_FROM_TOKEN);
+			stmt.setString(1,token);
+
+			ResultSet rs = stmt.executeQuery();
+
+			if(!rs.next())
+			{
+				throw new CatmeException("Invalid Link");
+			}
+
+			return rs.getString(1);
+
+
+		} catch (SQLException throwables)
+		{
+			throw new CatmeException("Error Generating Token.. Try Again");
+		}
+		finally
+		{
+			try
+			{
+				con.close();
+			}
+			catch (SQLException | NullPointerException e)
+			{
+				return null;
+			}
+		}
+	}
+
+	public void removeToken(String bannerId)
+	{
+		DatabaseAccess db = SystemConfig.instance().getDatabaseAccess();
+		Connection con = null;
+		try
+		{
+			con = db.getConnection();
+
+			PreparedStatement stmt = con.prepareStatement(REMOVE_TOKEN);
+			stmt.setString(1,bannerId);
+
+			stmt.executeUpdate();
+
+
+		} catch (SQLException throwables)
+		{
+		}
+		finally
+		{
+			try
+			{
+				con.close();
+			}
+			catch (SQLException | NullPointerException e)
+			{
+			}
+		}
+	}
 }

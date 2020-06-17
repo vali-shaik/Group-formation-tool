@@ -57,8 +57,8 @@ public class SystemConfig
 		studentDao=new StudentDaoImpl();
 		userDao=new UserDaoImpl();
 		userService=new UserServiceImpl();
-		passwordResetService=new PasswordResetService();
-		enrollStudentService=new EnrollStudentService(userDao,roleDao,studentDao,mailSenderService);
+		passwordResetService=new PasswordResetService(userDao);
+		enrollStudentService=new EnrollStudentService(roleDao,studentDao);
 
 		//question manager
 

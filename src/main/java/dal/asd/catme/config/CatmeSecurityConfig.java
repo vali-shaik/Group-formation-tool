@@ -50,7 +50,7 @@ public class CatmeSecurityConfig extends WebSecurityConfigurerAdapter
 						.antMatchers("/questions").hasAnyAuthority(CatmeUtil.ROLE_INSTRUCTOR)
 						.antMatchers("/profile/ta/**").hasAnyAuthority(CatmeUtil.TA_ROLE)
 						.antMatchers("/courseDisplay/**").hasAnyAuthority(CatmeUtil.TA_ROLE,CatmeUtil.ROLE_INSTRUCTOR,CatmeUtil.STUDENT_ROLE)
-						.antMatchers("/login","/register","/forgotPassword","/signup").permitAll()
+						.antMatchers("/login","/register","/forgotPassword","/reset-password/**","/signup").permitAll()
 						.anyRequest().authenticated()
 			.and()
 				.formLogin()

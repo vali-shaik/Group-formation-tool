@@ -33,6 +33,7 @@ public class CatmeUtil
 	public static final String SIGNUP_PAGE = "signup";
 	public static final String SIGNEDUP_PAGE = "signedUp";
 	public static final String FORGOT_PASSWORD_PAGE="forgot-password";
+	public static final String RESET_PASSWORD_PAGE="reset-password";
 	public static final String MANAGE_COURSE_PAGE ="manageCourse";
 	public static final String COURSE_PAGE="course";
 
@@ -61,6 +62,7 @@ public class CatmeUtil
 	public static final String ROLE_NAME_FIELD = "RoleName";
 
 
+	public static final String USER_CREATED = "Successfully Signed Up.";
 
 
 	public static final int GUEST_ROLE_ID = 1;

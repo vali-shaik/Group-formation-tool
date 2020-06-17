@@ -7,5 +7,9 @@ public interface IPasswordResetService
 
     public boolean userExists(String bannerid);
 
-    public User resetPassword(String bannerid) ;
+    public User generateResetLink(String bannerid);
+
+    public String validateToken(String token);
+
+    public boolean resetPassword(String bannerid, String password);
 }

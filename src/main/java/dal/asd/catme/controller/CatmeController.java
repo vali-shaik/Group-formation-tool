@@ -46,9 +46,6 @@ public class CatmeController {
 
 	IRoleService roleService;
 
-	IPasswordResetService passwordResetService;
-
-	IMailSenderService mailSenderService;
 
 	IEnrollStudentService enrollStudentService;
 
@@ -176,35 +173,5 @@ public class CatmeController {
 		return CatmeUtil.LOGIN_PAGE;
 	}
 
-	@RequestMapping("forgotPassword")
-	public String forgotPassword()
-	{
-		return CatmeUtil.FORGOT_PASSWORD_PAGE;
-	}
-	@PostMapping("forgotPassword")
-	public String resetPassword(@RequestParam("bannerid") String bannerid,Model model)
-	{
-		System.out.println("Reseting password");
-		passwordResetService=SystemConfig.instance().getPasswordResetService();
-		User u = passwordResetService.resetPassword(bannerid);
-
-		if(u==null)
-		{
-			model.addAttribute("message","User does not exist");
-			return CatmeUtil.FORGOT_PASSWORD_PAGE;
-		}
-
-		try
-		{
-			mailSenderService=SystemConfig.instance().getMailSenderService();
-			mailSenderService.sendNewPassword(u);
-			model.addAttribute("success","Password Updated Successfully");
-			return CatmeUtil.FORGOT_PASSWORD_PAGE;
-		} catch (MessagingException e)
-		{
-			model.addAttribute("message","Error sending mail. Try again");
-			return CatmeUtil.FORGOT_PASSWORD_PAGE;
-		}
-	}
 
 }

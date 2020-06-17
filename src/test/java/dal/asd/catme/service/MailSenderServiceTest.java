@@ -3,9 +3,12 @@ package dal.asd.catme.service;
 import dal.asd.catme.beans.Course;
 import dal.asd.catme.beans.Student;
 
+import static dal.asd.catme.util.MailSenderUtil.TOKEN_LENGTH;
 import static  org.junit.jupiter.api.Assertions.*;
 
+import dal.asd.catme.beans.User;
 import dal.asd.catme.mock.JavaMailSenderMock;
+import dal.asd.catme.util.RandomTokenGenerator;
 import org.junit.jupiter.api.Test;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
@@ -35,7 +38,7 @@ public class MailSenderServiceTest
 	}
     
     @Test
-    void getFormattedEmailForNewStudent()
+    void getFormattedEmailForNewStudentTest()
     {
 
         MailSenderService mailSenderService = new MailSenderService(new JavaMailSenderImpl());
@@ -52,6 +55,33 @@ public class MailSenderServiceTest
         catch (MailException e)
         {
             e.printStackTrace();
+        }
+    }
+
+    @Test
+    void getFormattedEmailForForgotPasswordTest()
+    {
+        MailSenderService mailSenderService = new MailSenderService(new JavaMailSenderImpl());
+
+        User u = new User();
+        u.setBannerId("B00000000");
+        u.setPassword(RandomTokenGenerator.generateRandomPassword(TOKEN_LENGTH));
+        u.setFirstName("Test");
+
+        assertNotNull(mailSenderService.getFormattedEmailForForgotPassword(u));
+
+        User u1 = new User();
+        u1.setBannerId("B00000000");
+        u1.setPassword(RandomTokenGenerator.generateRandomPassword(TOKEN_LENGTH));
+
+        try{
+
+            assertNotNull(mailSenderService.getFormattedEmailForForgotPassword(u1));
+            fail();
+        }
+        catch (NullPointerException n)
+        {
+
         }
     }
 

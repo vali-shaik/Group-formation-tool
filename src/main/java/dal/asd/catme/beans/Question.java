@@ -7,6 +7,8 @@ import java.util.TreeMap;
 public class Question {
 	
 	String question;
+	String questionTitle;
+	int questionId;
 	String questionType;
 	Map<Integer,String> optionWithOrder = new TreeMap<Integer,String>();
 	Date createdDate;
@@ -38,5 +40,25 @@ public class Question {
 	public void setCreatedDate(Date createdDate)
 	{
 		this.createdDate = createdDate;
+	}
+
+	public String getQuestionTitle()
+	{
+		return questionTitle;
+	}
+
+	public void setQuestionTitle(String questionTitle)
+	{
+		this.questionTitle = questionTitle;
+	}
+
+	public int getQuestionId()
+	{
+		return questionId;
+	}
+
+	public void setQuestionId(int questionId)
+	{
+		this.questionId = questionId;
 	}
 }

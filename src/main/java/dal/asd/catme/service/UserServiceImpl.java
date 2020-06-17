@@ -7,6 +7,7 @@ import dal.asd.catme.beans.User;
 import dal.asd.catme.config.SystemConfig;
 import dal.asd.catme.dao.IUserDao;
 import dal.asd.catme.database.DatabaseAccess;
+import dal.asd.catme.util.CatmeUtil;
 
 public class UserServiceImpl implements IUserService{
 	
@@ -29,7 +30,7 @@ public class UserServiceImpl implements IUserService{
 		try {
 			userDao=SystemConfig.instance().getUserDao();
 			if (1 == userDao.addUser(user,con)){
-				isUserAdded = "Successfully Signed Up.";
+				isUserAdded = CatmeUtil.USER_CREATED;
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

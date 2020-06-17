@@ -1,5 +1,6 @@
 package dal.asd.catme.controller;
 
+import dal.asd.catme.beans.Question;
 import dal.asd.catme.beans.QuestionTitle;
 import dal.asd.catme.beans.User;
 import dal.asd.catme.config.SystemConfig;
@@ -44,8 +45,8 @@ public class QuestionManagerController
         try
         {
             listQuestionsService.getQuestions(currentUser.getBannerId());
-            List<QuestionTitle> questionList = listQuestionsService.sortByTitle();
-            questionsPage.addObject("questionTitles",questionList);
+            List<Question> questionList = listQuestionsService.sortByTitle();
+            questionsPage.addObject("questions",questionList);
 
         }
         catch (QuestionDatabaseException e)
@@ -66,7 +67,7 @@ public class QuestionManagerController
         questionsPage.setViewName(CatmeUtil.QUESTION_MANAGER_HOME);
 
 
-        List<QuestionTitle> questionList;
+        List<Question> questionList;
         if(sortBy.equalsIgnoreCase("Date"))
         {
             questionList = listQuestionsService.sortByDate();
@@ -75,7 +76,7 @@ public class QuestionManagerController
         {
             questionList = listQuestionsService.sortByTitle();
         }
-        questionsPage.addObject("questionTitles",questionList);
+        questionsPage.addObject("questions",questionList);
         questionsPage.addObject("sortBy",sortBy);
 
         return questionsPage;

@@ -2,13 +2,14 @@ package dal.asd.catme.studentlistimport;
 
 import dal.asd.catme.beans.Student;
 import dal.asd.catme.exception.InvalidFileFormatException;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
-public class CSVReader
+public class CSVReader implements ICSVReader
 {
     static int BANNERID = 0;
     static int LASTNAME = 1;
@@ -18,6 +19,7 @@ public class CSVReader
     static int BANNERID_LENGTH = 9;
     static int CSV_COLUMNS = 4;
 
+    @Override
     public ArrayList<Student> readFile(InputStream inputStream) throws InvalidFileFormatException, FileNotFoundException, IOException
     {
 
@@ -68,6 +70,7 @@ public class CSVReader
                 validEmailId(parts[EMAILID]);
     }
 
+    @Override
     public boolean validBannerId(String bannerId)
     {
         //remove whitespace
@@ -97,6 +100,7 @@ public class CSVReader
         return true;
     }
 
+    @Override
     public boolean validNames(String firstname, String lastname)
     {
 
@@ -115,6 +119,7 @@ public class CSVReader
         return true;
     }
 
+    @Override
     public boolean validEmailId(String emailId)
     {
         emailId = emailId.trim();
@@ -127,5 +132,25 @@ public class CSVReader
         }
 
         return true;
+    }
+
+    @Override
+    public void validateFile(MultipartFile file) throws InvalidFileFormatException
+    {
+        if(file.isEmpty())
+        {
+            throw new InvalidFileFormatException("Please Upload File");
+        }
+
+
+        else if(file.getSize()>=10*1024*1024)
+        {
+            throw new InvalidFileFormatException("Please Upload File less than 10 mb");
+        }
+
+        else if(!file.getContentType().equals("text/csv"))
+        {
+            throw new InvalidFileFormatException("Please Select CSV File");
+        }
     }
 }

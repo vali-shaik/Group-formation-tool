@@ -16,7 +16,7 @@ public interface IEnrollStudentService
 
     public void assignStudentRole(User student) throws EnrollmentException;
 
-    public void createNewStudent(User student) throws EnrollmentException;
-
-    public void sendCredentials(User student, Course c) throws MailException;
+//    public void createNewStudent(User student) throws EnrollmentException;
+//
+//    public void sendCredentials(User student, Course c) throws MailException;
 }

@@ -1,19 +1,16 @@
 package dal.asd.catme.service;
 
-import dal.asd.catme.beans.Instructor;
 import dal.asd.catme.beans.Question;
-import dal.asd.catme.beans.QuestionTitle;
 import dal.asd.catme.dao.IQuestionDao;
 import dal.asd.catme.exception.QuestionDatabaseException;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 public class ListQuestionsServiceImpl implements IListQuestionsService
 {
     IQuestionDao questionDao;
-    List<QuestionTitle> questionTitles;
+    List<Question> questions;
 
     public ListQuestionsServiceImpl(IQuestionDao questionDao)
     {
@@ -21,31 +18,28 @@ public class ListQuestionsServiceImpl implements IListQuestionsService
     }
 
     @Override
-    public List<QuestionTitle> getQuestions(String instructor) throws QuestionDatabaseException
+    public List<Question> getQuestions(String instructor) throws QuestionDatabaseException
     {
-        this.questionTitles = questionDao.getQuestionTitles(instructor);
-        return questionTitles;
+        this.questions = questionDao.getQuestionTitles(instructor);
+        return questions;
     }
 
     @Override
-    public List<QuestionTitle> sortByDate()
+    public List<Question> sortByDate()
     {
-        for(QuestionTitle questionTitle: questionTitles)
-        {
-            Collections.sort(questionTitle.getQuestions(),(question1, question2) ->{
-                return (question1.getCreatedDate().compareTo(question2.getCreatedDate()));
-            } );
-        }
-        return questionTitles;
+        Collections.sort(questions,(question1, question2) ->{
+            return (question1.getCreatedDate().compareTo(question2.getCreatedDate()));
+        } );
+        return questions;
     }
 
     @Override
-    public List<QuestionTitle> sortByTitle()
+    public List<Question> sortByTitle()
     {
-        Collections.sort(questionTitles,(questionTitle1, questionTitle2) -> {
-            return questionTitle1.getQuestionTitle().compareTo(questionTitle2.getQuestionTitle());
+        Collections.sort(questions,(question1, question2) -> {
+            return question1.getQuestionTitle().compareTo(question2.getQuestionTitle());
         } );
 
-        return questionTitles;
+        return questions;
     }
 }

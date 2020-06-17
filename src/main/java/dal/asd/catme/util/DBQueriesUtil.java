@@ -48,6 +48,23 @@ public class DBQueriesUtil
     public static String ADD_USER_QUERY = "INSERT IGNORE INTO User (BannerId, FirstName, LastName, EmailId, Password) VALUES ( ? , ? , ? , ? , ? );";
     public static String GET_USER_QUERY = "SELECT * FROM User WHERE BannerId=?";
     public static String RESET_PASSWORD_QUERY = "UPDATE `User` SET `Password`=? WHERE `BannerId`=?";
+    public static String GENERATE_PASSWORD_RESET_TOKEN = "insert into PasswordResetTokens (BannerId ,Token ) values(?,?);";
+    public static String READ_BANNERID_FROM_TOKEN = "select BannerId from PasswordResetTokens where Token =?;";
+    public static String REMOVE_TOKEN = "delete from PasswordResetTokens where BannerId =?;";
+
+    //QuestionDao
+//    public static String GET_QUESTIONS = "select QuestionId, QuestionTitleText, QuestionText, QuestionType, CreatedDate from CourseInstructor join\n" +
+//            "(\n" +
+//            "\tselect * from Survey join\n" +
+//            "\t(\n" +
+//            "\t\tselect * from SurveyQuestion join\n" +
+//            "\t\t(\n" +
+//            "\t\t\tselect * from Question join(QuestionTitle) using(QuestionTitleId)\n" +
+//            "\t\t) as q using(QuestionId)\n" +
+//            "\t) as s using(SurveyId)\n" +
+//            ") as c using(CourseInstructorId) where CourseInstructorId=?;";
+
+    public static String GET_QUESTIONS = "CALL GetQuestionsList(?)";
 
 
 
