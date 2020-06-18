@@ -101,7 +101,8 @@ background-color: #333
   <input class="form-control" type="text" id="lname" name="lname" required th:field="*{lastName}" placeholder = "Last name"> <br>
   <input class="form-control" type="text" id="bannerid" name="bannerid" required th:field="*{bannerId}" placeholder = "Banner Id"> <br>
   <input class="form-control" type="email" id="emailid" name="emailid" required th:field="*{email}" placeholder = "Email"> <br>
-  <input class="form-control" type="password" id="password" name="password" required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Min Length: 8 including UpperCase, LowerCase and Number" th:field="*{password}" placeholder = "Password"><br>
+  <!-- <input class="form-control" type="password" id="password" name="password" required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Min Length: 8 including UpperCase, LowerCase and Number" th:field="*{password}" placeholder = "Password"><br> -->
+  <input class="form-control" type="password" id="password" name="password" th:field="*{password}" placeholder = "Password"><br>
   <input class="form-control" type="password" id="confirmpassword" name="confirmpassword" required oninput="validatePassword()" placeholder = "Confirm Password"><br>
   <input type="submit" value="Submit" class="btn btn-lg btn-primary btn-block">
 </form> 

@@ -52,19 +52,12 @@ public class DBQueriesUtil
     public static String READ_BANNERID_FROM_TOKEN = "select BannerId from PasswordResetTokens where Token =?;";
     public static String REMOVE_TOKEN = "delete from PasswordResetTokens where BannerId =?;";
 
-    //QuestionDao
-//    public static String GET_QUESTIONS = "select QuestionId, QuestionTitleText, QuestionText, QuestionType, CreatedDate from CourseInstructor join\n" +
-//            "(\n" +
-//            "\tselect * from Survey join\n" +
-//            "\t(\n" +
-//            "\t\tselect * from SurveyQuestion join\n" +
-//            "\t\t(\n" +
-//            "\t\t\tselect * from Question join(QuestionTitle) using(QuestionTitleId)\n" +
-//            "\t\t) as q using(QuestionId)\n" +
-//            "\t) as s using(SurveyId)\n" +
-//            ") as c using(CourseInstructorId) where CourseInstructorId=?;";
 
     public static String GET_QUESTIONS = "CALL GetQuestionsList(?)";
+    
+    //QuestionDaoImpl
+    public static String CHECK_EXISTING_QUESTION_QUERY = "SELECT EXISTS(SELECT * FROM Question WHERE QuestionId = ? );";
+    public static String DELETE_QUESTION_QUERY = "DELETE FROM Question WHERE QuestionId = ? ;";
 
 
 

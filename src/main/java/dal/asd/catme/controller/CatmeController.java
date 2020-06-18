@@ -1,41 +1,26 @@
 package dal.asd.catme.controller;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
-import javax.mail.MessagingException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 
-import dal.asd.catme.beans.Course;
 import dal.asd.catme.beans.Enrollment;
-import dal.asd.catme.beans.Student;
 import dal.asd.catme.beans.User;
 import dal.asd.catme.config.CatmeSecurityConfig;
 import dal.asd.catme.config.SystemConfig;
-import dal.asd.catme.dao.CourseDaoImpl;
 import dal.asd.catme.exception.CatmeException;
-import dal.asd.catme.exception.InvalidFileFormatException;
-import dal.asd.catme.service.IEnrollStudentService;
-import dal.asd.catme.service.IMailSenderService;
-import dal.asd.catme.service.IPasswordResetService;
 import dal.asd.catme.service.IRoleService;
 import dal.asd.catme.service.IUserService;
-import dal.asd.catme.studentlistimport.CSVReader;
 import dal.asd.catme.util.CatmeUtil;
-
 
 @Controller
 @RequestMapping("/")
@@ -45,11 +30,6 @@ public class CatmeController {
 	IUserService userService;
 
 	IRoleService roleService;
-
-
-	IEnrollStudentService enrollStudentService;
-
-	CourseDaoImpl courseDao;
 
 
 	CatmeSecurityConfig catmeServiceConfig;
@@ -165,11 +145,13 @@ public class CatmeController {
 		return page;
 	}
 
+	
 	//Displaying Login page for authentication
 	@RequestMapping("login")
 	public String loginPage()
 	{
 		log.info("Redirected to Login page");
+		System.out.println("####System Environment Vars: "+System.getenv());
 		return CatmeUtil.LOGIN_PAGE;
 	}
 

@@ -46,18 +46,18 @@ public class ForgotPasswordController
             return CatmeUtil.FORGOT_PASSWORD_PAGE;
         }
 
-//        try
-//        {
-//            mailSenderService=SystemConfig.instance().getMailSenderService();
-//            mailSenderService.sendResetLink(u);
+        try
+        {
+            mailSenderService=SystemConfig.instance().getMailSenderService();
+            mailSenderService.sendResetLink(u);
             model.addAttribute("success","Link Sent Successfully");
             return CatmeUtil.FORGOT_PASSWORD_PAGE;
-//        }
-//        catch (MessagingException e)
-//        {
-//            model.addAttribute("message","Error sending mail. Try again");
-//            return CatmeUtil.FORGOT_PASSWORD_PAGE;
-//        }
+        }
+        catch (MessagingException e)
+        {
+            model.addAttribute("message","Error sending mail. Try again");
+            return CatmeUtil.FORGOT_PASSWORD_PAGE;
+        }
     }
 
     @GetMapping("reset-password")

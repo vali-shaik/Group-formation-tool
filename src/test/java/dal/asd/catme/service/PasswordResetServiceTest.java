@@ -56,11 +56,18 @@ class PasswordResetServiceTest
         try
         {
             service.resetPassword("B00121212","ABCD");
-            service.resetPassword("B00121212",null);
         } catch (CatmeException e)
         {
-            fail();
             e.printStackTrace();
+            fail();
+        }
+        try{
+
+            service.resetPassword("B00121212",null);
+            fail();
+        }catch (CatmeException e)
+        {
+
         }
     }
 

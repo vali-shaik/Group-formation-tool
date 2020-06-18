@@ -5,14 +5,12 @@ import java.util.Map;
 import java.util.TreeMap;
 
 public class Question {
-	
+	int questionId;
 	String question;
 	String questionTitle;
-	int questionId;
 	String questionType;
 	Map<Integer,String> optionWithOrder = new TreeMap<Integer,String>();
 	Date createdDate;
-	
 	public String getQuestion() {
 		return question;
 	}

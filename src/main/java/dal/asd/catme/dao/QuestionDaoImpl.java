@@ -16,10 +16,12 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class QuestionDaoImpl implements IQuestionDao
 {
     DatabaseAccess db;
     Connection con;
+
     public QuestionDaoImpl()
     {
     }
@@ -41,11 +43,11 @@ public class QuestionDaoImpl implements IQuestionDao
         {
             con = db.getConnection();
             PreparedStatement stmt = con.prepareStatement(DBQueriesUtil.GET_QUESTIONS);
-            stmt.setString(1,instructor);
+            stmt.setString(1, instructor);
 
             ResultSet rs = stmt.executeQuery();
 
-            while(rs.next())
+            while (rs.next())
             {
                 Question q = new Question();
                 q.setQuestionId(rs.getInt(QUESTIONID));
@@ -58,106 +60,61 @@ public class QuestionDaoImpl implements IQuestionDao
             }
 
             return questionList;
-        }
-        catch (SQLException throwables)
+        } catch (SQLException throwables)
         {
-                throw new QuestionDatabaseException("Error Getting Questions");
-        }
-        finally
+            throw new QuestionDatabaseException("Error Getting Questions");
+        } finally
         {
             try
             {
                 con.close();
-            }
-            catch (SQLException|NullPointerException throwables)
+            } catch (SQLException | NullPointerException throwables)
             {
                 throw new QuestionDatabaseException("Error Getting Questions");
             }
         }
     }
 
-    private List<Question> getQuestions()
+    @Override
+    public int deleteQuestion(int questionId, Connection con)
     {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-
-        List<Question> ret = new ArrayList<>();
+        // TODO Auto-generated method stub
+        int questionDeleted = 0;
         try
         {
-
-            Question q31 = new Question();
-            q31.setQuestionTitle("Title 3");
-            q31.setQuestion("Question 1 of Title 3");
-            q31.setCreatedDate(dateFormat.parse("25-10-2020"));
-
-            Question q32 = new Question();
-            q32.setQuestionTitle("Title 3");
-            q32.setQuestion("Question 2 of Title 3");
-            q32.setCreatedDate(dateFormat.parse("27-10-2020"));
-
-            Question q33 = new Question();
-            q33.setQuestionTitle("Title 3");
-            q33.setQuestion("Question 3 of Title 3");
-            q33.setCreatedDate(dateFormat.parse("29-10-2020"));
-
-            ret.add(q31);
-            ret.add(q32);
-            ret.add(q33);
-
-
-
-
-            Question q11 = new Question();
-            q11.setQuestionTitle("Title 1");
-            q11.setQuestion("Question 1 of Title 1");
-
-            q11.setCreatedDate(dateFormat.parse("22-10-2020"));
-
-
-            Question q12 = new Question();
-            q12.setQuestionTitle("Title 1");
-            q12.setQuestion("Question 2 of Title 1");
-            q12.setCreatedDate(dateFormat.parse("23-10-2020"));
-
-            Question q13 = new Question();
-            q13.setQuestionTitle("Title 1");
-            q13.setQuestion("Question 3 of Title 1");
-            q13.setCreatedDate(dateFormat.parse("21-10-2020"));
-
-            ret.add(q11);
-            ret.add(q12);
-            ret.add(q13);
-
-
-
-
-            Question q21 = new Question();
-
-            q21.setQuestionTitle("Title 2");
-            q21.setQuestion("Question 1 of Title 2");
-            q21.setCreatedDate(dateFormat.parse("18-10-2020"));
-
-            Question q22 = new Question();
-            q22.setQuestionTitle("Title 2");
-            q22.setQuestion("Question 2 of Title 2");
-            q22.setCreatedDate(dateFormat.parse("17-10-2020"));
-
-            Question q23 = new Question();
-            q23.setQuestionTitle("Title 2");
-            q23.setQuestion("Question 3 of Title 2");
-            q23.setCreatedDate(dateFormat.parse("16-10-2020"));
-
-            ret.add(q21);
-            ret.add(q22);
-            ret.add(q23);
-
-
-
-
-        } catch (ParseException e)
+            if (0 != checkExistingQuestion(questionId, con))
+            {
+                PreparedStatement stmt = con.prepareStatement(DBQueriesUtil.DELETE_QUESTION_QUERY);
+                stmt.setInt(1, questionId);
+                stmt.executeUpdate();
+                questionDeleted = 1;
+            }
+        } catch (Exception e)
         {
+            // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
-        return ret;
+        return questionDeleted;
+    }
+
+    @Override
+    public int checkExistingQuestion(int questionId, Connection con)
+    {
+        // TODO Auto-generated method stub
+        int rowCount = 0;
+        try
+        {
+            PreparedStatement stmt = con.prepareStatement(DBQueriesUtil.CHECK_EXISTING_QUESTION_QUERY);
+            stmt.setInt(1, questionId);
+            ResultSet rs = stmt.executeQuery();
+
+            rs.next();
+            rowCount = rs.getInt(1);
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        return rowCount;
     }
 }

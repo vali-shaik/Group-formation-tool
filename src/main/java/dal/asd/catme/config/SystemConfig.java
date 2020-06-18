@@ -2,8 +2,6 @@ package dal.asd.catme.config;
 
 import dal.asd.catme.dao.*;
 import dal.asd.catme.service.*;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -38,6 +36,9 @@ public class SystemConfig
 
 
 
+	private IPasswordRulesConfig passwordEnforcementConfig;
+	
+
 	public SystemConfig()
 	{
 		passwordEncoder=new BCryptPasswordEncoder();
@@ -64,6 +65,9 @@ public class SystemConfig
 
 		questionDao = new QuestionDaoImpl();
 		listQuestionsService = new ListQuestionsServiceImpl(questionDao);
+		passwordResetService= new PasswordResetService(userDao);
+		enrollStudentService=new EnrollStudentService(roleDao,studentDao);
+		passwordEnforcementConfig=new PasswordRulesConfigImpl();
 	}
 	
 	public static SystemConfig instance()
@@ -250,5 +254,14 @@ public class SystemConfig
 	{
 		this.listQuestionsService = listQuestionsService;
 	}
+	public IPasswordRulesConfig getPasswordEnforcementConfig() {
+		return passwordEnforcementConfig;
+	}
+
+	public void setPasswordEnforcementConfig(IPasswordRulesConfig passwordEnforcementConfig) {
+		this.passwordEnforcementConfig = passwordEnforcementConfig;
+	}
+
+
 	
 }
