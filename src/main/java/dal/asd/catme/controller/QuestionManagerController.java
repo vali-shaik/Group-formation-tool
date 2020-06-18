@@ -44,7 +44,7 @@ private String[] questionTypes;
 	}
 	
 	@RequestMapping("questionType")
-	public String createQuestionType(@ModelAttribute Question question,Model model) 
+	public String createQuestionType(@ModelAttribute Question question) 
 	{
 		System.out.println("##before : "+question.toString());
 		logger.info("****QuestionManagerController - createQuestionType Invoked*****");
@@ -56,7 +56,7 @@ private String[] questionTypes;
 		System.out.println("##Options  : "+options.toString());
 		question.setOptionWithOrder(options);
 		System.out.println("##before : "+question.toString());
-		model.addAttribute("quesiton",question);
+		//model.addAttribute("quesiton",question);
 		return "optionEditor";
 		
 	}

@@ -6,17 +6,18 @@
 </head>
 <body>
 	<div th:insert="header"></div>
+	<br><br><br>
 		<div align="center">
 		<form  th:action="@{/question/addQuestion}" th:object="${question}" method="post">
-		    <div><p th:text="${question.questionText}"/></div>
 			<table>
 			<tbody>
 			 			
 					<tr th:each="option, itemStat : *{optionWithOrder}">
+					<td>
+					<label>Display Text:</label><input th:field="*{optionWithOrder[__${itemStat.index}__].displayText}" value="${option.displayText}"/></td>
 					
-					<td><input th:field="*{optionWithOrder[__${itemStat.index}__].displayText}" value="${option.displayText}"/></td>
-					
-					<td><input th:field="*{optionWithOrder[__${itemStat.index}__].storedAs}" value="${option.storedAs}"/></td>
+					<td>
+					<label>Stored As:</label><input th:field="*{optionWithOrder[__${itemStat.index}__].storedAs}" value="${option.storedAs}"/></td>
 					
 					</tr> 
 					
@@ -28,6 +29,8 @@
 		    <div style="margin-top:30px">
 		    <button>Create Question</button>
 		    </div>
+		    	<input type="hidden" th:field="*{questionText}"  value = "${questionText}">
+				<input type="hidden" th:field="*{questionType}"  value = "${questionType}">
 		 </form>
 	    </div>
 </body>
