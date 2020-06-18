@@ -123,7 +123,6 @@ public class UserDaoImpl implements IUserDao{
 			deleteOverLimitPasswords(u.getBannerId());
 
 			System.out.println("Password Reset Successful");
-//			System.out.println("Status of Password Update");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

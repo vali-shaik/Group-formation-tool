@@ -149,54 +149,47 @@ public class CourseController
 	{
 		ModelAndView model = new ModelAndView();
 
-//			String dis = "Type: "+file.getContentType();
-//			dis+="\nName: "+file.getOriginalFilename();
-//			model.addAttribute("message",dis);
+		CSVReader reader = new CSVReader();
 
-			CSVReader reader = new CSVReader();
+		try
+		{
+			reader.validateFile(file);
+			Course c= new Course();
+			c.setCourseId(courseId);
+			ArrayList<Student> students =  reader.readFile(file.getInputStream());
 
-			try
+			userService = SystemConfig.instance().getUserService();
+			enrollStudentService=SystemConfig.instance().getEnrollStudentService();
+			mailSenderService=SystemConfig.instance().getMailSenderService();
+
+			for(Student s: students)
 			{
-				reader.validateFile(file);
-				Course c= new Course();
-				c.setCourseId(courseId);
-				ArrayList<Student> students =  reader.readFile(file.getInputStream());
-
-				userService = SystemConfig.instance().getUserService();
-				enrollStudentService=SystemConfig.instance().getEnrollStudentService();
-				mailSenderService=SystemConfig.instance().getMailSenderService();
-
-				for(Student s: students)
+				s.setPassword(RandomTokenGenerator.generateRandomPassword(TOKEN_LENGTH));
+				if(userService.addUser(s).equals(CatmeUtil.USER_CREATED))
 				{
-					s.setPassword(RandomTokenGenerator.generateRandomPassword(TOKEN_LENGTH));
-					if(userService.addUser(s).equals(CatmeUtil.USER_CREATED))
-					{
-						mailSenderService.sendCredentialsToStudent(s,c);
-					}
+					mailSenderService.sendCredentialsToStudent(s,c);
 				}
-				
-				if(enrollStudentService.enrollStudentsIntoCourse(students,c))
-				{
-					model.addObject("message","Students Enrolled");
-				}
-				else
-				{
-					model.addObject("message","Error Enrolling Students");
-				}
-
-
-
-			} catch (InvalidFileFormatException e)
-			{
-				model.addObject("message",e.getMessage());
 			}
-			catch (IOException e)
+
+			if(enrollStudentService.enrollStudentsIntoCourse(students,c))
 			{
-				e.printStackTrace();
-			} catch (MessagingException e)
-			{
-				model.addObject("message",e.getMessage());
+				model.addObject("message","Students Enrolled");
 			}
+			else
+			{
+				model.addObject("message","Error Enrolling Students");
+			}
+		} catch (InvalidFileFormatException e)
+		{
+			model.addObject("message",e.getMessage());
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		} catch (MessagingException e)
+		{
+			model.addObject("message",e.getMessage());
+		}
 		model.setViewName(CatmeUtil.MANAGE_COURSE_PAGE);
 		return model;
 	}

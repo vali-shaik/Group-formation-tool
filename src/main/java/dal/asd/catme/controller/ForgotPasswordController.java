@@ -36,6 +36,7 @@ public class ForgotPasswordController
     {
         return CatmeUtil.FORGOT_PASSWORD_PAGE;
     }
+
     @PostMapping("forgotPassword")
     public String resetPassword(@RequestParam("bannerid") String bannerid, Model model)
     {
