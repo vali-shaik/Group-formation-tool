@@ -3,19 +3,17 @@ package dal.asd.catme.service;
 import dal.asd.catme.beans.Course;
 import dal.asd.catme.beans.Student;
 
-import static dal.asd.catme.util.MailSenderUtil.RESETLINK;
 import static dal.asd.catme.util.MailSenderUtil.TOKEN_LENGTH;
 import static  org.junit.jupiter.api.Assertions.*;
 
 import dal.asd.catme.beans.User;
-import dal.asd.catme.mock.JavaMailSenderMock;
+import dal.asd.catme.dao.JavaMailSenderMock;
 import dal.asd.catme.util.RandomTokenGenerator;
 import org.junit.jupiter.api.Test;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 
 import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
 
 public class MailSenderServiceTest
 {

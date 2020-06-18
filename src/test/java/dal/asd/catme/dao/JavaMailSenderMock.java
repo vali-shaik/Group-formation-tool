@@ -1,4 +1,4 @@
-package dal.asd.catme.mock;
+package dal.asd.catme.dao;
 
 import dal.asd.catme.beans.User;
 import org.springframework.mail.MailException;

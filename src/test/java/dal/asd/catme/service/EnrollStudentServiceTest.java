@@ -11,12 +11,10 @@ import dal.asd.catme.beans.Student;
 import dal.asd.catme.beans.User;
 import dal.asd.catme.dao.IRoleDao;
 import dal.asd.catme.dao.IStudentDao;
-import dal.asd.catme.dao.IUserDao;
 import dal.asd.catme.dao.RoleDaoMock;
 import dal.asd.catme.exception.EnrollmentException;
-import dal.asd.catme.mock.JavaMailSenderMock;
-import dal.asd.catme.mock.StudentDaoMock;
-import dal.asd.catme.mock.UserDaoMock;
+import dal.asd.catme.dao.JavaMailSenderMock;
+import dal.asd.catme.dao.StudentDaoMock;
 import dal.asd.catme.util.CatmeUtil;
 
 class EnrollStudentServiceTest
