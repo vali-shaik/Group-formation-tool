@@ -1,5 +1,21 @@
 package dal.asd.catme.service;
 
+import static dal.asd.catme.util.MailSenderUtil.FORGOT_PASSWORD_EMAIL_SUBJECT;
+import static dal.asd.catme.util.MailSenderUtil.HOST;
+import static dal.asd.catme.util.MailSenderUtil.NEW_STUDENT_EMAIL_SUBJECT;
+import static dal.asd.catme.util.MailSenderUtil.PASSWORD;
+import static dal.asd.catme.util.MailSenderUtil.PATH_TO_FORGOT_PASSWORD_TEMPLATE;
+import static dal.asd.catme.util.MailSenderUtil.PATH_TO_NEW_STUDENT_TEMPLATE;
+import static dal.asd.catme.util.MailSenderUtil.PORT;
+import static dal.asd.catme.util.MailSenderUtil.RESETLINK;
+import static dal.asd.catme.util.MailSenderUtil.STARTTLS_ENABLE;
+import static dal.asd.catme.util.MailSenderUtil.TEMPLATE_BANNERID;
+import static dal.asd.catme.util.MailSenderUtil.TEMPLATE_COURSE;
+import static dal.asd.catme.util.MailSenderUtil.TEMPLATE_PASSWORD;
+import static dal.asd.catme.util.MailSenderUtil.TEMPLATE_RESETLINK;
+import static dal.asd.catme.util.MailSenderUtil.TEMPLATE_USERNAME;
+import static dal.asd.catme.util.MailSenderUtil.USERNAME;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -10,17 +26,13 @@ import java.util.Properties;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.MailException;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 
 import dal.asd.catme.beans.Course;
 import dal.asd.catme.beans.Student;
 import dal.asd.catme.beans.User;
-import static dal.asd.catme.util.MailSenderUtil.*;
-import dal.asd.catme.util.CatmeUtil;
 
 public class MailSenderService implements IMailSenderService
 {

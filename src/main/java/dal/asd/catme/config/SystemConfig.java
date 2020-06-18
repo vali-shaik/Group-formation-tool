@@ -2,6 +2,9 @@ package dal.asd.catme.config;
 
 import dal.asd.catme.dao.*;
 import dal.asd.catme.service.*;
+import dal.asd.catme.studentlistimport.CSVReader;
+import dal.asd.catme.studentlistimport.ICSVReader;
+
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -29,17 +32,19 @@ public class SystemConfig
 	private DatabaseAccess databaseAccess;
 	private CatmeSecurityConfig catmeServiceConfig;
 	private PasswordEncoder passwordEncoder;
+	private ICSVReader csvReaderImpl;
 
 	//question manager
 	private IQuestionDao questionDao;
 	private IListQuestionsService listQuestionsService;
-
+	private IQuestionManagerService questionManagerService;
 	private IPasswordRulesConfig passwordEnforcementConfig;
 	private IPasswordPolicyCheckerService passwordPolicyCheckerService;
 	
 
 	public SystemConfig()
 	{
+		questionManagerService=new QuestionManagerServiceImpl();
 		passwordEncoder=new BCryptPasswordEncoder();
 		catmeServiceConfig=new CatmeSecurityConfig();
 		databaseAccess=new DatabaseAccess();
@@ -67,8 +72,8 @@ public class SystemConfig
 		passwordResetService= new PasswordResetService(userDao);
 		enrollStudentService=new EnrollStudentService(roleDao,studentDao);
 		passwordEnforcementConfig=new PasswordRulesConfigImpl();
-
 		passwordPolicyCheckerService = new PasswordPolicyCheckerImpl();
+		csvReaderImpl=new CSVReader();
 	}
 	
 	public static SystemConfig instance()
@@ -83,6 +88,22 @@ public class SystemConfig
 	}
 	
 
+
+	public IQuestionManagerService getQuestionManagerService() {
+		return questionManagerService;
+	}
+
+	public void setQuestionManagerService(IQuestionManagerService questionManagerService) {
+		this.questionManagerService = questionManagerService;
+	}
+
+	public ICSVReader getCsvReaderImpl() {
+		return csvReaderImpl;
+	}
+
+	public void setCsvReaderImpl(ICSVReader csvReaderImpl) {
+		this.csvReaderImpl = csvReaderImpl;
+	}
 
 	public PasswordEncoder getPasswordEncoder() {
 		return passwordEncoder;

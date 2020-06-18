@@ -18,12 +18,10 @@ public class AdminDao implements IAdminDao{
 
 	
 	DatabaseAccess db;
-	
 	PreparedStatement preparedStatement;
 	ResultSet rs;
 	Connection connection;
-	
-	
+		
 	@Override
 	public int addCourse(Course course) {
 		int result = 0;
@@ -50,7 +48,7 @@ public class AdminDao implements IAdminDao{
 	public int deleteCourse(String courseId) {
 		int result = 0;
 		try {
-			db=SystemConfig.instance().getDatabaseAccess();
+		db=SystemConfig.instance().getDatabaseAccess();
 		connection = db.getConnection();
 		updateQuery(connection,DELETE_ENROLLMENT_QUERY,courseId);
 		updateQuery(connection,DELETE_COURSE_INSTRUCTOR_QUERY,courseId);
@@ -83,7 +81,6 @@ public class AdminDao implements IAdminDao{
 		System.out.println("roleId "+roleId);
 		//Add TA Role to user
 		int userRole=insertInstructorRole(connection,user,roleId);
-		System.out.println("userRole "+userRole);
 		//Add the user as instructor to course
 		result=addAsCourseInstructor(connection,course,userRole);
 		}catch(Exception e) {
@@ -103,11 +100,7 @@ public class AdminDao implements IAdminDao{
 		return result;
 	}
 
-	
-	
-
-	
-	
+	//instance methods
 	public int selectInstructorRole(Connection connection) {
 		int result=0;
 		try {
@@ -143,7 +136,6 @@ public class AdminDao implements IAdminDao{
 			{
 				
 				result = rs.getInt("userRoleId");
-				System.out.println("result "+result);
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -187,9 +179,7 @@ public class AdminDao implements IAdminDao{
 			}
 			return result;
 	}
-	
-	
-	
+		
 	public int insertInstructorRole(Connection connection,String user,int roleId) {
 		
 		int userRoleId=0;

@@ -1,8 +1,5 @@
 package dal.asd.catme.config;
 
-import dal.asd.catme.beans.User;
-import dal.asd.catme.exception.CatmeException;
-
 public interface IPasswordRulesConfig {
 	
 	public boolean validateMinimumLength(String currentPassword,int minimumLength);

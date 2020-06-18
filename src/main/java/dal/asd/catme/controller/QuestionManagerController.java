@@ -1,7 +1,6 @@
 package dal.asd.catme.controller;
 
 import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,7 +21,6 @@ import dal.asd.catme.config.SystemConfig;
 import dal.asd.catme.exception.QuestionDatabaseException;
 import dal.asd.catme.service.IListQuestionsService;
 import dal.asd.catme.service.IQuestionManagerService;
-import dal.asd.catme.service.QuestionManagerServiceImpl;
 import dal.asd.catme.util.CatmeUtil;
 
 @Controller
@@ -30,8 +28,9 @@ import dal.asd.catme.util.CatmeUtil;
 public class QuestionManagerController
 {
     IListQuestionsService listQuestionsService;
-    IQuestionManagerService questionManagerServiceImpl = new QuestionManagerServiceImpl();
-
+    //IQuestionManagerService questionManagerServiceImpl = new QuestionManagerServiceImpl();
+    IQuestionManagerService questionManagerServiceImpl;
+    
     //Creating Logger
     private static final Logger log = LoggerFactory.getLogger(QuestionManagerController.class);
     
@@ -107,32 +106,15 @@ public class QuestionManagerController
 	public String createQuestionType(@ModelAttribute Question question) 
 	{
 		
-		System.out.println("##before : "+question.toString());
-		System.out.println("questionTitle "+question.getQuestionTitle());
 		log.info("****QuestionManagerController - createQuestionType Invoked*****");
 		String userId=SecurityContextHolder.getContext().getAuthentication().getName();
 		log.info("***user***"+userId);
-		
+		questionManagerServiceImpl=SystemConfig.instance().getQuestionManagerService();
 		return questionManagerServiceImpl.findQuestionType(question,userId);
 		
 		
 	}
-	
-	/*
-	 * @RequestMapping("addQuestion") public String addQuestion(@ModelAttribute
-	 * Question question) {
-	 * log.info("****QuestionManagerController - addQuestion Invoked*****"); String
-	 * userId=SecurityContextHolder.getContext().getAuthentication().getName();
-	 * System.out.println("questionTitle "+question.getQuestionTitle());
-	 * log.info("***here*** "+question.toString()); int questionId =
-	 * questionManagerServiceImpl.createQuestion(question, userId); int result
-	 * =questionManagerServiceImpl.createOptions(questionId,question.
-	 * getOptionWithOrder()); if(result>0) { return
-	 * CatmeUtil.QUESTION_CREATION_SUCCESS; } else{ //need to change return
-	 * "questionCreationFailure"; } }
-	 */
-	
-	    
+	   
     
     @RequestMapping(value="/addQuestion", method=RequestMethod.POST, params="action=addOption")
     public String addOption(@ModelAttribute Question question) {
@@ -149,28 +131,21 @@ public class QuestionManagerController
     	
     		log.info("****QuestionManagerController - addQuestion Invoked*****");
     		String userId=SecurityContextHolder.getContext().getAuthentication().getName();
-    		System.out.println("questionTitle "+question.getQuestionTitle());
     		log.info("***here*** "+question.toString());
+    		questionManagerServiceImpl=SystemConfig.instance().getQuestionManagerService();
     		int questionId = questionManagerServiceImpl.createQuestion(question, userId);
     		int result =questionManagerServiceImpl.createOptions(questionId,question.getOptionWithOrder());
     		if(result>0) {
     			return CatmeUtil.QUESTION_CREATION_SUCCESS;
     	}
     			else{
-    				//need to change
-    				return "questionCreationFailure";
+    				return CatmeUtil.QUESTION_FAILURE_PAGE;
     			}
 
     }
-
-
-
-
-	
 	
 	@ModelAttribute("questionTypes")
 	public String[] getQuestionTypes(){
-		System.out.println("questionTypes "+questionTypes);
 		return questionTypes;	
 	}
 	

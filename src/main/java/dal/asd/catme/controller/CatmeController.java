@@ -26,11 +26,9 @@ import dal.asd.catme.util.CatmeUtil;
 @RequestMapping("/")
 public class CatmeController {
 
-
 	IUserService userService;
 
 	IRoleService roleService;
-
 
 	CatmeSecurityConfig catmeServiceConfig;
 
@@ -43,7 +41,6 @@ public class CatmeController {
 
 		return CatmeUtil.ADMIN_PAGE;
 	}
-
 
 	@GetMapping("register")
 	public String signupPage(Model model) {
@@ -58,36 +55,6 @@ public class CatmeController {
 		model.addAttribute("message", message);
 		return CatmeUtil.SIGNEDUP_PAGE;
 	}
-
-
-	@GetMapping("taEnrollment/{courseId}")
-	public String enrollTa(@PathVariable("courseId")String courseId,Model model) {
-		model.addAttribute("courseId", courseId);
-		return CatmeUtil.TA_ENROLLMENT_PAGE;
-	}
-
-	@RequestMapping("taEnrollment/access")
-	public String  redirectHomePage()
-	{
-		//Redirecting the user to home page with associated courses
-		log.info("Finding the Role of User and redirecting to respetive User's home page");
-		return "redirect:/access";
-	}
-
-	@RequestMapping("taEnrollment/{courseId}")
-	public String enrollTa(@PathVariable("courseId")String courseId,@RequestParam String bannerId,Model model) {
-		Enrollment user = new Enrollment(bannerId,courseId);
-		model.addAttribute("user", user);
-		roleService=SystemConfig.instance().getRoleService();
-		String message = roleService.assignTa(user);
-		model.addAttribute("message", message);
-		return CatmeUtil.TA_ENROLLED_PAGE;
-	}
-
-
-
-
-	//Creating Logger
 
 	//Decides landing page of application based on user authorization
 	@RequestMapping("access")
@@ -145,13 +112,12 @@ public class CatmeController {
 		return page;
 	}
 
-	
+
 	//Displaying Login page for authentication
 	@RequestMapping("login")
 	public String loginPage()
 	{
 		log.info("Redirected to Login page");
-		System.out.println("####System Environment Vars: "+System.getenv());
 		return CatmeUtil.LOGIN_PAGE;
 	}
 

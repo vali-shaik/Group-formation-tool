@@ -2,7 +2,12 @@ package dal.asd.catme.exception;
 
 public class InvalidFileFormatException extends Exception
 {
-    public InvalidFileFormatException(String message)
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	public InvalidFileFormatException(String message)
     {
         super(message);
     }

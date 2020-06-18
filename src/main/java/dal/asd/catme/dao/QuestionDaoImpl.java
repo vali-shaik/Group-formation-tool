@@ -1,22 +1,19 @@
 package dal.asd.catme.dao;
 
-import dal.asd.catme.beans.Option;
-import dal.asd.catme.beans.Question;
-import dal.asd.catme.config.SystemConfig;
-import dal.asd.catme.database.DatabaseAccess;
-import dal.asd.catme.exception.CatmeException;
-import dal.asd.catme.exception.QuestionDatabaseException;
-import dal.asd.catme.util.CatmeUtil;
-import dal.asd.catme.util.DBQueriesUtil;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+
+import dal.asd.catme.beans.Option;
+import dal.asd.catme.beans.Question;
+import dal.asd.catme.config.SystemConfig;
+import dal.asd.catme.database.DatabaseAccess;
+import dal.asd.catme.exception.QuestionDatabaseException;
+import dal.asd.catme.util.CatmeUtil;
+import dal.asd.catme.util.DBQueriesUtil;
 
 
 public class QuestionDaoImpl implements IQuestionDao

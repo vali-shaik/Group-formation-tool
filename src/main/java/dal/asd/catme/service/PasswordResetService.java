@@ -41,11 +41,9 @@ public class PasswordResetService implements IPasswordResetService
         {
         	db=SystemConfig.instance().getDatabaseAccess();
             con = db.getConnection();
-            System.out.println("Database Connected");
 
             if (!userExists(bannerid))
             {
-                System.out.println("User does not exist");
                 return null;
 
             }
@@ -53,7 +51,6 @@ public class PasswordResetService implements IPasswordResetService
 
             if (u == null)
             {
-                System.out.println("Error Reading user from database");
                 return null;
             }
 
@@ -78,10 +75,9 @@ public class PasswordResetService implements IPasswordResetService
             try
             {
                 con.close();
-                System.out.println("Connection closed");
             } catch (SQLException|NullPointerException e)
             {
-//                e.printStackTrace();
+                e.printStackTrace();
             }
         }
         return null;
@@ -90,22 +86,24 @@ public class PasswordResetService implements IPasswordResetService
     @Override
     public String validateToken(String token)
     {
+    	String bannerId=null;
         try
         {
-            String bannerid = userDao.readBannerIdFromToken(token);
-            return bannerid;
+        	bannerId = userDao.readBannerIdFromToken(token);
+            
         }
         catch (CatmeException e)
         {
-            return null;
+            e.printStackTrace();
         }
+        return bannerId;
     }
 
     @Override
-    public void resetPassword(String bannerid, String password) throws CatmeException
+    public void resetPassword(String bannerId, String password) throws CatmeException
     {
         User u = new User();
-        u.setBannerId(bannerid);
+        u.setBannerId(bannerId);
         u.setPassword(password);
 
         try
@@ -114,7 +112,7 @@ public class PasswordResetService implements IPasswordResetService
             con = db.getConnection();
 
             userDao.resetPassword(u,con);
-            userDao.removeToken(bannerid);
+            userDao.removeToken(bannerId);
 
 
         } catch (SQLException throwables)
@@ -130,7 +128,7 @@ public class PasswordResetService implements IPasswordResetService
                 System.out.println("Connection closed");
             } catch (SQLException|NullPointerException e)
             {
-//                e.printStackTrace();
+               e.printStackTrace();
             }
         }
     }

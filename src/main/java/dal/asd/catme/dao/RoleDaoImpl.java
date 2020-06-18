@@ -3,6 +3,7 @@ package dal.asd.catme.dao;
 import java.sql.*;
 
 import dal.asd.catme.beans.Enrollment;
+import dal.asd.catme.config.SystemConfig;
 import dal.asd.catme.util.CatmeUtil;
 import static dal.asd.catme.util.DBQueriesUtil.*;
 public class RoleDaoImpl implements IRoleDao{
@@ -11,8 +12,6 @@ public class RoleDaoImpl implements IRoleDao{
 	
 	ICourseDao courseDao;
 
-	
-		
 	@Override
 	public int assignRole(String bannerId, int roleId, Connection con) {
 
@@ -145,9 +144,11 @@ public class RoleDaoImpl implements IRoleDao{
 		try {
 			
 			//If the user exists
+			userDao=SystemConfig.instance().getUserDao();
 			if(0 != userDao.checkExistingUser(user.bannerId, con)){
 				
 				//If the course exists
+				courseDao=SystemConfig.instance().getCourseDao();
 				if (0 != courseDao.checkCourseExists(user.courseId, con)) {
 					
 					//If the user is not currently taking the course

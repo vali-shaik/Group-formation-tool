@@ -1,12 +1,11 @@
 package dal.asd.catme.service;
 
+import java.util.ArrayList;
+
 import dal.asd.catme.beans.Course;
 import dal.asd.catme.beans.Student;
 import dal.asd.catme.beans.User;
 import dal.asd.catme.exception.EnrollmentException;
-import org.springframework.mail.MailException;
-
-import java.util.ArrayList;
 
 public interface IEnrollStudentService
 {

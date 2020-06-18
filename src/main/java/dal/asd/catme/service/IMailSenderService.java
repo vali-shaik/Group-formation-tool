@@ -1,14 +1,12 @@
 package dal.asd.catme.service;
 
+import javax.mail.MessagingException;
+
+import org.springframework.mail.MailException;
+
 import dal.asd.catme.beans.Course;
 import dal.asd.catme.beans.Student;
 import dal.asd.catme.beans.User;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.MailException;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.stereotype.Service;
-
-import javax.mail.MessagingException;
 
 public interface IMailSenderService
 {

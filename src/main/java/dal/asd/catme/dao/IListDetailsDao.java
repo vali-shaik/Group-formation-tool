@@ -1,6 +1,5 @@
 package dal.asd.catme.dao;
 
-import java.sql.ResultSet;
 import java.util.List;
 
 import dal.asd.catme.beans.Course;
