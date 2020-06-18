@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
 <meta charset="ISO-8859-1">
 <title>Insert title here</title>
@@ -34,17 +34,13 @@
 		 
 		    </div>
 		    <div style="margin-top:30px">
-		    <button>Create Question</button>
+		    <button name="action" value="addOption">Add option</button>
+		    <button name="action" value="create">Create Question</button>
 		    </div>
 		    	<input type="hidden" th:field="*{questionText}"  value = "${questionText}">
 				<input type="hidden" th:field="*{questionType}"  value = "${questionType}">
 		 </form>
-		 
-		 <br><br>
-		 <form th:action="@{/question/moreOptions}" th:object="${question}" method="post">
-		 <button>More options</button>
-		 <!-- <a href="/question/moreOptions" class="moreOptionsClass">More Options</a> -->
-		 </form>
+		
 	    </div>
 </body>
 </html>

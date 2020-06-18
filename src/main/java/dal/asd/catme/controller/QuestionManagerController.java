@@ -2,8 +2,6 @@ package dal.asd.catme.controller;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,15 +10,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestMethod;
 
-import dal.asd.catme.beans.Course;
 import dal.asd.catme.beans.Option;
 import dal.asd.catme.beans.Question;
-import dal.asd.catme.beans.User;
-import dal.asd.catme.config.SystemConfig;
 import dal.asd.catme.service.QuestionManagerServiceImpl;
-import dal.asd.catme.util.CatmeUtil;
 
 @Controller
 @RequestMapping("/question")
@@ -33,7 +27,7 @@ private String[] questionTypes;
 
 	QuestionManagerServiceImpl questionManagerServiceImpl = new QuestionManagerServiceImpl();
 	
-	public static int value =0; 
+	//public static int value =0; 
 	
 	@RequestMapping("/createQuestion")
 	public String createQuestion(Model model) 
@@ -49,8 +43,8 @@ private String[] questionTypes;
 		System.out.println("##before : "+question.toString());
 		logger.info("****QuestionManagerController - createQuestionType Invoked*****");
 		List<Option> options = new ArrayList<Option>();
-		for(int i=0;i<5;i++) {
-			Option option= new Option(++value);
+		for(int i=1;i<6;i++) {
+			Option option= new Option(i);
 			options.add(option);
 		}
 		System.out.println("##Options  : "+options.toString());
@@ -60,21 +54,24 @@ private String[] questionTypes;
 		
 	}
 	
-	@RequestMapping("/moreOptions")
-	public String moreOptions(@ModelAttribute Question question)
-	{
-		System.out.println("### MORE OPTIONS ###"+question.toString());
+	
+	@RequestMapping(value="/addQuestion", method=RequestMethod.POST, params="action=addOption")
+	public String addOption(@ModelAttribute Question question) {
+		
+		List<Option> options=question.getOptionWithOrder();
+		options.add(new Option(options.size()+1));
+		question.setOptionWithOrder(options);
 		return "optionEditor";
 	}
-	
-	@RequestMapping("/addQuestion")
-	public String addQuestion(@ModelAttribute Question question) 
-	{
-		System.out.println("AFTER MCQ Question : " +question.toString());
+
+	@RequestMapping(value="/addQuestion", method=RequestMethod.POST, params="action=create")
+	public String addQuestion(@ModelAttribute Question question) {
+		
 		logger.info("****QuestionManagerController - addQuestion Invoked*****");
 		logger.info("***here*** "+question.getOptionWithOrder());
 		return "questionCreationSuccess";
 	}
+	
 	
 	@ModelAttribute("questionTypes")
 	public String[] getQuestionTypes(){
