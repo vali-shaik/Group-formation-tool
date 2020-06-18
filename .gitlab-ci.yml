@@ -20,7 +20,7 @@ build:
     paths:
       - .m2/repository
   tags:
-    -  grad
+    -  dalfcs_docker_kvm
   script: ./mvnw package
  # artifacts:
   #  paths:
@@ -36,7 +36,7 @@ deploy:
  - gem install dpl
  - dpl --provider=heroku --app=$SERVER_TEST --api-key=$HEROKU_API_KEY
  tags:
- -  grad
+ -  dalfcs_docker_kvm
  only:
   refs:
     - development
