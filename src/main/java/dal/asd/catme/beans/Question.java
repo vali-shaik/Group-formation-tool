@@ -7,11 +7,32 @@ import java.util.Map;
 import java.util.TreeMap;
 
 public class Question {
+	int questionId;
 	
 	String questionText;
 	String questionType;
+	String questionTitle;
 	List<Option> optionWithOrder = new ArrayList<Option>();
 	Date createdDate;
+	
+	public Question() {}
+	
+	public Question(int questionId, String questionText, String questionType, String questionTitle,
+			List<Option> optionWithOrder, Date createdDate) {
+		super();
+		this.questionId = questionId;
+		this.questionText = questionText;
+		this.questionType = questionType;
+		this.questionTitle = questionTitle;
+		this.optionWithOrder = optionWithOrder;
+		this.createdDate = createdDate;
+	}
+	public int getQuestionId() {
+		return questionId;
+	}
+	public void setQuestionId(int questionId) {
+		this.questionId = questionId;
+	}
 	public String getQuestionText() {
 		return questionText;
 	}
@@ -23,6 +44,12 @@ public class Question {
 	}
 	public void setQuestionType(String questionType) {
 		this.questionType = questionType;
+	}
+	public String getQuestionTitle() {
+		return questionTitle;
+	}
+	public void setQuestionTitle(String questionTitle) {
+		this.questionTitle = questionTitle;
 	}
 	public List<Option> getOptionWithOrder() {
 		return optionWithOrder;

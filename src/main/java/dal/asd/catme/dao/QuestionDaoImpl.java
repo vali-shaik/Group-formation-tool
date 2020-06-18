@@ -52,7 +52,7 @@ public class QuestionDaoImpl implements IQuestionDao
                 Question q = new Question();
                 q.setQuestionId(rs.getInt(QUESTIONID));
                 q.setQuestionTitle(rs.getString(QUESTIONTITLE));
-                q.setQuestion(rs.getString(QUESTION));
+                q.setQuestionText(rs.getString(QUESTION));
                 q.setQuestionType(rs.getString(QUESTIONTYPE));
                 q.setCreatedDate(rs.getDate(CREATEDDATE));
 

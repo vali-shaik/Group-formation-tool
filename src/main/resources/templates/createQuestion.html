@@ -9,11 +9,11 @@
 <div align='center'>
 	
 	<h1>Create Question</h1><br/>
-	<form th:action="@{/question/questionType}" th:object="${question}" method="post">
+	<form th:action="@{/questions/questionType}" th:object="${question}" method="post">
 		<table cellpadding="10">
 		<tr>
 			<td><label class="questionTitle">Question Title</label></td>
-			<td><input type="text"  required/></td>
+			<td><input type="text" th:field="*{questionTitle}"required/></td>
 		</tr>
 		<tr>
 			<td><label class="question">Question</label></td>

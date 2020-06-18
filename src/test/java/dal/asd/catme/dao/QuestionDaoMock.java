@@ -70,17 +70,17 @@ public class QuestionDaoMock implements IQuestionDao
 
             Question q31 = new Question();
             q31.setQuestionTitle("Title 3");
-            q31.setQuestion("Question 1 of Title 3");
+            q31.setQuestionText("Question 1 of Title 3");
             q31.setCreatedDate(dateFormat.parse("25-10-2020"));
 
             Question q32 = new Question();
             q32.setQuestionTitle("Title 3");
-            q32.setQuestion("Question 2 of Title 3");
+            q32.setQuestionText("Question 2 of Title 3");
             q32.setCreatedDate(dateFormat.parse("27-10-2020"));
 
             Question q33 = new Question();
             q33.setQuestionTitle("Title 3");
-            q33.setQuestion("Question 3 of Title 3");
+            q33.setQuestionText("Question 3 of Title 3");
             q33.setCreatedDate(dateFormat.parse("29-10-2020"));
 
             ret.add(q31);
@@ -90,19 +90,19 @@ public class QuestionDaoMock implements IQuestionDao
 
             Question q11 = new Question();
             q11.setQuestionTitle("Title 1");
-            q11.setQuestion("Question 1 of Title 1");
+            q11.setQuestionText("Question 1 of Title 1");
 
             q11.setCreatedDate(dateFormat.parse("22-10-2020"));
 
 
             Question q12 = new Question();
             q12.setQuestionTitle("Title 1");
-            q12.setQuestion("Question 2 of Title 1");
+            q12.setQuestionText("Question 2 of Title 1");
             q12.setCreatedDate(dateFormat.parse("23-10-2020"));
 
             Question q13 = new Question();
             q13.setQuestionTitle("Title 1");
-            q13.setQuestion("Question 3 of Title 1");
+            q13.setQuestionText("Question 3 of Title 1");
             q13.setCreatedDate(dateFormat.parse("21-10-2020"));
 
             ret.add(q11);
@@ -113,17 +113,17 @@ public class QuestionDaoMock implements IQuestionDao
             Question q21 = new Question();
 
             q21.setQuestionTitle("Title 2");
-            q21.setQuestion("Question 1 of Title 2");
+            q21.setQuestionText("Question 1 of Title 2");
             q21.setCreatedDate(dateFormat.parse("18-10-2020"));
 
             Question q22 = new Question();
             q22.setQuestionTitle("Title 2");
-            q22.setQuestion("Question 2 of Title 2");
+            q22.setQuestionText("Question 2 of Title 2");
             q22.setCreatedDate(dateFormat.parse("17-10-2020"));
 
             Question q23 = new Question();
             q23.setQuestionTitle("Title 2");
-            q23.setQuestion("Question 3 of Title 2");
+            q23.setQuestionText("Question 3 of Title 2");
             q23.setCreatedDate(dateFormat.parse("16-10-2020"));
 
             ret.add(q21);

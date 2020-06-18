@@ -6,6 +6,11 @@ public class Option {
 	
 	public Option(){}
 	
+	public Option(String displayText,int storedAs){
+		this.displayText=displayText;
+		this.storedAs=storedAs;
+	}
+	
 	public Option(int storedAs){
 		this.storedAs=storedAs;
 	}
