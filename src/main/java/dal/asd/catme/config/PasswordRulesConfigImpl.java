@@ -10,6 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import dal.asd.catme.beans.User;
 import dal.asd.catme.database.DatabaseAccess;
+import dal.asd.catme.exception.CatmeException;
 import dal.asd.catme.util.PasswordRulesUtil;
 
 public class PasswordRulesConfigImpl implements IPasswordRulesConfig {
@@ -111,13 +112,14 @@ public class PasswordRulesConfigImpl implements IPasswordRulesConfig {
 	}
 
 	@Override
-	public boolean checkRecentPasswords(User user) {
+	public boolean checkRecentPasswords(User user) throws CatmeException {
 		boolean flag=true;
 		databaseAccess=SystemConfig.instance().getDatabaseAccess();
 		Connection connection=null;
 		ResultSet resultSet=null;
 		passwordEncoder=SystemConfig.instance().getPasswordEncoder();
 		try {
+			
 			connection=databaseAccess.getConnection();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -140,6 +142,22 @@ public class PasswordRulesConfigImpl implements IPasswordRulesConfig {
 		} 
 		catch (SQLException e) {
 			e.printStackTrace();
+		}
+		finally
+		{
+			try 
+			{
+				//Closing all database connections
+				if(connection!=null)
+					connection.close();
+				if(resultSet!=null)
+					resultSet.close();
+			} 
+			catch (SQLException|NullPointerException e) 
+			{
+				//throwing user defined exception
+				throw new CatmeException("Failed while closing conection with DB "+e.getMessage());
+			}
 		}
 
 
