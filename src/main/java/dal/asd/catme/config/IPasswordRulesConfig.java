@@ -11,7 +11,6 @@ public interface IPasswordRulesConfig {
 	public boolean validateMinimumLowerCase(String currentPassword,int mininmumLowerLength);
 	public boolean validateMinimumSymbolsSpecialCharacters(String currentPassword,int minimumSymbolSpecialLength);
 	public boolean checkNotAllowedCharacters(String currentPassword,String regExpression);
-	public boolean checkRecentPasswords(User user) throws CatmeException;
 	
 
 }

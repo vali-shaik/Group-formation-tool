@@ -34,9 +34,8 @@ public class SystemConfig
 	private IQuestionDao questionDao;
 	private IListQuestionsService listQuestionsService;
 
-
-
 	private IPasswordRulesConfig passwordEnforcementConfig;
+	private IPasswordPolicyCheckerService passwordPolicyCheckerService;
 	
 
 	public SystemConfig()
@@ -68,6 +67,8 @@ public class SystemConfig
 		passwordResetService= new PasswordResetService(userDao);
 		enrollStudentService=new EnrollStudentService(roleDao,studentDao);
 		passwordEnforcementConfig=new PasswordRulesConfigImpl();
+
+		passwordPolicyCheckerService = new PasswordPolicyCheckerImpl();
 	}
 	
 	public static SystemConfig instance()
@@ -262,6 +263,23 @@ public class SystemConfig
 		this.passwordEnforcementConfig = passwordEnforcementConfig;
 	}
 
+	public IQuestionDao getQuestionDao()
+	{
+		return questionDao;
+	}
 
-	
+	public void setQuestionDao(IQuestionDao questionDao)
+	{
+		this.questionDao = questionDao;
+	}
+
+	public IPasswordPolicyCheckerService getPasswordPolicyCheckerService()
+	{
+		return passwordPolicyCheckerService;
+	}
+
+	public void setPasswordPolicyCheckerService(IPasswordPolicyCheckerService passwordPolicyCheckerService)
+	{
+		this.passwordPolicyCheckerService = passwordPolicyCheckerService;
+	}
 }

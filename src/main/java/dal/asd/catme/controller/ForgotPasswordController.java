@@ -4,6 +4,7 @@ import dal.asd.catme.beans.User;
 import dal.asd.catme.config.SystemConfig;
 import dal.asd.catme.exception.CatmeException;
 import dal.asd.catme.service.IMailSenderService;
+import dal.asd.catme.service.IPasswordPolicyCheckerService;
 import dal.asd.catme.service.IPasswordResetService;
 import dal.asd.catme.util.CatmeUtil;
 import org.springframework.stereotype.Controller;
@@ -23,6 +24,8 @@ public class ForgotPasswordController
 {
 
     IPasswordResetService passwordResetService;
+
+    IPasswordPolicyCheckerService passwordPolicyCheckerService;
 
     IMailSenderService mailSenderService;
 
@@ -79,6 +82,23 @@ public class ForgotPasswordController
     public String updatePassword(@RequestParam(name = "password") String password, Model model)
     {
         passwordResetService = SystemConfig.instance().getPasswordResetService();
+        passwordPolicyCheckerService = SystemConfig.instance().getPasswordPolicyCheckerService();
+
+        User u = new User();
+        u.setBannerId(bannerid);
+        u.setPassword(password);
+
+        try
+        {
+            if(!passwordPolicyCheckerService.enforcePasswordPolicy(u))
+            {
+                model.addAttribute("message","Password Does not meet requirements");
+                return RESET_PASSWORD_PAGE;
+            }
+        } catch (CatmeException e)
+        {
+            e.printStackTrace();
+        }
 
         try
         {

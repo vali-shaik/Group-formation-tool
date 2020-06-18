@@ -97,7 +97,7 @@ public class UserDaoImpl implements IUserDao{
 		try {
 			String encodedPassword = p.encode(u.getPassword());
 
-			if(matchWithPasswordHistory(u.getBannerId(),u.getPassword()))
+			if(PasswordRulesUtil.PASSWORD_HISTORY_ENABLE&&matchWithPasswordHistory(u.getBannerId(),u.getPassword()))
 			{
 				throw new CatmeException("Password should not match with last 10 passwords");
 			}
