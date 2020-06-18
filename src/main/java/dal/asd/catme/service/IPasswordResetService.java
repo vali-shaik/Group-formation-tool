@@ -1,6 +1,7 @@
 package dal.asd.catme.service;
 
 import dal.asd.catme.beans.User;
+import dal.asd.catme.exception.CatmeException;
 
 public interface IPasswordResetService
 {
@@ -11,5 +12,5 @@ public interface IPasswordResetService
 
     public String validateToken(String token);
 
-    public boolean resetPassword(String bannerid, String password);
+    public void resetPassword(String bannerid, String password) throws CatmeException;
 }

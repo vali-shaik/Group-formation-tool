@@ -2,6 +2,7 @@ package dal.asd.catme.controller;
 
 import dal.asd.catme.beans.User;
 import dal.asd.catme.config.SystemConfig;
+import dal.asd.catme.exception.CatmeException;
 import dal.asd.catme.service.IMailSenderService;
 import dal.asd.catme.service.IPasswordResetService;
 import dal.asd.catme.util.CatmeUtil;
@@ -45,17 +46,18 @@ public class ForgotPasswordController
             return CatmeUtil.FORGOT_PASSWORD_PAGE;
         }
 
-        try
-        {
-            mailSenderService=SystemConfig.instance().getMailSenderService();
-            mailSenderService.sendResetLink(u);
+//        try
+//        {
+//            mailSenderService=SystemConfig.instance().getMailSenderService();
+//            mailSenderService.sendResetLink(u);
             model.addAttribute("success","Link Sent Successfully");
             return CatmeUtil.FORGOT_PASSWORD_PAGE;
-        } catch (MessagingException e)
-        {
-            model.addAttribute("message","Error sending mail. Try again");
-            return CatmeUtil.FORGOT_PASSWORD_PAGE;
-        }
+//        }
+//        catch (MessagingException e)
+//        {
+//            model.addAttribute("message","Error sending mail. Try again");
+//            return CatmeUtil.FORGOT_PASSWORD_PAGE;
+//        }
     }
 
     @GetMapping("reset-password")
@@ -78,16 +80,15 @@ public class ForgotPasswordController
     {
         passwordResetService = SystemConfig.instance().getPasswordResetService();
 
-        if(!passwordResetService.resetPassword(bannerid,password))
+        try
         {
-            model.addAttribute("message","Error Reseting password");
-            return RESET_PASSWORD_PAGE;
-
-        }else
-        {
+            passwordResetService.resetPassword(bannerid,password);
             model.addAttribute("message","Password Reset Successfully");
             return RESET_PASSWORD_PAGE;
+        } catch (CatmeException e)
+        {
+            model.addAttribute("message",e.getMessage());
+            return RESET_PASSWORD_PAGE;
         }
-
     }
 }

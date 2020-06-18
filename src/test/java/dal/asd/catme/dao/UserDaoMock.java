@@ -4,11 +4,7 @@ import java.sql.Connection;
 import java.util.ArrayList;
 
 import dal.asd.catme.beans.User;
-import dal.asd.catme.dao.IUserDao;
 import dal.asd.catme.exception.CatmeException;
-import dal.asd.catme.util.RandomTokenGenerator;
-
-import static dal.asd.catme.util.MailSenderUtil.TOKEN_LENGTH;
 
 public class UserDaoMock implements IUserDao{
 	
@@ -53,11 +49,11 @@ public class UserDaoMock implements IUserDao{
 	}
 
 	@Override
-	public boolean resetPassword(User u, Connection con)
+	public void resetPassword(User u, Connection con) throws CatmeException
 	{
 		if(u.getPassword()==null)
-			return false;
-		return true;
+			throw new CatmeException();
+
 	}
 
 	@Override
@@ -78,6 +74,18 @@ public class UserDaoMock implements IUserDao{
 
 	@Override
 	public void removeToken(String bannerId)
+	{
+
+	}
+
+	@Override
+	public boolean matchWithPasswordHistory(String bannerId, String password) throws CatmeException
+	{
+		return false;
+	}
+
+	@Override
+	public void deleteOverLimitPasswords(String bannerId) throws CatmeException
 	{
 
 	}

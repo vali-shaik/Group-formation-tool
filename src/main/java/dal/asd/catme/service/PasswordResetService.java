@@ -97,13 +97,12 @@ public class PasswordResetService implements IPasswordResetService
         }
         catch (CatmeException e)
         {
-            e.printStackTrace();
             return null;
         }
     }
 
     @Override
-    public boolean resetPassword(String bannerid, String password)
+    public void resetPassword(String bannerid, String password) throws CatmeException
     {
         User u = new User();
         u.setBannerId(bannerid);
@@ -114,16 +113,14 @@ public class PasswordResetService implements IPasswordResetService
             db=SystemConfig.instance().getDatabaseAccess();
             con = db.getConnection();
 
-            if(userDao.resetPassword(u,con))
-            {
-                userDao.removeToken(bannerid);
-                return true;
-            }
-            return false;
+            userDao.resetPassword(u,con);
+            userDao.removeToken(bannerid);
+
 
         } catch (SQLException throwables)
         {
             throwables.printStackTrace();
+            throw new CatmeException("Error Reseting Password");
         }
         finally
         {
@@ -136,6 +133,5 @@ public class PasswordResetService implements IPasswordResetService
 //                e.printStackTrace();
             }
         }
-        return false;
     }
 }

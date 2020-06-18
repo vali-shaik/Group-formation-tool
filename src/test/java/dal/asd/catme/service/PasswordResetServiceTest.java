@@ -4,6 +4,7 @@ import dal.asd.catme.beans.Role;
 import dal.asd.catme.beans.User;
 import dal.asd.catme.dao.IUserDao;
 import dal.asd.catme.dao.UserDaoMock;
+import dal.asd.catme.exception.CatmeException;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -52,8 +53,15 @@ class PasswordResetServiceTest
     {
         IPasswordResetService service = new PasswordResetService(userDao);
 
-        assertTrue(service.resetPassword("B00121212","ABCD"));
-        assertFalse(service.resetPassword("B00121212",null));
+        try
+        {
+            service.resetPassword("B00121212","ABCD");
+            service.resetPassword("B00121212",null);
+        } catch (CatmeException e)
+        {
+            fail();
+            e.printStackTrace();
+        }
     }
 
     ArrayList<User> getUsers()

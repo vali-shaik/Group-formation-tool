@@ -4,11 +4,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 import dal.asd.catme.database.DatabaseAccess;
 import dal.asd.catme.exception.CatmeException;
-import dal.asd.catme.util.DBQueriesUtil;
+import dal.asd.catme.util.PasswordRulesUtil;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import dal.asd.catme.beans.User;
@@ -92,12 +91,16 @@ public class UserDaoImpl implements IUserDao{
 	}
 
 	@Override
-	public boolean resetPassword(User u, Connection con)
+	public void resetPassword(User u, Connection con) throws CatmeException
 	{
 		p=SystemConfig.instance().getPasswordEncoder();
 		try {
 			String encodedPassword = p.encode(u.getPassword());
 
+			if(matchWithPasswordHistory(u.getBannerId(),u.getPassword()))
+			{
+				throw new CatmeException("Password should not match with last 10 passwords");
+			}
 
 			PreparedStatement resetPasswordStmt = con.prepareStatement(RESET_PASSWORD_QUERY);
 			resetPasswordStmt.setString(1,encodedPassword);
@@ -106,17 +109,25 @@ public class UserDaoImpl implements IUserDao{
 			int status = resetPasswordStmt.executeUpdate();
 
 			if(status==0)
-				return false;
+				throw new CatmeException("Error Updating Password");
+
+			PreparedStatement passwordHistoryStmt = con.prepareStatement(PasswordRulesUtil.PASSWORD_ADD_HISTORY);
+			passwordHistoryStmt.setString(1,encodedPassword);
+			passwordHistoryStmt.setString(2,u.getBannerId());
+
+			status = passwordHistoryStmt.executeUpdate();
+			System.out.println("Status: "+status);
+			if(status==0)
+				throw new CatmeException("Error Creating Password History");
+
+			deleteOverLimitPasswords(u.getBannerId());
 
 			System.out.println("Password Reset Successful");
 //			System.out.println("Status of Password Update");
-			return true;
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-		return false;
 	}
 
 	public void generatePasswordResetToken(User u, String token) throws CatmeException
@@ -132,6 +143,7 @@ public class UserDaoImpl implements IUserDao{
 			stmt.setString(2,token);
 
 			stmt.executeUpdate();
+			System.out.println("Token: "+token);
 		} catch (SQLException throwables)
 		{
 			throwables.printStackTrace();
@@ -213,6 +225,94 @@ public class UserDaoImpl implements IUserDao{
 			}
 			catch (SQLException | NullPointerException e)
 			{
+			}
+		}
+	}
+
+	@Override
+	public boolean matchWithPasswordHistory(String bannerId, String password) throws CatmeException
+	{
+		DatabaseAccess db = SystemConfig.instance().getDatabaseAccess();
+		Connection con=null;
+		PasswordEncoder p = SystemConfig.instance().getPasswordEncoder();
+
+		try
+		{
+			con = db.getConnection();
+
+			PreparedStatement stmt = con.prepareStatement(PasswordRulesUtil.PASSWORD_HISTORY_ORDER_QUERY);
+			stmt.setString(1,bannerId);
+			ResultSet rs = stmt.executeQuery();
+
+			while (rs.next())
+			{
+				String oldPass = rs.getString(1);
+				if(p.matches(password,oldPass))
+					return true;
+			}
+			return false;
+		}
+		catch (SQLException throwables)
+		{
+			throwables.printStackTrace();
+		}
+		finally
+		{
+			try
+			{
+				con.close();
+			} catch (SQLException| NullPointerException e)
+			{
+				e.printStackTrace();
+			}
+		}
+		return false;
+	}
+
+	@Override
+	public void deleteOverLimitPasswords(String bannerId) throws CatmeException
+	{
+		DatabaseAccess db = SystemConfig.instance().getDatabaseAccess();
+		Connection con=null;
+
+		try
+		{
+			con = db.getConnection();
+
+			PreparedStatement stmt = con.prepareStatement(PasswordRulesUtil.PASSWORD_ALL_HISTORY_ORDER_QUERY);
+			stmt.setString(1,bannerId);
+
+			ResultSet rs = stmt.executeQuery();
+
+			int resultSize=0;
+			int passwordId=0;
+			while(rs.next())
+			{
+				if(passwordId==0)
+					passwordId=rs.getInt(1);
+				resultSize++;
+			}
+
+			if(resultSize>PasswordRulesUtil.PASSWORD_HISTORY_LIMIT)
+			{
+				PreparedStatement deletePasswordStmt = con.prepareStatement(PasswordRulesUtil.PASSWORD_DELETE);
+				deletePasswordStmt.setInt(1,passwordId);
+
+				deletePasswordStmt.execute();
+			}
+		}
+		catch (SQLException throwables)
+		{
+			throwables.printStackTrace();
+		}
+		finally
+		{
+			try
+			{
+				con.close();
+			} catch (SQLException| NullPointerException e)
+			{
+				e.printStackTrace();
 			}
 		}
 	}

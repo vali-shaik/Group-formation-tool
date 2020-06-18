@@ -49,10 +49,9 @@ public class UserDaoMock implements IUserDao
     }
 
     @Override
-    public boolean resetPassword(User u, Connection con)
+    public void resetPassword(User u, Connection con)
     {
         u.setPassword(RandomTokenGenerator.generateRandomPassword(TOKEN_LENGTH));
-        return true;
     }
 
     @Override
@@ -71,6 +70,18 @@ public class UserDaoMock implements IUserDao
     public void removeToken(String bannerId)
     {
 
+
+    }
+
+    @Override
+    public boolean matchWithPasswordHistory(String bannerId, String password) throws CatmeException
+    {
+        return false;
+    }
+
+    @Override
+    public void deleteOverLimitPasswords(String bannerId) throws CatmeException
+    {
 
     }
 }
