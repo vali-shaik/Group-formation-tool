@@ -1,41 +1,26 @@
 package dal.asd.catme.controller;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
-import javax.mail.MessagingException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 
-import dal.asd.catme.beans.Course;
 import dal.asd.catme.beans.Enrollment;
-import dal.asd.catme.beans.Student;
 import dal.asd.catme.beans.User;
 import dal.asd.catme.config.CatmeSecurityConfig;
 import dal.asd.catme.config.SystemConfig;
-import dal.asd.catme.dao.CourseDaoImpl;
 import dal.asd.catme.exception.CatmeException;
-import dal.asd.catme.exception.InvalidFileFormatException;
-import dal.asd.catme.service.IEnrollStudentService;
-import dal.asd.catme.service.IMailSenderService;
-import dal.asd.catme.service.IPasswordResetService;
 import dal.asd.catme.service.IRoleService;
 import dal.asd.catme.service.IUserService;
-import dal.asd.catme.studentlistimport.CSVReader;
 import dal.asd.catme.util.CatmeUtil;
-
 
 @Controller
 @RequestMapping("/")
@@ -45,14 +30,6 @@ public class CatmeController {
 	IUserService userService;
 
 	IRoleService roleService;
-
-	IPasswordResetService passwordResetService;
-
-	IMailSenderService mailSenderService;
-
-	IEnrollStudentService enrollStudentService;
-
-	CourseDaoImpl courseDao;
 
 
 	CatmeSecurityConfig catmeServiceConfig;
@@ -168,105 +145,15 @@ public class CatmeController {
 		return page;
 	}
 
+	
 	//Displaying Login page for authentication
 	@RequestMapping("login")
 	public String loginPage()
 	{
 		log.info("Redirected to Login page");
+		System.out.println("####System Environment Vars: "+System.getenv());
 		return CatmeUtil.LOGIN_PAGE;
 	}
 
-	@PostMapping("upload")
-	public String uploadFile(@RequestParam("student-list-csv") MultipartFile file, Model model) {
-
-
-		if(file.isEmpty())
-		{
-			log.info("File is Empty");
-			model.addAttribute("message","Please Upload File");
-		}
-
-
-		else if(file.getSize()>=10*1024*1024)
-		{
-			log.info("File is Big");
-			model.addAttribute("message","Please Upload File less than 10 mb");
-		}
-
-		else if(!file.getContentType().equals("text/csv")){
-
-			model.addAttribute("message","Please Select CSV File");
-		}
-
-		else
-		{
-			String dis = "Type: "+file.getContentType();
-			dis+="\nName: "+file.getOriginalFilename();
-			model.addAttribute("message",dis);
-
-			CSVReader reader = new CSVReader();
-
-			try
-			{
-				Course c= new Course();
-				c.setCourseName("Advance SDC");
-				c.setCourseId("5308");
-				ArrayList<Student> students =  reader.readFile(file.getInputStream());
-
-				enrollStudentService=SystemConfig.instance().getEnrollStudentService();
-				if(enrollStudentService.enrollStudentsIntoCourse(students,c))
-				{
-					model.addAttribute("message","Students Enrolled");
-				}
-				else
-				{
-					model.addAttribute("message","Error Enrolling Students");
-				}
-
-
-
-			} catch (InvalidFileFormatException e)
-			{
-				e.printStackTrace();
-			} catch (IOException e)
-			{
-				e.printStackTrace();
-			}
-		}
-
-
-		return CatmeUtil.MANAGE_COURSE_PAGE;
-	}
-
-	@RequestMapping("forgotPassword")
-	public String forgotPassword()
-	{
-		return CatmeUtil.FORGOT_PASSWORD_PAGE;
-	}
-	@PostMapping("forgotPassword")
-	public String resetPassword(@RequestParam("bannerid") String bannerid,Model model)
-	{
-		System.out.println("Reseting password");
-		passwordResetService=SystemConfig.instance().getPasswordResetService();
-		User u = passwordResetService.resetPassword(bannerid);
-
-		if(u==null)
-		{
-			model.addAttribute("message","User does not exist");
-			return CatmeUtil.FORGOT_PASSWORD_PAGE;
-		}
-
-		try
-		{
-			mailSenderService=SystemConfig.instance().getMailSenderService();
-			mailSenderService.sendNewPassword(u);
-			model.addAttribute("success","Password Updated Successfully");
-			return CatmeUtil.FORGOT_PASSWORD_PAGE;
-		} catch (MessagingException e)
-		{
-			model.addAttribute("message","Error sending mail. Try again");
-			return CatmeUtil.FORGOT_PASSWORD_PAGE;
-		}
-	}
 
 }

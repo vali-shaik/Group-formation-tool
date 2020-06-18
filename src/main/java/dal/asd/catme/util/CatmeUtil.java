@@ -33,10 +33,14 @@ public class CatmeUtil
 	public static final String SIGNUP_PAGE = "signup";
 	public static final String SIGNEDUP_PAGE = "signedUp";
 	public static final String FORGOT_PASSWORD_PAGE="forgot-password";
+	public static final String RESET_PASSWORD_PAGE="reset-password";
 	public static final String MANAGE_COURSE_PAGE ="manageCourse";
 	public static final String COURSE_PAGE="course";
 	public static final String  QUESTION_CREATION_SUCCESS="questionCreationSuccess";
 	public static final String OPTION_EDITOR="optionEditor";
+	
+	//QuestionManager
+	public static final String QUESTION_MANAGER_HOME = "questions";
 	
 	//Landing pages
 	public static final String ADMIN_HOME="admin/dashboard";
@@ -59,7 +63,10 @@ public class CatmeUtil
 	//UserRole table fields	
 	public static final String ROLE_NAME_FIELD = "RoleName";
 
+	//Regular Expressions
+	public static final String MINIMUM_UPPER_CASE_REGEX="";
 
+	public static final String USER_CREATED = "Successfully Signed Up
 	//Question Types
 	public static final String NUMERIC = "numeric";
 	public static final String FREE_TEXT = "Free Text";

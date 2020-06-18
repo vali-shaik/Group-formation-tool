@@ -2,13 +2,13 @@ package dal.asd.catme.mock;
 
 import dal.asd.catme.beans.User;
 import dal.asd.catme.dao.IUserDao;
-import dal.asd.catme.util.CatmeUtil;
-import dal.asd.catme.util.RandomPasswordGenerator;
+import dal.asd.catme.exception.CatmeException;
+import dal.asd.catme.util.RandomTokenGenerator;
 
 import java.sql.Connection;
 import java.util.ArrayList;
 
-import static dal.asd.catme.util.MailSenderUtil.RANDOM_PASSWORD_LENGTH;
+import static dal.asd.catme.util.MailSenderUtil.TOKEN_LENGTH;
 
 public class UserDaoMock implements IUserDao
 {
@@ -49,9 +49,39 @@ public class UserDaoMock implements IUserDao
     }
 
     @Override
-    public boolean resetPassword(User u, Connection con)
+    public void resetPassword(User u, Connection con)
     {
-        u.setPassword(RandomPasswordGenerator.generateRandomPassword(RANDOM_PASSWORD_LENGTH));
-        return true;
+        u.setPassword(RandomTokenGenerator.generateRandomPassword(TOKEN_LENGTH));
+    }
+
+    @Override
+    public String readBannerIdFromToken(String token) throws CatmeException
+    {
+        return "B00121212";
+    }
+
+    @Override
+    public void generatePasswordResetToken(User u, String token) throws CatmeException
+    {
+        RandomTokenGenerator.generateRandomPassword(TOKEN_LENGTH);
+    }
+
+    @Override
+    public void removeToken(String bannerId)
+    {
+
+
+    }
+
+    @Override
+    public boolean matchWithPasswordHistory(String bannerId, String password) throws CatmeException
+    {
+        return false;
+    }
+
+    @Override
+    public void deleteOverLimitPasswords(String bannerId) throws CatmeException
+    {
+
     }
 }

@@ -4,15 +4,12 @@ import java.sql.Connection;
 import java.util.ArrayList;
 
 import dal.asd.catme.beans.User;
-import dal.asd.catme.dao.IUserDao;
+import dal.asd.catme.exception.CatmeException;
 
 public class UserDaoMock implements IUserDao{
 	
 	ArrayList<User> users;
-	
-	public UserDaoMock() {
-				
-	}
+
 
     public UserDaoMock(ArrayList<User> users)
     {
@@ -41,15 +38,55 @@ public class UserDaoMock implements IUserDao{
 	}
 
 	@Override
-	public User getUser(String bannerId, Connection con) {
-		// TODO Auto-generated method stub
+	public User getUser(String bannerId, Connection con)
+	{
+		for(User u:users)
+		{
+			if(u.getBannerId().equalsIgnoreCase(bannerId))
+				return u;
+		}
 		return null;
 	}
 
 	@Override
-	public boolean resetPassword(User u, Connection con) {
-		// TODO Auto-generated method stub
+	public void resetPassword(User u, Connection con) throws CatmeException
+	{
+		if(u.getPassword()==null)
+			throw new CatmeException();
+
+	}
+
+	@Override
+	public String readBannerIdFromToken(String token) throws CatmeException
+	{
+		if(token.equals("@@@@"))
+		{
+			return "B00000000";
+		}
+		return null;
+	}
+
+	@Override
+	public void generatePasswordResetToken(User u, String token) throws CatmeException
+	{
+
+	}
+
+	@Override
+	public void removeToken(String bannerId)
+	{
+
+	}
+
+	@Override
+	public boolean matchWithPasswordHistory(String bannerId, String password) throws CatmeException
+	{
 		return false;
 	}
 
+	@Override
+	public void deleteOverLimitPasswords(String bannerId) throws CatmeException
+	{
+
+	}
 }

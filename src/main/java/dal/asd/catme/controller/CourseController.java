@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import dal.asd.catme.service.IUserService;
+import dal.asd.catme.util.RandomTokenGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,12 +30,18 @@ import dal.asd.catme.service.IMailSenderService;
 import dal.asd.catme.studentlistimport.CSVReader;
 import dal.asd.catme.util.CatmeUtil;
 
+import javax.mail.MessagingException;
+
+import static dal.asd.catme.util.MailSenderUtil.TOKEN_LENGTH;
+
 @Controller
 public class CourseController 
 {
 	ICourseService courseService;
 
 	IEnrollStudentService enrollStudentService;
+
+	IUserService userService;
 
 	IMailSenderService mailSenderService;
 
@@ -140,58 +148,47 @@ public class CourseController
 	public ModelAndView uploadFile(@RequestParam("student-list-csv") MultipartFile file, @RequestParam("courseId") String courseId)
 	{
 		ModelAndView model = new ModelAndView();
-		if(file.isEmpty())
+
+		CSVReader reader = new CSVReader();
+
+		try
 		{
-			log.info("File is Empty");
-			model.addObject("message","Please Upload File");
-		}
+			reader.validateFile(file);
+			Course c= new Course();
+			c.setCourseId(courseId);
+			ArrayList<Student> students =  reader.readFile(file.getInputStream());
 
+			userService = SystemConfig.instance().getUserService();
+			enrollStudentService=SystemConfig.instance().getEnrollStudentService();
+			mailSenderService=SystemConfig.instance().getMailSenderService();
 
-		else if(file.getSize()>=10*1024*1024)
-		{
-			log.info("File is Big");
-			model.addObject("message","Please Upload File less than 10 mb");
-		}
-
-		else if(!file.getContentType().equals("text/csv")){
-
-			model.addObject("message","Please Select CSV File");
-		}
-
-		else
-		{
-//			String dis = "Type: "+file.getContentType();
-//			dis+="\nName: "+file.getOriginalFilename();
-//			model.addAttribute("message",dis);
-
-			CSVReader reader = new CSVReader();
-
-			try
+			for(Student s: students)
 			{
-				Course c= new Course();
-				c.setCourseId(courseId);
-				ArrayList<Student> students =  reader.readFile(file.getInputStream());
-				
-				enrollStudentService=SystemConfig.instance().getEnrollStudentService();
-				
-				if(enrollStudentService.enrollStudentsIntoCourse(students,c))
+				s.setPassword(RandomTokenGenerator.generateRandomPassword(TOKEN_LENGTH));
+				if(userService.addUser(s).equals(CatmeUtil.USER_CREATED))
 				{
-					model.addObject("message","Students Enrolled");
+					mailSenderService.sendCredentialsToStudent(s,c);
 				}
-				else
-				{
-					model.addObject("message","Error Enrolling Students");
-				}
-
-
-
-			} catch (InvalidFileFormatException e)
-			{
-				e.printStackTrace();
-			} catch (IOException e)
-			{
-				e.printStackTrace();
 			}
+
+			if(enrollStudentService.enrollStudentsIntoCourse(students,c))
+			{
+				model.addObject("message","Students Enrolled");
+			}
+			else
+			{
+				model.addObject("message","Error Enrolling Students");
+			}
+		} catch (InvalidFileFormatException e)
+		{
+			model.addObject("message",e.getMessage());
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		} catch (MessagingException e)
+		{
+			model.addObject("message",e.getMessage());
 		}
 		model.setViewName(CatmeUtil.MANAGE_COURSE_PAGE);
 		return model;

@@ -76,7 +76,7 @@ public class MailSenderService implements IMailSenderService
     }
 
     @Override
-    public void sendNewPassword(User u) throws MailException, MessagingException
+    public void sendResetLink(User u) throws MailException, MessagingException
     {
         sendMail(u,FORGOT_PASSWORD_EMAIL_SUBJECT,getFormattedEmailForForgotPassword(u));
     }
@@ -131,7 +131,7 @@ public class MailSenderService implements IMailSenderService
 
             //replace student details in the content
             str = str.replace(TEMPLATE_USERNAME,u.getFirstName());
-            str = str.replace(TEMPLATE_PASSWORD,u.getPassword());
+            str = str.replace(TEMPLATE_RESETLINK,RESETLINK+u.getPassword());
 
             return str;
         }

@@ -26,7 +26,6 @@ class EnrollStudentServiceTest
     Course c = getCourse();
     Student s = getStudent();
 
-    IUserDao userDao = new UserDaoMock(users);
     IRoleDao roleDao = new RoleDaoMock(users,c);
     IStudentDao studentDao = new StudentDaoMock(s);
 
@@ -34,7 +33,7 @@ class EnrollStudentServiceTest
     @Test
     void assignStudentRoleToStudent()
     {
-        EnrollStudentService service = new EnrollStudentService(userDao,roleDao,studentDao,mailSenderService);
+        EnrollStudentService service = new EnrollStudentService(roleDao,studentDao);
 
         try
         {
@@ -59,26 +58,9 @@ class EnrollStudentServiceTest
     }
 
     @Test
-    void createNewStudent()
-    {
-        EnrollStudentService service = new EnrollStudentService(userDao,roleDao,studentDao,mailSenderService);
-        try
-        {
-            service.createNewStudent(new Student("B00222222","NEWLAST","NEWFIRST","new@123,com"));
-
-            assertEquals(users.get(users.size()-1).getBannerId(),"B00222222");
-
-        } catch (EnrollmentException e)
-        {
-            e.printStackTrace();
-            fail();
-        }
-    }
-
-    @Test
     void enrollStudent()
     {
-        EnrollStudentService service = new EnrollStudentService(userDao,roleDao,studentDao,mailSenderService);
+        EnrollStudentService service = new EnrollStudentService(roleDao,studentDao);
         try
         {
             service.enrollStudent(s,c);

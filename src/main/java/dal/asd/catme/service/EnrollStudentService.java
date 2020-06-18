@@ -4,11 +4,6 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import javax.mail.MessagingException;
-
-import org.springframework.mail.MailException;
-import org.springframework.mail.MailSendException;
-
 import dal.asd.catme.beans.Course;
 import dal.asd.catme.beans.Student;
 import dal.asd.catme.beans.User;
@@ -19,36 +14,23 @@ import dal.asd.catme.dao.IUserDao;
 import dal.asd.catme.database.DatabaseAccess;
 import dal.asd.catme.exception.EnrollmentException;
 import dal.asd.catme.util.CatmeUtil;
-import dal.asd.catme.util.RandomPasswordGenerator;
-
-import static dal.asd.catme.util.MailSenderUtil.RANDOM_PASSWORD_LENGTH;
 
 public class EnrollStudentService implements IEnrollStudentService
 {
     DatabaseAccess db;
 
-    IUserDao userDao;
 
     IRoleDao roleDao;
 
     IStudentDao studentDao;
 
-    IMailSenderService mailSenderService;
-
     Connection con;
 
-    public EnrollStudentService()
-    {
-       
-    }
 
-
-    public EnrollStudentService(IUserDao userDao, IRoleDao roleDao, IStudentDao studentDao, IMailSenderService mailSenderService)
+    public EnrollStudentService(IRoleDao roleDao, IStudentDao studentDao)
     {
-        this.userDao = userDao;
         this.roleDao = roleDao;
         this.studentDao = studentDao;
-        this.mailSenderService = mailSenderService;
     }
 
     @Override
@@ -62,22 +44,6 @@ public class EnrollStudentService implements IEnrollStudentService
 
             for (Student s : students)
             {
-                if (userDao.checkExistingUser(s.getBannerId(),con) == 0)
-                {
-                    try
-                    {
-                        createNewStudent(s);
-                        sendCredentials(s, c);
-                    } catch (EnrollmentException e)
-                    {
-                        System.out.println(e.getMessage() + " " + s);
-                        return false;
-                    } catch (MailException e)
-                    {
-                        System.out.println(e.getMessage() + " " + s);
-                    }
-                }
-
                 try
                 {
                     assignStudentRole(s);
@@ -125,23 +91,4 @@ public class EnrollStudentService implements IEnrollStudentService
         }
     }
 
-    @Override
-    public void createNewStudent(User student) throws EnrollmentException
-    {
-        student.setPassword(RandomPasswordGenerator.generateRandomPassword(RANDOM_PASSWORD_LENGTH));
-        if(userDao.addUser(student,con)==0)
-            throw new EnrollmentException("Error creating new user for student");
-    }
-
-    @Override
-    public void sendCredentials(User student, Course c) throws MailException
-    {
-        try
-        {
-            mailSenderService.sendCredentialsToStudent((Student) student,c);
-        } catch (MessagingException e)
-        {
-            throw new MailSendException("Error sending credentials to student");
-        }
-    }
 }
