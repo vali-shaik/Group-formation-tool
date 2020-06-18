@@ -27,6 +27,9 @@
                         </th:block>
                     </select>
                 </form>
+                <form method="get" th:action="@{/questions/createQuestion}">
+                <button>Create Question</button>
+                </form>
             </div>
             <table class="table">
                 <thead class="thead-dark">
@@ -40,7 +43,7 @@
                 <tbody >
                 <tr th:each="question: ${questions}">
                     <td th:text="${question.questionTitle}"></td>
-                    <td th:text="${question.question}"></td>
+                    <td th:text="${question.questionText}"></td>
                     <td th:text="*{#calendars.format(question.createdDate,'dd MMM yyyy')}"></td>
                     <td>
                         <button type="button" class="btn btn-danger">Delete</button>

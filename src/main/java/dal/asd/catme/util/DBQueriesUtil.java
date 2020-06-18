@@ -27,6 +27,7 @@ public class DBQueriesUtil
     public static final String INSERT_INTO_COURSE_INSTRUCTOR="insert into CourseInstructor(CourseId,UserRoleId) values(?,?)";
     public static final String LIST_USER_QUERY="select * from User where BannerId not in (select BannerId from UserRole where RoleId in (select RoleId from Role where RoleName=?))";
     public static final String CHECK_INSTRUCTOR="select * from Course where CourseId=?";
+    
 
     //CourseDaoImpl
     public static String SEELCT_ENROLLED_STUDENTS_QUERY = "select BannerId, FirstName, LastName from Enrollment join(`User`) using(BannerId) where CourseId=?";
@@ -51,11 +52,22 @@ public class DBQueriesUtil
     public static String GENERATE_PASSWORD_RESET_TOKEN = "insert into PasswordResetTokens (BannerId ,Token ) values(?,?);";
     public static String READ_BANNERID_FROM_TOKEN = "select BannerId from PasswordResetTokens where Token =?;";
     public static String REMOVE_TOKEN = "delete from PasswordResetTokens where BannerId =?;";
-
-
-    public static String GET_QUESTIONS = "CALL GetQuestionsList(?)";
     
-    //QuestionDaoImpl
+    //QuestionTitle
+    public static final String CHECK_QUESTION_TITLE="select * from QuestionTitle where QuestionTitleText=?";
+    public static final String INSERT_QUESTION_TITLE="insert into QuestionTitle(QuestionTitleText,UserRoleId) values(?,?)";
+    
+    //Question
+    public static final String CHECK_QUESTION="select * from Question where QuestionTitleId=? and QuestionText=?";
+    public static final String INSERT_QUESTION = "insert into Question(QuestionTitleId,QuestionText,QuestionType) values(?,?,?)";
+    
+    //QuestionOption
+    public static final String CHECK_QUESTION_OPTION = "select * from QuestionOption where QuestionId=? and QuestionOption=?";
+    public static final String INSERT_QUESTION_OPTION = "insert into QuestionOption(QuestionId,QuestionOption,OptionOrder) values(?,?,?)";
+
+	public static String GET_QUESTIONS = "CALL GetQuestionsList(?)";
+	
+	//QuestionDaoImpl
     public static String CHECK_EXISTING_QUESTION_QUERY = "SELECT EXISTS(SELECT * FROM Question WHERE QuestionId = ? );";
     public static String DELETE_QUESTION_QUERY = "DELETE FROM Question WHERE QuestionId = ? ;";
 

@@ -36,7 +36,9 @@ public class CatmeUtil
 	public static final String RESET_PASSWORD_PAGE="reset-password";
 	public static final String MANAGE_COURSE_PAGE ="manageCourse";
 	public static final String COURSE_PAGE="course";
-
+	public static final String  QUESTION_CREATION_SUCCESS="questionCreationSuccess";
+	public static final String OPTION_EDITOR="optionEditor";
+	
 	//QuestionManager
 	public static final String QUESTION_MANAGER_HOME = "questions";
 	
@@ -64,10 +66,26 @@ public class CatmeUtil
 	//Regular Expressions
 	public static final String MINIMUM_UPPER_CASE_REGEX="";
 
-	public static final String USER_CREATED = "Successfully Signed Up.";
-
+	public static final String USER_CREATED = "Successfully Signed Up";
+	//Question Types
+	public static final String NUMERIC = "numeric";
+	public static final String FREE_TEXT = "Free Text";
+	public static final String MCQ_CHOOSE_ONE = "MCQ Choose One";
+	public static final String MCQ_CHOOSE_MULTIPLE = "MCQ Choose Multiple";
+	
+	public static final String FREETEXT = "freeText";
+	public static final String MCQCHOOSEONE = "mcqChooseOne";
+	public static final String MCQCHOOSEMULTIPLE = "mcqChooseMultiple";
+	
+	public static final String FREETEXT_DB = "FreeText";
+	public static final String NUMERIC_DB = "Numeric";
+	public static final String RADIOBUTTON = "RadioButton";
+	public static final String CHECKBOX = "CheckBox";
 
 	public static final int GUEST_ROLE_ID = 1;
 	public static final int STUDENT_ROLE_ID = 2;
 	public static final int TA_ROLE_ID = 3;
+	
+	public static final String QUESTION_TITLE="Heroku";
+	public static final int QUESTION_ID = 109;
 }

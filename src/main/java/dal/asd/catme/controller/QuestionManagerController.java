@@ -1,32 +1,42 @@
 package dal.asd.catme.controller;
 
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
+
+import dal.asd.catme.beans.Option;
 import dal.asd.catme.beans.Question;
-import dal.asd.catme.beans.QuestionTitle;
 import dal.asd.catme.beans.User;
 import dal.asd.catme.config.SystemConfig;
 import dal.asd.catme.exception.QuestionDatabaseException;
 import dal.asd.catme.service.IListQuestionsService;
+import dal.asd.catme.service.IQuestionManagerService;
+import dal.asd.catme.service.QuestionManagerServiceImpl;
 import dal.asd.catme.util.CatmeUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Controller
 @RequestMapping("questions")
 public class QuestionManagerController
 {
     IListQuestionsService listQuestionsService;
+    IQuestionManagerService questionManagerServiceImpl = new QuestionManagerServiceImpl();
 
     //Creating Logger
-    private static final Logger log = LoggerFactory.getLogger(CourseController.class);
+    private static final Logger log = LoggerFactory.getLogger(QuestionManagerController.class);
+    
+    @Value("${questionTypes}")
+    private String[] questionTypes;
 
     @RequestMapping("")
     public ModelAndView loadPage()
@@ -81,4 +91,89 @@ public class QuestionManagerController
 
         return questionsPage;
     }
+	
+	
+	
+	@RequestMapping("/createQuestion")
+	public String createQuestion(Model model) 
+	{
+		log.info("****QuestionManagerController - createQuestion Invoked*****");
+		model.addAttribute("question", new Question());
+		model.addAttribute("questionTitle", "");
+		return "createQuestion";
+	}
+	
+	@RequestMapping("/questionType")
+	public String createQuestionType(@ModelAttribute Question question) 
+	{
+		
+		System.out.println("##before : "+question.toString());
+		System.out.println("questionTitle "+question.getQuestionTitle());
+		log.info("****QuestionManagerController - createQuestionType Invoked*****");
+		String userId=SecurityContextHolder.getContext().getAuthentication().getName();
+		log.info("***user***"+userId);
+		
+		return questionManagerServiceImpl.findQuestionType(question,userId);
+		
+		
+	}
+	
+	/*
+	 * @RequestMapping("addQuestion") public String addQuestion(@ModelAttribute
+	 * Question question) {
+	 * log.info("****QuestionManagerController - addQuestion Invoked*****"); String
+	 * userId=SecurityContextHolder.getContext().getAuthentication().getName();
+	 * System.out.println("questionTitle "+question.getQuestionTitle());
+	 * log.info("***here*** "+question.toString()); int questionId =
+	 * questionManagerServiceImpl.createQuestion(question, userId); int result
+	 * =questionManagerServiceImpl.createOptions(questionId,question.
+	 * getOptionWithOrder()); if(result>0) { return
+	 * CatmeUtil.QUESTION_CREATION_SUCCESS; } else{ //need to change return
+	 * "questionCreationFailure"; } }
+	 */
+	
+	    
+    
+    @RequestMapping(value="/addQuestion", method=RequestMethod.POST, params="action=addOption")
+    public String addOption(@ModelAttribute Question question) {
+        
+        List<Option> options=question.getOptionWithOrder();
+        options.add(new Option(options.size()+1));
+        question.setOptionWithOrder(options);
+        return "optionEditor";
+    }
+
+
+    @RequestMapping(value="/addQuestion", method=RequestMethod.POST, params="action=create")
+    public String addQuestion(@ModelAttribute Question question) {
+    	
+    		log.info("****QuestionManagerController - addQuestion Invoked*****");
+    		String userId=SecurityContextHolder.getContext().getAuthentication().getName();
+    		System.out.println("questionTitle "+question.getQuestionTitle());
+    		log.info("***here*** "+question.toString());
+    		int questionId = questionManagerServiceImpl.createQuestion(question, userId);
+    		int result =questionManagerServiceImpl.createOptions(questionId,question.getOptionWithOrder());
+    		if(result>0) {
+    			return CatmeUtil.QUESTION_CREATION_SUCCESS;
+    	}
+    			else{
+    				//need to change
+    				return "questionCreationFailure";
+    			}
+
+    }
+
+
+
+
+	
+	
+	@ModelAttribute("questionTypes")
+	public String[] getQuestionTypes(){
+		System.out.println("questionTypes "+questionTypes);
+		return questionTypes;	
+	}
+	
+	
+
 }

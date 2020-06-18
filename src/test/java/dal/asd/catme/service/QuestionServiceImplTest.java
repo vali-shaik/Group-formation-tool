@@ -77,9 +77,9 @@ public class QuestionServiceImplTest{
 		Question q2 = new Question();
 		
 		q1.setQuestionId(1);
-		q1.setQuestion("Does JAVA rule?");
+		q1.setQuestionText("Does JAVA rule?");
 		q2.setQuestionId(2);
-		q2.setQuestion("Do Jedi love JAVA?");	
+		q2.setQuestionText("Do Jedi love JAVA?");	
 		
 		ArrayList<Question> set1 = new ArrayList<Question>();
 		set1.add(q1);
@@ -95,9 +95,9 @@ public class QuestionServiceImplTest{
 		Question q4 = new Question();
 		
 		q3.setQuestionId(3);
-		q3.setQuestion("Does C++ rule?");
+		q3.setQuestionText("Does C++ rule?");
 		q4.setQuestionId(4);
-		q4.setQuestion("Do Jedi love C++?");		
+		q4.setQuestionText("Do Jedi love C++?");		
 		ArrayList<Question> set2 = new ArrayList<Question>();
 		set2.add(q1);
 		set2.add(q2);

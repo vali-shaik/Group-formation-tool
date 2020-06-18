@@ -1,21 +1,43 @@
 package dal.asd.catme.beans;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
 public class Question {
 	int questionId;
-	String question;
-	String questionTitle;
+	
+	String questionText;
 	String questionType;
-	Map<Integer,String> optionWithOrder = new TreeMap<Integer,String>();
+	String questionTitle;
+	List<Option> optionWithOrder = new ArrayList<Option>();
 	Date createdDate;
-	public String getQuestion() {
-		return question;
+	
+	public Question() {}
+	
+	public Question(int questionId, String questionText, String questionType, String questionTitle,
+			List<Option> optionWithOrder, Date createdDate) {
+		super();
+		this.questionId = questionId;
+		this.questionText = questionText;
+		this.questionType = questionType;
+		this.questionTitle = questionTitle;
+		this.optionWithOrder = optionWithOrder;
+		this.createdDate = createdDate;
 	}
-	public void setQuestion(String question) {
-		this.question = question;
+	public int getQuestionId() {
+		return questionId;
+	}
+	public void setQuestionId(int questionId) {
+		this.questionId = questionId;
+	}
+	public String getQuestionText() {
+		return questionText;
+	}
+	public void setQuestionText(String questionText) {
+		this.questionText = questionText;
 	}
 	public String getQuestionType() {
 		return questionType;
@@ -23,40 +45,33 @@ public class Question {
 	public void setQuestionType(String questionType) {
 		this.questionType = questionType;
 	}
-	public Map<Integer, String> getOptionOrder() {
-		return optionWithOrder;
-	}
-	public void setOptionOrder(Map<Integer, String> optionOrder) {
-		this.optionWithOrder = optionOrder;
-	}
-
-	public Date getCreatedDate()
-	{
-		return createdDate;
-	}
-
-	public void setCreatedDate(Date createdDate)
-	{
-		this.createdDate = createdDate;
-	}
-
-	public String getQuestionTitle()
-	{
+	public String getQuestionTitle() {
 		return questionTitle;
 	}
-
-	public void setQuestionTitle(String questionTitle)
-	{
+	public void setQuestionTitle(String questionTitle) {
 		this.questionTitle = questionTitle;
 	}
-
-	public int getQuestionId()
-	{
-		return questionId;
+	public List<Option> getOptionWithOrder() {
+		return optionWithOrder;
 	}
-
-	public void setQuestionId(int questionId)
-	{
-		this.questionId = questionId;
+	public void setOptionWithOrder(List<Option> optionWithOrder) {
+		this.optionWithOrder = optionWithOrder;
 	}
+	public Date getCreatedDate() {
+		return createdDate;
+	}
+	public void setCreatedDate(Date createdDate) {
+		this.createdDate = createdDate;
+	}
+	@Override
+	public String toString() {
+		return "Question [questionText=" + questionText + ", questionType=" + questionType + ", optionWithOrder="
+				+ optionWithOrder + ", createdDate=" + createdDate + ", getQuestionText()=" + getQuestionText()
+				+ ", getQuestionType()=" + getQuestionType() + ", getOptionWithOrder()=" + getOptionWithOrder()
+				+ ", getCreatedDate()=" + getCreatedDate() + ", getClass()=" + getClass() + ", hashCode()=" + hashCode()
+				+ ", toString()=" + super.toString() + "]";
+	}
+	
+	
+
 }
