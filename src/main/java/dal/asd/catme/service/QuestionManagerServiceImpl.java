@@ -5,15 +5,15 @@ import java.util.List;
 
 import dal.asd.catme.beans.Option;
 import dal.asd.catme.beans.Question;
-import dal.asd.catme.dao.IQuestionManagerDao;
-import dal.asd.catme.dao.QuestionManagerDao;
+import dal.asd.catme.dao.IQuestionDao;
+import dal.asd.catme.dao.QuestionDaoImpl;
 import dal.asd.catme.util.CatmeUtil;
 
 public class QuestionManagerServiceImpl implements IQuestionManagerService{
 	
 		
 		
-		IQuestionManagerDao questionManagerDao = new QuestionManagerDao();
+		IQuestionDao questionDao = new QuestionDaoImpl();
 	
 		@Override
 		public String findQuestionType(Question question,String user)
@@ -44,11 +44,11 @@ public class QuestionManagerServiceImpl implements IQuestionManagerService{
 		@Override
 		public int createQuestion(Question question,String user)
 		{
-			return questionManagerDao.createQuestion(question, user);
+			return questionDao.createQuestion(question, user);
 		}
 
 		@Override
 		public int createOptions(int questionId, List<Option> options) {
-			return questionManagerDao.createOptions(questionId, options);
+			return questionDao.createOptions(questionId, options);
 		}
 	}
