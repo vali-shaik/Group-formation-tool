@@ -23,7 +23,7 @@ import dal.asd.catme.service.QuestionManagerServiceImpl;
 import dal.asd.catme.util.CatmeUtil;
 
 @Controller
-@RequestMapping("question/")
+@RequestMapping("/question")
 public class QuestionManagerController {
 	
 private static final Logger logger = LoggerFactory.getLogger(AdminController.class);
@@ -35,7 +35,7 @@ private String[] questionTypes;
 	
 	public static int value =0; 
 	
-	@RequestMapping("createQuestion")
+	@RequestMapping("/createQuestion")
 	public String createQuestion(Model model) 
 	{
 		logger.info("****QuestionManagerController - createQuestion Invoked*****");
@@ -43,7 +43,7 @@ private String[] questionTypes;
 		return "createQuestion";
 	}
 	
-	@RequestMapping("questionType")
+	@RequestMapping("/questionType")
 	public String createQuestionType(@ModelAttribute Question question) 
 	{
 		System.out.println("##before : "+question.toString());
@@ -56,12 +56,18 @@ private String[] questionTypes;
 		System.out.println("##Options  : "+options.toString());
 		question.setOptionWithOrder(options);
 		System.out.println("##before : "+question.toString());
-		//model.addAttribute("quesiton",question);
 		return "optionEditor";
 		
 	}
 	
-	@RequestMapping("addQuestion")
+	@RequestMapping("/moreOptions")
+	public String moreOptions(@ModelAttribute Question question)
+	{
+		System.out.println("### MORE OPTIONS ###"+question.toString());
+		return "optionEditor";
+	}
+	
+	@RequestMapping("/addQuestion")
 	public String addQuestion(@ModelAttribute Question question) 
 	{
 		System.out.println("AFTER MCQ Question : " +question.toString());

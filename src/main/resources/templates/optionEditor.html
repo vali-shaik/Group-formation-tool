@@ -3,6 +3,13 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>Insert title here</title>
+
+<style>
+.moreOptionsClass{
+	color:blue !important;
+	text-decoration:underline;
+}
+</style>
 </head>
 <body>
 	<div th:insert="header"></div>
@@ -24,13 +31,19 @@
 			</tbody>
 			</table>
 		    <div style="margin-top:30px">
-		    <u>Add Option</u>
+		 
 		    </div>
 		    <div style="margin-top:30px">
 		    <button>Create Question</button>
 		    </div>
 		    	<input type="hidden" th:field="*{questionText}"  value = "${questionText}">
 				<input type="hidden" th:field="*{questionType}"  value = "${questionType}">
+		 </form>
+		 
+		 <br><br>
+		 <form th:action="@{/question/moreOptions}" th:object="${question}" method="post">
+		 <button>More options</button>
+		 <!-- <a href="/question/moreOptions" class="moreOptionsClass">More Options</a> -->
 		 </form>
 	    </div>
 </body>
