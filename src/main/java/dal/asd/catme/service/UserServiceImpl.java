@@ -10,6 +10,7 @@ import dal.asd.catme.config.IPasswordRulesConfig;
 import dal.asd.catme.config.SystemConfig;
 import dal.asd.catme.dao.IUserDao;
 import dal.asd.catme.database.DatabaseAccess;
+import dal.asd.catme.exception.CatmeException;
 import dal.asd.catme.util.PasswordRulesUtil;
 
 public class UserServiceImpl implements IUserService{
@@ -21,7 +22,7 @@ public class UserServiceImpl implements IUserService{
 	IPasswordRulesConfig passwordRulesConfig;
 	
 	
-	public boolean enforcePasswordPolicy(User user)
+	public boolean enforcePasswordPolicy(User user) throws CatmeException
 	{
 		boolean flag=true;
 		passwordRulesConfig=SystemConfig.instance().getPasswordEnforcementConfig();
