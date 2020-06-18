@@ -57,6 +57,8 @@ public class CatmeUtil
 	//UserRole table fields	
 	public static final String ROLE_NAME_FIELD = "RoleName";
 
+	//Regular Expressions
+	public static final String MINIMUM_UPPER_CASE_REGEX="";
 
 
 

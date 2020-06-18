@@ -1,7 +1,5 @@
 package dal.asd.catme.config;
 
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -61,6 +59,7 @@ public class SystemConfig
 	private DatabaseAccess databaseAccess;
 	private CatmeSecurityConfig catmeServiceConfig;
 	private PasswordEncoder passwordEncoder;
+	private IPasswordRulesConfig passwordEnforcementConfig;
 	
 	
 	public SystemConfig()
@@ -84,6 +83,7 @@ public class SystemConfig
 		userService=new UserServiceImpl();
 		passwordResetService=new PasswordResetService();
 		enrollStudentService=new EnrollStudentService(userDao,roleDao,studentDao,mailSenderService);
+		passwordEnforcementConfig=new PasswordRulesConfigImpl();
 	}
 	
 	public static SystemConfig instance()
@@ -257,6 +257,14 @@ public class SystemConfig
 
 	public void setEnrollStudentService(IEnrollStudentService enrollStudentService) {
 		this.enrollStudentService = enrollStudentService;
+	}
+
+	public IPasswordRulesConfig getPasswordEnforcementConfig() {
+		return passwordEnforcementConfig;
+	}
+
+	public void setPasswordEnforcementConfig(IPasswordRulesConfig passwordEnforcementConfig) {
+		this.passwordEnforcementConfig = passwordEnforcementConfig;
 	}
 
 	

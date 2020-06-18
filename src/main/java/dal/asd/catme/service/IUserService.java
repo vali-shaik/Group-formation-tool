@@ -4,5 +4,6 @@ import dal.asd.catme.beans.User;
 
 public interface IUserService {
 	public String addUser(User user);
+	public boolean enforcePasswordPolicy(User user);
 
 }

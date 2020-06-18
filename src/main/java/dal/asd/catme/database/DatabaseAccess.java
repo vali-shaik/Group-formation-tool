@@ -7,7 +7,9 @@ import java.sql.SQLException;
 import java.sql.SQLFeatureNotSupportedException;
 import java.sql.Statement;
 import java.util.logging.Logger;
+
 import javax.sql.DataSource;
+
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
@@ -20,9 +22,9 @@ public class DatabaseAccess implements DataSource
 	private int result;
 
 
-	private static final String url=System.getenv("URL");
-	private static final String username=System.getenv("USERNAME");
-	private static final String password=System.getenv("PASSWORD");
+	private static final String url=System.getenv("DB_URL");
+	private static final String username=System.getenv("DB_USERNAME");
+	private static final String password=System.getenv("DB_PASSWORD");
 	
 	
 	public Connection getConnection() throws SQLException
