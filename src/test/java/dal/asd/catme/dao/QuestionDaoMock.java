@@ -34,8 +34,9 @@ public class QuestionDaoMock implements IQuestionDao
     }
 
     @Override
-    public int deleteQuestion(int questionId, Connection con) {
+    public int deleteQuestion(int questionId) {
         // TODO Auto-generated method stub
+    	Connection con = null;
         if(0 != checkExistingQuestion(questionId, con)){
             for(QuestionTitle qT: questions)
             {

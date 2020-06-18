@@ -41,6 +41,7 @@ public class CatmeUtil
 	
 	//QuestionManager
 	public static final String QUESTION_MANAGER_HOME = "questions";
+	public static final String DELETE_QUESTION_CONFIRMATION = "deleteQuestionConfirmation";
 	
 	//Landing pages
 	public static final String ADMIN_HOME="admin/dashboard";

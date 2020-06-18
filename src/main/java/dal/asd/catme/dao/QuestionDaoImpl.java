@@ -78,12 +78,15 @@ public class QuestionDaoImpl implements IQuestionDao
     }
 
     @Override
-    public int deleteQuestion(int questionId, Connection con)
+    public int deleteQuestion(int questionId)
     {
         // TODO Auto-generated method stub
         int questionDeleted = 0;
+        db = SystemConfig.instance().getDatabaseAccess();
+        Connection con = null;
         try
         {
+        	con = db.getConnection();
             if (0 != checkExistingQuestion(questionId, con))
             {
                 PreparedStatement stmt = con.prepareStatement(DBQueriesUtil.DELETE_QUESTION_QUERY);
@@ -95,6 +98,16 @@ public class QuestionDaoImpl implements IQuestionDao
         {
             // TODO Auto-generated catch block
             e.printStackTrace();
+        } finally
+        {
+        	try {
+        		if (con != null){
+				con.close();
+        		}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
         }
 
         return questionDeleted;

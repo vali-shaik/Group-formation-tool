@@ -10,6 +10,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -174,6 +176,20 @@ public class QuestionManagerController
 		return questionTypes;	
 	}
 	
+	
+	@GetMapping("/deleteQuestionConfirmation/{questionId}")
+	public String deleteQuestionConfirmation(@PathVariable("questionId")String questionId,Model model) {
+		
+		model.addAttribute("questionId", questionId);
+		return "deleteQuestionConfirmation";
+	}
+	
+	@PostMapping("/deleteQuestion/{questionId}")
+	public String deleteQuestion(Model model, @PathVariable("questionId")String questionId) {
+		int qId = Integer.parseInt(questionId);
+		questionManagerServiceImpl.deleteQuestion(qId);
+		return "redirect:/questions";
+	}
 	
 
 }

@@ -46,7 +46,7 @@ public class QuestionServiceImplTest{
 		IQuestionDao questionDaoObj = new QuestionDaoMock(formQuestions());
 		  try
 	        {
-	            assertEquals(1,(questionDaoObj.deleteQuestion(1, con)));
+	            assertEquals(1,(questionDaoObj.deleteQuestion(1)));
 
 	        } catch (Exception e)
 	        {
@@ -56,7 +56,7 @@ public class QuestionServiceImplTest{
 
 		  try
 	        {
-	            assertEquals(0,(questionDaoObj.deleteQuestion(7, con)));
+	            assertEquals(0,(questionDaoObj.deleteQuestion(7)));
 
 	        } catch (Exception e)
 	        {

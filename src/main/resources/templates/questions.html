@@ -46,7 +46,9 @@
                     <td th:text="${question.questionText}"></td>
                     <td th:text="*{#calendars.format(question.createdDate,'dd MMM yyyy')}"></td>
                     <td>
-                        <button type="button" class="btn btn-danger">Delete</button>
+                        <form th:action="@{/questions/deleteQuestionConfirmation/} + ${question.questionId}" th:method="get">
+                        	<button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
                     </td>
                 </tr>
                 </tbody>

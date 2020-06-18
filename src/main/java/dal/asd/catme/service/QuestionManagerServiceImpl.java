@@ -51,4 +51,10 @@ public class QuestionManagerServiceImpl implements IQuestionManagerService{
 		public int createOptions(int questionId, List<Option> options) {
 			return questionDao.createOptions(questionId, options);
 		}
+
+		@Override
+		public int deleteQuestion(int questionId) {
+			// TODO Auto-generated method stub
+			return questionDao.deleteQuestion(questionId);
+		}
 	}
