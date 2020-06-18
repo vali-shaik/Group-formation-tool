@@ -1,4 +1,4 @@
-package dal.asd.catme.mock;
+package dal.asd.catme.dao;
 
 import dal.asd.catme.beans.Course;
 import dal.asd.catme.beans.Student;
