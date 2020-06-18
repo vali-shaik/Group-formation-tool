@@ -15,7 +15,7 @@ public class MailSenderUtil
     public static final String TEMPLATE_COURSE = "{course}";
     public static final String TEMPLATE_RESETLINK = "{resetlink}";
 
-    public static final String RESETLINK = "localhost:8080/reset-password?token=";
+    public static final String RESETLINK = System.getenv("SERVER_NAME")+"/reset-password?token=";
 
     public static final String PATH_TO_NEW_STUDENT_TEMPLATE = "src/main/resources/templates/new_student_template.html";
     public static final String NEW_STUDENT_EMAIL_SUBJECT = "Registration of new course in CATME";

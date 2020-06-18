@@ -3,6 +3,7 @@ package dal.asd.catme.service;
 import dal.asd.catme.beans.Course;
 import dal.asd.catme.beans.Student;
 
+import static dal.asd.catme.util.MailSenderUtil.RESETLINK;
 import static dal.asd.catme.util.MailSenderUtil.TOKEN_LENGTH;
 import static  org.junit.jupiter.api.Assertions.*;
 
