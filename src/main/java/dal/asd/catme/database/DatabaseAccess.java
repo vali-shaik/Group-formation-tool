@@ -31,11 +31,6 @@ public class DatabaseAccess implements DataSource
 	{
 		try 
 		{
-			/*
-			 * url=
-			 * "jdbc:mysql://db-5308.cs.dal.ca:3306/CSCI5308_16_DEVINT?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
-			 * user="CSCI5308_16_DEVINT_USER"; password="CSCI5308_16_DEVINT_16175";
-			 */
 			connection = DriverManager.getConnection(url, username, password);
 		} 
 		catch (SQLException e) 
