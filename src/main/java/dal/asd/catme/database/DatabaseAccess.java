@@ -98,13 +98,7 @@ public class DatabaseAccess implements DataSource
 
 	@Override
 	public Connection getConnection(String username, String password) throws SQLException {
-		// TODO Auto-generated method stub
-		/*
-		 * try { Class.forName("com.mysql.jdbc.driver"); // Class.forName(driver); }
-		 * catch (ClassNotFoundException e) { e.printStackTrace(); } try { connection =
-		 * DriverManager.getConnection(url, user, password); } catch (SQLException e) {
-		 * e.printStackTrace(); } return connection;
-		 */
+	
 		return null;
 	
 	}

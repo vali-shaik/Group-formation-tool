@@ -1,14 +1,13 @@
 package dal.asd.catme.dao;
 
+import static dal.asd.catme.util.DBQueriesUtil.STUDENT_ENROLL_QUERY;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.Statement;
 
 import dal.asd.catme.beans.Course;
 import dal.asd.catme.beans.Student;
 import dal.asd.catme.database.DatabaseAccess;
-
-import static dal.asd.catme.util.DBQueriesUtil.*;
 
 public class StudentDaoImpl implements IStudentDao
 {

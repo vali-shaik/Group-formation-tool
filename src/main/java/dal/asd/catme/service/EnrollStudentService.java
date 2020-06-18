@@ -10,7 +10,6 @@ import dal.asd.catme.beans.User;
 import dal.asd.catme.config.SystemConfig;
 import dal.asd.catme.dao.IRoleDao;
 import dal.asd.catme.dao.IStudentDao;
-import dal.asd.catme.dao.IUserDao;
 import dal.asd.catme.database.DatabaseAccess;
 import dal.asd.catme.exception.EnrollmentException;
 import dal.asd.catme.util.CatmeUtil;

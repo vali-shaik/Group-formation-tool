@@ -40,7 +40,7 @@ public class ForgotPasswordController
     @PostMapping("forgotPassword")
     public String resetPassword(@RequestParam("bannerid") String bannerid, Model model)
     {
-        System.out.println("Reseting password");
+       // System.out.println("Reseting password");
         passwordResetService= SystemConfig.instance().getPasswordResetService();
         User u = passwordResetService.generateResetLink(bannerid);
 

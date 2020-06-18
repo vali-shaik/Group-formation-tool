@@ -1,16 +1,20 @@
 package dal.asd.catme.controller;
 
+import static dal.asd.catme.util.MailSenderUtil.TOKEN_LENGTH;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import dal.asd.catme.service.IUserService;
-import dal.asd.catme.util.RandomTokenGenerator;
+import javax.mail.MessagingException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import dal.asd.catme.beans.Course;
+import dal.asd.catme.beans.Enrollment;
 import dal.asd.catme.beans.Student;
 import dal.asd.catme.beans.User;
 import dal.asd.catme.config.CatmeSecurityConfig;
@@ -27,12 +32,11 @@ import dal.asd.catme.exception.InvalidFileFormatException;
 import dal.asd.catme.service.ICourseService;
 import dal.asd.catme.service.IEnrollStudentService;
 import dal.asd.catme.service.IMailSenderService;
-import dal.asd.catme.studentlistimport.CSVReader;
+import dal.asd.catme.service.IRoleService;
+import dal.asd.catme.service.IUserService;
+import dal.asd.catme.studentlistimport.ICSVReader;
 import dal.asd.catme.util.CatmeUtil;
-
-import javax.mail.MessagingException;
-
-import static dal.asd.catme.util.MailSenderUtil.TOKEN_LENGTH;
+import dal.asd.catme.util.RandomTokenGenerator;
 
 @Controller
 public class CourseController 
@@ -47,8 +51,41 @@ public class CourseController
 
 	CatmeSecurityConfig catmeSecurityConfig;
 	
+	ICSVReader csvReaderImpl;
+	
+	IRoleService roleService;
+	
 	//Creating Logger
 	private static final Logger log = LoggerFactory.getLogger(CourseController.class);
+	
+	
+	
+
+	@GetMapping("taEnrollment/{courseId}")
+	public String enrollTa(@PathVariable("courseId")String courseId,Model model) {
+		model.addAttribute("courseId", courseId);
+		return CatmeUtil.TA_ENROLLMENT_PAGE;
+	}
+
+	@RequestMapping("taEnrollment/access")
+	public String  redirectHomePage()
+	{
+		//Redirecting the user to home page with associated courses
+		log.info("Finding the Role of User and redirecting to respetive User's home page");
+		return "redirect:/access";
+	}
+
+	@RequestMapping("taEnrollment/{courseId}")
+	public String enrollTa(@PathVariable("courseId")String courseId,@RequestParam String bannerId,Model model) {
+		Enrollment user = new Enrollment(bannerId,courseId);
+		model.addAttribute("user", user);
+		roleService=SystemConfig.instance().getRoleService();
+		String message = roleService.assignTa(user);
+		model.addAttribute("message", message);
+		return CatmeUtil.TA_ENROLLED_PAGE;
+	}
+	
+	
 	
 	//Finds the access level on course based on User's role
 	public ModelAndView identifyAccess(ModelAndView modelAndView,String role)
@@ -148,15 +185,17 @@ public class CourseController
 	public ModelAndView uploadFile(@RequestParam("student-list-csv") MultipartFile file, @RequestParam("courseId") String courseId)
 	{
 		ModelAndView model = new ModelAndView();
+		
+		csvReaderImpl=SystemConfig.instance().getCsvReaderImpl();
 
-		CSVReader reader = new CSVReader();
+//		CSVReader readerImpl = new CSVReader();
 
 		try
 		{
-			reader.validateFile(file);
+			csvReaderImpl.validateFile(file);
 			Course c= new Course();
 			c.setCourseId(courseId);
-			ArrayList<Student> students =  reader.readFile(file.getInputStream());
+			ArrayList<Student> students =  csvReaderImpl.readFile(file.getInputStream());
 
 			userService = SystemConfig.instance().getUserService();
 			enrollStudentService=SystemConfig.instance().getEnrollStudentService();

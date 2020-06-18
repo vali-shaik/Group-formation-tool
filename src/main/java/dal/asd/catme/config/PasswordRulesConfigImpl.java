@@ -1,16 +1,11 @@
 package dal.asd.catme.config;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import dal.asd.catme.beans.User;
 import dal.asd.catme.database.DatabaseAccess;
-import dal.asd.catme.exception.CatmeException;
 import dal.asd.catme.util.PasswordRulesUtil;
 
 public class PasswordRulesConfigImpl implements IPasswordRulesConfig {

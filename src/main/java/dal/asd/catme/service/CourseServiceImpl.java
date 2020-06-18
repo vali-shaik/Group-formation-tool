@@ -8,7 +8,6 @@ import org.slf4j.LoggerFactory;
 import dal.asd.catme.beans.Course;
 import dal.asd.catme.beans.Student;
 import dal.asd.catme.beans.User;
-import dal.asd.catme.config.SystemConfig;
 import dal.asd.catme.controller.CatmeController;
 import dal.asd.catme.dao.ICourseDao;
 import dal.asd.catme.exception.CatmeException;

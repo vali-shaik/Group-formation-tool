@@ -1,11 +1,8 @@
 package dal.asd.catme.service;
 
-import dal.asd.catme.beans.Instructor;
-import dal.asd.catme.beans.Question;
-import dal.asd.catme.beans.QuestionTitle;
-import dal.asd.catme.exception.QuestionDatabaseException;
-
 import java.util.List;
+import dal.asd.catme.beans.Question;
+import dal.asd.catme.exception.QuestionDatabaseException;
 
 public interface IListQuestionsService
 {

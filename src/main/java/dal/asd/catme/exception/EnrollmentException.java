@@ -3,7 +3,12 @@ package dal.asd.catme.exception;
 
 public class EnrollmentException extends Exception
 {
-    public EnrollmentException(String message)
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	public EnrollmentException(String message)
     {
         super(message);
     }

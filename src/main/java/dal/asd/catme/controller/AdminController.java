@@ -32,7 +32,6 @@ public class AdminController {
 	public String adminPage() 
 	{
 		logger.info("****Admin Controller - Admin Page Invoked*****");
-		
 		return CatmeUtil.ADMIN;
 	}
 	
@@ -77,7 +76,6 @@ public class AdminController {
 	public String deleteCourse(@RequestParam String course)
 	{
 		logger.info("****Admin Controller - Delete Course Invoked*****");
-		System.out.println(course);
 		adminServiceImpl=SystemConfig.instance().getAdminServie();
 		int result=adminServiceImpl.deleteCourse(course);
 		if(result>0)
