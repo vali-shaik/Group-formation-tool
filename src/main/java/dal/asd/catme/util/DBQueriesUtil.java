@@ -54,7 +54,7 @@ public class DBQueriesUtil
     public static String REMOVE_TOKEN = "delete from PasswordResetTokens where BannerId =?;";
     
     //QuestionTitle
-    public static final String CHECK_QUESTION_TITLE="select * from QuestionTitle where QuestionTitleText=?";
+    public static final String CHECK_QUESTION_TITLE="select * from QuestionTitle where QuestionTitleText=? and UserRoleId=?";
     public static final String INSERT_QUESTION_TITLE="insert into QuestionTitle(QuestionTitleText,UserRoleId) values(?,?)";
     
     //Question

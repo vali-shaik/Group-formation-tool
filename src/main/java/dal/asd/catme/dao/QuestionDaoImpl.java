@@ -185,6 +185,7 @@ public class QuestionDaoImpl implements IQuestionDao
             int userRoleId = getUserRoleId(con,user);
             PreparedStatement preparedStatement = con.prepareStatement(DBQueriesUtil.CHECK_QUESTION_TITLE);
             preparedStatement.setString(1, questionTitle);
+            preparedStatement.setInt(2,userRoleId);
             ResultSet resultSet = preparedStatement.executeQuery();
             if(!resultSet.next()) {
                 preparedStatement=con.prepareStatement(DBQueriesUtil.INSERT_QUESTION_TITLE);
@@ -195,6 +196,7 @@ public class QuestionDaoImpl implements IQuestionDao
                 if(result>0) {
                     preparedStatement = con.prepareStatement(DBQueriesUtil.CHECK_QUESTION_TITLE);
                     preparedStatement.setString(1, questionTitle);
+                    preparedStatement.setInt(2,userRoleId);
                     resultSet = preparedStatement.executeQuery();
                     resultSet.next();
                 }
