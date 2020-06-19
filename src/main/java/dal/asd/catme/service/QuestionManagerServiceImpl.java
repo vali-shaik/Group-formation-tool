@@ -49,4 +49,11 @@ public class QuestionManagerServiceImpl implements IQuestionManagerService
 		questionDao=SystemConfig.instance().getQuestionDao();
 		return questionDao.createOptions(questionId, options);
 	}
+
+	@Override
+	public int deleteQuestion(int questionId) {
+		questionDao=SystemConfig.instance().getQuestionDao();
+		
+		return questionDao.deleteQuestion(questionId);
+	}
 }

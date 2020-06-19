@@ -162,6 +162,7 @@ public class QuestionManagerController
 	@PostMapping("/deleteQuestion/{questionId}")
 	public String deleteQuestion(Model model, @PathVariable("questionId")String questionId) {
 		int qId = Integer.parseInt(questionId);
+		questionManagerServiceImpl=SystemConfig.instance().getQuestionManagerService();
 		questionManagerServiceImpl.deleteQuestion(qId);
 		return "redirect:/questions";
 	}
