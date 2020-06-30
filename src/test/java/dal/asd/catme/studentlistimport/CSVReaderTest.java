@@ -60,16 +60,17 @@ public class CSVReaderTest
 
         ICSVReader csvReader = new CSVReader();
 
-        assertTrue(csvReader.validNames("A","A"));
-        assertTrue(csvReader.validNames("1","A"));
-        assertTrue(csvReader.validNames("A","1"));
+        assertTrue(csvReader.validNames("A", "A"));
+        assertTrue(csvReader.validNames("1", "A"));
+        assertTrue(csvReader.validNames("A", "1"));
 
-        assertFalse(csvReader.validNames("",""));
-        assertFalse(csvReader.validNames("name",""));
-        assertFalse(csvReader.validNames("","name"));
-        assertFalse(csvReader.validNames(null,null));
+        assertFalse(csvReader.validNames("", ""));
+        assertFalse(csvReader.validNames("name", ""));
+        assertFalse(csvReader.validNames("", "name"));
+        assertFalse(csvReader.validNames(null, null));
 
     }
+
     @Test
     void validEmailIdTest()
     {
@@ -89,9 +90,9 @@ public class CSVReaderTest
     {
         ArrayList<Student> list = new ArrayList<>();
 
-        list.add(new Student("B00851820","Prajapati","Tapan","tp890953@dal.ca"));
-        list.add(new Student("B00121212","Test","Test","test@test.com"));
-        list.add(new Student("B00851542","  Test1","Test1   "," test1@test1.com"));
+        list.add(new Student("B00851820", "Prajapati", "Tapan", "tp890953@dal.ca"));
+        list.add(new Student("B00121212", "Test", "Test", "test@test.com"));
+        list.add(new Student("B00851542", "  Test1", "Test1   ", " test1@test1.com"));
 
         return list;
     }

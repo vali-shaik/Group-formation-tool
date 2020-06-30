@@ -27,19 +27,20 @@ public class ListQuestionsServiceImpl implements IListQuestionsService
     @Override
     public List<Question> sortByDate()
     {
-        Collections.sort(questions,(question1, question2) ->{
+        Collections.sort(questions, (question1, question2) ->
+        {
             return (question1.getCreatedDate().compareTo(question2.getCreatedDate()));
-        } );
+        });
         return questions;
     }
 
     @Override
     public List<Question> sortByTitle()
     {
-        Collections.sort(questions,(question1, question2) -> {
+        Collections.sort(questions, (question1, question2) ->
+        {
             return question1.getQuestionTitle().compareTo(question2.getQuestionTitle());
-        } );
-
+        });
         return questions;
     }
 }

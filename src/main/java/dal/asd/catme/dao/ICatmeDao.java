@@ -1,6 +1,6 @@
 package dal.asd.catme.dao;
 
-public interface ICatmeDao 
+public interface ICatmeDao
 {
 
 }

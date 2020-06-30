@@ -6,9 +6,10 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <title>Catme Dal</title>
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
     <link href="https://getbootstrap.com/docs/4.0/examples/signin/signin.css" rel="stylesheet" crossorigin="anonymous">
- <style>
+    <style>
  body {
  padding-top:0px;
   padding-bottom: 40px;
@@ -89,29 +90,38 @@ a:hover {
 button{
 background-color: #333
 }
-</style></head>
+
+    </style>
+</head>
 <body>
 
-<h1 class="form-signin-heading" align = "center">SignUp Page</h2>
+<h1 class="form-signin-heading" align="center">SignUp Page</h2>
 
-<center>
-<div>
-<form class="form-signin" action ="#" th:action="@{/signup}" th:object=${user} method = "POST" onSubmit ="validatePassword()">
-  <input class="form-control" type="text" id="fname" name="fname" required th:field="*{firstName}" placeholder = "First name"> <br>
-  <input class="form-control" type="text" id="lname" name="lname" required th:field="*{lastName}" placeholder = "Last name"> <br>
-  <input class="form-control" type="text" id="bannerid" name="bannerid" required th:field="*{bannerId}" placeholder = "Banner Id"> <br>
-  <input class="form-control" type="email" id="emailid" name="emailid" required th:field="*{email}" placeholder = "Email"> <br>
-  <!-- <input class="form-control" type="password" id="password" name="password" required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Min Length: 8 including UpperCase, LowerCase and Number" th:field="*{password}" placeholder = "Password"><br> -->
-  <input class="form-control" type="password" id="password" name="password" th:field="*{password}" placeholder = "Password"><br>
-  <input class="form-control" type="password" id="confirmpassword" name="confirmpassword" required oninput="validatePassword()" placeholder = "Confirm Password"><br>
-  <input type="submit" value="Submit" class="btn btn-lg btn-primary btn-block">
-</form> 
-</div>
-<p>Already a user? <a href="/login"> LogIn</a></p>
- 
-</center>
+    <center>
+        <div>
+            <form class="form-signin" action="#" th:action="@{/signup}" th:object=${user} method="POST"
+                  onSubmit="validatePassword()">
+                <input class="form-control" type="text" id="fname" name="fname" required th:field="*{firstName}"
+                       placeholder="First name"> <br>
+                <input class="form-control" type="text" id="lname" name="lname" required th:field="*{lastName}"
+                       placeholder="Last name"> <br>
+                <input class="form-control" type="text" id="bannerid" name="bannerid" required th:field="*{bannerId}"
+                       placeholder="Banner Id"> <br>
+                <input class="form-control" type="email" id="emailid" name="emailid" required th:field="*{email}"
+                       placeholder="Email"> <br>
+                <!-- <input class="form-control" type="password" id="password" name="password" required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Min Length: 8 including UpperCase, LowerCase and Number" th:field="*{password}" placeholder = "Password"><br> -->
+                <input class="form-control" type="password" id="password" name="password" th:field="*{password}"
+                       placeholder="Password"><br>
+                <input class="form-control" type="password" id="confirmpassword" name="confirmpassword" required
+                       oninput="validatePassword()" placeholder="Confirm Password"><br>
+                <input type="submit" value="Submit" class="btn btn-lg btn-primary btn-block">
+            </form>
+        </div>
+        <p>Already a user? <a href="/login"> LogIn</a></p>
 
-<script type="text/javascript">
+    </center>
+
+    <script type="text/javascript">
 function validatePassword() {
     const password = document.getElementById('password');
     const confirm_password = document.getElementById('confirmpassword');
@@ -123,6 +133,7 @@ function validatePassword() {
     	confirm_password.setCustomValidity('Passwords do not match');
     }
 }
-</script>
+
+    </script>
 </body>
 </html>

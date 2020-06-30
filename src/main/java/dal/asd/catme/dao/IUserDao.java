@@ -1,7 +1,6 @@
 package dal.asd.catme.dao;
 
 import dal.asd.catme.beans.User;
-import dal.asd.catme.exception.CatmeException;
 
 import java.sql.Connection;
 

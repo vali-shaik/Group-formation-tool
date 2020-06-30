@@ -13,7 +13,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import static dal.asd.catme.util.DBQueriesUtil.*;
-import static dal.asd.catme.util.DBQueriesUtil.REMOVE_TOKEN;
 
 public class PasswordDaoImpl implements IPasswordDao
 {
@@ -110,7 +109,6 @@ public class PasswordDaoImpl implements IPasswordDao
 
             return rs.getString(1);
 
-
         } catch (SQLException throwables)
         {
             throw new CatmeException("Error Generating Token.. Try Again");
@@ -138,7 +136,6 @@ public class PasswordDaoImpl implements IPasswordDao
             stmt.setString(1, bannerId);
 
             stmt.executeUpdate();
-
 
         } catch (SQLException throwables)
         {

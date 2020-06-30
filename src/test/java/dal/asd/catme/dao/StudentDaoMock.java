@@ -2,7 +2,6 @@ package dal.asd.catme.dao;
 
 import dal.asd.catme.beans.Course;
 import dal.asd.catme.beans.Student;
-import dal.asd.catme.dao.IStudentDao;
 
 import java.sql.Connection;
 

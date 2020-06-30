@@ -1,130 +1,132 @@
 package dal.asd.catme.database;
-import java.io.PrintWriter;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.SQLFeatureNotSupportedException;
-import java.sql.Statement;
-import java.util.logging.Logger;
-
-import javax.sql.DataSource;
 
 import org.springframework.context.annotation.Configuration;
+
+import javax.sql.DataSource;
+import java.io.PrintWriter;
+import java.sql.*;
+import java.util.logging.Logger;
 
 @Configuration
 public class DatabaseAccess implements DataSource
 {
-	
-	private Connection connection;
-	private Statement statement;
-	private ResultSet resultSet;
-	private int result;
+
+    private Connection connection;
+    private Statement statement;
+    private ResultSet resultSet;
+    private int result;
 
 
-	private static final String url=System.getenv("DB_URL");
-	private static final String username=System.getenv("DB_USERNAME");
-	private static final String password=System.getenv("DB_PASSWORD");
-	
-	
-	public Connection getConnection() throws SQLException
-	{
-		try 
-		{
-			connection = DriverManager.getConnection(url, username, password);
-		} 
-		catch (SQLException e) 
-		{
-			e.printStackTrace();
-		}
-		return connection;
-	
-	}
-
-	@Override
-	public PrintWriter getLogWriter() throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    private static final String url = System.getenv("DB_URL");
+    private static final String username = System.getenv("DB_USERNAME");
+    private static final String password = System.getenv("DB_PASSWORD");
 
 
+    public Connection getConnection() throws SQLException
+    {
+        try
+        {
+            connection = DriverManager.getConnection(url, username, password);
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        return connection;
 
-	@Override
-	public void setLogWriter(PrintWriter out) throws SQLException {
-		// TODO Auto-generated method stub
-		
-	}
+    }
 
-
-
-	@Override
-	public void setLoginTimeout(int seconds) throws SQLException {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-
-	@Override
-	public int getLoginTimeout() throws SQLException {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+    @Override
+    public PrintWriter getLogWriter() throws SQLException
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
 
+    @Override
+    public void setLogWriter(PrintWriter out) throws SQLException
+    {
+        // TODO Auto-generated method stub
 
-	@Override
-	public Logger getParentLogger() throws SQLFeatureNotSupportedException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-
-	@Override
-	public <T> T unwrap(Class<T> iface) throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    }
 
 
+    @Override
+    public void setLoginTimeout(int seconds) throws SQLException
+    {
+        // TODO Auto-generated method stub
 
-	@Override
-	public boolean isWrapperFor(Class<?> iface) throws SQLException {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-
-	@Override
-	public Connection getConnection(String username, String password) throws SQLException {
-	
-		return null;
-	
-	}
+    }
 
 
-	public ResultSet executeQuery(String query) {
-		try {
-			statement = connection.createStatement();
-			resultSet = statement.executeQuery(query);
-			} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			}
+    @Override
+    public int getLoginTimeout() throws SQLException
+    {
+        // TODO Auto-generated method stub
+        return 0;
+    }
 
-			return resultSet;
-	}
 
-	public int executeUpdate(String query) {
-		try {
-			statement = connection.createStatement();
-			result = statement.executeUpdate(query);
-			} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			}
-			return result;
-	}
+    @Override
+    public Logger getParentLogger() throws SQLFeatureNotSupportedException
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+
+    @Override
+    public <T> T unwrap(Class<T> iface) throws SQLException
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+
+    @Override
+    public boolean isWrapperFor(Class<?> iface) throws SQLException
+    {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+
+    @Override
+    public Connection getConnection(String username, String password) throws SQLException
+    {
+
+        return null;
+
+    }
+
+
+    public ResultSet executeQuery(String query)
+    {
+        try
+        {
+            statement = connection.createStatement();
+            resultSet = statement.executeQuery(query);
+        } catch (SQLException e)
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        return resultSet;
+    }
+
+    public int executeUpdate(String query)
+    {
+        try
+        {
+            statement = connection.createStatement();
+            result = statement.executeUpdate(query);
+        } catch (SQLException e)
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return result;
+    }
 
 }

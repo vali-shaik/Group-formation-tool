@@ -16,7 +16,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.mail.MessagingException;
 
-import static dal.asd.catme.util.CatmeUtil.*;
+import static dal.asd.catme.util.CatmeUtil.ERROR_PAGE;
+import static dal.asd.catme.util.CatmeUtil.RESET_PASSWORD_PAGE;
 
 @Controller
 @RequestMapping("/")

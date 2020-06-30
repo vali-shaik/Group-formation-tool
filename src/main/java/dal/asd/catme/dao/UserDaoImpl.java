@@ -1,28 +1,22 @@
 package dal.asd.catme.dao;
 
+import dal.asd.catme.beans.User;
+import dal.asd.catme.config.SystemConfig;
+import dal.asd.catme.util.CatmeUtil;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import dal.asd.catme.database.DatabaseAccess;
-import dal.asd.catme.exception.CatmeException;
-import dal.asd.catme.util.PasswordRulesUtil;
-import org.springframework.security.crypto.password.PasswordEncoder;
-
-import dal.asd.catme.beans.User;
-import dal.asd.catme.config.SystemConfig;
-import dal.asd.catme.util.CatmeUtil;
-
 import static dal.asd.catme.util.DBQueriesUtil.*;
 
 public class UserDaoImpl implements IUserDao
 {
-
     IRoleDao roleDao;
 
     PasswordEncoder p;
-
 
     @Override
     public int checkExistingUser(String bannerId, Connection con)
@@ -97,6 +91,4 @@ public class UserDaoImpl implements IUserDao
 
         return null;
     }
-
-
 }

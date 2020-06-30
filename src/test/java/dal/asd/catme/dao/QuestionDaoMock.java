@@ -18,7 +18,10 @@ public class QuestionDaoMock implements IQuestionDao
 {
     List<QuestionTitle> questions;
 
-    public QuestionDaoMock(){}
+    public QuestionDaoMock()
+    {
+    }
+
     public QuestionDaoMock(List<QuestionTitle> questions)
     {
         this.questions = questions;
@@ -34,14 +37,17 @@ public class QuestionDaoMock implements IQuestionDao
     }
 
     @Override
-    public int deleteQuestion(int questionId) {
+    public int deleteQuestion(int questionId)
+    {
         // TODO Auto-generated method stub
-    	Connection con = null;
-        if(0 != checkExistingQuestion(questionId, con)){
-            for(QuestionTitle qT: questions)
+        Connection con = null;
+        if (0 != checkExistingQuestion(questionId, con))
+        {
+            for (QuestionTitle qT : questions)
             {
-                for(Question q:qT.getQuestions()){
-                    if(q.getQuestionId()==questionId)
+                for (Question q : qT.getQuestions())
+                {
+                    if (q.getQuestionId() == questionId)
                         questions.remove(q);
                     return 1;
                 }
@@ -52,25 +58,30 @@ public class QuestionDaoMock implements IQuestionDao
     }
 
     @Override
-    public int checkExistingQuestion(int questionId, Connection con) {
+    public int checkExistingQuestion(int questionId, Connection con)
+    {
         // TODO Auto-generated method stub
-        for(QuestionTitle qT: questions)
+        for (QuestionTitle qT : questions)
         {
-            for(Question q:qT.getQuestions()){
-                if(q.getQuestionId()==questionId)
+            for (Question q : qT.getQuestions())
+            {
+                if (q.getQuestionId() == questionId)
                     return 1;
             }
 
         }
         return 0;
     }
+
     @Override
-    public int createQuestion(Question question, String user) {
+    public int createQuestion(Question question, String user)
+    {
         List<Question> questions = new ArrayList<Question>();
         int result = createQuestionTitle(question.getQuestionTitle(), user);
-        if(result>CatmeUtil.ZERO) {
+        if (result > CatmeUtil.ZERO)
+        {
             questions.add(question);
-            if(questions.get(CatmeUtil.ZERO) != null)
+            if (questions.get(CatmeUtil.ZERO) != null)
             {
                 return CatmeUtil.ONE;
             }
@@ -79,27 +90,33 @@ public class QuestionDaoMock implements IQuestionDao
     }
 
     @Override
-    public int createQuestionTitle(String questionTitle, String user) {
-        Map<String,String> questionTitleInsertion = new HashMap<String,String>();
-        questionTitleInsertion.put(questionTitle,user);
-        if(questionTitleInsertion.get(questionTitle) != null) {
+    public int createQuestionTitle(String questionTitle, String user)
+    {
+        Map<String, String> questionTitleInsertion = new HashMap<String, String>();
+        questionTitleInsertion.put(questionTitle, user);
+        if (questionTitleInsertion.get(questionTitle) != null)
+        {
             return CatmeUtil.ONE;
-        }else {
+        } else
+        {
             return CatmeUtil.ZERO;
         }
     }
 
     @Override
-    public int createOptions(int questionId, List<Option> options) {
+    public int createOptions(int questionId, List<Option> options)
+    {
         Map<Integer, Map> optionInsertion = new HashMap<Integer, Map>();
-        Map<Integer,String> optionMap = new HashMap<Integer,String>();
-        for(Option option: options) {
-            optionMap.put(option.getStoredAs(),option.getDisplayText());
+        Map<Integer, String> optionMap = new HashMap<Integer, String>();
+        for (Option option : options)
+        {
+            optionMap.put(option.getStoredAs(), option.getDisplayText());
         }
         optionInsertion.put(questionId, optionMap);
-        if(optionInsertion.get(questionId) != null) {
+        if (optionInsertion.get(questionId) != null)
+        {
             return CatmeUtil.ONE;
-        }else
+        } else
         {
             return CatmeUtil.ZERO;
         }

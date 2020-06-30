@@ -12,8 +12,12 @@ import java.util.ArrayList;
 public interface ICSVReader
 {
     public ArrayList<Student> readFile(InputStream inputStream) throws InvalidFileFormatException, FileNotFoundException, IOException;
+
     public boolean validBannerId(String bannerId);
+
     public boolean validNames(String firstname, String lastname);
+
     public boolean validEmailId(String emailId);
+
     public void validateFile(MultipartFile file) throws InvalidFileFormatException;
 }

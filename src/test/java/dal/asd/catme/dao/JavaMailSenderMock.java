@@ -4,14 +4,13 @@ import dal.asd.catme.beans.User;
 import org.springframework.mail.MailException;
 import org.springframework.mail.MailPreparationException;
 import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.*;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.mail.javamail.MimeMessagePreparator;
 
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Session;
 import javax.mail.internet.MimeMessage;
-import javax.mail.internet.MimeMultipart;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
@@ -46,17 +45,16 @@ public class JavaMailSenderMock extends JavaMailSenderImpl
     {
         try
         {
-            if(!u.getEmail().equals(mimeMessage.getRecipients(Message.RecipientType.TO)[0].toString()))
+            if (!u.getEmail().equals(mimeMessage.getRecipients(Message.RecipientType.TO)[0].toString()))
             {
                 throw new MailPreparationException("Sender Address does not match");
             }
 
-            if(!subject.equals(mimeMessage.getSubject()))
+            if (!subject.equals(mimeMessage.getSubject()))
             {
                 throw new MailPreparationException("Subject does not match");
             }
-        }
-        catch (MessagingException e)
+        } catch (MessagingException e)
         {
             throw new MailPreparationException("Error Creating MimeMessageHelper class");
         }

@@ -1,22 +1,5 @@
 package dal.asd.catme.controller;
 
-import java.util.List;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
-
 import dal.asd.catme.beans.Option;
 import dal.asd.catme.beans.Question;
 import dal.asd.catme.beans.User;
@@ -25,6 +8,16 @@ import dal.asd.catme.exception.QuestionDatabaseException;
 import dal.asd.catme.service.IListQuestionsService;
 import dal.asd.catme.service.IQuestionManagerService;
 import dal.asd.catme.util.CatmeUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("questions")
@@ -42,21 +35,15 @@ public class QuestionManagerController
     public ModelAndView loadPage()
     {
         User currentUser = new User();
-
         currentUser.setBannerId(SecurityContextHolder.getContext().getAuthentication().getName());
-
         ModelAndView questionsPage = new ModelAndView();
-
         questionsPage.setViewName(CatmeUtil.QUESTION_MANAGER_HOME);
-
         listQuestionsService = SystemConfig.instance().getListQuestionsService();
-
         try
         {
             listQuestionsService.getQuestions(currentUser.getBannerId());
             List<Question> questionList = listQuestionsService.sortByTitle();
             questionsPage.addObject("questions", questionList);
-
         } catch (QuestionDatabaseException e)
         {
             String message = e.getMessage();
@@ -70,11 +57,8 @@ public class QuestionManagerController
     public ModelAndView sortTable(@RequestParam(name = "with") String sortBy)
     {
         ModelAndView questionsPage = new ModelAndView();
-
         questionsPage.setViewName(CatmeUtil.QUESTION_MANAGER_HOME);
-
         List<Question> questionList;
-
         if (sortBy.equalsIgnoreCase("Date"))
         {
             questionList = listQuestionsService.sortByDate();
@@ -87,7 +71,6 @@ public class QuestionManagerController
 
         return questionsPage;
     }
-
 
     @RequestMapping("/createQuestion")
     public String createQuestion(Model model)
@@ -106,8 +89,8 @@ public class QuestionManagerController
         log.info("***user***" + userId);
         questionManagerServiceImpl = SystemConfig.instance().getQuestionManagerService();
         return questionManagerServiceImpl.findQuestionType(question, userId);
-    }
 
+    }
 
     @RequestMapping(value = "/addQuestion", method = RequestMethod.POST, params = "action=addOption")
     public String addOption(@ModelAttribute Question question)
@@ -117,7 +100,6 @@ public class QuestionManagerController
         question.setOptionWithOrder(options);
         return "optionEditor";
     }
-
 
     @RequestMapping(value = "/addQuestion", method = RequestMethod.POST, params = "action=create")
     public String addQuestion(@ModelAttribute Question question)
@@ -144,14 +126,6 @@ public class QuestionManagerController
         return questionTypes;
     }
 
-
-    @GetMapping("/deleteQuestionConfirmation/{questionId}")
-    public String deleteQuestionConfirmation(@PathVariable("questionId") String questionId, Model model)
-    {
-        model.addAttribute("questionId", questionId);
-        return "deleteQuestionConfirmation";
-    }
-
     @PostMapping("/deleteQuestion/{questionId}")
     public String deleteQuestion(Model model, @PathVariable("questionId") String questionId)
     {
@@ -159,5 +133,12 @@ public class QuestionManagerController
         questionManagerServiceImpl = SystemConfig.instance().getQuestionManagerService();
         questionManagerServiceImpl.deleteQuestion(qId);
         return "redirect:/questions";
+    }
+
+    @GetMapping("/deleteQuestionConfirmation/{questionId}")
+    public String deleteQuestionConfirmation(@PathVariable("questionId") String questionId, Model model)
+    {
+        model.addAttribute("questionId", questionId);
+        return "deleteQuestionConfirmation";
     }
 }

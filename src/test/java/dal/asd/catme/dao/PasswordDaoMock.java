@@ -10,7 +10,7 @@ public class PasswordDaoMock implements IPasswordDao
     @Override
     public void resetPassword(User u, Connection con) throws CatmeException
     {
-        if(u.getPassword()==null)
+        if (u.getPassword() == null)
             throw new CatmeException();
 
     }
@@ -18,7 +18,7 @@ public class PasswordDaoMock implements IPasswordDao
     @Override
     public String readBannerIdFromToken(String token) throws CatmeException
     {
-        if(token.equals("@@@@"))
+        if (token.equals("@@@@"))
         {
             return "B00000000";
         }

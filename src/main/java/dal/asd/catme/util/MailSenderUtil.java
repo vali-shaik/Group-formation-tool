@@ -2,7 +2,6 @@ package dal.asd.catme.util;
 
 public class MailSenderUtil
 {
-
     public static String HOST = "smtp.gmail.com";
     public static String USERNAME = "adv.sdc.g.16@gmail.com";
     public static String PASSWORD = "SDCGROUP16";
@@ -15,7 +14,7 @@ public class MailSenderUtil
     public static final String TEMPLATE_COURSE = "{course}";
     public static final String TEMPLATE_RESETLINK = "{resetlink}";
 
-    public static final String RESETLINK = System.getenv("SERVER_NAME")+"/reset-password?token=";
+    public static final String RESETLINK = System.getenv("SERVER_NAME") + "/reset-password?token=";
 
     public static final String PATH_TO_NEW_STUDENT_TEMPLATE = "src/main/resources/templates/email_templates/new_student_template.html";
     public static final String NEW_STUDENT_EMAIL_SUBJECT = "Registration of new course in CATME";

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-<style>
+    <style>
 .buttonPrim{
 	 color: white !important;
     background-color: #333 !important;
@@ -22,24 +22,28 @@ font-weight:bold;
 text-decoration:none;
 }
 
-</style>
-<script>
 
-</script>
+    </style>
+    <script>
+
+    </script>
 </head>
 <body>
 <!--<form th:action="@{/instructor/manageCourse(courseId=${course.courseId})}">-->
 <div th:insert="header"></div>
 <div align="center">
-<h1 align="center">Course</h1>
-<h2 th:text="${course.courseId}"></h2><h3 th:text="${course.courseName}"></h3>
-	<th:block th:if ="${isInstructor}">
-        <button class="btn btn-lg buttonPrim"><a th:href = "@{/manageCourse(courseId=${course.courseId})}">Manage as Instructor</a></button>
+    <h1 align="center">Course</h1>
+    <h2 th:text="${course.courseId}"></h2>
+    <h3 th:text="${course.courseName}"></h3>
+    <th:block th:if="${isInstructor}">
+        <button class="btn btn-lg buttonPrim"><a th:href="@{/manageCourse(courseId=${course.courseId})}">Manage as
+            Instructor</a></button>
         <br><br>
-        <button class="btn btn-lg buttonPrim"><a th:href = "@{/questions}">Manage Questions</a></button>
+        <button class="btn btn-lg buttonPrim"><a th:href="@{/questions}">Manage Questions</a></button>
     </th:block>
-    <th:block th:if ="${isTa}">
-        <button class="btn btn-lg buttonPrim"><a th:href = "@{/manageCourse(courseId=${course.courseId})}">Manage as TA</a></button>
+    <th:block th:if="${isTa}">
+        <button class="btn btn-lg buttonPrim"><a th:href="@{/manageCourse(courseId=${course.courseId})}">Manage as
+            TA</a></button>
     </th:block>
 </div>
 <!--</form>-->

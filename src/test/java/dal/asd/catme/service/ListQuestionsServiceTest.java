@@ -1,6 +1,5 @@
 package dal.asd.catme.service;
 
-import dal.asd.catme.beans.Instructor;
 import dal.asd.catme.beans.Question;
 import dal.asd.catme.dao.QuestionDaoMock;
 import dal.asd.catme.exception.QuestionDatabaseException;
@@ -8,7 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class ListQuestionsServiceTest
 {
@@ -32,8 +31,7 @@ public class ListQuestionsServiceTest
         {
             listQuestionsService.getQuestions(null);
             fail();
-        }
-        catch (QuestionDatabaseException e)
+        } catch (QuestionDatabaseException e)
         {
 
         }
@@ -54,12 +52,11 @@ public class ListQuestionsServiceTest
             Question q2 = questionList.get(1);
 
             //date of question1 comes after date of question2
-            if(q1.getCreatedDate().compareTo(q2.getCreatedDate())>=0)
+            if (q1.getCreatedDate().compareTo(q2.getCreatedDate()) >= 0)
             {
                 fail();
             }
-        }
-        catch (QuestionDatabaseException e)
+        } catch (QuestionDatabaseException e)
         {
             fail();
         }
@@ -80,12 +77,11 @@ public class ListQuestionsServiceTest
             Question q2 = questionList.get(1);
 
             //question 1 comes after question2
-            if(q1.getQuestionTitle().compareTo(q2.getQuestionTitle())<0)
+            if (q1.getQuestionTitle().compareTo(q2.getQuestionTitle()) < 0)
             {
                 fail();
             }
-        }
-        catch (QuestionDatabaseException e)
+        } catch (QuestionDatabaseException e)
         {
             fail();
         }

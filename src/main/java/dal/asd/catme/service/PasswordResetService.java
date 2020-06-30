@@ -1,8 +1,5 @@
 package dal.asd.catme.service;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-
 import dal.asd.catme.beans.User;
 import dal.asd.catme.config.SystemConfig;
 import dal.asd.catme.dao.IPasswordDao;
@@ -11,17 +8,17 @@ import dal.asd.catme.database.DatabaseAccess;
 import dal.asd.catme.exception.CatmeException;
 import dal.asd.catme.util.RandomTokenGenerator;
 
+import java.sql.Connection;
+import java.sql.SQLException;
+
 import static dal.asd.catme.util.MailSenderUtil.TOKEN_LENGTH;
 
 
 public class PasswordResetService implements IPasswordResetService
 {
     IUserDao userDao;
-
     IPasswordDao passwordDao;
-
     DatabaseAccess db;
-
     Connection con;
 
     public PasswordResetService(IUserDao userDao, IPasswordDao passwordDao)
@@ -46,7 +43,7 @@ public class PasswordResetService implements IPasswordResetService
             db = SystemConfig.instance().getDatabaseAccess();
             con = db.getConnection();
 
-            if (!userExists(bannerid))
+            if (userExists(bannerid) == false)
             {
                 return null;
 

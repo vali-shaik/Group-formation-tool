@@ -1,14 +1,12 @@
 package dal.asd.catme.config;
 
 import dal.asd.catme.dao.*;
+import dal.asd.catme.database.DatabaseAccess;
 import dal.asd.catme.service.*;
 import dal.asd.catme.studentlistimport.CSVReader;
 import dal.asd.catme.studentlistimport.ICSVReader;
-
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
-import dal.asd.catme.database.DatabaseAccess;
 
 public class SystemConfig
 {
@@ -19,10 +17,7 @@ public class SystemConfig
     private ICourseService courseService;
     private IRoleDao roleDao;
     private IRoleService roleService;
-    private IListDetailsDao listDetailsDao;
-    private IListDetails listDetails;
     private IMailSenderService mailSenderService;
-    private ICatmeDao catmeDao;
     private ICatmeService catmeService;
     private IStudentDao studentDao;
     private IUserDao userDao;
@@ -34,12 +29,15 @@ public class SystemConfig
     private CatmeSecurityConfig catmeServiceConfig;
     private PasswordEncoder passwordEncoder;
     private ICSVReader csvReaderImpl;
+    private IListCourseDao listCourseDao;
+    private IListUserDao listUserDao;
+    private IListCourseService listCourseService;
+    private IListUserService listUserService;
     private IQuestionDao questionDao;
     private IListQuestionsService listQuestionsService;
     private IQuestionManagerService questionManagerService;
     private IPasswordRulesConfig passwordEnforcementConfig;
     private IPasswordPolicyCheckerService passwordPolicyCheckerService;
-
 
     public SystemConfig()
     {
@@ -47,22 +45,23 @@ public class SystemConfig
         passwordEncoder = new BCryptPasswordEncoder();
         catmeServiceConfig = new CatmeSecurityConfig();
         databaseAccess = new DatabaseAccess();
-        adminDao = new AdminDao();
-        adminServie = new AdminService();
+        adminDao = new AdminDaoImpl();
+        adminServie = new AdminServiceImpl();
         courseDao = new CourseDaoImpl();
         courseService = new CourseServiceImpl(courseDao);
         roleDao = new RoleDaoImpl();
         roleService = new RoleServiceImpl();
-        listDetailsDao = new ListDetailsDao();
-        listDetails = new ListDetailsService();
+        listUserDao = new ListDetailsDaoImpl();
+        listCourseDao = new ListDetailsDaoImpl();
+        listUserService = new ListDetailsServiceImpl();
+        listCourseService = new ListDetailsServiceImpl();
         mailSenderService = new MailSenderService();
-        catmeDao = new CatmeDaoImpl();
         catmeService = new CatmeServiceImpl();
         studentDao = new StudentDaoImpl();
         userDao = new UserDaoImpl();
         passwordDao = new PasswordDaoImpl();
         userService = new UserServiceImpl();
-        passwordResetService = new PasswordResetService(userDao,passwordDao);
+        passwordResetService = new PasswordResetService(userDao, passwordDao);
         enrollStudentService = new EnrollStudentService(roleDao, studentDao);
         questionDao = new QuestionDaoImpl();
         listQuestionsService = new ListQuestionsServiceImpl(questionDao);
@@ -161,6 +160,46 @@ public class SystemConfig
         this.adminServie = adminServie;
     }
 
+    public IListCourseDao getListCourseDao()
+    {
+        return listCourseDao;
+    }
+
+    public void setListCourseDao(IListCourseDao listCourseDao)
+    {
+        this.listCourseDao = listCourseDao;
+    }
+
+    public IListUserDao getListUserDao()
+    {
+        return listUserDao;
+    }
+
+    public void setListUserDao(IListUserDao listUserDao)
+    {
+        this.listUserDao = listUserDao;
+    }
+
+    public IListCourseService getListCourseService()
+    {
+        return listCourseService;
+    }
+
+    public void setListCourseService(IListCourseService listCourseService)
+    {
+        this.listCourseService = listCourseService;
+    }
+
+    public IListUserService getListUserService()
+    {
+        return listUserService;
+    }
+
+    public void setListUserService(IListUserService listUserService)
+    {
+        this.listUserService = listUserService;
+    }
+
     public ICourseDao getCourseDao()
     {
         return courseDao;
@@ -201,26 +240,6 @@ public class SystemConfig
         this.roleService = roleService;
     }
 
-    public IListDetailsDao getListDetailsDao()
-    {
-        return listDetailsDao;
-    }
-
-    public void setListDetailsDao(IListDetailsDao listDetailsDao)
-    {
-        this.listDetailsDao = listDetailsDao;
-    }
-
-    public IListDetails getListDetails()
-    {
-        return listDetails;
-    }
-
-    public void setListDetails(IListDetails listDetails)
-    {
-        this.listDetails = listDetails;
-    }
-
     public IMailSenderService getMailSenderService()
     {
         return mailSenderService;
@@ -229,16 +248,6 @@ public class SystemConfig
     public void setMailSenderService(IMailSenderService mailSenderService)
     {
         this.mailSenderService = mailSenderService;
-    }
-
-    public ICatmeDao getCatmeDao()
-    {
-        return catmeDao;
-    }
-
-    public void setCatmeDao(ICatmeDao catmeDao)
-    {
-        this.catmeDao = catmeDao;
     }
 
     public ICatmeService getCatmeService()

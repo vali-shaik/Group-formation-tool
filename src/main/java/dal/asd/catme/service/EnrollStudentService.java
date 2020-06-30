@@ -1,9 +1,5 @@
 package dal.asd.catme.service;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.ArrayList;
-
 import dal.asd.catme.beans.Course;
 import dal.asd.catme.beans.Student;
 import dal.asd.catme.beans.User;
@@ -14,17 +10,16 @@ import dal.asd.catme.database.DatabaseAccess;
 import dal.asd.catme.exception.EnrollmentException;
 import dal.asd.catme.util.CatmeUtil;
 
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
 public class EnrollStudentService implements IEnrollStudentService
 {
     DatabaseAccess db;
-
-
     IRoleDao roleDao;
-
     IStudentDao studentDao;
-
     Connection con;
-
 
     public EnrollStudentService(IRoleDao roleDao, IStudentDao studentDao)
     {
@@ -37,7 +32,7 @@ public class EnrollStudentService implements IEnrollStudentService
     {
         try
         {
-        	db=SystemConfig.instance().getDatabaseAccess();
+            db = SystemConfig.instance().getDatabaseAccess();
             con = db.getConnection();
             System.out.println("Database Connected");
 
@@ -54,12 +49,10 @@ public class EnrollStudentService implements IEnrollStudentService
                 }
             }
             return true;
-        }
-        catch (SQLException e)
+        } catch (SQLException e)
         {
             System.out.println("Error connecting database");
-        }
-        finally
+        } finally
         {
             try
             {
@@ -76,18 +69,17 @@ public class EnrollStudentService implements IEnrollStudentService
     @Override
     public void enrollStudent(Student s, Course c) throws EnrollmentException
     {
-        if(!studentDao.enroll(s,c,con))
+        if (studentDao.enroll(s, c, con) == false)
             throw new EnrollmentException("Error making entry in Enrollment table");
     }
 
     @Override
     public void assignStudentRole(User student) throws EnrollmentException
     {
-        if(roleDao.checkUserRole(student.getBannerId(),CatmeUtil.STUDENT_ROLE_ID,con)==0)
+        if (roleDao.checkUserRole(student.getBannerId(), CatmeUtil.STUDENT_ROLE_ID, con) == 0)
         {
-            if(roleDao.assignRole(student.getBannerId(), CatmeUtil.STUDENT_ROLE_ID,con)==0)
+            if (roleDao.assignRole(student.getBannerId(), CatmeUtil.STUDENT_ROLE_ID, con) == 0)
                 throw new EnrollmentException("Error assigning student role");
         }
     }
-
 }

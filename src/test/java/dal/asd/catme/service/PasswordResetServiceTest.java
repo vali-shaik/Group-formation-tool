@@ -23,7 +23,7 @@ class PasswordResetServiceTest
     @Test
     void userExists()
     {
-        IPasswordResetService service = new PasswordResetService(userDao,passwordDao);
+        IPasswordResetService service = new PasswordResetService(userDao, passwordDao);
 
         assertTrue(service.userExists(users.get(0).getBannerId()));
 
@@ -33,7 +33,7 @@ class PasswordResetServiceTest
     @Test
     void generateResetLinkTest()
     {
-        IPasswordResetService service = new PasswordResetService(userDao,passwordDao);
+        IPasswordResetService service = new PasswordResetService(userDao, passwordDao);
 
         assertNotNull(service.generateResetLink(users.get(0).getBannerId()));
 
@@ -43,7 +43,7 @@ class PasswordResetServiceTest
     @Test
     void validateTokenTest()
     {
-        IPasswordResetService service = new PasswordResetService(userDao,passwordDao);
+        IPasswordResetService service = new PasswordResetService(userDao, passwordDao);
 
         assertNotNull(service.validateToken("@@@@"));
 
@@ -53,7 +53,7 @@ class PasswordResetServiceTest
     @Test
     void resetPasswordTest()
     {
-        IPasswordResetService service = new PasswordResetService(userDao,passwordDao);
+        IPasswordResetService service = new PasswordResetService(userDao, passwordDao);
 
         try
         {

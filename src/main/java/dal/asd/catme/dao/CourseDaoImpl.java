@@ -1,13 +1,4 @@
-
 package dal.asd.catme.dao;
-
-import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.security.core.context.SecurityContextHolder;
 
 import dal.asd.catme.beans.Course;
 import dal.asd.catme.beans.Student;
@@ -16,314 +7,279 @@ import dal.asd.catme.config.SystemConfig;
 import dal.asd.catme.database.DatabaseAccess;
 import dal.asd.catme.exception.CatmeException;
 import dal.asd.catme.util.CatmeUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.security.core.context.SecurityContextHolder;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
 import static dal.asd.catme.util.DBQueriesUtil.*;
 
 public class CourseDaoImpl implements ICourseDao
 {
-	public CourseDaoImpl(DatabaseAccess database)
-	{
-		this.database=database;
-	}
-	public CourseDaoImpl()
-	{
-	}
+    public CourseDaoImpl(DatabaseAccess database)
+    {
+        this.database = database;
+    }
 
-	//Creating Logger
-	private static final Logger log = LoggerFactory.getLogger(CourseDaoImpl.class);
+    public CourseDaoImpl()
+    {
+    }
+    private static final Logger log = LoggerFactory.getLogger(CourseDaoImpl.class);
 
-	DatabaseAccess database;
+    DatabaseAccess database;
 
-	@Override
-	public List<Course> getCourses(String role) throws CatmeException 
-	{
-		//Fetching all courses from DB
-		log.info("Fetching all courses related to User");
+    @Override
+    public List<Course> getCourses(String role) throws CatmeException
+    {
+        log.info("Fetching all courses related to User");
 
-		//Created List of Course entities for saving fetched DB data
-		List<Course> listOfCourses=new ArrayList<>();
-		ResultSet resultSet = null;
-		Statement statement=null;
-		Connection connection=null;
+        List<Course> listOfCourses = new ArrayList<>();
+        ResultSet resultSet = null;
+        Statement statement = null;
+        Connection connection = null;
 
-		try 
-		{
-			//Create database connection
-			database=SystemConfig.instance().getDatabaseAccess();
-			connection=database.getConnection();
-			//Creating statement for executing query
-			statement=connection.createStatement();
+        try
+        {
+            database = SystemConfig.instance().getDatabaseAccess();
+            connection = database.getConnection();
+            statement = connection.createStatement();
 
-			if(connection!=null)
-			{
-				//Database operation performed on successful connection to DB
-				log.info("DB connection is succesfull");
-				String currentUser=SecurityContextHolder.getContext().getAuthentication().getName();
+            if (connection != null)
+            {
+                log.info("DB connection is succesfull");
+                String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
 
-				//Executing different queries based on current User's role
-				switch(role)
-				{
-				case CatmeUtil.GUEST_ROLE:
+                switch (role)
+                {
+                    case CatmeUtil.GUEST_ROLE:
+                        log.info("Fetching courses of User " + currentUser + ": GUEST");
+                        resultSet = statement.executeQuery(SELECT_GUEST_COURSES_QUERY);
+                        break;
 
-					//Executing query to fetch all courses
-					log.info("Fetching courses of User "+currentUser+": GUEST");
-					resultSet = statement.executeQuery(SELECT_GUEST_COURSES_QUERY);
-					break;
+                    case CatmeUtil.TA_ROLE:
+                        log.info("Fetching courses of User " + currentUser + ": TA");
+                        resultSet = statement.executeQuery(SELECT_STUDENT_COURSES_QUERY + "'" + currentUser + "'" + " UNION " + SELECT_INSTRUTOR_COURSES_QUERY + "'" + currentUser + "'");
+                        break;
 
-				case CatmeUtil.TA_ROLE:
+                    case CatmeUtil.INSTRUCTOR_ROLE:
+                        log.info("Fetching courses of User " + currentUser + ": INSTRUCTOR");
+                        resultSet = statement.executeQuery(SELECT_INSTRUTOR_COURSES_QUERY + "" + "'" + currentUser + "'");
+                        break;
 
-					//Executing query to fetch all Enrolled courses and Teaching courses
-					log.info("Fetching courses of User "+currentUser+": TA");
-					resultSet = statement.executeQuery(SELECT_STUDENT_COURSES_QUERY+"'"+currentUser+"'"+" UNION "+SELECT_INSTRUTOR_COURSES_QUERY+"'"+currentUser+"'");
-					break;
+                    case CatmeUtil.STUDENT_ROLE:
+                        log.info("Fetching courses of User " + currentUser + ": STUDENT");
+                        resultSet = statement.executeQuery(SELECT_STUDENT_COURSES_QUERY + "" + "'" + currentUser + "'");
+                        break;
 
-				case CatmeUtil.INSTRUCTOR_ROLE:
+                    default:
+                        break;
+                }
 
-					//Executing query to fetch all courses as Instructor
-					log.info("Fetching courses of User "+currentUser+": INSTRUCTOR");
-					resultSet = statement.executeQuery(SELECT_INSTRUTOR_COURSES_QUERY+""+"'"+currentUser+"'");
-					break;
+                while (resultSet.next())
+                {
+                    log.info("Fetched all courses from Database");
+                    Course course = new Course();
+                    course.setCourseId(resultSet.getString(CatmeUtil.COURSE_ID_FIELD));
+                    course.setCourseName(resultSet.getString(CatmeUtil.COURSE_NAME_FIELD));
 
-				case CatmeUtil.STUDENT_ROLE:
+                    listOfCourses.add(course);
+                }
+            }
+        } catch (SQLException | NullPointerException e)
+        {
+            throw new CatmeException("Failed while connecting and fetching courses from DB " + e.getMessage());
+        } finally
+        {
+            try
+            {
+                if (connection != null)
+                    connection.close();
+                if (statement != null)
+                    statement.close();
+                if (resultSet != null)
+                    resultSet.close();
+            } catch (SQLException | NullPointerException e)
+            {
+                throw new CatmeException("Failed while closing connection with database " + e.getMessage());
+            }
+        }
 
-					//Executing query to fetch all courses as Student
-					log.info("Fetching courses of User "+currentUser+": STUDENT");
-					resultSet = statement.executeQuery(SELECT_STUDENT_COURSES_QUERY+""+"'"+currentUser+"'");
-					break;
+        return listOfCourses;
+    }
 
-				default:
-					break;
-				}
+    @Override
+    public Course displayCourseById(String courseId) throws CatmeException
+    {
+        ResultSet resultSet = null;
+        Statement statement = null;
+        Connection connection = null;
 
-				while(resultSet.next()) 
-				{
-					//Parsing Database result and mapping it to Java beans
-					log.info("Fetched all courses from Database");
-					Course course = new Course();
-					course.setCourseId(resultSet.getString(CatmeUtil.COURSE_ID_FIELD));
-					course.setCourseName(resultSet.getString(CatmeUtil.COURSE_NAME_FIELD));
+        Course course = new Course();
+        try
+        {
+            database = SystemConfig.instance().getDatabaseAccess();
+            connection = database.getConnection();
 
-					//After parsing, adding each course to list of courses
-					listOfCourses.add(course);
-				}
-			}
-		}
-		catch (SQLException|NullPointerException e) 
-		{
-			//Throwing user defined exception
-			throw new CatmeException("Failed while connecting and fetching courses from DB "+e.getMessage());
-		}
-		finally
-		{
-			try 
-			{
-				//closing Connection, statement,result set
-				if(connection!=null)
-					connection.close();
-				if(statement!=null)
-					statement.close();
-				if(resultSet!=null)
-					resultSet.close();
-			} 
-			catch (SQLException|NullPointerException e) 
-			{
-				throw new CatmeException("Failed while closing connection with database "+e.getMessage());
-			}
-		}	
+            statement = connection.createStatement();
 
-		return listOfCourses;
-	}
+            if (connection != null)
+            {
+                resultSet = statement.executeQuery(SELECT_COURSE_QUERY + "'" + courseId + "'");
 
-	@Override
-	public Course displayCourseById(String courseId) throws CatmeException 
-	{
-		ResultSet resultSet = null;
-		Statement statement=null;
-		Connection connection=null;
+                while (resultSet.next())
+                {
+                    course.setCourseId(resultSet.getString(CatmeUtil.COURSE_ID_FIELD));
+                    course.setCourseName(resultSet.getString(CatmeUtil.COURSE_NAME_FIELD));
+                }
+            }
+        } catch (SQLException | NullPointerException e)
+        {
+            throw new CatmeException("Failed while connecting and fetching Course from DB " + e.getMessage());
+        } finally
+        {
+            try
+            {
+                if (connection != null)
+                    connection.close();
+                if (statement != null)
+                    statement.close();
+                if (resultSet != null)
+                    resultSet.close();
+            } catch (SQLException | NullPointerException e)
+            {
+                throw new CatmeException("Failed while closing conection with DB " + e.getMessage());
+            }
+        }
 
-		//Creating course bean to save and return result from DB
-		Course course = new Course();
-		try 
-		{
-			//Creating connection
-			database=SystemConfig.instance().getDatabaseAccess();
-			connection=database.getConnection();
+        return course;
+    }
 
-			//Creating statement for executing query
-			statement=connection.createStatement();
+    @Override
+    public String findRoleByCourse(User user, String courseId) throws CatmeException
+    {
+        ResultSet resultSet = null;
+        Statement statement = null;
+        Connection connection = null;
+        String role = "";
 
-			if(connection!=null)
-			{	
-				//Executing query to get Course details by passing course id
-				resultSet = statement.executeQuery(SELECT_COURSE_QUERY+"'"+courseId+"'");
+        try
+        {
+            database = SystemConfig.instance().getDatabaseAccess();
+            connection = database.getConnection();
 
-				while(resultSet.next()) 
-				{
-					//Parsing result set object and mapping result to Java beans
-					course.setCourseId(resultSet.getString(CatmeUtil.COURSE_ID_FIELD));
-					course.setCourseName(resultSet.getString(CatmeUtil.COURSE_NAME_FIELD));
-				}
-			}
-		} 
-		catch (SQLException|NullPointerException e) 
-		{
-			//Throwing user defined exception
-			throw new CatmeException("Failed while connecting and fetching Course from DB "+e.getMessage());
-		}
-		finally
-		{
-			try 
-			{
-				//Closing database related connections
-				if(connection!=null)
-					connection.close();
-				if(statement!=null)
-					statement.close();
-				if(resultSet!=null)
-					resultSet.close();
-			} 
-			catch (SQLException|NullPointerException e) 
-			{
-				//Throwing user defined exceptions
-				throw new CatmeException("Failed while closing conection with DB "+e.getMessage());
-			}
-		}	
+            statement = connection.createStatement();
 
-		return course;
-	}
+            if (connection != null)
+            {
+                resultSet = statement.executeQuery(SELECT_COURSE_ROLE_QUERY + "'" + user.getBannerId() + "' and  c.courseId='" + courseId + "'");
 
-	@Override
-	public String findRoleByCourse(User user,String courseId) throws CatmeException
-	{
-		ResultSet resultSet = null;
-		Statement statement=null;
-		Connection connection=null;
-		String role="";
+                while (resultSet.next())
+                {
+                    role = resultSet.getString(CatmeUtil.ROLE_NAME_FIELD);
+                }
+            }
+        } catch (SQLException | NullPointerException e)
+        {
+            throw new CatmeException("Failed while connecting and Fetching Role for a Course in DB" + e.getMessage());
+        } finally
+        {
+            try
+            {
+                if (connection != null)
+                    connection.close();
+                if (statement != null)
+                    statement.close();
+                if (resultSet != null)
+                    resultSet.close();
+            } catch (SQLException | NullPointerException e)
+            {
+                throw new CatmeException("Failed while closing conection with DB " + e.getMessage());
+            }
+        }
+        return role;
+    }
 
-		try 
-		{
-			//Creating connection
-			database=SystemConfig.instance().getDatabaseAccess();
-			connection=database.getConnection();
+    @Override
+    public ArrayList<Student> getRegisteredStudents(String courseId)
+    {
+        ArrayList<Student> registeredStudents = new ArrayList<>();
 
-			//Creating statement for executing query
-			statement=connection.createStatement();
+        Connection con = null;
+        try
+        {
+            database = SystemConfig.instance().getDatabaseAccess();
+            con = database.getConnection();
 
-			if(connection!=null)
-			{	
-				//Executing query to fetch enrolled courses and teaching courses
-				resultSet = statement.executeQuery(SELECT_COURSE_ROLE_QUERY+"'"+user.getBannerId()+"' and  c.courseId='"+courseId+"'");
+            PreparedStatement stmt = con.prepareStatement(SEELCT_ENROLLED_STUDENTS_QUERY);
+            stmt.setString(1, courseId);
 
-				while(resultSet.next()) 
-				{
-					//Parsing result data and storing it in variable
-					role=resultSet.getString(CatmeUtil.ROLE_NAME_FIELD);
-				}
-			}
-		} 
-		catch (SQLException|NullPointerException e) 
-		{
-			//throwing user defined exception
-			throw new CatmeException("Failed while connecting and Fetching Role for a Course in DB"+e.getMessage());
-		}
-		finally
-		{
-			try 
-			{
-				//Closing all database connections
-				if(connection!=null)
-					connection.close();
-				if(statement!=null)
-					statement.close();
-				if(resultSet!=null)
-					resultSet.close();
-			} 
-			catch (SQLException|NullPointerException e) 
-			{
-				//throwing user defined exception
-				throw new CatmeException("Failed while closing conection with DB "+e.getMessage());
-			}
-		}	
-		return role;
-	}
+            ResultSet rs = stmt.executeQuery();
 
-	@Override
-	public ArrayList<Student> getRegisteredStudents(String courseId)
-	{
-		ArrayList<Student> registeredStudents = new ArrayList<>();
+            while (rs.next())
+            {
+                Student s = new Student(rs.getString(1), rs.getString(2), rs.getString(3), "");
+                registeredStudents.add(s);
+            }
 
-		Connection con = null;
-		try
-		{
-			database=SystemConfig.instance().getDatabaseAccess();
-			con = database.getConnection();
+            return registeredStudents;
 
-			PreparedStatement stmt = con.prepareStatement(SEELCT_ENROLLED_STUDENTS_QUERY);
-			stmt.setString(1,courseId);
-
-			ResultSet rs = stmt.executeQuery();
-
-			while(rs.next())
-			{
-				Student s = new Student(rs.getString(1), rs.getString(2),rs.getString(3),"");
-				registeredStudents.add(s);
-			}
-
-			return registeredStudents;
-
-		} catch (SQLException throwables)
-		{
-			throwables.printStackTrace();
-		}
-		finally
-		{
-			try
-			{
-				con.close();
-			} catch (SQLException|NullPointerException throwables)
-			{
-				throwables.printStackTrace();
-			}
-		}
-		return null;
-	}
+        } catch (SQLException throwables)
+        {
+            throwables.printStackTrace();
+        } finally
+        {
+            try
+            {
+                con.close();
+            } catch (SQLException | NullPointerException throwables)
+            {
+                throwables.printStackTrace();
+            }
+        }
+        return null;
+    }
 
 
-	@Override
-	public int checkCourseExists(String courseId, Connection con) {
-		int rowCount = 0;
-		// TODO Auto-generated method stub
-		try {
-			PreparedStatement stmt = con.prepareStatement(CHECK_COURSE_QUERY);
-			stmt.setString(1,courseId);
+    @Override
+    public int checkCourseExists(String courseId, Connection con)
+    {
+        int rowCount = 0;
+        try
+        {
+            PreparedStatement stmt = con.prepareStatement(CHECK_COURSE_QUERY);
+            stmt.setString(1, courseId);
 
-			ResultSet rs = stmt.executeQuery();
-			rs.next();
-			rowCount = rs.getInt(1);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+            ResultSet rs = stmt.executeQuery();
+            rs.next();
+            rowCount = rs.getInt(1);
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
 
-		return rowCount;
-	}
+        return rowCount;
+    }
 
-	@Override
-	public int checkCourseRegistration(String bannerId, String courseId, Connection con) {
-		int rowCount = 0;
-		// TODO Auto-generated method stub
-		try {
-			PreparedStatement stmt = con.prepareStatement(CHECK_COURSE_REGISTRATION_QUERY);
-			stmt.setString(1,bannerId);
-			stmt.setString(2,courseId);
-			ResultSet rs = stmt.executeQuery();
-			rs.next();
-			rowCount = rs.getInt(1);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+    @Override
+    public int checkCourseRegistration(String bannerId, String courseId, Connection con)
+    {
+        int rowCount = 0;
+        try
+        {
+            PreparedStatement stmt = con.prepareStatement(CHECK_COURSE_REGISTRATION_QUERY);
+            stmt.setString(1, bannerId);
+            stmt.setString(2, courseId);
+            ResultSet rs = stmt.executeQuery();
+            rs.next();
+            rowCount = rs.getInt(1);
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
 
-		return rowCount;
-	}
-
+        return rowCount;
+    }
 }
