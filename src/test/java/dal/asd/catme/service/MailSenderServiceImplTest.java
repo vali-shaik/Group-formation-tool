@@ -15,7 +15,7 @@ import static dal.asd.catme.util.MailSenderUtil.TOKEN_LENGTH;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
 
-public class MailSenderServiceTest
+public class MailSenderServiceImplTest
 {
 
 
@@ -29,7 +29,7 @@ public class MailSenderServiceTest
         String body =
                 "You are registered in new course";
 
-        MailSenderService mailSenderService = new MailSenderService(new
+        MailSenderServiceImpl mailSenderService = new MailSenderServiceImpl(new
                 JavaMailSenderMock(s, sub, body));
 
         try
@@ -46,7 +46,7 @@ public class MailSenderServiceTest
     void getFormattedEmailForNewStudentTest()
     {
 
-        MailSenderService mailSenderService = new MailSenderService(new JavaMailSenderImpl());
+        MailSenderServiceImpl mailSenderService = new MailSenderServiceImpl(new JavaMailSenderImpl());
 
         Student s = new Student("B00851820", "Prajapati", "Tapan", "Tapan.Prajapati@dal.ca", "ABCE@1234");
 
@@ -65,7 +65,7 @@ public class MailSenderServiceTest
     @Test
     void getFormattedEmailForForgotPasswordTest()
     {
-        MailSenderService mailSenderService = new MailSenderService(new JavaMailSenderImpl());
+        MailSenderServiceImpl mailSenderService = new MailSenderServiceImpl(new JavaMailSenderImpl());
 
         User u = new User();
         u.setBannerId("B00000000");

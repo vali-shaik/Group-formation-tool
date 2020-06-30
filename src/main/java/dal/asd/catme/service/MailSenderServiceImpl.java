@@ -14,16 +14,16 @@ import java.util.Properties;
 
 import static dal.asd.catme.util.MailSenderUtil.*;
 
-public class MailSenderService implements IMailSenderService
+public class MailSenderServiceImpl implements IMailSenderService
 {
     private JavaMailSenderImpl mailSender;
 
-    public MailSenderService(JavaMailSenderImpl mailSender)
+    public MailSenderServiceImpl(JavaMailSenderImpl mailSender)
     {
         this.mailSender = mailSender;
     }
 
-    public MailSenderService()
+    public MailSenderServiceImpl()
     {
         this.mailSender = new JavaMailSenderImpl();
         this.mailSender.setHost(HOST);

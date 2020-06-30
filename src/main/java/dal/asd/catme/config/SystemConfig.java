@@ -18,7 +18,6 @@ public class SystemConfig
     private IRoleDao roleDao;
     private IRoleService roleService;
     private IMailSenderService mailSenderService;
-    private ICatmeService catmeService;
     private IStudentDao studentDao;
     private IUserDao userDao;
     private IPasswordDao passwordDao;
@@ -55,8 +54,7 @@ public class SystemConfig
         listCourseDao = new ListDetailsDaoImpl();
         listUserService = new ListDetailsServiceImpl();
         listCourseService = new ListDetailsServiceImpl();
-        mailSenderService = new MailSenderService();
-        catmeService = new CatmeServiceImpl();
+        mailSenderService = new MailSenderServiceImpl();
         studentDao = new StudentDaoImpl();
         userDao = new UserDaoImpl();
         passwordDao = new PasswordDaoImpl();
@@ -248,16 +246,6 @@ public class SystemConfig
     public void setMailSenderService(IMailSenderService mailSenderService)
     {
         this.mailSenderService = mailSenderService;
-    }
-
-    public ICatmeService getCatmeService()
-    {
-        return catmeService;
-    }
-
-    public void setCatmeService(ICatmeService catmeService)
-    {
-        this.catmeService = catmeService;
     }
 
     public IStudentDao getStudentDao()

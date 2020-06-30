@@ -2,7 +2,6 @@ package dal.asd.catme.controller;
 
 import dal.asd.catme.config.SystemConfig;
 import dal.asd.catme.exception.CatmeException;
-import dal.asd.catme.service.ICatmeService;
 import dal.asd.catme.service.ICourseService;
 import dal.asd.catme.util.CatmeUtil;
 import org.slf4j.Logger;
