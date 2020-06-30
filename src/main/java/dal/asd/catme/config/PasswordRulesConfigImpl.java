@@ -57,9 +57,13 @@ public class PasswordRulesConfigImpl implements IPasswordRulesConfig
         String minimumUpperCaseRegEx = PasswordRulesUtil.MINIMUM_UPPER_CASE_REGEX + "{" + mininmumUpperLength + "}";
         if (currentPassword != null)
         {
-            if (!regularExpressionMatcher(currentPassword, minimumUpperCaseRegEx))
+            if (regularExpressionMatcher(currentPassword, minimumUpperCaseRegEx))
             {
-                flag = false;
+               flag=true;
+            }
+            else
+            {
+            	flag = false;
             }
         }
         return flag;
@@ -72,9 +76,13 @@ public class PasswordRulesConfigImpl implements IPasswordRulesConfig
         String minimumLowerCaseRegEx = PasswordRulesUtil.MINIMUM_LOWER_CASE_REGEX + "{" + mininmumLowerLength + "}";
         if (currentPassword != null)
         {
-            if (!regularExpressionMatcher(currentPassword, minimumLowerCaseRegEx))
+            if (regularExpressionMatcher(currentPassword, minimumLowerCaseRegEx))
             {
-                flag = false;
+                flag = true;
+            }
+            else
+            {
+            	 flag = false;
             }
         }
         return flag;
@@ -87,9 +95,13 @@ public class PasswordRulesConfigImpl implements IPasswordRulesConfig
         String minimumSymbolSpecialRegEx = PasswordRulesUtil.MINIMUM_SYMBOL_SPECIAL_REGEX + "{" + minimumSymbolSpecialLength + "}";
         if (currentPassword != null)
         {
-            if (!regularExpressionMatcher(currentPassword, minimumSymbolSpecialRegEx))
+            if (regularExpressionMatcher(currentPassword, minimumSymbolSpecialRegEx))
             {
-                flag = false;
+                flag = true;
+            }
+            else
+            {
+            	flag=false;
             }
         }
         return flag;
