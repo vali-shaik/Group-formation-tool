@@ -27,7 +27,6 @@ public class QuestionDaoImpl implements IQuestionDao
     @Override
     public List<Question> getQuestionTitles(String instructor) throws QuestionDatabaseException
     {
-        //Column Order
         int QUESTIONID = 1;
         int QUESTIONTITLE = 2;
         int QUESTION = 3;
@@ -37,7 +36,7 @@ public class QuestionDaoImpl implements IQuestionDao
 
         List<Question> questionList = new ArrayList<>();
         db = SystemConfig.instance().getDatabaseAccess();
-        Connection con=null;
+        Connection con = null;
         try
         {
             con = db.getConnection();
@@ -77,13 +76,12 @@ public class QuestionDaoImpl implements IQuestionDao
     @Override
     public int deleteQuestion(int questionId)
     {
-        // TODO Auto-generated method stub
         int questionDeleted = 0;
         db = SystemConfig.instance().getDatabaseAccess();
         Connection con = null;
         try
         {
-        	con = db.getConnection();
+            con = db.getConnection();
             if (0 != checkExistingQuestion(questionId, con))
             {
                 PreparedStatement stmt = con.prepareStatement(DBQueriesUtil.DELETE_QUESTION_QUERY);
@@ -93,18 +91,19 @@ public class QuestionDaoImpl implements IQuestionDao
             }
         } catch (Exception e)
         {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } finally
         {
-        	try {
-        		if (con != null){
-				con.close();
-        		}
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+            try
+            {
+                if (con != null)
+                {
+                    con.close();
+                }
+            } catch (SQLException e)
+            {
+                e.printStackTrace();
+            }
         }
 
         return questionDeleted;
@@ -113,7 +112,6 @@ public class QuestionDaoImpl implements IQuestionDao
     @Override
     public int checkExistingQuestion(int questionId, Connection con)
     {
-        // TODO Auto-generated method stub
         int rowCount = 0;
         try
         {
@@ -131,42 +129,49 @@ public class QuestionDaoImpl implements IQuestionDao
     }
 
     @Override
-    public int createQuestion(Question question,String user) {
-        int result=0;
+    public int createQuestion(Question question, String user)
+    {
+        int result = 0;
         db = SystemConfig.instance().getDatabaseAccess();
         Connection con = null;
-        try {
+        try
+        {
             con = db.getConnection();
             int questionTitleId = createQuestionTitle(question.getQuestionTitle(), user);
 
             PreparedStatement preparedStatement = con.prepareStatement(DBQueriesUtil.CHECK_QUESTION);
             preparedStatement.setInt(1, questionTitleId);
-            preparedStatement.setString(2,question.getQuestionText());
+            preparedStatement.setString(2, question.getQuestionText());
             ResultSet resultSet = preparedStatement.executeQuery();
-            if(!resultSet.next()) {
-                preparedStatement=con.prepareStatement(DBQueriesUtil.INSERT_QUESTION);
+            if (!resultSet.next())
+            {
+                preparedStatement = con.prepareStatement(DBQueriesUtil.INSERT_QUESTION);
                 preparedStatement.setInt(1, questionTitleId);
                 preparedStatement.setString(2, question.getQuestionText());
-                preparedStatement.setString(3,getQuestionType(question.getQuestionType()));
-                //preparedStatement.setDate(4, new Date(questionTitleId));
-                result=preparedStatement.executeUpdate();
-                if(result>0) {
+                preparedStatement.setString(3, getQuestionType(question.getQuestionType()));
+                result = preparedStatement.executeUpdate();
+                if (result > 0)
+                {
                     preparedStatement = con.prepareStatement(DBQueriesUtil.CHECK_QUESTION);
                     preparedStatement.setInt(1, questionTitleId);
-                    preparedStatement.setString(2,question.getQuestionText());
+                    preparedStatement.setString(2, question.getQuestionText());
                     resultSet = preparedStatement.executeQuery();
                     resultSet.next();
                 }
             }
             result = Integer.parseInt(resultSet.getString("QuestionId"));
-        } catch (SQLException e) {
+        } catch (SQLException e)
+        {
             e.printStackTrace();
-        }finally {
-            if(con!=null) {
-                try {
+        } finally
+        {
+            if (con != null)
+            {
+                try
+                {
                     con.close();
-                } catch (SQLException e) {
-                    // TODO Auto-generated catch block
+                } catch (SQLException e)
+                {
                     e.printStackTrace();
                 }
             }
@@ -175,24 +180,28 @@ public class QuestionDaoImpl implements IQuestionDao
     }
 
     @Override
-    public int createQuestionTitle(String questionTitle,String user) {
-        int result=0;
+    public int createQuestionTitle(String questionTitle, String user)
+    {
+        int result = 0;
 
         db = SystemConfig.instance().getDatabaseAccess();
         Connection con = null;
-        try {
+        try
+        {
             con = db.getConnection();
-            int userRoleId = getUserRoleId(con,user);
+            int userRoleId = getUserRoleId(con, user);
             PreparedStatement preparedStatement = con.prepareStatement(DBQueriesUtil.CHECK_QUESTION_TITLE);
             preparedStatement.setString(1, questionTitle);
             ResultSet resultSet = preparedStatement.executeQuery();
-            if(!resultSet.next()) {
-                preparedStatement=con.prepareStatement(DBQueriesUtil.INSERT_QUESTION_TITLE);
+            if (!resultSet.next())
+            {
+                preparedStatement = con.prepareStatement(DBQueriesUtil.INSERT_QUESTION_TITLE);
                 preparedStatement.setString(1, questionTitle);
                 preparedStatement.setInt(2, userRoleId);
-                result=preparedStatement.executeUpdate();
+                result = preparedStatement.executeUpdate();
 
-                if(result>0) {
+                if (result > 0)
+                {
                     preparedStatement = con.prepareStatement(DBQueriesUtil.CHECK_QUESTION_TITLE);
                     preparedStatement.setString(1, questionTitle);
                     resultSet = preparedStatement.executeQuery();
@@ -202,16 +211,15 @@ public class QuestionDaoImpl implements IQuestionDao
             }
             result = Integer.parseInt(resultSet.getString("QuestionTitleId"));
 
-        } catch (SQLException e) {
-            // TODO Auto-generated catch block
+        } catch (SQLException e)
+        {
             e.printStackTrace();
-        }
-        finally
+        } finally
         {
             try
             {
                 con.close();
-            } catch (SQLException|NullPointerException throwables)
+            } catch (SQLException | NullPointerException throwables)
             {
                 throwables.printStackTrace();
             }
@@ -221,78 +229,87 @@ public class QuestionDaoImpl implements IQuestionDao
 
     }
 
-    private int getUserRoleId(Connection con,String user) {
+    private int getUserRoleId(Connection con, String user)
+    {
         int userRoleId = 0;
-        try {
+        try
+        {
             PreparedStatement preparedStatement = con.prepareStatement(DBQueriesUtil.SELECT_ROLE_BY_ROLENAME);
             preparedStatement.setString(CatmeUtil.ONE, CatmeUtil.INSTRUCTOR_ROLE);
             ResultSet resultSet = preparedStatement.executeQuery();
-            if(resultSet.next()) {
-                int roleId =Integer.parseInt(resultSet.getString("roleId"));
+            if (resultSet.next())
+            {
+                int roleId = Integer.parseInt(resultSet.getString("roleId"));
                 preparedStatement = con.prepareStatement(DBQueriesUtil.SELECT_USER_ROLE_BY_BANNERID);
                 preparedStatement.setString(1, user);
-                preparedStatement.setInt(2,roleId);
+                preparedStatement.setInt(2, roleId);
                 resultSet = preparedStatement.executeQuery();
                 resultSet.next();
             }
 
-            userRoleId= Integer.parseInt(resultSet.getString("UserRoleId"));
-        } catch (NumberFormatException e) {
+            userRoleId = Integer.parseInt(resultSet.getString("UserRoleId"));
+        } catch (NumberFormatException e)
+        {
             e.printStackTrace();
-        } catch (SQLException e) {
+        } catch (SQLException e)
+        {
             e.printStackTrace();
         }
         return userRoleId;
     }
 
-    private String getQuestionType(String questionType) {
-        if(questionType.equalsIgnoreCase(CatmeUtil.FREE_TEXT))
+    private String getQuestionType(String questionType)
+    {
+        if (questionType.equalsIgnoreCase(CatmeUtil.FREE_TEXT))
             return CatmeUtil.FREETEXT_DB;
-        else if(questionType.equalsIgnoreCase(CatmeUtil.NUMERIC))
+        else if (questionType.equalsIgnoreCase(CatmeUtil.NUMERIC))
             return CatmeUtil.NUMERIC_DB;
-        else if(questionType.equalsIgnoreCase(CatmeUtil.MCQ_CHOOSE_MULTIPLE))
+        else if (questionType.equalsIgnoreCase(CatmeUtil.MCQ_CHOOSE_MULTIPLE))
             return CatmeUtil.CHECKBOX;
         else
             return CatmeUtil.RADIOBUTTON;
     }
 
     @Override
-    public int createOptions(int questionId, List<Option> options) {
-        int result =0;
+    public int createOptions(int questionId, List<Option> options)
+    {
+        int result = 0;
         db = SystemConfig.instance().getDatabaseAccess();
         Connection con = null;
-        for(int i=0;i<options.size();i++) {
+        for (int i = 0; i < options.size(); i++)
+        {
             Option option = options.get(i);
-            if(option.getDisplayText().trim().length() > 0 && option.getDisplayText()!="") {
-                try {
+            if (option.getDisplayText().trim().length() > 0 && option.getDisplayText() != "")
+            {
+                try
+                {
                     con = db.getConnection();
                     PreparedStatement preparedStatement = con.prepareStatement(DBQueriesUtil.CHECK_QUESTION_OPTION);
                     preparedStatement.setInt(1, questionId);
                     preparedStatement.setString(2, option.getDisplayText());
                     ResultSet resultSet = preparedStatement.executeQuery();
-                    if(!resultSet.next()) {
+                    if (!resultSet.next())
+                    {
                         preparedStatement = con.prepareStatement(DBQueriesUtil.INSERT_QUESTION_OPTION);
                         preparedStatement.setInt(1, questionId);
                         preparedStatement.setString(2, option.getDisplayText());
                         preparedStatement.setInt(3, option.getStoredAs());
-                        result=preparedStatement.executeUpdate();
+                        result = preparedStatement.executeUpdate();
                     }
-                } catch (SQLException e) {
-                    // TODO Auto-generated catch block
+                } catch (SQLException e)
+                {
                     e.printStackTrace();
-                }
-                finally
+                } finally
                 {
                     try
                     {
                         con.close();
-                    } catch (SQLException|NullPointerException throwables)
+                    } catch (SQLException | NullPointerException throwables)
                     {
                         throwables.printStackTrace();
                     }
                 }
             }
-
         }
         return result;
     }

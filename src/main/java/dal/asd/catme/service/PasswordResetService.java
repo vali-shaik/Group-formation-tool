@@ -5,6 +5,7 @@ import java.sql.SQLException;
 
 import dal.asd.catme.beans.User;
 import dal.asd.catme.config.SystemConfig;
+import dal.asd.catme.dao.IPasswordDao;
 import dal.asd.catme.dao.IUserDao;
 import dal.asd.catme.database.DatabaseAccess;
 import dal.asd.catme.exception.CatmeException;
@@ -17,19 +18,22 @@ public class PasswordResetService implements IPasswordResetService
 {
     IUserDao userDao;
 
+    IPasswordDao passwordDao;
+
     DatabaseAccess db;
 
     Connection con;
 
-    public PasswordResetService(IUserDao userDao)
+    public PasswordResetService(IUserDao userDao, IPasswordDao passwordDao)
     {
         this.userDao = userDao;
+        this.passwordDao = passwordDao;
     }
 
     @Override
     public boolean userExists(String bannerid)
     {
-        if(userDao.checkExistingUser(bannerid,con)==0)
+        if (userDao.checkExistingUser(bannerid, con) == 0)
             return false;
         return true;
     }
@@ -39,7 +43,7 @@ public class PasswordResetService implements IPasswordResetService
     {
         try
         {
-        	db=SystemConfig.instance().getDatabaseAccess();
+            db = SystemConfig.instance().getDatabaseAccess();
             con = db.getConnection();
 
             if (!userExists(bannerid))
@@ -47,7 +51,7 @@ public class PasswordResetService implements IPasswordResetService
                 return null;
 
             }
-            User u = userDao.getUser(bannerid,con);
+            User u = userDao.getUser(bannerid, con);
 
             if (u == null)
             {
@@ -58,24 +62,21 @@ public class PasswordResetService implements IPasswordResetService
 
             u.setPassword(token);
 
-            userDao.generatePasswordResetToken(u,token);
+            passwordDao.generatePasswordResetToken(u, token);
 
             return u;
-        }
-        catch (SQLException throwables)
+        } catch (SQLException throwables)
         {
             throwables.printStackTrace();
-        }
-        catch (CatmeException e)
+        } catch (CatmeException e)
         {
             return null;
-        }
-        finally
+        } finally
         {
             try
             {
                 con.close();
-            } catch (SQLException|NullPointerException e)
+            } catch (SQLException | NullPointerException e)
             {
                 e.printStackTrace();
             }
@@ -86,13 +87,12 @@ public class PasswordResetService implements IPasswordResetService
     @Override
     public String validateToken(String token)
     {
-    	String bannerId=null;
+        String bannerId = null;
         try
         {
-        	bannerId = userDao.readBannerIdFromToken(token);
-            
-        }
-        catch (CatmeException e)
+            bannerId = passwordDao.readBannerIdFromToken(token);
+
+        } catch (CatmeException e)
         {
             e.printStackTrace();
         }
@@ -108,27 +108,26 @@ public class PasswordResetService implements IPasswordResetService
 
         try
         {
-            db=SystemConfig.instance().getDatabaseAccess();
+            db = SystemConfig.instance().getDatabaseAccess();
             con = db.getConnection();
 
-            userDao.resetPassword(u,con);
-            userDao.removeToken(bannerId);
+            passwordDao.resetPassword(u, con);
+            passwordDao.removeToken(bannerId);
 
 
         } catch (SQLException throwables)
         {
             throwables.printStackTrace();
             throw new CatmeException("Error Reseting Password");
-        }
-        finally
+        } finally
         {
             try
             {
                 con.close();
                 System.out.println("Connection closed");
-            } catch (SQLException|NullPointerException e)
+            } catch (SQLException | NullPointerException e)
             {
-               e.printStackTrace();
+                e.printStackTrace();
             }
         }
     }

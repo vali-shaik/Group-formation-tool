@@ -6,8 +6,7 @@ public class CatmeUtil
 	public static final int TWO = 2;
 	public static final int ZERO = 0;
 	public static final int ONE = 1;
-	
-	//html files
+
 	public static final String HOME_PAGE="home";
 	public static final String LOGIN_PAGE="login";
 	public static final String ADMIN_PAGE="admin";
@@ -38,37 +37,31 @@ public class CatmeUtil
 	public static final String COURSE_PAGE="course";
 	public static final String  QUESTION_CREATION_SUCCESS="questionCreationSuccess";
 	public static final String OPTION_EDITOR="optionEditor";
-	
-	//QuestionManager
+
 	public static final String QUESTION_MANAGER_HOME = "questions";
 	public static final String DELETE_QUESTION_CONFIRMATION = "deleteQuestionConfirmation";
-	
-	//Landing pages
+
 	public static final String ADMIN_HOME="admin/dashboard";
 	public static final String INSTRUCTOR_HOME="profile/instructor";
 	public static final String TA_HOME="profile/ta";
 	public static final String STUDENT_HOME="profile/student";
 	public static final String GUEST_HOME="profile/guest";
 
-	//Roles
 	public static final String GUEST_ROLE="ROLE_GUEST";
 	public static final String STUDENT_ROLE="ROLE_STUDENT";
 	public static final String TA_ROLE="ROLE_TA"; 
 	public static final String INSTRUCTOR_ROLE="ROLE_INSTRUCTOR";
 	public static final String ADMIN_ROLE="ROLE_ADMIN";	
-	//Security Configuration
-	
-		//Course table
+
 	public static final String COURSE_ID_FIELD="courseId";
 	public static final String COURSE_NAME_FIELD="courseName";
-	//UserRole table fields	
+
 	public static final String ROLE_NAME_FIELD = "RoleName";
 
-	//Regular Expressions
 	public static final String MINIMUM_UPPER_CASE_REGEX="";
 
 	public static final String USER_CREATED = "Successfully Signed Up";
-	//Question Types
+
 	public static final String NUMERIC = "numeric";
 	public static final String FREE_TEXT = "Free Text";
 	public static final String MCQ_CHOOSE_ONE = "MCQ Choose One";

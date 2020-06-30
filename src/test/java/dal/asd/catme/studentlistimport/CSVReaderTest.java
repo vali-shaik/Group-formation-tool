@@ -14,7 +14,7 @@ public class CSVReaderTest
     @Test
     public void readFileTest()
     {
-        CSVReader csvReader = new CSVReader();
+        ICSVReader csvReader = new CSVReader();
 
         ArrayList<Student> test = createDataList();
         File file1 = new File("src/test/java/dal/asd/catme/studentlistimport/test.csv");
@@ -40,8 +40,7 @@ public class CSVReaderTest
     @Test
     void validBannerIdTest()
     {
-        System.out.println("Validating BannerID");
-        CSVReader csvReader = new CSVReader();
+        ICSVReader csvReader = new CSVReader();
 
         assertTrue(csvReader.validBannerId("B00851820"));
         assertTrue(csvReader.validBannerId("B00000000"));
@@ -59,7 +58,7 @@ public class CSVReaderTest
     {
         System.out.println("Validating Names");
 
-        CSVReader csvReader = new CSVReader();
+        ICSVReader csvReader = new CSVReader();
 
         assertTrue(csvReader.validNames("A","A"));
         assertTrue(csvReader.validNames("1","A"));
@@ -74,8 +73,7 @@ public class CSVReaderTest
     @Test
     void validEmailIdTest()
     {
-        System.out.println("Validating Email ID");
-        CSVReader csvReader = new CSVReader();
+        ICSVReader csvReader = new CSVReader();
 
         assertTrue(csvReader.validEmailId("tp890953@dal.ca"));
         assertTrue(csvReader.validEmailId("Tapan.Prajapati@dal.ca"));

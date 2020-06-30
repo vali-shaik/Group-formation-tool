@@ -22,7 +22,6 @@ import static dal.asd.catme.util.CatmeUtil.*;
 @RequestMapping("/")
 public class ForgotPasswordController
 {
-
     IPasswordResetService passwordResetService;
 
     IPasswordPolicyCheckerService passwordPolicyCheckerService;
@@ -40,26 +39,24 @@ public class ForgotPasswordController
     @PostMapping("forgotPassword")
     public String resetPassword(@RequestParam("bannerid") String bannerid, Model model)
     {
-       // System.out.println("Reseting password");
-        passwordResetService= SystemConfig.instance().getPasswordResetService();
+        passwordResetService = SystemConfig.instance().getPasswordResetService();
         User u = passwordResetService.generateResetLink(bannerid);
 
-        if(u==null)
+        if (u == null)
         {
-            model.addAttribute("message","User does not exist");
+            model.addAttribute("message", "User does not exist");
             return CatmeUtil.FORGOT_PASSWORD_PAGE;
         }
 
         try
         {
-            mailSenderService=SystemConfig.instance().getMailSenderService();
+            mailSenderService = SystemConfig.instance().getMailSenderService();
             mailSenderService.sendResetLink(u);
-            model.addAttribute("success","Link Sent Successfully");
+            model.addAttribute("success", "Link Sent Successfully");
             return CatmeUtil.FORGOT_PASSWORD_PAGE;
-        }
-        catch (MessagingException e)
+        } catch (MessagingException e)
         {
-            model.addAttribute("message","Error sending mail. Try again");
+            model.addAttribute("message", "Error sending mail. Try again");
             return CatmeUtil.FORGOT_PASSWORD_PAGE;
         }
     }
@@ -70,7 +67,7 @@ public class ForgotPasswordController
         passwordResetService = SystemConfig.instance().getPasswordResetService();
         bannerid = passwordResetService.validateToken(token);
 
-        if(bannerid==null)
+        if (bannerid == null)
         {
             System.out.println("Invalid Link");
             return ERROR_PAGE;
@@ -91,9 +88,9 @@ public class ForgotPasswordController
 
         try
         {
-            if(!passwordPolicyCheckerService.enforcePasswordPolicy(u))
+            if (!passwordPolicyCheckerService.enforcePasswordPolicy(u))
             {
-                model.addAttribute("message","Password Does not meet requirements");
+                model.addAttribute("message", "Password Does not meet requirements");
                 return RESET_PASSWORD_PAGE;
             }
         } catch (CatmeException e)
@@ -103,12 +100,12 @@ public class ForgotPasswordController
 
         try
         {
-            passwordResetService.resetPassword(bannerid,password);
-            model.addAttribute("message","Password Reset Successfully");
+            passwordResetService.resetPassword(bannerid, password);
+            model.addAttribute("message", "Password Reset Successfully");
             return RESET_PASSWORD_PAGE;
         } catch (CatmeException e)
         {
-            model.addAttribute("message",e.getMessage());
+            model.addAttribute("message", e.getMessage());
             return RESET_PASSWORD_PAGE;
         }
     }

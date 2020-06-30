@@ -17,10 +17,10 @@ public class MailSenderUtil
 
     public static final String RESETLINK = System.getenv("SERVER_NAME")+"/reset-password?token=";
 
-    public static final String PATH_TO_NEW_STUDENT_TEMPLATE = "src/main/resources/templates/new_student_template.html";
+    public static final String PATH_TO_NEW_STUDENT_TEMPLATE = "src/main/resources/templates/email_templates/new_student_template.html";
     public static final String NEW_STUDENT_EMAIL_SUBJECT = "Registration of new course in CATME";
 
-    public static final String PATH_TO_FORGOT_PASSWORD_TEMPLATE = "src/main/resources/templates/forgot_password_template.html";
+    public static final String PATH_TO_FORGOT_PASSWORD_TEMPLATE = "src/main/resources/email_templates/templates/forgot_password_template.html";
     public static final String FORGOT_PASSWORD_EMAIL_SUBJECT = "Reset Your Password";
 
     public static final int TOKEN_LENGTH = 8;
