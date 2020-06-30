@@ -7,7 +7,7 @@ import dal.asd.catme.beans.Course;
 import dal.asd.catme.beans.User;
 import dal.asd.catme.util.CatmeUtil;
 
-public class ListDetailsDaoMock implements IListDetailsDao{
+public class ListDetailsDaoMock implements IListUserDao,IListCourseDao{
 
 	@Override
 	public List<Course> getAllCourses() {

@@ -17,7 +17,7 @@ import dal.asd.catme.util.CatmeUtil;
 import static dal.asd.catme.util.DBQueriesUtil.*;
 
 @Component
-public class ListDetailsDao implements IListDetailsDao{
+public class ListDetailsDaoImpl implements IListCourseDao,IListUserDao{
 
 
 	DatabaseAccess db;

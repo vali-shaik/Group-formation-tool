@@ -27,145 +27,115 @@ import dal.asd.catme.util.CatmeUtil;
 
 @Controller
 @RequestMapping("questions")
-public class QuestionManagerController
-{
-    IListQuestionsService listQuestionsService;
-    //IQuestionManagerService questionManagerServiceImpl = new QuestionManagerServiceImpl();
-    IQuestionManagerService questionManagerServiceImpl;
-    
-    //Creating Logger
-    private static final Logger log = LoggerFactory.getLogger(QuestionManagerController.class);
-    
-    @Value("${questionTypes}")
-    private String[] questionTypes;
+public class QuestionManagerController {
+	IListQuestionsService listQuestionsService;
+	IQuestionManagerService questionManagerServiceImpl;
 
-    @RequestMapping("")
-    public ModelAndView loadPage()
-    {
-        User currentUser=new User();
+	private static final Logger log = LoggerFactory.getLogger(QuestionManagerController.class);
 
-        //Fetching current User's user name
-        currentUser.setBannerId(SecurityContextHolder.getContext().getAuthentication().getName());
+	@Value("${questionTypes}")
+	private String[] questionTypes;
 
-        ModelAndView questionsPage = new ModelAndView();
+	@RequestMapping("")
+	public ModelAndView loadPage() {
+		User currentUser = new User();
+		// Fetching current Username
+		currentUser.setBannerId(SecurityContextHolder.getContext().getAuthentication().getName());
+		ModelAndView questionsPage = new ModelAndView();
+		questionsPage.setViewName(CatmeUtil.QUESTION_MANAGER_HOME);
+		listQuestionsService = SystemConfig.instance().getListQuestionsService();
+		try {
+			listQuestionsService.getQuestions(currentUser.getBannerId());
+			List<Question> questionList = listQuestionsService.sortByTitle();
+			questionsPage.addObject("questions", questionList);
+		} catch (QuestionDatabaseException e) {
+			String message = e.getMessage();
+			questionsPage.addObject("message", message);
+		}
 
-        questionsPage.setViewName(CatmeUtil.QUESTION_MANAGER_HOME);
+		return questionsPage;
+	}
 
-        listQuestionsService = SystemConfig.instance().getListQuestionsService();
+	@GetMapping("sort")
+	public ModelAndView sortTable(@RequestParam(name = "with") String sortBy) {
 
-        try
-        {
-            listQuestionsService.getQuestions(currentUser.getBannerId());
-            List<Question> questionList = listQuestionsService.sortByTitle();
-            questionsPage.addObject("questions",questionList);
+		ModelAndView questionsPage = new ModelAndView();
+		questionsPage.setViewName(CatmeUtil.QUESTION_MANAGER_HOME);
+		List<Question> questionList;
+		if (sortBy.equalsIgnoreCase("Date")) {
+			questionList = listQuestionsService.sortByDate();
+		} else {
+			questionList = listQuestionsService.sortByTitle();
+		}
+		questionsPage.addObject("questions", questionList);
+		questionsPage.addObject("sortBy", sortBy);
 
-        }
-        catch (QuestionDatabaseException e)
-        {
-            String message = e.getMessage();
-            questionsPage.addObject("message",message);
-        }
+		return questionsPage;
+	}
 
-        return questionsPage;
-    }
-
-    @GetMapping("sort")
-    public ModelAndView sortTable(@RequestParam(name = "with") String sortBy)
-    {
-
-        ModelAndView questionsPage = new ModelAndView();
-
-        questionsPage.setViewName(CatmeUtil.QUESTION_MANAGER_HOME);
-
-
-        List<Question> questionList;
-        if(sortBy.equalsIgnoreCase("Date"))
-        {
-            questionList = listQuestionsService.sortByDate();
-        }
-        else
-        {
-            questionList = listQuestionsService.sortByTitle();
-        }
-        questionsPage.addObject("questions",questionList);
-        questionsPage.addObject("sortBy",sortBy);
-
-        return questionsPage;
-    }
-	
-	
-	
 	@RequestMapping("/createQuestion")
-	public String createQuestion(Model model) 
-	{
+	public String createQuestion(Model model) {
 		log.info("****QuestionManagerController - createQuestion Invoked*****");
 		model.addAttribute("question", new Question());
 		model.addAttribute("questionTitle", "");
 		return "createQuestion";
 	}
-	
+
 	@RequestMapping("/questionType")
-	public String createQuestionType(@ModelAttribute Question question) 
-	{
-		
+	public String createQuestionType(@ModelAttribute Question question) {
+
 		log.info("****QuestionManagerController - createQuestionType Invoked*****");
-		String userId=SecurityContextHolder.getContext().getAuthentication().getName();
-		log.info("***user***"+userId);
-		questionManagerServiceImpl=SystemConfig.instance().getQuestionManagerService();
-		return questionManagerServiceImpl.findQuestionType(question,userId);
-		
-		
+		String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+		log.info("***user***" + userId);
+		questionManagerServiceImpl = SystemConfig.instance().getQuestionManagerService();
+		return questionManagerServiceImpl.findQuestionType(question, userId);
+
 	}
-	   
-    
-    @RequestMapping(value="/addQuestion", method=RequestMethod.POST, params="action=addOption")
-    public String addOption(@ModelAttribute Question question) {
-        
-        List<Option> options=question.getOptionWithOrder();
-        options.add(new Option(options.size()+1));
-        question.setOptionWithOrder(options);
-        return "optionEditor";
-    }
 
+	@RequestMapping(value = "/addQuestion", method = RequestMethod.POST, params = "action=addOption")
+	public String addOption(@ModelAttribute Question question) {
 
-    @RequestMapping(value="/addQuestion", method=RequestMethod.POST, params="action=create")
-    public String addQuestion(@ModelAttribute Question question) {
-    	
-    		log.info("****QuestionManagerController - addQuestion Invoked*****");
-    		String userId=SecurityContextHolder.getContext().getAuthentication().getName();
-    		log.info("***here*** "+question.toString());
-    		questionManagerServiceImpl=SystemConfig.instance().getQuestionManagerService();
-    		int questionId = questionManagerServiceImpl.createQuestion(question, userId);
-    		int result =questionManagerServiceImpl.createOptions(questionId,question.getOptionWithOrder());
-    		if(result>0) {
-    			return CatmeUtil.QUESTION_CREATION_SUCCESS;
-    	}
-    			else{
-    				return CatmeUtil.QUESTION_FAILURE_PAGE;
-    			}
+		List<Option> options = question.getOptionWithOrder();
+		options.add(new Option(options.size() + 1));
+		question.setOptionWithOrder(options);
+		return "optionEditor";
+	}
 
-    }
-	
+	@RequestMapping(value = "/addQuestion", method = RequestMethod.POST, params = "action=create")
+	public String addQuestion(@ModelAttribute Question question) {
+
+		log.info("****QuestionManagerController - addQuestion Invoked*****");
+		String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+		log.info("***here*** " + question.toString());
+		questionManagerServiceImpl = SystemConfig.instance().getQuestionManagerService();
+		int questionId = questionManagerServiceImpl.createQuestion(question, userId);
+		int result = questionManagerServiceImpl.createOptions(questionId, question.getOptionWithOrder());
+		if (result > 0) {
+			return CatmeUtil.QUESTION_CREATION_SUCCESS;
+		} else {
+			return CatmeUtil.QUESTION_FAILURE_PAGE;
+		}
+
+	}
+
 	@ModelAttribute("questionTypes")
-	public String[] getQuestionTypes(){
-		return questionTypes;	
+	public String[] getQuestionTypes() {
+		return questionTypes;
 	}
-	
-	
+
 	@GetMapping("/deleteQuestionConfirmation/{questionId}")
-	public String deleteQuestionConfirmation(@PathVariable("questionId")String questionId,Model model) {
-		
+	public String deleteQuestionConfirmation(@PathVariable("questionId") String questionId, Model model) {
+
 		model.addAttribute("questionId", questionId);
 		return "deleteQuestionConfirmation";
 	}
-	
+
 	@PostMapping("/deleteQuestion/{questionId}")
-	public String deleteQuestion(Model model, @PathVariable("questionId")String questionId) {
+	public String deleteQuestion(Model model, @PathVariable("questionId") String questionId) {
 		int qId = Integer.parseInt(questionId);
-		questionManagerServiceImpl=SystemConfig.instance().getQuestionManagerService();
+		questionManagerServiceImpl = SystemConfig.instance().getQuestionManagerService();
 		questionManagerServiceImpl.deleteQuestion(qId);
 		return "redirect:/questions";
 	}
-	
 
 }

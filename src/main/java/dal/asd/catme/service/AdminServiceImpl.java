@@ -7,7 +7,7 @@ import dal.asd.catme.config.SystemConfig;
 import dal.asd.catme.dao.IAdminDao;
 
 @Component
-public class AdminService implements IAdminService{
+public class AdminServiceImpl implements IAdminService{
 
 	IAdminDao admin;
 	

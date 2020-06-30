@@ -13,21 +13,23 @@ import dal.asd.catme.dao.AdminDaoMock;
 import dal.asd.catme.dao.CourseDaoMock;
 import dal.asd.catme.dao.IAdminDao;
 import dal.asd.catme.dao.ICourseDao;
-import dal.asd.catme.dao.IListDetailsDao;
+import dal.asd.catme.dao.IListCourseDao;
+import dal.asd.catme.dao.IListUserDao;
 import dal.asd.catme.dao.ListDetailsDaoMock;
 import dal.asd.catme.exception.CatmeException;
 import dal.asd.catme.util.CatmeUtil;
 
-public class AdminServiceTest {
+public class AdminServiceImplTest {
 
 	IAdminDao adminDaoMock=new AdminDaoMock();
-	IListDetailsDao listDetailsDaoMock = new ListDetailsDaoMock();
+	IListCourseDao listCourseDaoMock = new ListDetailsDaoMock();
+	IListUserDao listUserDaoMock=new ListDetailsDaoMock();
 	
 	@Test
 	public void getCoursesTest() throws CatmeException
 	{
 		List<Course> listOfCourses=formCourseList();
-		assertEquals(listOfCourses.get(0).getCourseId(),listDetailsDaoMock.getAllCourses().get(0).getCourseId());
+		assertEquals(listOfCourses.get(0).getCourseId(),listCourseDaoMock.getAllCourses().get(0).getCourseId());
 			
 	}
 	
@@ -35,7 +37,7 @@ public class AdminServiceTest {
 	 public void getUsersTest() { 
 		 List<User> users = formUserList(); 
 		 Course course = new Course(CatmeUtil.WEB_ID, CatmeUtil.ADVANCED_WEB_SERVICES);
-	  assertEquals(users.get(0).getBannerId(),listDetailsDaoMock.getUsers(course).get(CatmeUtil.ZERO).getBannerId());
+	  assertEquals(users.get(0).getBannerId(),listUserDaoMock.getUsers(course).get(CatmeUtil.ZERO).getBannerId());
 	  }
 	
 	 

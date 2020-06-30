@@ -3,9 +3,7 @@ package dal.asd.catme.service;
 import java.util.List;
 
 import dal.asd.catme.beans.Course;
-import dal.asd.catme.beans.User;
 
-public interface IListDetails {
+public interface IListCourseService {
 	List<Course> getAllCourses();
-	List<User> getUsers(Course course);
 }

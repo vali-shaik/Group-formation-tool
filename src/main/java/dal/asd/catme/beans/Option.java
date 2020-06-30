@@ -3,16 +3,17 @@ package dal.asd.catme.beans;
 public class Option {
 	String displayText;
 	int storedAs;
-	
-	public Option(){}
-	
-	public Option(String displayText,int storedAs){
-		this.displayText=displayText;
-		this.storedAs=storedAs;
+
+	public Option() {
 	}
-	
-	public Option(int storedAs){
-		this.storedAs=storedAs;
+
+	public Option(String displayText, int storedAs) {
+		this.displayText = displayText;
+		this.storedAs = storedAs;
+	}
+
+	public Option(int storedAs) {
+		this.storedAs = storedAs;
 	}
 
 	public String getDisplayText() {
@@ -35,7 +36,5 @@ public class Option {
 	public String toString() {
 		return "Option [displayText=" + displayText + ", storedAs=" + storedAs + "]";
 	}
-	
-	
 
 }
