@@ -133,17 +133,20 @@ public class CourseController
             catmeSecurityConfig = SystemConfig.instance().getCatmeServiceConfig();
             List<String> roles = catmeSecurityConfig.fetchRolesHomePage();
 
-            if (!roles.contains(CatmeUtil.INSTRUCTOR_ROLE) && !roles.contains(CatmeUtil.TA_ROLE))
+            if (roles.contains(CatmeUtil.INSTRUCTOR_ROLE) || roles.contains(CatmeUtil.TA_ROLE))
+            {
+                uploadPage.setViewName(CatmeUtil.MANAGE_COURSE_PAGE);
+
+                uploadPage.addObject("courseId", courseId);
+                courseService = SystemConfig.instance().getCourseService();
+                uploadPage.addObject("studentList", courseService.getEnrolledStudents(courseId));
+            }
+            else
             {
                 uploadPage.setViewName(CatmeUtil.LOGIN_PAGE);
                 return uploadPage;
             }
 
-            uploadPage.setViewName(CatmeUtil.MANAGE_COURSE_PAGE);
-
-            uploadPage.addObject("courseId", courseId);
-            courseService = SystemConfig.instance().getCourseService();
-            uploadPage.addObject("studentList", courseService.getEnrolledStudents(courseId));
         } catch (CatmeException e)
         {
             e.printStackTrace();
