@@ -21,16 +21,6 @@ class PasswordResetServiceTest
     IPasswordDao passwordDao = new PasswordDaoMock();
 
     @Test
-    void userExists()
-    {
-        IPasswordResetService service = new PasswordResetService(userDao, passwordDao);
-
-        assertTrue(service.userExists(users.get(0).getBannerId()));
-
-        assertFalse(service.userExists("B00123456"));
-    }
-
-    @Test
     void generateResetLinkTest()
     {
         IPasswordResetService service = new PasswordResetService(userDao, passwordDao);

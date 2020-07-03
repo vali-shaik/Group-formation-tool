@@ -28,14 +28,6 @@ public class PasswordResetService implements IPasswordResetService
     }
 
     @Override
-    public boolean userExists(String bannerid)
-    {
-        if (userDao.checkExistingUser(bannerid, con) == 0)
-            return false;
-        return true;
-    }
-
-    @Override
     public User generateResetLink(String bannerid)
     {
         try
@@ -43,7 +35,7 @@ public class PasswordResetService implements IPasswordResetService
             db = SystemConfig.instance().getDatabaseAccess();
             con = db.getConnection();
 
-            if (userExists(bannerid) == false)
+            if (userDao.checkExistingUser(bannerid,con)==0)
             {
                 return null;
 

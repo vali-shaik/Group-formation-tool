@@ -35,7 +35,7 @@ public class CSVReader implements ICSVReader
                 continue;
             String[] parts = line.split(",");
 
-            if (parts.length != CSV_COLUMNS)
+            if (parts.length < CSV_COLUMNS || parts.length > CSV_COLUMNS)
                 throw new InvalidFileFormatException("Invalid File Format");
             if (skip)
             {
@@ -43,7 +43,7 @@ public class CSVReader implements ICSVReader
                 continue;
             }
 
-            if (!validLine(parts))
+            if (validLine(parts) == false)
                 throw new InvalidFileFormatException("Invalid File Format");
 
             newStudents.add(new Student(parts[BANNERID], parts[LASTNAME], parts[FIRSTNAME], parts[EMAILID]));
@@ -64,20 +64,17 @@ public class CSVReader implements ICSVReader
     {
         bannerId = bannerId.trim();
 
-        if (bannerId.length() != BANNERID_LENGTH)
+        if (bannerId.length() < BANNERID_LENGTH || bannerId.length()>BANNERID_LENGTH)
         {
-            System.out.println("Invalid Lenght of BannerID");
             return false;
         }
-        if (!bannerId.substring(0, 3).equalsIgnoreCase("B00"))
+        if (bannerId.substring(0, 3).equalsIgnoreCase("B00")==false)
         {
-            System.out.println("BannerID not starting with B00");
             return false;
         }
 
-        if (!Pattern.matches("\\d{6}", bannerId.substring(3)))
+        if (Pattern.matches("\\d{6}", bannerId.substring(3))==false)
         {
-            System.out.println("Invalid last 6 digits of BannerID");
             return false;
         }
 
@@ -108,13 +105,12 @@ public class CSVReader implements ICSVReader
     {
         emailId = emailId.trim();
         //credit for regex: https://regexr.com/2rhq7
-        if (!Pattern.matches("[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", emailId))
+        if (Pattern.matches("[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", emailId))
         {
-            System.out.println("Invalid Email ID");
-            return false;
+            return true;
         }
 
-        return true;
+        return false;
     }
 
     @Override
@@ -126,7 +122,7 @@ public class CSVReader implements ICSVReader
         } else if (file.getSize() >= 10 * 1024 * 1024)
         {
             throw new InvalidFileFormatException("Please Upload File less than 10 mb");
-        } else if (!file.getContentType().equals("text/csv"))
+        } else if (file.getContentType().equals("text/csv")==false)
         {
             throw new InvalidFileFormatException("Please Select CSV File");
         }

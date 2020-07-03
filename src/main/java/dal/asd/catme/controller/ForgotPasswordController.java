@@ -89,7 +89,7 @@ public class ForgotPasswordController
 
         try
         {
-            if (!passwordPolicyCheckerService.enforcePasswordPolicy(u))
+            if (passwordPolicyCheckerService.enforcePasswordPolicy(u) == false)
             {
                 model.addAttribute("message", "Password Does not meet requirements");
                 return RESET_PASSWORD_PAGE;

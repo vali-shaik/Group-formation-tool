@@ -6,8 +6,6 @@ import dal.asd.catme.exception.CatmeException;
 
 public interface IPasswordResetService
 {
-    public boolean userExists(String bannerid);
-
     public User generateResetLink(String bannerid);
 
     public String validateToken(String token);
