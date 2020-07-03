@@ -36,7 +36,6 @@ public class RoleDaoMock implements IRoleDao
     @Override
     public int assignRole(String bannerId, int roleId, Connection con)
     {
-        // TODO Auto-generated method stub
         for (User u : users)
         {
             if (u.getBannerId().equalsIgnoreCase(bannerId))
@@ -56,32 +55,23 @@ public class RoleDaoMock implements IRoleDao
     @Override
     public int addInstructor(String courseId, int userRoleId, Connection con)
     {
-        // TODO Auto-generated method stub
-
         return 1;
     }
 
     @Override
     public String assignTa(Enrollment user, Connection con)
     {
-        // TODO Auto-generated method stub
         if (0 != userDao.checkExistingUser(user.bannerId, con))
         {
 
-            //If the course exists
             if (0 != courseDao.checkCourseExists(user.courseId, con))
             {
 
-                //If the user is not currently taking the course
                 if (0 == courseDao.checkCourseRegistration(user.bannerId, user.courseId, con))
                 {
 
-                    //If the user is not already registered as an instructor for the course
                     if (0 == checkCourseInstructor(user.bannerId, user.courseId, con))
                     {
-
-
-                        //Add the user to the CourseInstructor Table
                         for (Course c : courses)
                         {
                             if (c.getCourseId().equalsIgnoreCase(user.courseId))
@@ -106,28 +96,19 @@ public class RoleDaoMock implements IRoleDao
 
 
                                     }
-                                    System.out.println("User not found");
                                 }
-                                System.out.println("No users");
                             }
                         }
-                        System.out.println("Enrollemnt Does not exist");
                     }
-                    System.out.println("Course Instructor not available");
                 }
-                System.out.println("Not Registered");
             }
-            System.out.println("Course Does not exist");
         }
-        System.out.println("User Does Not Exist");
-
         return null;
     }
 
     @Override
     public int checkCourseInstructor(String bannerId, String courseId, Connection con)
     {
-        // TODO Auto-generated method stub
         for (Instructor i : c.getInstructors())
         {
             if (i.getBannerId().equalsIgnoreCase(bannerId))
@@ -140,7 +121,6 @@ public class RoleDaoMock implements IRoleDao
     @Override
     public int checkUserRole(String bannerId, int roleId, Connection con)
     {
-        // TODO Auto-generated method stub
         for (User u : users)
         {
             if (u.getBannerId().equalsIgnoreCase(bannerId))
@@ -159,7 +139,6 @@ public class RoleDaoMock implements IRoleDao
     @Override
     public int getUserRoleId(String bannerId, int roleId, Connection con)
     {
-        // TODO Auto-generated method stub
         return 1;
     }
 
