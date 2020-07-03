@@ -1,6 +1,6 @@
 package dal.asd.catme.studentlistimport;
 
-import dal.asd.catme.beans.Student;
+import dal.asd.catme.accesscontrol.Student;
 import dal.asd.catme.exception.InvalidFileFormatException;
 import org.springframework.web.multipart.MultipartFile;
 

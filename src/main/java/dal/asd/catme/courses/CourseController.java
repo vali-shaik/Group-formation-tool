@@ -1,0 +1,204 @@
+package dal.asd.catme.courses;
+
+import dal.asd.catme.accesscontrol.IMailSenderService;
+import dal.asd.catme.accesscontrol.IUserService;
+import dal.asd.catme.accesscontrol.Student;
+import dal.asd.catme.accesscontrol.User;
+import dal.asd.catme.config.CatmeSecurityConfig;
+import dal.asd.catme.config.SystemConfig;
+import dal.asd.catme.exception.CatmeException;
+import dal.asd.catme.exception.InvalidFileFormatException;
+import dal.asd.catme.studentlistimport.ICSVReader;
+import dal.asd.catme.util.CatmeUtil;
+import dal.asd.catme.util.RandomTokenGenerator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
+
+import javax.mail.MessagingException;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import static dal.asd.catme.util.MailSenderUtil.TOKEN_LENGTH;
+
+@Controller
+public class CourseController
+{
+    ICourseService courseService;
+
+    IEnrollStudentService enrollStudentService;
+
+    IUserService userService;
+
+    IMailSenderService mailSenderService;
+
+    CatmeSecurityConfig catmeSecurityConfig;
+
+    ICSVReader csvReaderImpl;
+
+    IRoleService roleService;
+
+    private static final Logger log = LoggerFactory.getLogger(CourseController.class);
+
+    @GetMapping("taEnrollment/{courseId}")
+    public String enrollTa(@PathVariable("courseId") String courseId, Model model)
+    {
+        model.addAttribute("courseId", courseId);
+        return CatmeUtil.TA_ENROLLMENT_PAGE;
+    }
+
+    @RequestMapping("taEnrollment/access")
+    public String redirectHomePage()
+    {
+        log.info("Finding the Role of User and redirecting to respetive User's home page");
+        return "redirect:/access";
+    }
+
+    @RequestMapping("taEnrollment/{courseId}")
+    public String enrollTa(@PathVariable("courseId") String courseId, @RequestParam String bannerId, Model model)
+    {
+        Enrollment user = new Enrollment(bannerId, courseId);
+        model.addAttribute("user", user);
+        roleService = SystemConfig.instance().getRoleService();
+        String message = roleService.assignTa(user);
+        model.addAttribute("message", message);
+        return CatmeUtil.TA_ENROLLED_PAGE;
+    }
+
+    public ModelAndView identifyAccess(ModelAndView modelAndView, String role)
+    {
+        log.info("Identifying the User's access to selected course as " + role);
+
+        switch (role)
+        {
+
+            case CatmeUtil.TA_ROLE:
+                log.info("Identified as TA for the selected course");
+                modelAndView.addObject("isTa", true);
+                modelAndView.addObject("isInstructor", false);
+                break;
+
+            case CatmeUtil.INSTRUCTOR_ROLE:
+                log.info("Identified as Instructor for the selected course");
+                modelAndView.addObject("isInstructor", true);
+                modelAndView.addObject("isTa", false);
+                break;
+
+            default:
+                log.info("User does not have TA/Instructor access to selected course");
+                modelAndView.addObject("isInstructor", false);
+                modelAndView.addObject("isTa", false);
+                break;
+
+        }
+
+        return modelAndView;
+    }
+
+    @RequestMapping("/courseDisplay")
+    public ModelAndView diplayCoursePage(@RequestParam(name = "courseId") String courseId) throws CatmeException
+    {
+        log.info("Selected Course page ID: " + courseId);
+        User currentUser = new User();
+
+        currentUser.setBannerId(SecurityContextHolder.getContext().getAuthentication().getName());
+        log.info("User is: " + currentUser.getBannerId());
+        ModelAndView modelAndView = new ModelAndView();
+
+        courseService = SystemConfig.instance().getCourseService();
+        modelAndView.addObject("course", courseService.displayCourseById(courseId));
+        log.info("Checking Database to identify " + currentUser.getBannerId() + " access to Course :" + courseId);
+
+        identifyAccess(modelAndView, courseService.findRoleByCourse(currentUser, courseId));
+        modelAndView.setViewName(CatmeUtil.COURSE_PAGE);
+
+        return modelAndView;
+    }
+
+    @RequestMapping("/manageCourse")
+    public ModelAndView manageCourse(@RequestParam(name = "courseId") String courseId)
+    {
+        log.info("Manage Course " + courseId);
+        ModelAndView uploadPage = new ModelAndView();
+
+        try
+        {
+            catmeSecurityConfig = SystemConfig.instance().getCatmeServiceConfig();
+            List<String> roles = catmeSecurityConfig.fetchRolesHomePage();
+
+            if (roles.contains(CatmeUtil.INSTRUCTOR_ROLE) || roles.contains(CatmeUtil.TA_ROLE))
+            {
+                uploadPage.setViewName(CatmeUtil.MANAGE_COURSE_PAGE);
+
+                uploadPage.addObject("courseId", courseId);
+                courseService = SystemConfig.instance().getCourseService();
+                uploadPage.addObject("studentList", courseService.getEnrolledStudents(courseId));
+            }
+            else
+            {
+                uploadPage.setViewName(CatmeUtil.LOGIN_PAGE);
+                return uploadPage;
+            }
+
+        } catch (CatmeException e)
+        {
+            e.printStackTrace();
+        }
+
+        return uploadPage;
+    }
+
+    @PostMapping("/manageCourse")
+    public ModelAndView uploadFile(@RequestParam("student-list-csv") MultipartFile file, @RequestParam("courseId") String courseId)
+    {
+        ModelAndView model = new ModelAndView();
+
+        csvReaderImpl = SystemConfig.instance().getCsvReaderImpl();
+
+        try
+        {
+            csvReaderImpl.validateFile(file);
+            Course c = new Course();
+            c.setCourseId(courseId);
+            ArrayList<Student> students = csvReaderImpl.readFile(file.getInputStream());
+
+            userService = SystemConfig.instance().getUserService();
+            enrollStudentService = SystemConfig.instance().getEnrollStudentService();
+            mailSenderService = SystemConfig.instance().getMailSenderService();
+
+            for (Student s : students)
+            {
+                s.setPassword(RandomTokenGenerator.generateRandomPassword(TOKEN_LENGTH));
+                if (userService.addUser(s).equals(CatmeUtil.USER_CREATED))
+                {
+                    mailSenderService.sendCredentialsToStudent(s, c);
+                }
+            }
+
+            if (enrollStudentService.enrollStudentsIntoCourse(students, c))
+            {
+                model.addObject("message", "Students Enrolled");
+            } else
+            {
+                model.addObject("message", "Error Enrolling Students");
+            }
+        } catch (InvalidFileFormatException e)
+        {
+            model.addObject("message", e.getMessage());
+        } catch (IOException e)
+        {
+            e.printStackTrace();
+        } catch (MessagingException e)
+        {
+            model.addObject("message", e.getMessage());
+        }
+        model.setViewName(CatmeUtil.MANAGE_COURSE_PAGE);
+        return model;
+    }
+}
