@@ -1,4 +1,4 @@
-package dal.asd.catme.util;
+package dal.asd.catme.password;
 
 public class PasswordRulesUtil
 {

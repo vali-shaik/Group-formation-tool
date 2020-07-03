@@ -8,10 +8,11 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+
+import static dal.asd.catme.accesscontrol.MailSenderUtil.*;
+
 import java.io.*;
 import java.util.Properties;
-
-import static dal.asd.catme.util.MailSenderUtil.*;
 
 public class MailSenderServiceImpl implements IMailSenderService
 {
