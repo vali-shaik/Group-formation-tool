@@ -4,7 +4,7 @@ import dal.asd.catme.accesscontrol.User;
 import dal.asd.catme.config.SystemConfig;
 import dal.asd.catme.database.DatabaseAccess;
 import dal.asd.catme.exception.CatmeException;
-import dal.asd.catme.util.PasswordRulesUtil;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.sql.Connection;

@@ -7,10 +7,10 @@ import dal.asd.catme.database.DatabaseAccess;
 import dal.asd.catme.exception.CatmeException;
 import dal.asd.catme.util.RandomTokenGenerator;
 
+import static dal.asd.catme.accesscontrol.MailSenderUtil.TOKEN_LENGTH;
+
 import java.sql.Connection;
 import java.sql.SQLException;
-
-import static dal.asd.catme.util.MailSenderUtil.TOKEN_LENGTH;
 
 
 public class PasswordResetService implements IPasswordResetService

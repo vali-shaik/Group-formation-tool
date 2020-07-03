@@ -11,7 +11,7 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 
 import javax.mail.MessagingException;
 
-import static dal.asd.catme.util.MailSenderUtil.TOKEN_LENGTH;
+import static dal.asd.catme.accesscontrol.MailSenderUtil.TOKEN_LENGTH;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
 

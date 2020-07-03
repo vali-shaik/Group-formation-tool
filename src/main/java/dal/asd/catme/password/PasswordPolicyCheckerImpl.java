@@ -3,7 +3,6 @@ package dal.asd.catme.password;
 import dal.asd.catme.accesscontrol.User;
 import dal.asd.catme.config.SystemConfig;
 import dal.asd.catme.exception.CatmeException;
-import dal.asd.catme.util.PasswordRulesUtil;
 
 import java.util.ArrayList;
 import java.util.List;
