@@ -31,8 +31,6 @@ class EnrollStudentServiceTest
     IRoleDao roleDao = new RoleDaoMock(users, c);
     IStudentDao studentDao = new StudentDaoMock(s);
 
-    IMailSenderService mailSenderService = new MailSenderServiceImpl(new JavaMailSenderMock(s, "Sub", "Body"));
-
     @Test
     void assignStudentRoleToStudent()
     {

@@ -7,7 +7,6 @@ import java.util.List;
 public class Question
 {
     int questionId;
-
     String questionText;
     String questionType;
     String questionTitle;
@@ -89,16 +88,4 @@ public class Question
     {
         this.createdDate = createdDate;
     }
-
-    @Override
-    public String toString()
-    {
-        return "Question [questionText=" + questionText + ", questionType=" + questionType + ", optionWithOrder="
-                + optionWithOrder + ", createdDate=" + createdDate + ", getQuestionText()=" + getQuestionText()
-                + ", getQuestionType()=" + getQuestionType() + ", getOptionWithOrder()=" + getOptionWithOrder()
-                + ", getCreatedDate()=" + getCreatedDate() + ", getClass()=" + getClass() + ", hashCode()=" + hashCode()
-                + ", toString()=" + super.toString() + "]";
-    }
-
-
 }

@@ -8,7 +8,6 @@ import dal.asd.catme.exception.CatmeException;
 import dal.asd.catme.util.CatmeUtil;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -17,14 +16,12 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 public class CourseServiceImplTest
 {
-
-
-    ICourseDao courseDaoMock = new CourseDaoMock(formCourses());
+    ICourseDao courseDaoMock = new CourseDaoMock(POJOMock.getCourses());
 
     @Test
     public void getCoursesTest() throws CatmeException
     {
-        List<Course> listOfCourses = formCourses();
+        List<Course> listOfCourses = POJOMock.getCourses();
         CourseServiceImpl courseServiceImpl = new CourseServiceImpl(courseDaoMock);
         courseServiceImpl.getCourses(CatmeUtil.GUEST_ROLE);
         assertEquals(listOfCourses.get(0).getCourseId(), courseServiceImpl.getCourses(CatmeUtil.GUEST_ROLE).get(0).getCourseId());
@@ -34,7 +31,7 @@ public class CourseServiceImplTest
     @Test
     public void getCoursesSizeTest() throws CatmeException
     {
-        List<Course> listOfCourses = formCourses();
+        List<Course> listOfCourses = POJOMock.getCourses();
         CourseServiceImpl courseServiceImpl = new CourseServiceImpl(courseDaoMock);
         courseServiceImpl.getCourses(CatmeUtil.GUEST_ROLE);
         assertEquals(listOfCourses.size(), courseServiceImpl.getCourses(CatmeUtil.GUEST_ROLE).size());
@@ -77,28 +74,4 @@ public class CourseServiceImplTest
         assertNotEquals(CatmeUtil.ADMIN_ROLE, courseServiceImpl.findRoleByCourse(user, "5306"));
 
     }
-
-    public List<Course> formCourses()
-    {
-        List<Course> listOfCourses = new ArrayList<Course>();
-        Course course = new Course();
-        course.setCourseId("5409");
-        course.setCourseName("Adv Web Development");
-        listOfCourses.add(course);
-
-        Course course1 = new Course();
-        course1.setCourseId("5308");
-        course1.setCourseName("DWDM");
-        listOfCourses.add(course1);
-
-        Course course2 = new Course();
-        course2.setCourseId("5306");
-        course2.setCourseName("Sofware Comprehension");
-        listOfCourses.add(course2);
-
-        return listOfCourses;
-
-    }
-
-
 }

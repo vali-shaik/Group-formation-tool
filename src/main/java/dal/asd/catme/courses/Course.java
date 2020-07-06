@@ -17,10 +17,10 @@ public class Course
     public Course()
     {
     }
-    public Course(String webId, String advancedWebServices)
+    public Course(String courseId, String courseName)
     {
-        this.courseId = webId;
-        this.courseName = advancedWebServices;
+        this.courseId = courseId;
+        this.courseName = courseName;
     }
 
     public String getCourseId()
@@ -72,13 +72,4 @@ public class Course
     {
         this.instructors = instructors;
     }
-
-    @Override
-    public String toString()
-    {
-        return "Course [courseId=" + courseId + ", courseName=" + courseName + ", students=" + students
-                + ", tInstructors=" + tInstructors + ", instructors=" + instructors + "]";
-    }
-
-
 }

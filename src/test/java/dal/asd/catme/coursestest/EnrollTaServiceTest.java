@@ -1,9 +1,6 @@
 package dal.asd.catme.coursestest;
 
-import dal.asd.catme.accesscontrol.Instructor;
-import dal.asd.catme.accesscontrol.Student;
 import dal.asd.catme.accesscontrol.User;
-import dal.asd.catme.courses.Course;
 import dal.asd.catme.courses.Enrollment;
 
 import org.junit.jupiter.api.Test;
@@ -23,7 +20,7 @@ public class EnrollTaServiceTest
     @Test
     void enrollTa()
     {
-        RoleDaoMock roleDaoMock = new RoleDaoMock(formUsers(), formCourses());
+        RoleDaoMock roleDaoMock = new RoleDaoMock(formUsers(), POJOMock.getCourses());
         try
         {
             assertNotNull(roleDaoMock.assignTa(new Enrollment("B00835717", "5306"), con));
@@ -57,65 +54,5 @@ public class EnrollTaServiceTest
         listOfUsers.add(user1);
 
         return (ArrayList<User>) listOfUsers;
-
     }
-
-    public ArrayList<Student> formStudents()
-    {
-        ArrayList<Student> listOfUsers = new ArrayList<Student>();
-        Student user = new Student();
-        user.setBannerId("B00835717");
-        listOfUsers.add(user);
-        user.setBannerId("B00835718");
-        listOfUsers.add(user);
-
-        return listOfUsers;
-
-    }
-
-    public ArrayList<Instructor> formInstructors()
-    {
-        ArrayList<Instructor> listOfUsers = new ArrayList<Instructor>();
-        Instructor user = new Instructor();
-        user.setBannerId("B00835719");
-        listOfUsers.add(user);
-        Instructor user1 = new Instructor();
-        user1.setBannerId("B00835718");
-        listOfUsers.add(user1);
-
-        return listOfUsers;
-
-    }
-
-    public ArrayList<Course> formCourses()
-    {
-        List<Course> listOfCourses = new ArrayList<Course>();
-        Course course = new Course();
-        course.setCourseId("5409");
-        course.setCourseName("Adv Web Development");
-        course.setStudents(formStudents());
-        course.setInstructors(formInstructors());
-        listOfCourses.add(course);
-
-        Course course1 = new Course();
-        course1.setCourseId("5308");
-        course1.setCourseName("DWDM");
-        course1.setStudents(formStudents());
-        course1.setInstructors(formInstructors());
-
-        listOfCourses.add(course1);
-
-        Course course2 = new Course();
-        course2.setCourseId("5306");
-        course2.setCourseName("Sofware Comprehension");
-        course2.setStudents(formStudents());
-        course2.setInstructors(formInstructors());
-
-        listOfCourses.add(course2);
-
-        return (ArrayList<Course>) listOfCourses;
-
-    }
-
-
 }

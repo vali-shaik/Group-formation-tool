@@ -1,6 +1,5 @@
 package dal.asd.catme.util;
 
-//Utility class for constants and Utility methods
 public class CatmeUtil
 {
     public static final int TWO = 2;

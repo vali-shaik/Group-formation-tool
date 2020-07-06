@@ -14,16 +14,10 @@ import java.util.List;
 public class CourseDaoMock implements ICourseDao
 {
 
-    ArrayList<Course> courses;
 
     public CourseDaoMock()
     {
 
-    }
-
-    public CourseDaoMock(ArrayList<Course> courses)
-    {
-        this.courses = courses;
     }
 
     List<Course> listOfCourses;
@@ -36,10 +30,7 @@ public class CourseDaoMock implements ICourseDao
     @Override
     public List<Course> getCourses(String role) throws CatmeException
     {
-        if (role.equals(CatmeUtil.GUEST_ROLE))
-        {
-            //listOfCourses=formCourses();	
-        } else
+        if (role.equals(CatmeUtil.GUEST_ROLE) == false)
         {
             listOfCourses = null;
         }
@@ -86,17 +77,10 @@ public class CourseDaoMock implements ICourseDao
         return null;
     }
 
-    /*
-     * @Override public int checkCourseRegistration(String bannerId, int courseId,
-     * Connection con) { return 0; }
-     */
-
-
     @Override
     public int checkCourseRegistration(String bannerId, String courseId, Connection con)
     {
-        // TODO Auto-generated method stub
-        for (Course c : courses)
+        for (Course c : listOfCourses)
         {
             if (c.getCourseId().equalsIgnoreCase(courseId))
             {
@@ -115,14 +99,11 @@ public class CourseDaoMock implements ICourseDao
     @Override
     public int checkCourseExists(String courseId, Connection con)
     {
-        // TODO Auto-generated method stub
-        for (Course c : courses)
+        for (Course c : listOfCourses)
         {
             if (c.getCourseId().equalsIgnoreCase(courseId))
                 return 1;
         }
         return 0;
     }
-
-
 }

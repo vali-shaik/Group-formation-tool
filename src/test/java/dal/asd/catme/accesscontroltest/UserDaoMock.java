@@ -2,6 +2,7 @@ package dal.asd.catme.accesscontroltest;
 
 import java.sql.Connection;
 import java.util.ArrayList;
+import java.util.List;
 
 import dal.asd.catme.accesscontrol.IUserDao;
 import dal.asd.catme.accesscontrol.User;
@@ -9,10 +10,10 @@ import dal.asd.catme.accesscontrol.User;
 public class UserDaoMock implements IUserDao
 {
 
-    ArrayList<User> users;
+    List<User> users;
 
 
-    public UserDaoMock(ArrayList<User> users)
+    public UserDaoMock(List<User> users)
     {
         this.users = users;
     }

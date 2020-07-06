@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import dal.asd.catme.util.RandomTokenGenerator;
 
-class RandomPasswordGeneratorTest
+class RandomTokenGeneratorTest
 {
 
     @Test

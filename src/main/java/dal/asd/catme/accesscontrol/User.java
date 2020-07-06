@@ -114,7 +114,6 @@ public class User
     public String toString()
     {
         return "User [bannerId=" + bannerId + ", lastName=" + lastName + ", firstName=" + firstName + ", email=" + email
-                + ", password=" + password + ", role=" + role + ", getClass()=" + getClass() + ", hashCode()="
-                + hashCode() + ", toString()=" + super.toString() + "]";
+                + ", password=" + password + ", role=" + role + "]";
     }
 }

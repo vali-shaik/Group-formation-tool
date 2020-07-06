@@ -20,11 +20,11 @@ public class RoleDaoMock implements IRoleDao
 
     IUserDao userDao;
     ICourseDao courseDao;
-    ArrayList<User> users;
-    ArrayList<Course> courses;
+    List<User> users;
+    List<Course> courses;
     Course c;
 
-    public RoleDaoMock(ArrayList<User> users, Course c)
+    public RoleDaoMock(List<User> users, Course c)
     {
         this.users = users;
         this.c = c;
@@ -32,7 +32,7 @@ public class RoleDaoMock implements IRoleDao
 
     }
 
-    public RoleDaoMock(ArrayList<User> users, ArrayList<Course> courses)
+    public RoleDaoMock(ArrayList<User> users, List<Course> courses)
     {
         this.users = users;
         this.courses = courses;

@@ -40,10 +40,4 @@ public class Option
         this.storedAs = storedAs;
     }
 
-    @Override
-    public String toString()
-    {
-        return "Option [displayText=" + displayText + ", storedAs=" + storedAs + "]";
-    }
-
 }

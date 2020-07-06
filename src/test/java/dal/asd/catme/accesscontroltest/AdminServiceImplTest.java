@@ -5,6 +5,7 @@ import dal.asd.catme.accesscontrol.IListUserDao;
 import dal.asd.catme.accesscontrol.User;
 import dal.asd.catme.courses.Course;
 import dal.asd.catme.courses.IListCourseDao;
+import dal.asd.catme.coursestest.POJOMock;
 import dal.asd.catme.exception.CatmeException;
 import dal.asd.catme.util.CatmeUtil;
 import org.junit.jupiter.api.Test;
@@ -24,7 +25,7 @@ public class AdminServiceImplTest
     @Test
     public void getCoursesTest() throws CatmeException
     {
-        List<Course> listOfCourses = formCourseList();
+        List<Course> listOfCourses = POJOMock.getCourses();
         assertEquals(listOfCourses.get(0).getCourseId(), listCourseDaoMock.getAllCourses().get(0).getCourseId());
 
     }
@@ -32,7 +33,7 @@ public class AdminServiceImplTest
     @Test
     public void getUsersTest()
     {
-        List<User> users = formUserList();
+        List<User> users = POJOMock.getUsers();
         Course course = new Course(CatmeUtil.WEB_ID, CatmeUtil.ADVANCED_WEB_SERVICES);
         assertEquals(users.get(0).getBannerId(), listUserDaoMock.getUsers(course).get(CatmeUtil.ZERO).getBannerId());
     }
@@ -61,23 +62,5 @@ public class AdminServiceImplTest
         assertEquals(CatmeUtil.ONE, adminDaoMock.addInstructorToCourse(CatmeUtil.
                 FIRST_NAME, CatmeUtil.WEB_ID));
 
-    }
-
-    private List<Course> formCourseList()
-    {
-        List<Course> courseList = new
-                ArrayList<>();
-        courseList.add(new Course(CatmeUtil.WEB_ID,
-                CatmeUtil.ADVANCED_WEB_SERVICES));
-        return courseList;
-    }
-
-    private List<User> formUserList()
-    {
-        List<User> users = new ArrayList<>();
-        users.add(new
-                User(CatmeUtil.BANNER_ID, CatmeUtil.LAST_NAME, CatmeUtil.FIRST_NAME));
-        return
-                users;
     }
 }
