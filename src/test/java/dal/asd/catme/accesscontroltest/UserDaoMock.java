@@ -34,7 +34,6 @@ public class UserDaoMock implements IUserDao
     @Override
     public int addUser(User user, Connection con)
     {
-        // TODO Auto-generated method stub
         users.add(user);
         return 1;
 
