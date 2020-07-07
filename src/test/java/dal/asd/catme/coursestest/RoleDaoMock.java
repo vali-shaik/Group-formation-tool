@@ -24,10 +24,10 @@ public class RoleDaoMock implements IRoleDao
     List<Course> courses;
     Course c;
 
-    public RoleDaoMock(List<User> users, Course c)
+    public RoleDaoMock(ArrayList<User> users, Course course)
     {
         this.users = users;
-        this.c = c;
+        this.c = course;
         userDao = new UserDaoMock(users);
 
     }
