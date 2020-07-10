@@ -14,12 +14,6 @@ import java.util.List;
 public class CourseDaoMock implements ICourseDao
 {
 
-
-    public CourseDaoMock()
-    {
-
-    }
-
     List<Course> listOfCourses;
 
     public CourseDaoMock(List<Course> listOfCourses)
@@ -74,6 +68,11 @@ public class CourseDaoMock implements ICourseDao
     @Override
     public List<Student> getRegisteredStudents(String courseId)
     {
+        for(Course c : listOfCourses)
+        {
+            if(c.getCourseId().equals(courseId))
+                return c.getStudents();
+        }
         return null;
     }
 

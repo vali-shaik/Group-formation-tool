@@ -15,23 +15,22 @@ public class UserServiceImpl implements IUserService
 
     IPasswordPolicyCheckerService passwordPolicyCheckerService;
 
+    public UserServiceImpl(IUserDao userDao, IPasswordPolicyCheckerService passwordPolicyCheckerService)
+    {
+        this.userDao = userDao;
+        this.passwordPolicyCheckerService = passwordPolicyCheckerService;
+    }
+
     @Override
     public String addUser(User user)
     {
-        passwordPolicyCheckerService = SystemConfig.instance().getPasswordPolicyCheckerService();
         String isUserAdded = "An account already exists with this BannerId.";
         Connection con = null;
         try
         {
             db = SystemConfig.instance().getDatabaseAccess();
             con = db.getConnection();
-        } catch (SQLException e1)
-        {
-            e1.printStackTrace();
-        }
-        try
-        {
-            userDao = SystemConfig.instance().getUserDao();
+
             if (passwordPolicyCheckerService.enforcePasswordPolicy(user))
             {
                 if (1 == userDao.addUser(user, con))

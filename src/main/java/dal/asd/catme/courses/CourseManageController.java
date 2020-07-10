@@ -41,8 +41,6 @@ public class CourseManageController {
 
 	    ICSVReader csvReaderImpl;
 
-	    IRoleService roleService;
-
 	    private static final Logger log = LoggerFactory.getLogger(CourseController.class);
 
 	
@@ -126,5 +124,4 @@ public class CourseManageController {
 	        model.setViewName(CatmeUtil.MANAGE_COURSE_PAGE);
 	        return model;
 	    }
-
 }

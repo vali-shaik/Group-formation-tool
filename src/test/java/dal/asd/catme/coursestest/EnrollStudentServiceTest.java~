@@ -45,9 +45,9 @@ class EnrollStudentServiceTest
 
         try
         {
-            service.assignStudentRole(users.get(0));
+            service.assignStudentRole(s);
 
-            List<Role> roles = users.get(0).getRole();
+            List<Role> roles = s.getRole();
             assertEquals(String.valueOf(CatmeUtil.STUDENT_ROLE_ID), roles.get(roles.size() - 1).getRoleId());
         } catch (EnrollmentException e)
         {

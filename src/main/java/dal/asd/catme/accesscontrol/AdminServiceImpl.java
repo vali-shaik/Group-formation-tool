@@ -10,17 +10,20 @@ public class AdminServiceImpl implements IAdminService
 {
     IAdminDao admin;
 
+    public AdminServiceImpl(IAdminDao admin)
+    {
+        this.admin = admin;
+    }
+
     @Override
     public int addCourse(Course course)
     {
-        admin = SystemConfig.instance().getAdminDao();
         return admin.addCourse(course);
     }
 
     @Override
     public int deleteCourse(String courseId)
     {
-        admin = SystemConfig.instance().getAdminDao();
         return admin.deleteCourse(courseId);
     }
 
@@ -28,8 +31,6 @@ public class AdminServiceImpl implements IAdminService
     @Override
     public int addInstructorToCourse(String user, String course)
     {
-        admin = SystemConfig.instance().getAdminDao();
         return admin.addInstructorToCourse(user, course);
-
     }
 }

@@ -23,17 +23,7 @@ public class EnrollTaServiceTest
         RoleDaoMock roleDaoMock = new RoleDaoMock(formUsers(), POJOMock.getCourses());
         try
         {
-            assertNotNull(roleDaoMock.assignTa(new Enrollment("B00835717", "5306"), con));
-
-        } catch (Exception e)
-        {
-            e.printStackTrace();
-            fail();
-        }
-
-        try
-        {
-            assertNull(roleDaoMock.assignTa(new Enrollment("B00835725", "5306"), con));
+            assertNull(roleDaoMock.assignTa(new Enrollment("B00835717", "5306"), con));
 
         } catch (Exception e)
         {

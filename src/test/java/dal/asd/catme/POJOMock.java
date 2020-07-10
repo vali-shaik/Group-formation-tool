@@ -18,9 +18,11 @@ public class POJOMock
         List<User> listOfUsers=new ArrayList<User>();
         User user=new User();
         user.setBannerId("B00835717");
+        user.setRole(new ArrayList<>());
         listOfUsers.add(user);
         User user1 = new User();
         user1.setBannerId("B00835718");
+        user1.setRole(new ArrayList<>());
         listOfUsers.add(user1);
 
         return (ArrayList<User>) listOfUsers;
@@ -32,9 +34,15 @@ public class POJOMock
         ArrayList<Student> listOfUsers=new ArrayList<Student>();
         Student user=new Student();
         user.setBannerId("B00835717");
+        user.setEnrolledCourses(new ArrayList<>());
+        user.setRole(new ArrayList<>());
         listOfUsers.add(user);
-        user.setBannerId("B00835718");
-        listOfUsers.add(user);
+
+        Student user1 = new Student();
+        user1.setBannerId("B00835718");
+        user1.setEnrolledCourses(new ArrayList<>());
+        user1.setRole(new ArrayList<>());
+        listOfUsers.add(user1);
 
         return listOfUsers;
 
@@ -94,5 +102,12 @@ public class POJOMock
         return list;
     }
 
+    public static List<String> getPublishedCourses()
+    {
+        List<String> publishedCourses = new ArrayList<>();
+
+        publishedCourses.add("5308");
+        return publishedCourses;
+    }
 
 }

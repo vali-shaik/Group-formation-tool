@@ -82,4 +82,6 @@ public class CatmeUtil
     public static final String QUESTION_TITLE = "Heroku";
     public static final int QUESTION_ID = 109;
     public static final String QUESTION_FAILURE_PAGE = "questionCreationFailure";
+
+    public static final String SURVEY_PAGE="survey/survey";
 }

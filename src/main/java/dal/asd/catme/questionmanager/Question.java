@@ -74,6 +74,11 @@ public class Question
         return optionWithOrder;
     }
 
+    public void addOption(Option option)
+    {
+        optionWithOrder.add(option);
+    }
+
     public void setOptionWithOrder(List<Option> optionWithOrder)
     {
         this.optionWithOrder = optionWithOrder;

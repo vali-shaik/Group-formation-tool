@@ -26,6 +26,7 @@ public class CourseDaoImpl implements ICourseDao
     public CourseDaoImpl()
     {
     }
+
     private static final Logger log = LoggerFactory.getLogger(CourseDaoImpl.class);
 
     DatabaseAccess database;

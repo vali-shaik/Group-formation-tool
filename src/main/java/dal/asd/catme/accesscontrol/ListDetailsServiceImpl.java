@@ -10,20 +10,24 @@ import java.util.List;
 
 public class ListDetailsServiceImpl implements IListCourseService, IListUserService
 {
-    IListCourseDao listCourse;
     IListUserDao listUser;
+    IListCourseDao listCourse;
+
+    public ListDetailsServiceImpl(IListUserDao listUser, IListCourseDao listCourse)
+    {
+        this.listUser = listUser;
+        this.listCourse = listCourse;
+    }
 
     @Override
     public List<User> getUsers(Course course)
     {
-        listUser = SystemConfig.instance().getListUserDao();
         return listUser.getUsers(course);
     }
 
     @Override
     public List<Course> getAllCourses()
     {
-        listCourse = SystemConfig.instance().getListCourseDao();
         return listCourse.getAllCourses();
     }
 }

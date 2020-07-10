@@ -10,8 +10,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 public class CourseServiceImplTest
@@ -21,29 +20,8 @@ public class CourseServiceImplTest
     @Test
     public void getCoursesTest() throws CatmeException
     {
-        List<Course> listOfCourses = POJOMock.getCourses();
         CourseServiceImpl courseServiceImpl = new CourseServiceImpl(courseDaoMock);
-        courseServiceImpl.getCourses(CatmeUtil.GUEST_ROLE);
-        assertEquals(listOfCourses.get(0).getCourseId(), courseServiceImpl.getCourses(CatmeUtil.GUEST_ROLE).get(0).getCourseId());
-
-    }
-
-    @Test
-    public void getCoursesSizeTest() throws CatmeException
-    {
-        List<Course> listOfCourses = POJOMock.getCourses();
-        CourseServiceImpl courseServiceImpl = new CourseServiceImpl(courseDaoMock);
-        courseServiceImpl.getCourses(CatmeUtil.GUEST_ROLE);
-        assertEquals(listOfCourses.size(), courseServiceImpl.getCourses(CatmeUtil.GUEST_ROLE).size());
-
-    }
-
-    @Test
-    public void getCoursesNullCheckTest() throws CatmeException
-    {
-        CourseServiceImpl courseServiceImpl = new CourseServiceImpl(courseDaoMock);
-        assertEquals(null, courseServiceImpl.getCourses(CatmeUtil.ADMIN_ROLE));
-
+        assertNotNull(courseServiceImpl.getCourses(CatmeUtil.GUEST_ROLE));
     }
 
     @Test
@@ -55,12 +33,18 @@ public class CourseServiceImplTest
     }
 
     @Test
+    public void getEnrolledStudentsTest() throws CatmeException
+    {
+        CourseServiceImpl courseServiceImpl = new CourseServiceImpl(courseDaoMock);
+        assertNotNull(courseServiceImpl.getEnrolledStudents(POJOMock.getCourses().get(0).getCourseId()));
+    }
+
+    @Test
     public void displayCourseByIdNotFoundCheckTest() throws CatmeException
     {
         CourseServiceImpl courseServiceImpl = new CourseServiceImpl(courseDaoMock);
         assertEquals(null, courseServiceImpl.displayCourseById("8988").getCourseName());
     }
-
 
     @Test
     public void findRoleByCourseTest() throws CatmeException
@@ -72,6 +56,5 @@ public class CourseServiceImplTest
         assertEquals(CatmeUtil.TA_ROLE, courseServiceImpl.findRoleByCourse(user, "5308"));
         assertEquals(CatmeUtil.GUEST_ROLE, courseServiceImpl.findRoleByCourse(user, "5306"));
         assertNotEquals(CatmeUtil.ADMIN_ROLE, courseServiceImpl.findRoleByCourse(user, "5306"));
-
     }
 }

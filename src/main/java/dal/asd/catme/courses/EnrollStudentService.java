@@ -33,7 +33,6 @@ public class EnrollStudentService implements IEnrollStudentService
         {
             db = SystemConfig.instance().getDatabaseAccess();
             con = db.getConnection();
-            System.out.println("Database Connected");
 
             for (Student s : students)
             {
@@ -43,20 +42,19 @@ public class EnrollStudentService implements IEnrollStudentService
                     enrollStudent(s, c);
                 } catch (EnrollmentException e)
                 {
-                    System.out.println(e.getMessage() + " " + s);
+                    e.printStackTrace();
                     return false;
                 }
             }
             return true;
         } catch (SQLException e)
         {
-            System.out.println("Error connecting database");
+            e.printStackTrace();
         } finally
         {
             try
             {
                 con.close();
-                System.out.println("Connection closed");
             } catch (Exception e)
             {
                 e.printStackTrace();
