@@ -1,33 +1,7 @@
 package dal.asd.catme.config;
 
-import dal.asd.catme.accesscontrol.AdminDaoImpl;
-import dal.asd.catme.accesscontrol.AdminServiceImpl;
-import dal.asd.catme.accesscontrol.IAdminDao;
-import dal.asd.catme.accesscontrol.IAdminService;
-import dal.asd.catme.accesscontrol.IListUserDao;
-import dal.asd.catme.accesscontrol.IListUserService;
-import dal.asd.catme.accesscontrol.IMailSenderService;
-import dal.asd.catme.accesscontrol.IRoleDao;
-import dal.asd.catme.accesscontrol.IStudentDao;
-import dal.asd.catme.accesscontrol.IUserDao;
-import dal.asd.catme.accesscontrol.IUserService;
-import dal.asd.catme.accesscontrol.ListDetailsDaoImpl;
-import dal.asd.catme.accesscontrol.ListDetailsServiceImpl;
-import dal.asd.catme.accesscontrol.MailSenderServiceImpl;
-import dal.asd.catme.accesscontrol.UserDaoImpl;
-import dal.asd.catme.accesscontrol.UserServiceImpl;
-import dal.asd.catme.courses.CourseDaoImpl;
-import dal.asd.catme.courses.CourseServiceImpl;
-import dal.asd.catme.courses.EnrollStudentService;
-import dal.asd.catme.courses.ICourseDao;
-import dal.asd.catme.courses.ICourseService;
-import dal.asd.catme.courses.IEnrollStudentService;
-import dal.asd.catme.courses.IListCourseDao;
-import dal.asd.catme.courses.IListCourseService;
-import dal.asd.catme.courses.IRoleService;
-import dal.asd.catme.courses.RoleDaoImpl;
-import dal.asd.catme.courses.RoleServiceImpl;
-import dal.asd.catme.courses.StudentDaoImpl;
+import dal.asd.catme.accesscontrol.*;
+import dal.asd.catme.courses.*;
 import dal.asd.catme.database.DatabaseAccess;
 import dal.asd.catme.password.IPasswordDao;
 import dal.asd.catme.password.IPasswordPolicyCheckerService;
@@ -68,10 +42,6 @@ public class SystemConfig
     private CatmeSecurityConfig catmeServiceConfig;
     private PasswordEncoder passwordEncoder;
     private ICSVReader csvReaderImpl;
-    private IListCourseDao listCourseDao;
-    private IListUserDao listUserDao;
-    private IListCourseService listCourseService;
-    private IListUserService listUserService;
     private IQuestionDao questionDao;
     private IListQuestionsService listQuestionsService;
     private IQuestionManagerService questionManagerService;
@@ -80,7 +50,7 @@ public class SystemConfig
 
     public SystemConfig()
     {
-        questionManagerService = new QuestionManagerServiceImpl();
+        questionManagerService = new QuestionManagerServiceImpl(questionDao);
         passwordEncoder = new BCryptPasswordEncoder();
         catmeServiceConfig = new CatmeSecurityConfig();
         databaseAccess = new DatabaseAccess();
@@ -90,9 +60,6 @@ public class SystemConfig
         courseService = new CourseServiceImpl(courseDao);
         roleDao = new RoleDaoImpl();
         roleService = new RoleServiceImpl(roleDao);
-        listCourseDao = new ListDetailsDaoImpl();
-        listUserService = new ListDetailsServiceImpl(listUserDao,listCourseDao);
-        listCourseService = new ListDetailsServiceImpl(listUserDao,listCourseDao);
         mailSenderService = new MailSenderServiceImpl();
         studentDao = new StudentDaoImpl();
         userDao = new UserDaoImpl();
@@ -195,46 +162,6 @@ public class SystemConfig
     public void setAdminServie(IAdminService adminServie)
     {
         this.adminServie = adminServie;
-    }
-
-    public IListCourseDao getListCourseDao()
-    {
-        return listCourseDao;
-    }
-
-    public void setListCourseDao(IListCourseDao listCourseDao)
-    {
-        this.listCourseDao = listCourseDao;
-    }
-
-    public IListUserDao getListUserDao()
-    {
-        return listUserDao;
-    }
-
-    public void setListUserDao(IListUserDao listUserDao)
-    {
-        this.listUserDao = listUserDao;
-    }
-
-    public IListCourseService getListCourseService()
-    {
-        return listCourseService;
-    }
-
-    public void setListCourseService(IListCourseService listCourseService)
-    {
-        this.listCourseService = listCourseService;
-    }
-
-    public IListUserService getListUserService()
-    {
-        return listUserService;
-    }
-
-    public void setListUserService(IListUserService listUserService)
-    {
-        this.listUserService = listUserService;
     }
 
     public ICourseDao getCourseDao()

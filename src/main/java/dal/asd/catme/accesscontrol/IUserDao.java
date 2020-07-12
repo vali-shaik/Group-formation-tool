@@ -1,13 +1,18 @@
 package dal.asd.catme.accesscontrol;
 
+import dal.asd.catme.courses.Course;
+
 import java.sql.Connection;
+import java.util.List;
 
 public interface IUserDao
 {
-    public int checkExistingUser(String bannerId, Connection con);
+    int checkExistingUser(String bannerId, Connection con);
 
-    public int addUser(User user, Connection con);
+    int addUser(User user, Connection con);
 
-    public User getUser(String bannerId, Connection con);
+    User getUser(String bannerId, Connection con);
+
+    List<User> getUsers();
 
 }

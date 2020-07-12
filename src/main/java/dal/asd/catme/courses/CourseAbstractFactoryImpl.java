@@ -1,11 +1,27 @@
 package dal.asd.catme.courses;
 
-import dal.asd.catme.accesscontrol.IRoleDao;
-import dal.asd.catme.accesscontrol.IStudentDao;
-
 public class CourseAbstractFactoryImpl implements ICourseAbstractFactory
 {
     private static ICourseAbstractFactory courseAbstractFactory = null;
+
+    private ICourseDao courseDao;
+    private ICourseService courseService;
+    private IRoleDao roleDao;
+    private IRoleService roleService;
+    private IStudentDao studentDao;
+    private IEnrollStudentService enrollStudentService;
+
+    public CourseAbstractFactoryImpl()
+    {
+        courseDao = new CourseDaoImpl();
+        roleDao = new RoleDaoImpl();
+        studentDao = new StudentDaoImpl();
+
+        courseService = new CourseServiceImpl(courseDao);
+        roleService = new RoleServiceImpl(roleDao);
+        enrollStudentService = new EnrollStudentService(roleDao,studentDao);
+    }
+
     public static ICourseAbstractFactory instance()
     {
         if(courseAbstractFactory==null)
@@ -16,38 +32,38 @@ public class CourseAbstractFactoryImpl implements ICourseAbstractFactory
     }
 
     @Override
-    public ICourseService createCourseService(ICourseDao courseDao)
+    public ICourseService getCourseService()
     {
-        return new CourseServiceImpl(courseDao);
+        return courseService;
     }
 
     @Override
-    public IEnrollStudentService createEnrollmentService(IRoleDao roleDao, IStudentDao studentDao)
+    public IEnrollStudentService getEnrollmentService()
     {
-        return new EnrollStudentService(roleDao,studentDao);
+        return enrollStudentService;
     }
 
     @Override
-    public IRoleService createRoleService(IRoleDao roleDao)
+    public IRoleService getRoleService()
     {
-        return new RoleServiceImpl(roleDao);
+        return roleService;
     }
 
     @Override
-    public ICourseDao createCourseDao()
+    public ICourseDao getCourseDao()
     {
-        return new CourseDaoImpl();
+        return courseDao;
     }
 
     @Override
-    public IStudentDao createStudentDao()
+    public IStudentDao getStudentDao()
     {
-        return new StudentDaoImpl();
+        return studentDao;
     }
 
     @Override
-    public IRoleDao createRoleDao()
+    public IRoleDao getRoleDao()
     {
-        return new RoleDaoImpl();
+        return roleDao;
     }
 }

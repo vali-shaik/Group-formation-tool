@@ -5,7 +5,6 @@ import static dal.asd.catme.util.DBQueriesUtil.STUDENT_ENROLL_QUERY;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 
-import dal.asd.catme.accesscontrol.IStudentDao;
 import dal.asd.catme.accesscontrol.Student;
 
 public class StudentDaoImpl implements IStudentDao

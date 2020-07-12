@@ -1,13 +1,10 @@
 package dal.asd.catme.coursestest;
 
-import dal.asd.catme.accesscontrol.IMailSenderService;
-import dal.asd.catme.accesscontrol.IRoleDao;
-import dal.asd.catme.accesscontrol.IStudentDao;
-import dal.asd.catme.accesscontrol.MailSenderServiceImpl;
+import dal.asd.catme.courses.IRoleDao;
+import dal.asd.catme.courses.IStudentDao;
 import dal.asd.catme.accesscontrol.Role;
 import dal.asd.catme.accesscontrol.Student;
 import dal.asd.catme.accesscontrol.User;
-import dal.asd.catme.accesscontroltest.JavaMailSenderMock;
 import dal.asd.catme.accesscontroltest.StudentDaoMock;
 import dal.asd.catme.courses.Course;
 import dal.asd.catme.courses.EnrollStudentService;

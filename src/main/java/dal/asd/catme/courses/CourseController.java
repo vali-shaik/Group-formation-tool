@@ -1,6 +1,5 @@
 package dal.asd.catme.courses;
 
-import dal.asd.catme.accesscontrol.IRoleDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import dal.asd.catme.accesscontrol.User;
 import dal.asd.catme.config.CatmeSecurityConfig;
-import dal.asd.catme.config.SystemConfig;
 import dal.asd.catme.exception.CatmeException;
 import dal.asd.catme.util.CatmeUtil;
 
@@ -21,8 +19,6 @@ import dal.asd.catme.util.CatmeUtil;
 public class CourseController
 {
     private static final Logger log = LoggerFactory.getLogger(CourseController.class);
-    CatmeSecurityConfig catmeSecurityConfig;
-
 
     @GetMapping("taEnrollment/{courseId}")
     public String enrollTa(@PathVariable("courseId") String courseId, Model model)
@@ -41,8 +37,7 @@ public class CourseController
     @RequestMapping("taEnrollment/{courseId}")
     public String enrollTa(@PathVariable("courseId") String courseId, @RequestParam String bannerId, Model model)
     {
-        IRoleDao roleDao = CourseAbstractFactoryImpl.instance().createRoleDao();
-        IRoleService roleService = CourseAbstractFactoryImpl.instance().createRoleService(roleDao);
+        IRoleService roleService = CourseAbstractFactoryImpl.instance().getRoleService();
 
         Enrollment user = new Enrollment(bannerId, courseId);
         model.addAttribute("user", user);
@@ -87,8 +82,7 @@ public class CourseController
     @RequestMapping("/courseDisplay")
     public ModelAndView diplayCoursePage(@RequestParam(name = "courseId") String courseId) throws CatmeException
     {
-        ICourseDao courseDao = CourseAbstractFactoryImpl.instance().createCourseDao();
-        ICourseService courseService = CourseAbstractFactoryImpl.instance().createCourseService(courseDao);
+        ICourseService courseService = CourseAbstractFactoryImpl.instance().getCourseService();
 
         log.info("Selected Course page ID: " + courseId);
         User currentUser = new User();

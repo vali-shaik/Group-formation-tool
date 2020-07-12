@@ -10,6 +10,11 @@ public class QuestionManagerServiceImpl implements IQuestionManagerService
 {
     IQuestionDao questionDao;
 
+    public QuestionManagerServiceImpl(IQuestionDao questionDao)
+    {
+        this.questionDao = questionDao;
+    }
+
     @Override
     public String findQuestionType(Question question, String user)
     {
@@ -39,21 +44,18 @@ public class QuestionManagerServiceImpl implements IQuestionManagerService
     @Override
     public int createQuestion(Question question, String user)
     {
-        questionDao = SystemConfig.instance().getQuestionDao();
         return questionDao.createQuestion(question, user);
     }
 
     @Override
     public int createOptions(int questionId, List<Option> options)
     {
-        questionDao = SystemConfig.instance().getQuestionDao();
         return questionDao.createOptions(questionId, options);
     }
 
     @Override
     public int deleteQuestion(int questionId)
     {
-        questionDao = SystemConfig.instance().getQuestionDao();
         return questionDao.deleteQuestion(questionId);
     }
 }

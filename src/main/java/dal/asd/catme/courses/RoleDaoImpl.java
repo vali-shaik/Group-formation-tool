@@ -1,6 +1,5 @@
 package dal.asd.catme.courses;
 
-import dal.asd.catme.accesscontrol.IRoleDao;
 import dal.asd.catme.accesscontrol.IUserDao;
 import dal.asd.catme.config.SystemConfig;
 import dal.asd.catme.util.CatmeUtil;

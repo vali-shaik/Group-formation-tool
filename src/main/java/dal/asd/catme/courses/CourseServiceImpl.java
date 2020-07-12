@@ -30,6 +30,12 @@ public class CourseServiceImpl implements ICourseService
     }
 
     @Override
+    public List<Course> getAllCourses()
+    {
+        return courseDao.getAllCourses();
+    }
+
+    @Override
     public Course displayCourseById(String courseId) throws CatmeException
     {
         log.info("Calling course dao for displaying course based on course id");

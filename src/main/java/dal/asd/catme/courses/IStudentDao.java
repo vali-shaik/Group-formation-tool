@@ -1,6 +1,6 @@
-package dal.asd.catme.accesscontrol;
+package dal.asd.catme.courses;
 
-import dal.asd.catme.courses.Course;
+import dal.asd.catme.accesscontrol.Student;
 
 import java.sql.Connection;
 

@@ -2,7 +2,7 @@ package dal.asd.catme.accesscontrol;
 
 import dal.asd.catme.config.SystemConfig;
 import dal.asd.catme.courses.Course;
-import dal.asd.catme.courses.IListCourseService;
+import dal.asd.catme.courses.ICourseService;
 import dal.asd.catme.util.CatmeUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,9 +21,7 @@ public class AdminController
 {
 
     IAdminService adminServiceImpl;
-
-    IListCourseService listCourseService;
-    IListUserService listUserService;
+    IUserService userService;
 
     private static final Logger logger = LoggerFactory.getLogger(AdminController.class);
 
@@ -46,7 +44,7 @@ public class AdminController
     public String addCourseToDatabase(@ModelAttribute Course course)
     {
         logger.info("****Admin Controller - Add Course to Database Invoked*****");
-        adminServiceImpl = SystemConfig.instance().getAdminServie();
+        adminServiceImpl = AccessControlAbstractFactoryImpl.instance().getAdminService();
         int result = adminServiceImpl.addCourse(course);
         if (result == 1)
         {
@@ -63,23 +61,22 @@ public class AdminController
     @ModelAttribute("courses")
     public List<Course> getCourseList()
     {
-        listCourseService = SystemConfig.instance().getListCourseService();
-        return listCourseService.getAllCourses();
+        ICourseService courseService = SystemConfig.instance().getCourseService();
+        return courseService.getAllCourses();
     }
 
     @ModelAttribute("users")
     public List<User> getUsersList()
     {
-        Course course = new Course();
-        listUserService = SystemConfig.instance().getListUserService();
-        return listUserService.getUsers(course);
+        userService = AccessControlAbstractFactoryImpl.instance().getUserService();
+        return userService.getUsers();
     }
 
     @PostMapping(value = "deleteCourse")
     public String deleteCourse(@RequestParam String course)
     {
         logger.info("****Admin Controller - Delete Course Invoked*****");
-        adminServiceImpl = SystemConfig.instance().getAdminServie();
+        adminServiceImpl = AccessControlAbstractFactoryImpl.instance().getAdminService();
         int result = adminServiceImpl.deleteCourse(course);
         if (result > 0)
         {
@@ -94,7 +91,7 @@ public class AdminController
     public String addInstructor(@RequestParam String course, @RequestParam String user)
     {
         logger.info("****Admin Controller - Add Instructor Invoked*****");
-        adminServiceImpl = SystemConfig.instance().getAdminServie();
+        adminServiceImpl = AccessControlAbstractFactoryImpl.instance().getAdminService();
         int result = adminServiceImpl.addInstructorToCourse(user, course);
         if (result == 1)
         {

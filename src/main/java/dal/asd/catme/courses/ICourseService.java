@@ -10,6 +10,8 @@ public interface ICourseService
 {
     public List<Course> getCourses(String role) throws CatmeException;
 
+    public List<Course> getAllCourses();
+
     public Course displayCourseById(String courseId) throws CatmeException;
 
     public String findRoleByCourse(User user, String courseId) throws CatmeException;

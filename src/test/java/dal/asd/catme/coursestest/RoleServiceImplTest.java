@@ -1,6 +1,6 @@
 package dal.asd.catme.coursestest;
 
-import dal.asd.catme.accesscontrol.IRoleDao;
+import dal.asd.catme.courses.IRoleDao;
 import dal.asd.catme.courses.Enrollment;
 import dal.asd.catme.courses.RoleServiceImpl;
 import org.junit.jupiter.api.Test;

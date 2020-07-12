@@ -1,9 +1,10 @@
-package dal.asd.catme.accesscontrol;
+package dal.asd.catme.password;
 
-import dal.asd.catme.config.SystemConfig;
+import dal.asd.catme.accesscontrol.AccessControlAbstractFactoryImpl;
+import dal.asd.catme.accesscontrol.IAccessControlAbstractFactory;
+import dal.asd.catme.accesscontrol.IMailSenderService;
+import dal.asd.catme.accesscontrol.User;
 import dal.asd.catme.exception.CatmeException;
-import dal.asd.catme.password.IPasswordPolicyCheckerService;
-import dal.asd.catme.password.IPasswordResetService;
 import dal.asd.catme.util.CatmeUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,11 +22,8 @@ import static dal.asd.catme.util.CatmeUtil.RESET_PASSWORD_PAGE;
 @RequestMapping("/")
 public class ForgotPasswordController
 {
-    IPasswordResetService passwordResetService;
-
-    IPasswordPolicyCheckerService passwordPolicyCheckerService;
-
-    IMailSenderService mailSenderService;
+    IPasswordAbstractFactory passwordAbstractFactory = PasswordAbstractFactoryImpl.instance();
+    IAccessControlAbstractFactory accessControlAbstractFactory = AccessControlAbstractFactoryImpl.instance();
 
     String bannerid;
 
@@ -38,7 +36,9 @@ public class ForgotPasswordController
     @PostMapping("forgotPassword")
     public String resetPassword(@RequestParam("bannerid") String bannerid, Model model)
     {
-        passwordResetService = SystemConfig.instance().getPasswordResetService();
+        IPasswordResetService passwordResetService = passwordAbstractFactory.getPasswordResetService();
+        IMailSenderService mailSenderService = accessControlAbstractFactory.getMailSenderService();
+
         User u = passwordResetService.generateResetLink(bannerid);
 
         if (u == null)
@@ -49,7 +49,6 @@ public class ForgotPasswordController
 
         try
         {
-            mailSenderService = SystemConfig.instance().getMailSenderService();
             mailSenderService.sendResetLink(u);
             model.addAttribute("success", "Link Sent Successfully");
             return CatmeUtil.FORGOT_PASSWORD_PAGE;
@@ -63,7 +62,7 @@ public class ForgotPasswordController
     @GetMapping("reset-password")
     public String showPasswordResetPage(@RequestParam(name = "token") String token)
     {
-        passwordResetService = SystemConfig.instance().getPasswordResetService();
+        IPasswordResetService passwordResetService = passwordAbstractFactory.getPasswordResetService();
         bannerid = passwordResetService.validateToken(token);
 
         if (bannerid == null)
@@ -78,8 +77,8 @@ public class ForgotPasswordController
     @PostMapping("reset-password")
     public String updatePassword(@RequestParam(name = "password") String password, Model model)
     {
-        passwordResetService = SystemConfig.instance().getPasswordResetService();
-        passwordPolicyCheckerService = SystemConfig.instance().getPasswordPolicyCheckerService();
+        IPasswordResetService passwordResetService = passwordAbstractFactory.getPasswordResetService();
+        IPasswordPolicyCheckerService passwordPolicyCheckerService = passwordAbstractFactory.getPasswordPolicyCheckerService();
 
         User u = new User();
         u.setBannerId(bannerid);

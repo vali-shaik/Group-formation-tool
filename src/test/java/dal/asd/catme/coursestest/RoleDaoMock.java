@@ -1,10 +1,9 @@
 package dal.asd.catme.coursestest;
 
-import dal.asd.catme.accesscontrol.IRoleDao;
+import dal.asd.catme.courses.IRoleDao;
 import dal.asd.catme.accesscontrol.IUserDao;
 import dal.asd.catme.accesscontrol.Instructor;
 import dal.asd.catme.accesscontrol.Role;
-import dal.asd.catme.accesscontrol.TInstructor;
 import dal.asd.catme.accesscontrol.User;
 import dal.asd.catme.accesscontroltest.UserDaoMock;
 import dal.asd.catme.courses.Course;
@@ -85,25 +84,12 @@ public class RoleDaoMock implements IRoleDao
                         {
                             if (c.getCourseId().equalsIgnoreCase(user.courseId))
                             {
-                                List<TInstructor> tInstructors = c.gettInstructors();
-                                if (tInstructors == null)
-                                {
-                                    tInstructors = new ArrayList<TInstructor>();
-                                }
 
                                 for (User u : users)
                                 {
                                     if (u.getBannerId().equalsIgnoreCase(user.bannerId))
                                     {
-                                        TInstructor t = new TInstructor();
-                                        t.setBannerId(user.bannerId);
-                                        t.setEmail(u.getEmail());
-                                        t.setFirstName(u.getFirstName());
-                                        t.setLastName(u.getLastName());
-
                                         return "Success";
-
-
                                     }
                                 }
                             }

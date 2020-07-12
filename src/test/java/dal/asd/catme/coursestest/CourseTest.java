@@ -2,11 +2,10 @@ package dal.asd.catme.coursestest;
 
 import dal.asd.catme.accesscontrol.Instructor;
 import dal.asd.catme.accesscontrol.Student;
-import dal.asd.catme.accesscontrol.TInstructor;
 import dal.asd.catme.courses.Course;
 import org.junit.jupiter.api.Test;
+import dal.asd.catme.coursestest.POJOMock;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -71,27 +70,7 @@ public class CourseTest
         assertEquals(c.getStudents(),list);
     }
 
-    @Test
-    public void gettInstructorTest()
-    {
-        Course c = new Course();
 
-        List<TInstructor> list = POJOMock.gettInstructors();
-
-        c.settInstructors(list);
-        assertEquals(c.gettInstructors(),list);
-    }
-
-    @Test
-    public void settInstructorTest()
-    {
-        Course c = new Course();
-
-        List<TInstructor> list = POJOMock.gettInstructors();
-
-        c.settInstructors(list);
-        assertEquals(c.gettInstructors(),list);
-    }
 
     @Test
     public void getInstructorTest()

@@ -1,6 +1,6 @@
 package dal.asd.catme.accesscontroltest;
 
-import dal.asd.catme.accesscontrol.IStudentDao;
+import dal.asd.catme.courses.IStudentDao;
 import dal.asd.catme.accesscontrol.Student;
 import dal.asd.catme.courses.Course;
 

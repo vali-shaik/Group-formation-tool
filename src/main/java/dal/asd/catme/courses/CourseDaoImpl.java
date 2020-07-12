@@ -111,6 +111,45 @@ public class CourseDaoImpl implements ICourseDao
     }
 
     @Override
+    public List<Course> getAllCourses()
+    {
+        DatabaseAccess db;
+        Connection connection=null;
+        List<Course> courses = new ArrayList<>();
+
+        try
+        {
+            db = SystemConfig.instance().getDatabaseAccess();
+            connection = db.getConnection();
+
+            ResultSet resultSet = db.executeQuery(SELECT_COURSE);
+            while (resultSet.next())
+            {
+                Course course = new Course();
+                course.setCourseId(resultSet.getString(CatmeUtil.COURSE_ID));
+                course.setCourseName(resultSet.getString(CatmeUtil.COURSE_NAME));
+                courses.add(course);
+            }
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+        } finally
+        {
+            if (connection != null)
+            {
+                try
+                {
+                    connection.close();
+                } catch (SQLException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return courses;
+    }
+
+    @Override
     public Course displayCourseById(String courseId) throws CatmeException
     {
         ResultSet resultSet = null;
@@ -241,7 +280,6 @@ public class CourseDaoImpl implements ICourseDao
         }
         return null;
     }
-
 
     @Override
     public int checkCourseExists(String courseId, Connection con)

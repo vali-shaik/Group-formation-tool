@@ -32,6 +32,13 @@ public class CourseDaoMock implements ICourseDao
     }
 
     @Override
+    public List<Course> getAllCourses()
+    {
+        return dal.asd.catme.coursestest.POJOMock.getCourses();
+
+    }
+
+    @Override
     public Course displayCourseById(String courseId) throws CatmeException
     {
         Course course = new Course();

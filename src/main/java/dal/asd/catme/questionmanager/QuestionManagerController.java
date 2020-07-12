@@ -1,7 +1,6 @@
 package dal.asd.catme.questionmanager;
 
 import dal.asd.catme.accesscontrol.User;
-import dal.asd.catme.config.SystemConfig;
 import dal.asd.catme.exception.QuestionDatabaseException;
 import dal.asd.catme.util.CatmeUtil;
 import org.slf4j.Logger;
@@ -19,8 +18,7 @@ import java.util.List;
 @RequestMapping("questions")
 public class QuestionManagerController
 {
-    IListQuestionsService listQuestionsService;
-    IQuestionManagerService questionManagerServiceImpl;
+    IQuestionManagerAbstractFactory questionManagerAbstractFactory = QuestionManagerAbstractFactoryImpl.instance();
 
     private static final Logger log = LoggerFactory.getLogger(QuestionManagerController.class);
 
@@ -34,7 +32,8 @@ public class QuestionManagerController
         currentUser.setBannerId(SecurityContextHolder.getContext().getAuthentication().getName());
         ModelAndView questionsPage = new ModelAndView();
         questionsPage.setViewName(CatmeUtil.QUESTION_MANAGER_HOME);
-        listQuestionsService = SystemConfig.instance().getListQuestionsService();
+        IListQuestionsService listQuestionsService = questionManagerAbstractFactory.getListQuestionsService();
+
         try
         {
             listQuestionsService.getQuestions(currentUser.getBannerId());
@@ -52,9 +51,11 @@ public class QuestionManagerController
     @GetMapping("sort")
     public ModelAndView sortTable(@RequestParam(name = "with") String sortBy)
     {
+        IListQuestionsService listQuestionsService = questionManagerAbstractFactory.getListQuestionsService();
         ModelAndView questionsPage = new ModelAndView();
         questionsPage.setViewName(CatmeUtil.QUESTION_MANAGER_HOME);
         List<Question> questionList;
+
         if (sortBy.equalsIgnoreCase("Date"))
         {
             questionList = listQuestionsService.sortByDate();
@@ -62,6 +63,7 @@ public class QuestionManagerController
         {
             questionList = listQuestionsService.sortByTitle();
         }
+
         questionsPage.addObject("questions", questionList);
         questionsPage.addObject("sortBy", sortBy);
 
@@ -83,9 +85,8 @@ public class QuestionManagerController
         log.info("****QuestionManagerController - createQuestionType Invoked*****");
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
         log.info("***user***" + userId);
-        questionManagerServiceImpl = SystemConfig.instance().getQuestionManagerService();
+        IQuestionManagerService questionManagerServiceImpl = questionManagerAbstractFactory.getQuestionManagerService();
         return questionManagerServiceImpl.findQuestionType(question, userId);
-
     }
 
     @RequestMapping(value = "/addQuestion", method = RequestMethod.POST, params = "action=addOption")
@@ -103,7 +104,7 @@ public class QuestionManagerController
         log.info("****QuestionManagerController - addQuestion Invoked*****");
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
         log.info("***here*** " + question.toString());
-        questionManagerServiceImpl = SystemConfig.instance().getQuestionManagerService();
+        IQuestionManagerService questionManagerServiceImpl = questionManagerAbstractFactory.getQuestionManagerService();
         int questionId = questionManagerServiceImpl.createQuestion(question, userId);
         int result = questionManagerServiceImpl.createOptions(questionId, question.getOptionWithOrder());
 
@@ -126,7 +127,7 @@ public class QuestionManagerController
     public String deleteQuestion(Model model, @PathVariable("questionId") String questionId)
     {
         int qId = Integer.parseInt(questionId);
-        questionManagerServiceImpl = SystemConfig.instance().getQuestionManagerService();
+        IQuestionManagerService questionManagerServiceImpl = questionManagerAbstractFactory.getQuestionManagerService();
         questionManagerServiceImpl.deleteQuestion(qId);
         return "redirect:/questions";
     }

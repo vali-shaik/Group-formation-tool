@@ -2,7 +2,6 @@ package dal.asd.catme.coursestest;
 
 import dal.asd.catme.accesscontrol.Instructor;
 import dal.asd.catme.accesscontrol.Student;
-import dal.asd.catme.accesscontrol.TInstructor;
 import dal.asd.catme.accesscontrol.User;
 import dal.asd.catme.courses.Course;
 
@@ -90,16 +89,6 @@ public class POJOMock
 
         return (ArrayList<Course>) listOfCourses;
 
-    }
-
-    public static List<TInstructor> gettInstructors()
-    {
-        List<TInstructor> list = new ArrayList<>();
-        TInstructor tInstructor = new TInstructor();
-        tInstructor.setBannerId("B00121212");
-
-        list.add(tInstructor);
-        return list;
     }
 
     public static List<String> getPublishedCourses()

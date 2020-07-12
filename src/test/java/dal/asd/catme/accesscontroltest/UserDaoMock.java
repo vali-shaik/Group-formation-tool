@@ -6,6 +6,8 @@ import java.util.List;
 
 import dal.asd.catme.accesscontrol.IUserDao;
 import dal.asd.catme.accesscontrol.User;
+import dal.asd.catme.courses.Course;
+import dal.asd.catme.coursestest.POJOMock;
 
 public class UserDaoMock implements IUserDao
 {
@@ -30,6 +32,12 @@ public class UserDaoMock implements IUserDao
         }
         return 0;
 
+    }
+
+    @Override
+    public List<User> getUsers()
+    {
+        return POJOMock.getUsers();
     }
 
     @Override

@@ -4,14 +4,12 @@ import java.util.List;
 
 import dal.asd.catme.accesscontrol.Instructor;
 import dal.asd.catme.accesscontrol.Student;
-import dal.asd.catme.accesscontrol.TInstructor;
 
 public class Course
 {
     String courseId;
     String courseName;
     List<Student> students;
-    List<TInstructor> tInstructors;
     List<Instructor> instructors;
 
     public Course()
@@ -51,16 +49,6 @@ public class Course
     public void setStudents(List<Student> students)
     {
         this.students = students;
-    }
-
-    public List<TInstructor> gettInstructors()
-    {
-        return tInstructors;
-    }
-
-    public void settInstructors(List<TInstructor> tInstructors)
-    {
-        this.tInstructors = tInstructors;
     }
 
     public List<Instructor> getInstructors()
