@@ -19,5 +19,3 @@ public interface IQuestionDao
 
     public int createOptions(int questionId, List<IOption> options);
 }
-
-

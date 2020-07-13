@@ -1,6 +1,5 @@
-package dal.asd.catme.accesscontrol;
 
-import dal.asd.catme.courses.Course;
+package dal.asd.catme.accesscontrol;
 
 import dal.asd.catme.courses.ICourse;
 import org.springframework.mail.MailException;

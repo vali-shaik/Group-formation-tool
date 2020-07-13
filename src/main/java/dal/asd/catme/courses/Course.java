@@ -1,3 +1,4 @@
+
 package dal.asd.catme.courses;
 
 public class Course implements ICourse

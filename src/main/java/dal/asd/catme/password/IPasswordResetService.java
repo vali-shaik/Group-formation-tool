@@ -1,4 +1,3 @@
-
 package dal.asd.catme.password;
 
 import dal.asd.catme.accesscontrol.IUser;

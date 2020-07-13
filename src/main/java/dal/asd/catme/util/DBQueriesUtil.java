@@ -1,3 +1,4 @@
+
 package dal.asd.catme.util;
 
 public class DBQueriesUtil
@@ -56,4 +57,3 @@ public class DBQueriesUtil
     public static final String SAVE_ATTEMPT = "call SaveSurveyAttempt(?,?)";
     public static final String GET_ATTEMPT = "call GetSurveyAttempt(?,?)";
 }
-

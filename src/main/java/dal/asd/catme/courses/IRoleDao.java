@@ -1,9 +1,8 @@
+
 package dal.asd.catme.courses;
 
 
 import java.sql.Connection;
-
-import dal.asd.catme.courses.Enrollment;
 
 public interface IRoleDao
 {
