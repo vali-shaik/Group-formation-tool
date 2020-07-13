@@ -1,12 +1,12 @@
-
 package dal.asd.catme.password;
 
+import dal.asd.catme.accesscontrol.IUser;
 import dal.asd.catme.accesscontrol.User;
 import dal.asd.catme.exception.CatmeException;
 
 public interface IPasswordResetService
 {
-    public User generateResetLink(String bannerid);
+    public IUser generateResetLink(String bannerid);
 
     public String validateToken(String token);
 

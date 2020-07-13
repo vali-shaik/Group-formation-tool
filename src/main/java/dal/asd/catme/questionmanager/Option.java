@@ -1,6 +1,6 @@
 package dal.asd.catme.questionmanager;
 
-public class Option
+public class Option implements IOption
 {
     String displayText;
     int storedAs;

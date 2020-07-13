@@ -3,6 +3,8 @@ package dal.asd.catme.accesscontroltest;
 import dal.asd.catme.accesscontrol.IAdminDao;
 import dal.asd.catme.accesscontrol.User;
 import dal.asd.catme.courses.Course;
+import dal.asd.catme.POJOMock;
+import dal.asd.catme.courses.ICourse;
 import dal.asd.catme.util.CatmeUtil;
 
 import java.util.ArrayList;
@@ -14,9 +16,9 @@ public class AdminDaoMock implements IAdminDao
 {
 
     @Override
-    public int addCourse(Course course)
+    public int addCourse(ICourse course)
     {
-        List<Course> courses = new ArrayList<Course>();
+        List<ICourse> courses = new ArrayList<>();
         if (courses.add(course))
         {
             return CatmeUtil.ONE;
@@ -27,8 +29,8 @@ public class AdminDaoMock implements IAdminDao
     @Override
     public int deleteCourse(String courseId)
     {
-        List<Course> courses = formCourseList();
-        Course course = courses.get(CatmeUtil.ZERO);
+        List<ICourse> courses = POJOMock.getCourses();
+        ICourse course = courses.get(CatmeUtil.ZERO);
         if (course.getCourseId().equalsIgnoreCase(courseId))
         {
             courses.remove(CatmeUtil.ZERO);
@@ -47,23 +49,4 @@ public class AdminDaoMock implements IAdminDao
         }
         return CatmeUtil.ZERO;
     }
-
-    private List<Course> formCourseList()
-    {
-        List<Course> courseList = new
-                ArrayList<>();
-        courseList.add(new Course(CatmeUtil.WEB_ID,
-                CatmeUtil.ADVANCED_WEB_SERVICES));
-        return courseList;
-    }
-
-    private List<User> formUserList()
-    {
-        List<User> users = new ArrayList<>();
-        users.add(new
-                User(CatmeUtil.BANNER_ID, CatmeUtil.LAST_NAME, CatmeUtil.FIRST_NAME));
-        return
-                users;
-    }
-
 }

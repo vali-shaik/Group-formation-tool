@@ -45,6 +45,9 @@ text-decoration:none;
         <button class="btn btn-lg buttonPrim"><a th:href="@{/manageCourse(courseId=${course.courseId})}">Manage as
             TA</a></button>
     </th:block>
+    <th:block th:if="${isStudent}">
+        <button class="btn btn-lg buttonPrim"><a th:href="@{/viewSurvey(courseId=${course.courseId})}">Survey</a></button>
+    </th:block>
 </div>
 <!--</form>-->
 

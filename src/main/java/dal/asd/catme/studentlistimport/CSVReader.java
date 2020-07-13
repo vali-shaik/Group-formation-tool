@@ -1,6 +1,6 @@
 package dal.asd.catme.studentlistimport;
 
-import dal.asd.catme.accesscontrol.Student;
+import dal.asd.catme.accesscontrol.User;
 import dal.asd.catme.exception.InvalidFileFormatException;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -10,19 +10,19 @@ import java.util.regex.Pattern;
 
 public class CSVReader implements ICSVReader
 {
-    static int BANNERID = 0;
-    static int LASTNAME = 1;
-    static int FIRSTNAME = 2;
-    static int EMAILID = 3;
 
-    static int BANNERID_LENGTH = 9;
-    static int CSV_COLUMNS = 4;
+    InputStream inputStream;
+
+    public CSVReader(InputStream inputStream)
+    {
+        this.inputStream = inputStream;
+    }
 
     @Override
-    public ArrayList<Student> readFile(InputStream inputStream) throws InvalidFileFormatException, FileNotFoundException, IOException
+    public ArrayList<String> readFile() throws InvalidFileFormatException, FileNotFoundException, IOException
     {
 
-        ArrayList<Student> newStudents = new ArrayList<>();
+        ArrayList<String> lines = new ArrayList<>();
 
         boolean skip = true;
 
@@ -33,85 +33,20 @@ public class CSVReader implements ICSVReader
         {
             if (line.isEmpty())
                 continue;
-            String[] parts = line.split(",");
 
-            if (parts.length < CSV_COLUMNS || parts.length > CSV_COLUMNS)
-                throw new InvalidFileFormatException("Invalid File Format");
             if (skip)
             {
                 skip = false;
                 continue;
             }
 
-            if (validLine(parts) == false)
-                throw new InvalidFileFormatException("Invalid File Format");
+            lines.add(line);
 
-            newStudents.add(new Student(parts[BANNERID], parts[LASTNAME], parts[FIRSTNAME], parts[EMAILID]));
         }
 
-        return newStudents;
+        return lines;
     }
 
-    public boolean validLine(String[] parts)
-    {
-        return validBannerId(parts[BANNERID]) &&
-                validNames(parts[FIRSTNAME], parts[LASTNAME]) &&
-                validEmailId(parts[EMAILID]);
-    }
-
-    @Override
-    public boolean validBannerId(String bannerId)
-    {
-        bannerId = bannerId.trim();
-
-        if (bannerId.length() < BANNERID_LENGTH || bannerId.length()>BANNERID_LENGTH)
-        {
-            return false;
-        }
-        if (bannerId.substring(0, 3).equalsIgnoreCase("B00")==false)
-        {
-            return false;
-        }
-
-        if (Pattern.matches("\\d{6}", bannerId.substring(3))==false)
-        {
-            return false;
-        }
-
-        return true;
-    }
-
-    @Override
-    public boolean validNames(String firstname, String lastname)
-    {
-
-        if (firstname == null || firstname.trim().isEmpty())
-        {
-            System.out.println("Invalid Firstname");
-            return false;
-        }
-
-        if (lastname == null || lastname.trim().isEmpty())
-        {
-            System.out.println("Invalid Lastname");
-            return false;
-        }
-
-        return true;
-    }
-
-    @Override
-    public boolean validEmailId(String emailId)
-    {
-        emailId = emailId.trim();
-        //credit for regex: https://regexr.com/2rhq7
-        if (Pattern.matches("[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", emailId))
-        {
-            return true;
-        }
-
-        return false;
-    }
 
     @Override
     public void validateFile(MultipartFile file) throws InvalidFileFormatException

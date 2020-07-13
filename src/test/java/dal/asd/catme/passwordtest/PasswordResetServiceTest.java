@@ -1,5 +1,6 @@
 package dal.asd.catme.passwordtest;
 
+import dal.asd.catme.accesscontrol.IUser;
 import dal.asd.catme.accesscontrol.IUserDao;
 import dal.asd.catme.accesscontrol.Role;
 import dal.asd.catme.accesscontrol.User;
@@ -18,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class PasswordResetServiceTest
 {
 
-    ArrayList<User> users = getUsers();
+    ArrayList<IUser> users = getUsers();
     IUserDao userDao = new UserDaoMock(users);
     IPasswordDao passwordDao = new PasswordDaoMock();
 
@@ -66,9 +67,9 @@ class PasswordResetServiceTest
         }
     }
 
-    ArrayList<User> getUsers()
+    ArrayList<IUser> getUsers()
     {
-        ArrayList<User> users = new ArrayList<>();
+        ArrayList<IUser> users = new ArrayList<>();
 
         User u = new User("B00121212", "Last", "First", "abc@123.com");
         ArrayList<Role> roles = new ArrayList<>();

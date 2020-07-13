@@ -1,6 +1,7 @@
+
 package dal.asd.catme.courses;
 
-import dal.asd.catme.accesscontrol.Student;
+import dal.asd.catme.accesscontrol.IUser;
 import dal.asd.catme.accesscontrol.User;
 import dal.asd.catme.exception.CatmeException;
 
@@ -10,13 +11,15 @@ import java.util.List;
 public interface ICourseDao
 {
 
-    public List<Course> getCourses(String role) throws CatmeException;
+    public List<ICourse> getCourses(String role) throws CatmeException;
 
-    public Course displayCourseById(String courseId) throws CatmeException;
+    public List<ICourse> getAllCourses();
 
-    public String findRoleByCourse(User user, String courseId) throws CatmeException;
+    public ICourse displayCourseById(String courseId) throws CatmeException;
 
-    public List<Student> getRegisteredStudents(String courseId);
+    public String findRoleByCourse(IUser user, String courseId) throws CatmeException;
+
+    public List<IUser> getRegisteredStudents(String courseId);
 
     public int checkCourseRegistration(String bannerId, String courseId, Connection con);
 

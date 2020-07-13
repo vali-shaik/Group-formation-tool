@@ -1,14 +1,13 @@
+
 package dal.asd.catme.accesscontrol;
 
-import dal.asd.catme.courses.Course;
+import dal.asd.catme.courses.ICourse;
 
 public interface IAdminService
 {
-
-    int addCourse(Course Course);
+    int addCourse(ICourse Course);
 
     int deleteCourse(String courseId);
 
     int addInstructorToCourse(String user, String course);
 }
-

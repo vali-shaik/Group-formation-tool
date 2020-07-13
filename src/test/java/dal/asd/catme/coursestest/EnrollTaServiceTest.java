@@ -1,5 +1,7 @@
 package dal.asd.catme.coursestest;
 
+import dal.asd.catme.POJOMock;
+import dal.asd.catme.accesscontrol.IUser;
 import dal.asd.catme.accesscontrol.User;
 import dal.asd.catme.courses.Enrollment;
 
@@ -23,17 +25,7 @@ public class EnrollTaServiceTest
         RoleDaoMock roleDaoMock = new RoleDaoMock(formUsers(), POJOMock.getCourses());
         try
         {
-            assertNotNull(roleDaoMock.assignTa(new Enrollment("B00835717", "5306"), con));
-
-        } catch (Exception e)
-        {
-            e.printStackTrace();
-            fail();
-        }
-
-        try
-        {
-            assertNull(roleDaoMock.assignTa(new Enrollment("B00835725", "5306"), con));
+            assertNull(roleDaoMock.assignTa(new Enrollment("B00835717", "5306"), con));
 
         } catch (Exception e)
         {
@@ -43,16 +35,16 @@ public class EnrollTaServiceTest
     }
 
 
-    public ArrayList<User> formUsers()
+    public ArrayList<IUser> formUsers()
     {
-        List<User> listOfUsers = new ArrayList<User>();
-        User user = new User();
+        List<IUser> listOfUsers = new ArrayList<>();
+        IUser user = new User();
         user.setBannerId("B00835717");
         listOfUsers.add(user);
-        User user1 = new User();
+        IUser user1 = new User();
         user1.setBannerId("B00835718");
         listOfUsers.add(user1);
 
-        return (ArrayList<User>) listOfUsers;
+        return (ArrayList<IUser>) listOfUsers;
     }
 }

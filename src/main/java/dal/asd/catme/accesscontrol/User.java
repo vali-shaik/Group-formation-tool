@@ -1,8 +1,9 @@
+
 package dal.asd.catme.accesscontrol;
 
 import java.util.List;
 
-public class User
+public class User implements IUser
 {
     String bannerId;
     String lastName;

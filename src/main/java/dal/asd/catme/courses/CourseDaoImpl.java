@@ -1,7 +1,10 @@
+
 package dal.asd.catme.courses;
 
-import dal.asd.catme.accesscontrol.Student;
-import dal.asd.catme.accesscontrol.User;
+import dal.asd.catme.BaseAbstractFactoryImpl;
+import dal.asd.catme.accesscontrol.AccessControlModelAbstractFactoryImpl;
+import dal.asd.catme.accesscontrol.IAccessControlModelAbstractFactory;
+import dal.asd.catme.accesscontrol.IUser;
 import dal.asd.catme.config.SystemConfig;
 import dal.asd.catme.database.DatabaseAccess;
 import dal.asd.catme.exception.CatmeException;
@@ -26,16 +29,19 @@ public class CourseDaoImpl implements ICourseDao
     public CourseDaoImpl()
     {
     }
+
     private static final Logger log = LoggerFactory.getLogger(CourseDaoImpl.class);
 
     DatabaseAccess database;
+    ICourseModelAbstractFactory modelAbstractFactory = BaseAbstractFactoryImpl.instance().makeCourseModelAbstractFactory();
+    IAccessControlModelAbstractFactory accessControlModelAbstractFactory = BaseAbstractFactoryImpl.instance().makeAccessControlModelAbstractFactory();
 
     @Override
-    public List<Course> getCourses(String role) throws CatmeException
+    public List<ICourse> getCourses(String role) throws CatmeException
     {
         log.info("Fetching all courses related to User");
 
-        List<Course> listOfCourses = new ArrayList<>();
+        List<ICourse> listOfCourses = new ArrayList<>();
         ResultSet resultSet = null;
         Statement statement = null;
         Connection connection = null;
@@ -80,7 +86,7 @@ public class CourseDaoImpl implements ICourseDao
                 while (resultSet.next())
                 {
                     log.info("Fetched all courses from Database");
-                    Course course = new Course();
+                    ICourse course = modelAbstractFactory.makeCourse();
                     course.setCourseId(resultSet.getString(CatmeUtil.COURSE_ID_FIELD));
                     course.setCourseName(resultSet.getString(CatmeUtil.COURSE_NAME_FIELD));
 
@@ -110,13 +116,52 @@ public class CourseDaoImpl implements ICourseDao
     }
 
     @Override
-    public Course displayCourseById(String courseId) throws CatmeException
+    public List<ICourse> getAllCourses()
+    {
+        DatabaseAccess db;
+        Connection connection=null;
+        List<ICourse> courses = new ArrayList<>();
+
+        try
+        {
+            db = SystemConfig.instance().getDatabaseAccess();
+            connection = db.getConnection();
+
+            ResultSet resultSet = db.executeQuery(SELECT_COURSE);
+            while (resultSet.next())
+            {
+                ICourse course =  modelAbstractFactory.makeCourse();
+                course.setCourseId(resultSet.getString(CatmeUtil.COURSE_ID));
+                course.setCourseName(resultSet.getString(CatmeUtil.COURSE_NAME));
+                courses.add(course);
+            }
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+        } finally
+        {
+            if (connection != null)
+            {
+                try
+                {
+                    connection.close();
+                } catch (SQLException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return courses;
+    }
+
+    @Override
+    public ICourse displayCourseById(String courseId) throws CatmeException
     {
         ResultSet resultSet = null;
         Statement statement = null;
         Connection connection = null;
 
-        Course course = new Course();
+        ICourse course = modelAbstractFactory.makeCourse();
         try
         {
             database = SystemConfig.instance().getDatabaseAccess();
@@ -157,7 +202,7 @@ public class CourseDaoImpl implements ICourseDao
     }
 
     @Override
-    public String findRoleByCourse(User user, String courseId) throws CatmeException
+    public String findRoleByCourse(IUser user, String courseId) throws CatmeException
     {
         ResultSet resultSet = null;
         Statement statement = null;
@@ -202,9 +247,9 @@ public class CourseDaoImpl implements ICourseDao
     }
 
     @Override
-    public ArrayList<Student> getRegisteredStudents(String courseId)
+    public ArrayList<IUser> getRegisteredStudents(String courseId)
     {
-        ArrayList<Student> registeredStudents = new ArrayList<>();
+        ArrayList<IUser> registeredStudents = new ArrayList<>();
 
         Connection con = null;
         try
@@ -219,8 +264,12 @@ public class CourseDaoImpl implements ICourseDao
 
             while (rs.next())
             {
-                Student s = new Student(rs.getString(1), rs.getString(2), rs.getString(3), "");
-                registeredStudents.add(s);
+                IUser u = accessControlModelAbstractFactory.makeUser();
+                u.setBannerId(rs.getString(1));
+                u.setLastName(rs.getString(2));
+                u.setFirstName(rs.getString(3));
+                u.setEmail("");
+                registeredStudents.add(u);
             }
 
             return registeredStudents;
@@ -240,7 +289,6 @@ public class CourseDaoImpl implements ICourseDao
         }
         return null;
     }
-
 
     @Override
     public int checkCourseExists(String courseId, Connection con)

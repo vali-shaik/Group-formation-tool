@@ -1,6 +1,6 @@
 package dal.asd.catme.questionmanager;
 
-import dal.asd.catme.config.SystemConfig;
+import dal.asd.catme.BaseAbstractFactoryImpl;
 import dal.asd.catme.util.CatmeUtil;
 
 import java.util.ArrayList;
@@ -9,9 +9,15 @@ import java.util.List;
 public class QuestionManagerServiceImpl implements IQuestionManagerService
 {
     IQuestionDao questionDao;
+    IQuestionManagerModelAbstractFactory modelAbstractFactory = BaseAbstractFactoryImpl.instance().makeQuestionManagerModelAbstractFactory();
+
+    public QuestionManagerServiceImpl(IQuestionDao questionDao)
+    {
+        this.questionDao = questionDao;
+    }
 
     @Override
-    public String findQuestionType(Question question, String user)
+    public String findQuestionType(IQuestion question, String user)
     {
         if (question.getQuestionType().equalsIgnoreCase(CatmeUtil.FREE_TEXT) || question.getQuestionType().equalsIgnoreCase(CatmeUtil.NUMERIC))
         {
@@ -25,10 +31,11 @@ public class QuestionManagerServiceImpl implements IQuestionManagerService
             }
         } else
         {
-            List<Option> options = new ArrayList<Option>();
+            List<IOption> options = new ArrayList<>();
             for (int i = 1; i <= 5; i++)
             {
-                Option option = new Option(i);
+                IOption option = modelAbstractFactory.makeOption();
+                option.setStoredAs(i);
                 options.add(option);
             }
             question.setOptionWithOrder(options);
@@ -37,23 +44,20 @@ public class QuestionManagerServiceImpl implements IQuestionManagerService
     }
 
     @Override
-    public int createQuestion(Question question, String user)
+    public int createQuestion(IQuestion question, String user)
     {
-        questionDao = SystemConfig.instance().getQuestionDao();
         return questionDao.createQuestion(question, user);
     }
 
     @Override
-    public int createOptions(int questionId, List<Option> options)
+    public int createOptions(int questionId, List<IOption> options)
     {
-        questionDao = SystemConfig.instance().getQuestionDao();
         return questionDao.createOptions(questionId, options);
     }
 
     @Override
     public int deleteQuestion(int questionId)
     {
-        questionDao = SystemConfig.instance().getQuestionDao();
         return questionDao.deleteQuestion(questionId);
     }
 }

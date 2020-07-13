@@ -1,15 +1,12 @@
 package dal.asd.catme.coursestest;
 
-import dal.asd.catme.accesscontrol.IRoleDao;
+import dal.asd.catme.POJOMock;
+import dal.asd.catme.accesscontrol.IUser;
+import dal.asd.catme.courses.*;
 import dal.asd.catme.accesscontrol.IUserDao;
-import dal.asd.catme.accesscontrol.Instructor;
 import dal.asd.catme.accesscontrol.Role;
-import dal.asd.catme.accesscontrol.TInstructor;
 import dal.asd.catme.accesscontrol.User;
 import dal.asd.catme.accesscontroltest.UserDaoMock;
-import dal.asd.catme.courses.Course;
-import dal.asd.catme.courses.Enrollment;
-import dal.asd.catme.courses.ICourseDao;
 
 import java.sql.Connection;
 import java.util.ArrayList;
@@ -20,19 +17,19 @@ public class RoleDaoMock implements IRoleDao
 
     IUserDao userDao;
     ICourseDao courseDao;
-    List<User> users;
-    List<Course> courses;
-    Course c;
+    List<IUser> users;
+    List<ICourse> courses;
+    ICourse c;
 
-    public RoleDaoMock(ArrayList<User> users, Course course)
+    public RoleDaoMock(List<IUser> users, ICourse c)
     {
         this.users = users;
-        this.c = course;
+        this.c = c;
         userDao = new UserDaoMock(users);
 
     }
 
-    public RoleDaoMock(ArrayList<User> users, List<Course> courses)
+    public RoleDaoMock(ArrayList<IUser> users, List<ICourse> courses)
     {
         this.users = users;
         this.courses = courses;
@@ -45,7 +42,7 @@ public class RoleDaoMock implements IRoleDao
     @Override
     public int assignRole(String bannerId, int roleId, Connection con)
     {
-        for (User u : users)
+        for (IUser u : users)
         {
             if (u.getBannerId().equalsIgnoreCase(bannerId))
             {
@@ -68,42 +65,29 @@ public class RoleDaoMock implements IRoleDao
     }
 
     @Override
-    public int assignTa(Enrollment user, Connection con)
+    public String assignTa(IEnrollment user, Connection con)
     {
-        if (0 != userDao.checkExistingUser(user.bannerId, con))
+        if (0 != userDao.checkExistingUser(user.getBannerId(), con))
         {
 
-            if (0 != courseDao.checkCourseExists(user.courseId, con))
+            if (0 != courseDao.checkCourseExists(user.getCourseId(), con))
             {
 
-                if (0 == courseDao.checkCourseRegistration(user.bannerId, user.courseId, con))
+                if (0 == courseDao.checkCourseRegistration(user.getBannerId(), user.getCourseId(), con))
                 {
 
-                    if (0 == checkCourseInstructor(user.bannerId, user.courseId, con))
+                    if (0 == checkCourseInstructor(user.getBannerId(), user.getCourseId(), con))
                     {
-                        for (Course c : courses)
+                        for (ICourse c : courses)
                         {
-                            if (c.getCourseId().equalsIgnoreCase(user.courseId))
+                            if (c.getCourseId().equalsIgnoreCase(user.toString()))
                             {
-                                List<TInstructor> tInstructors = c.gettInstructors();
-                                if (tInstructors == null)
-                                {
-                                    tInstructors = new ArrayList<TInstructor>();
-                                }
 
-                                for (User u : users)
+                                for (IUser u : users)
                                 {
-                                    if (u.getBannerId().equalsIgnoreCase(user.bannerId))
+                                    if (u.getBannerId().equalsIgnoreCase(user.getBannerId()))
                                     {
-                                        TInstructor t = new TInstructor();
-                                        t.setBannerId(user.bannerId);
-                                        t.setEmail(u.getEmail());
-                                        t.setFirstName(u.getFirstName());
-                                        t.setLastName(u.getLastName());
-
-                                        return 1;
-
-
+                                        return "Success";
                                     }
                                 }
                             }
@@ -112,13 +96,13 @@ public class RoleDaoMock implements IRoleDao
                 }
             }
         }
-        return 0;
+        return null;
     }
 
     @Override
     public int checkCourseInstructor(String bannerId, String courseId, Connection con)
     {
-        for (Instructor i : c.getInstructors())
+        for (IUser i : POJOMock.getUsers())
         {
             if (i.getBannerId().equalsIgnoreCase(bannerId))
                 return 1;
@@ -130,7 +114,7 @@ public class RoleDaoMock implements IRoleDao
     @Override
     public int checkUserRole(String bannerId, int roleId, Connection con)
     {
-        for (User u : users)
+        for (IUser u : users)
         {
             if (u.getBannerId().equalsIgnoreCase(bannerId))
             {

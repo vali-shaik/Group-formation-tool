@@ -1,6 +1,7 @@
+
 package dal.asd.catme.courses;
 
-public class Enrollment
+public class Enrollment implements IEnrollment
 {
     public String bannerId;
     public String courseId;

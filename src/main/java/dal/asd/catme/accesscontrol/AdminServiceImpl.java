@@ -1,8 +1,7 @@
+
 package dal.asd.catme.accesscontrol;
 
-import dal.asd.catme.config.SystemConfig;
-import dal.asd.catme.courses.Course;
-
+import dal.asd.catme.courses.ICourse;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -10,17 +9,20 @@ public class AdminServiceImpl implements IAdminService
 {
     IAdminDao admin;
 
-    @Override
-    public int addCourse(Course course)
+    public AdminServiceImpl(IAdminDao admin)
     {
-        admin = SystemConfig.instance().getAdminDao();
+        this.admin = admin;
+    }
+
+    @Override
+    public int addCourse(ICourse course)
+    {
         return admin.addCourse(course);
     }
 
     @Override
     public int deleteCourse(String courseId)
     {
-        admin = SystemConfig.instance().getAdminDao();
         return admin.deleteCourse(courseId);
     }
 
@@ -28,8 +30,6 @@ public class AdminServiceImpl implements IAdminService
     @Override
     public int addInstructorToCourse(String user, String course)
     {
-        admin = SystemConfig.instance().getAdminDao();
         return admin.addInstructorToCourse(user, course);
-
     }
 }
