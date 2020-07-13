@@ -1,5 +1,7 @@
 package dal.asd.catme.questionmanagertest;
 
+import dal.asd.catme.questionmanager.IOption;
+import dal.asd.catme.questionmanager.IQuestion;
 import dal.asd.catme.questionmanager.Option;
 import dal.asd.catme.questionmanager.Question;
 import org.junit.jupiter.api.Test;
@@ -87,9 +89,9 @@ public class QuestionTest
     @Test
     public void getOptionWithOrderTest()
     {
-        Question question = new Question();
+        IQuestion question = new Question();
 
-        List<Option> list = listOption();
+        List<IOption> list = listOption();
         question.setOptionWithOrder(list);
         assertEquals(question.getOptionWithOrder(),list);
     }
@@ -97,9 +99,9 @@ public class QuestionTest
     @Test
     public void setOptionWithOrderTest()
     {
-        Question question = new Question();
+        IQuestion question = new Question();
 
-        List<Option> list = listOption();
+        List<IOption> list = listOption();
         question.setOptionWithOrder(list);
         assertEquals(question.getOptionWithOrder(),list);
     }
@@ -107,7 +109,7 @@ public class QuestionTest
     @Test
     public void getCreatedDateTest()
     {
-        Question question = new Question();
+        IQuestion question = new Question();
 
         Date date = new Date(2020,7,12);
         question.setCreatedDate(date);
@@ -117,16 +119,16 @@ public class QuestionTest
     @Test
     public void setCreatedDateTest()
     {
-        Question question = new Question();
+        IQuestion question = new Question();
 
         Date date = new Date(2020,7,12);
         question.setCreatedDate(date);
         assertEquals(question.getCreatedDate(),date);
     }
 
-    private List<Option> listOption()
+    private List<IOption> listOption()
     {
-        List<Option> list = new ArrayList<>();
+        List<IOption> list = new ArrayList<>();
 
         Option o = new Option("Option",1);
         list.add(o);

@@ -23,6 +23,8 @@ public class CatmeController
 
     CatmeSecurityConfig catmeServiceConfig;
 
+    IAccessControlModelAbstractFactory modelAbstractFactory = AccessControlModelAbstractFactoryImpl.instance();
+
     private static final Logger log = LoggerFactory.getLogger(CatmeController.class);
 
     @RequestMapping("admin")
@@ -35,12 +37,12 @@ public class CatmeController
     @GetMapping("register")
     public String signupPage(Model model)
     {
-        model.addAttribute("user", new User());
+        model.addAttribute("user", modelAbstractFactory.createUser());
         return CatmeUtil.SIGNUP_PAGE;
     }
 
     @RequestMapping("signup")
-    public String signupPage(@ModelAttribute User user, Model model)
+    public String signupPage(@ModelAttribute IUser user, Model model)
     {
         userService = AccessControlAbstractFactoryImpl.instance().getUserService();
         String message = userService.addUser(user);
@@ -62,34 +64,34 @@ public class CatmeController
         {
             if (roles.contains("ROLE_ADMIN"))
             {
-                log.info("User idetified as Admin");
+                log.info("IUser idetified as Admin");
                 return "redirect:/" + CatmeUtil.ADMIN_HOME;
             }
             if (roles.contains("ROLE_INSTRUCTOR"))
             {
-                log.info("User idetified as Instructor");
+                log.info("IUser idetified as Instructor");
                 return "redirect:/" + CatmeUtil.INSTRUCTOR_HOME;
             }
             if (roles.contains("ROLE_TA"))
             {
-                log.info("User idetified as TA");
+                log.info("IUser idetified as TA");
                 return "redirect:/" + CatmeUtil.TA_HOME;
             }
             if (roles.contains("ROLE_STUDENT"))
             {
-                log.info("User idetified as Student");
+                log.info("IUser idetified as Student");
                 return "redirect:/" + CatmeUtil.STUDENT_HOME;
             }
             if (roles.contains("ROLE_GUEST"))
             {
-                log.info("User idetified as Guest");
+                log.info("IUser idetified as Guest");
                 return "redirect:/" + CatmeUtil.GUEST_HOME;
             }
         }
         if (page.trim().length() == 0)
         {
             page = "error";
-            throw new CatmeException("User Role is not found in Database");
+            throw new CatmeException("IUser Role is not found in Database");
         }
         return page;
     }

@@ -9,10 +9,6 @@ import java.util.regex.Pattern;
 
 public class PasswordRulesConfigImpl implements IPasswordRulesConfig
 {
-    DatabaseAccess databaseAccess;
-
-    PasswordEncoder passwordEncoder;
-
     boolean regularExpressionMatcher(String currentPassword, String regularExpression)
     {
         Pattern pattern = Pattern.compile(regularExpression);

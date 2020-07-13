@@ -22,6 +22,8 @@ public class SurveyResponseDaoImpl implements ISurveyResponseDao
     private static int OPTIONTEXT=4;
     private static int OPTIONORDER=5;
 
+    ISurveyResponseModelAbstractFactory modelAbstractFactory = SurveyResponseModelAbstractFactoryImpl.instance();
+
     public String isSurveyPublished(String courseId)
     {
         DatabaseAccess db = SystemConfig.instance().getDatabaseAccess();
@@ -59,11 +61,11 @@ public class SurveyResponseDaoImpl implements ISurveyResponseDao
         return null;
     }
 
-    public List<SurveyResponse> getSurveyQuestions(String surveyId)
+    public List<ISurveyResponse> getSurveyQuestions(String surveyId)
     {
         DatabaseAccess db = SystemConfig.instance().getDatabaseAccess();
         Connection con=null;
-        List<SurveyResponse> questions = null;
+        List<ISurveyResponse> questions = null;
 
         try
         {
@@ -94,7 +96,7 @@ public class SurveyResponseDaoImpl implements ISurveyResponseDao
 
     }
 
-    public boolean saveResponses(SurveyResponseBinder binder, String bannerId)
+    public boolean saveResponses(ISurveyResponseBinder binder, String bannerId)
     {
         DatabaseAccess db = SystemConfig.instance().getDatabaseAccess();
         Connection con = null;
@@ -105,7 +107,7 @@ public class SurveyResponseDaoImpl implements ISurveyResponseDao
             PreparedStatement stmt = con.prepareStatement(DBQueriesUtil.SAVE_ANSWER);
             stmt.setString(2,bannerId);
 
-            for(SurveyResponse question: binder.getQuestionList())
+            for(ISurveyResponse question: binder.getQuestionList())
             {
                 stmt.setInt(1,question.getQuestion().getQuestionId());
 
@@ -221,19 +223,19 @@ public class SurveyResponseDaoImpl implements ISurveyResponseDao
         return false;
     }
 
-    private List<SurveyResponse> createQuestionsList(ResultSet rs)
+    private List<ISurveyResponse> createQuestionsList(ResultSet rs)
     {
-        List<SurveyResponse> questions = new ArrayList<>();
+        List<ISurveyResponse> questions = new ArrayList<>();
 
         try
         {
             int prevId=-1;
-            SurveyResponse q=new SurveyResponse();
+            ISurveyResponse q=modelAbstractFactory.createSurveyResponse();
             while(rs.next())
             {
                 if(rs.getInt(ID)!=prevId)
                 {
-                    q=new SurveyResponse();
+                    q=modelAbstractFactory.createSurveyResponse();
                     q.setQuestion(new Question());
                     q.getQuestion().setQuestionId(rs.getInt(ID));
                     q.getQuestion().setQuestionText(rs.getString(TEXT));

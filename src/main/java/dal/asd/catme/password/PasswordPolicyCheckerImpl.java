@@ -1,5 +1,6 @@
 package dal.asd.catme.password;
 
+import dal.asd.catme.accesscontrol.IUser;
 import dal.asd.catme.accesscontrol.User;
 import dal.asd.catme.config.SystemConfig;
 import dal.asd.catme.exception.CatmeException;
@@ -12,10 +13,10 @@ public class PasswordPolicyCheckerImpl implements IPasswordPolicyCheckerService
     IPasswordRulesConfig passwordRulesConfig;
 
     @Override
-    public boolean enforcePasswordPolicy(User user) throws CatmeException
+    public boolean enforcePasswordPolicy(IUser user) throws CatmeException
     {
         boolean flag = true;
-        passwordRulesConfig = SystemConfig.instance().getPasswordEnforcementConfig();
+        passwordRulesConfig = PasswordAbstractFactoryImpl.instance().getPasswordRulesConfig();
         List<Boolean> validationResult = new ArrayList<>();
         if (PasswordRulesUtil.MINIMUM_LENGTH_ENABLE)
         {

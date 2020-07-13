@@ -1,6 +1,6 @@
 package dal.asd.catme.courses;
 
-import dal.asd.catme.accesscontrol.Student;
+import dal.asd.catme.accesscontrol.IUser;
 import dal.asd.catme.accesscontrol.User;
 import dal.asd.catme.config.SystemConfig;
 import dal.asd.catme.database.DatabaseAccess;
@@ -16,7 +16,7 @@ public class EnrollStudentService implements IEnrollStudentService
     DatabaseAccess db;
     IRoleDao roleDao;
     IStudentDao studentDao;
-    Connection con;
+    Connection con = null;
 
     public EnrollStudentService(IRoleDao roleDao, IStudentDao studentDao)
     {
@@ -25,14 +25,14 @@ public class EnrollStudentService implements IEnrollStudentService
     }
 
     @Override
-    public boolean enrollStudentsIntoCourse(ArrayList<Student> students, Course c)
+    public boolean enrollStudentsIntoCourse(ArrayList<IUser> students, ICourse c)
     {
         try
         {
             db = SystemConfig.instance().getDatabaseAccess();
             con = db.getConnection();
 
-            for (Student s : students)
+            for (IUser s : students)
             {
                 try
                 {
@@ -62,14 +62,14 @@ public class EnrollStudentService implements IEnrollStudentService
     }
 
     @Override
-    public void enrollStudent(Student s, Course c) throws EnrollmentException
+    public void enrollStudent(IUser s, ICourse c) throws EnrollmentException
     {
         if (studentDao.enroll(s, c, con) == false)
             throw new EnrollmentException("Error making entry in Enrollment table");
     }
 
     @Override
-    public void assignStudentRole(User student) throws EnrollmentException
+    public void assignStudentRole(IUser student) throws EnrollmentException
     {
         if (roleDao.checkUserRole(student.getBannerId(), CatmeUtil.STUDENT_ROLE_ID, con) == 0)
         {

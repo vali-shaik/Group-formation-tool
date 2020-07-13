@@ -20,7 +20,7 @@ public class SurveyResponseServiceImpl implements ISurveyResponseService
         return surveyDao.isSurveyPublished(courseId);
     }
 
-    public List<SurveyResponse> getSurveyQuestions(String surveyId)
+    public List<ISurveyResponse> getSurveyQuestions(String surveyId)
     {
         if(stringNullOrEmpty(surveyId))
         {
@@ -31,7 +31,7 @@ public class SurveyResponseServiceImpl implements ISurveyResponseService
     }
 
     @Override
-    public boolean saveResponses(SurveyResponseBinder binder, String bannerId)
+    public boolean saveResponses(ISurveyResponseBinder binder, String bannerId)
     {
         if(stringNullOrEmpty(bannerId))
             return false;

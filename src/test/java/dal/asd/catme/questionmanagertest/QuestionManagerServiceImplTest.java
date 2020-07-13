@@ -1,5 +1,6 @@
 package dal.asd.catme.questionmanagertest;
 
+import dal.asd.catme.questionmanager.IOption;
 import dal.asd.catme.questionmanager.IQuestionDao;
 import dal.asd.catme.questionmanager.Option;
 import dal.asd.catme.questionmanager.Question;
@@ -16,12 +17,12 @@ public class QuestionManagerServiceImplTest
 {
 
     IQuestionDao questionDaoMock = new QuestionDaoMock();
-    Option option;
+    IOption option;
 
     @Test
     public void createQuestionTest()
     {
-        List<Option> options = formQuestionOptions();
+        List<IOption> options = formQuestionOptions();
         Question question = new Question(CatmeUtil.ONE, "Which Framework?", "Free Text", "UI", options, new Date());
         assertEquals(CatmeUtil.ONE, questionDaoMock.createQuestion(question, CatmeUtil.USER_ROLE_ID));
 
@@ -36,13 +37,13 @@ public class QuestionManagerServiceImplTest
     @Test
     public void createOptions()
     {
-        List<Option> options = formQuestionOptions();
+        List<IOption> options = formQuestionOptions();
         assertEquals(CatmeUtil.ONE, questionDaoMock.createOptions(CatmeUtil.QUESTION_ID, options));
     }
 
-    private List<Option> formQuestionOptions()
+    private List<IOption> formQuestionOptions()
     {
-        List<Option> options = new ArrayList<Option>();
+        List<IOption> options = new ArrayList<>();
         option = new Option("Angular", 1);
         option = new Option("React", 2);
         options.add(option);

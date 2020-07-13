@@ -1,7 +1,6 @@
 package dal.asd.catme.surveyresponse;
 
-import dal.asd.catme.questionmanager.Option;
-import dal.asd.catme.questionmanager.Question;
+import dal.asd.catme.questionmanager.*;
 import dal.asd.catme.util.CatmeUtil;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -18,6 +17,7 @@ import java.util.List;
 public class SurveyResponseController
 {
     ISurveyResponseService surveyService = SurveyResponseAbstractFactoryImpl.instance().getSurveyResponseService();
+    ISurveyResponseModelAbstractFactory modelAbstractFactory = SurveyResponseModelAbstractFactoryImpl.instance();
 
     @RequestMapping("/viewSurvey")
     public String viewSurvey(@RequestParam(name = "courseId") String courseId, Model m)
@@ -40,9 +40,9 @@ public class SurveyResponseController
         }
 
         m.addAttribute("attempted",false);
-        List<SurveyResponse> surveyQuestions = surveyService.getSurveyQuestions(publishedSurveyId);
+        List<ISurveyResponse> surveyQuestions = surveyService.getSurveyQuestions(publishedSurveyId);
 
-        SurveyResponseBinder binder = new SurveyResponseBinder();
+        ISurveyResponseBinder binder = modelAbstractFactory.createSurveyResponseBinder();
         binder.setQuestionList(surveyQuestions);
         binder.setSurveyId(publishedSurveyId);
         binder.setCourseId(courseId);
@@ -58,39 +58,11 @@ public class SurveyResponseController
         String bannerId = SecurityContextHolder.getContext().getAuthentication().getName();
         surveyService.saveResponses(binder,bannerId);
 
-        for(SurveyResponse response: binder.getQuestionList())
+        for(ISurveyResponse response: binder.getQuestionList())
         {
             System.out.println(response.getQuestion().getQuestionId()+": "+response.getAnswer());
         }
 
         return "redirect:/viewSurvey?courseId="+binder.getCourseId();
-    }
-
-    private List<SurveyResponse> getList()
-    {
-        List<SurveyResponse> list = new ArrayList<>();
-
-        SurveyResponse s = new SurveyResponse();
-        Question q = new Question();
-        q.setQuestionText("Q1");
-        q.setQuestionType(CatmeUtil.CHECKBOX);
-        q.addOption(new Option("1",1));
-        q.addOption(new Option("2",2));
-
-        s.setQuestion(q);
-
-        list.add(s);
-
-
-        SurveyResponse s1 = new SurveyResponse();
-        Question q1 = new Question();
-        q1.setQuestionText("Q2");
-        q1.setQuestionType(CatmeUtil.NUMERIC_DB);
-
-        s1.setQuestion(q1);
-
-        list.add(s1);
-
-        return list;
     }
 }

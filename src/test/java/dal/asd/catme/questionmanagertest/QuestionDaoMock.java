@@ -1,10 +1,7 @@
 package dal.asd.catme.questionmanagertest;
 
 import dal.asd.catme.exception.QuestionDatabaseException;
-import dal.asd.catme.questionmanager.IQuestionDao;
-import dal.asd.catme.questionmanager.Option;
-import dal.asd.catme.questionmanager.Question;
-import dal.asd.catme.questionmanager.QuestionTitle;
+import dal.asd.catme.questionmanager.*;
 import dal.asd.catme.util.CatmeUtil;
 
 import java.sql.Connection;
@@ -17,19 +14,19 @@ import java.util.Map;
 
 public class QuestionDaoMock implements IQuestionDao
 {
-    List<QuestionTitle> questions;
+    List<IQuestionTitle> questions;
 
     public QuestionDaoMock()
     {
     }
 
-    public QuestionDaoMock(List<QuestionTitle> questions)
+    public QuestionDaoMock(List<IQuestionTitle> questions)
     {
         this.questions = questions;
     }
 
     @Override
-    public List<Question> getQuestionTitles(String instructor) throws QuestionDatabaseException
+    public List<IQuestion> getQuestionTitles(String instructor) throws QuestionDatabaseException
     {
         if (instructor == null)
             throw new QuestionDatabaseException("Error Getting List of Questions");
@@ -44,9 +41,9 @@ public class QuestionDaoMock implements IQuestionDao
         Connection con = null;
         if (0 != checkExistingQuestion(questionId, con))
         {
-            for (QuestionTitle qT : questions)
+            for (IQuestionTitle qT : questions)
             {
-                for (Question q : qT.getQuestions())
+                for (IQuestion q : qT.getQuestions())
                 {
                     if (q.getQuestionId() == questionId)
                         questions.remove(q);
@@ -62,9 +59,9 @@ public class QuestionDaoMock implements IQuestionDao
     public int checkExistingQuestion(int questionId, Connection con)
     {
         // TODO Auto-generated method stub
-        for (QuestionTitle qT : questions)
+        for (IQuestionTitle qT : questions)
         {
-            for (Question q : qT.getQuestions())
+            for (IQuestion q : qT.getQuestions())
             {
                 if (q.getQuestionId() == questionId)
                     return 1;
@@ -75,9 +72,9 @@ public class QuestionDaoMock implements IQuestionDao
     }
 
     @Override
-    public int createQuestion(Question question, String user)
+    public int createQuestion(IQuestion question, String user)
     {
-        List<Question> questions = new ArrayList<Question>();
+        List<IQuestion> questions = new ArrayList<>();
         int result = createQuestionTitle(question.getQuestionTitle(), user);
         if (result > CatmeUtil.ZERO)
         {
@@ -105,11 +102,11 @@ public class QuestionDaoMock implements IQuestionDao
     }
 
     @Override
-    public int createOptions(int questionId, List<Option> options)
+    public int createOptions(int questionId, List<IOption> options)
     {
         Map<Integer, Map> optionInsertion = new HashMap<Integer, Map>();
         Map<Integer, String> optionMap = new HashMap<Integer, String>();
-        for (Option option : options)
+        for (IOption option : options)
         {
             optionMap.put(option.getStoredAs(), option.getDisplayText());
         }
@@ -123,11 +120,11 @@ public class QuestionDaoMock implements IQuestionDao
         }
     }
 
-    private List<Question> getQuestions()
+    private List<IQuestion> getQuestions()
     {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 
-        List<Question> ret = new ArrayList<>();
+        List<IQuestion> ret = new ArrayList<>();
         try
         {
 

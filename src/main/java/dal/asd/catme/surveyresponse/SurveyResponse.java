@@ -1,20 +1,21 @@
 package dal.asd.catme.surveyresponse;
 
+import dal.asd.catme.questionmanager.IQuestion;
 import dal.asd.catme.questionmanager.Question;
 
 import java.util.List;
 
-public class SurveyResponse
+public class SurveyResponse implements ISurveyResponse
 {
-    private Question question;
+    private IQuestion question;
     private List<String> answer;
 
-    public Question getQuestion()
+    public IQuestion getQuestion()
     {
         return question;
     }
 
-    public void setQuestion(Question question)
+    public void setQuestion(IQuestion question)
     {
         this.question = question;
     }

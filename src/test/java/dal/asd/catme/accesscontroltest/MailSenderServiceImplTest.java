@@ -1,7 +1,6 @@
 package dal.asd.catme.accesscontroltest;
 
 import dal.asd.catme.accesscontrol.MailSenderServiceImpl;
-import dal.asd.catme.accesscontrol.Student;
 import dal.asd.catme.accesscontrol.User;
 import dal.asd.catme.courses.Course;
 import dal.asd.catme.util.RandomTokenGenerator;
@@ -23,7 +22,7 @@ public class MailSenderServiceImplTest
     void sendMailTest()
     {
 
-        Student s = new Student("B00101010", "Test", "User", "test@mail.com");
+        User s = new User("B00101010", "Test", "User", "test@mail.com");
         String
                 sub = "This is subject of mail";
         String body =
@@ -48,7 +47,7 @@ public class MailSenderServiceImplTest
 
         MailSenderServiceImpl mailSenderService = new MailSenderServiceImpl(new JavaMailSenderImpl());
 
-        Student s = new Student("B00851820", "Prajapati", "Tapan", "Tapan.Prajapati@dal.ca", "ABCE@1234");
+        User s = new User("B00851820", "Prajapati", "Tapan", "Tapan.Prajapati@dal.ca", "ABCE@1234");
 
         Course c = new Course();
         c.setCourseId("5308");

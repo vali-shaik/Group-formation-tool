@@ -1,8 +1,7 @@
 package dal.asd.catme.accesscontrol;
 
 import dal.asd.catme.config.SystemConfig;
-import dal.asd.catme.courses.Course;
-import dal.asd.catme.courses.ICourseService;
+import dal.asd.catme.courses.*;
 import dal.asd.catme.util.CatmeUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +22,8 @@ public class AdminController
     IAdminService adminServiceImpl;
     IUserService userService;
 
+    ICourseModelAbstractFactory modelAbstractFactory = CourseModelAbstractFactoryImpl.instance();
+
     private static final Logger logger = LoggerFactory.getLogger(AdminController.class);
 
     @RequestMapping("dashboard")
@@ -36,7 +37,7 @@ public class AdminController
     public String addCourse(Model model)
     {
         logger.info("****Admin Controller - Add Course Invoked*****");
-        model.addAttribute("course", new Course());
+        model.addAttribute("course", modelAbstractFactory.createCourse());
         return CatmeUtil.ADD_COURSE;
     }
 
@@ -59,14 +60,14 @@ public class AdminController
     }
 
     @ModelAttribute("courses")
-    public List<Course> getCourseList()
+    public List<ICourse> getCourseList()
     {
-        ICourseService courseService = SystemConfig.instance().getCourseService();
+        ICourseService courseService = CourseAbstractFactoryImpl.instance().getCourseService();
         return courseService.getAllCourses();
     }
 
     @ModelAttribute("users")
-    public List<User> getUsersList()
+    public List<IUser> getUsersList()
     {
         userService = AccessControlAbstractFactoryImpl.instance().getUserService();
         return userService.getUsers();

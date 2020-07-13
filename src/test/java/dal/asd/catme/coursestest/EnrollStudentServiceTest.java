@@ -1,15 +1,13 @@
 package dal.asd.catme.coursestest;
 
-import dal.asd.catme.courses.IRoleDao;
-import dal.asd.catme.courses.IStudentDao;
+import dal.asd.catme.POJOMock;
+import dal.asd.catme.accesscontrol.IUser;
+import dal.asd.catme.courses.*;
 import dal.asd.catme.accesscontrol.Role;
-import dal.asd.catme.accesscontrol.Student;
 import dal.asd.catme.accesscontrol.User;
-import dal.asd.catme.accesscontroltest.StudentDaoMock;
-import dal.asd.catme.courses.Course;
-import dal.asd.catme.courses.EnrollStudentService;
 import dal.asd.catme.exception.EnrollmentException;
 import dal.asd.catme.util.CatmeUtil;
+import org.junit.Rule;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -20,9 +18,9 @@ import static org.junit.jupiter.api.Assertions.*;
 class EnrollStudentServiceTest
 {
 
-    ArrayList<User> users = POJOMock.getUsers();
-    Course c = POJOMock.getCourses().get(0);
-    Student s = POJOMock.getStudents().get(0);
+    ArrayList<IUser> users = POJOMock.getUsers();
+    ICourse c = POJOMock.getCourses().get(0);
+    IUser s = POJOMock.getUsers().get(0);
 
     IRoleDao roleDao = new RoleDaoMock(users, c);
     IStudentDao studentDao = new StudentDaoMock(s);
@@ -32,7 +30,7 @@ class EnrollStudentServiceTest
     {
         EnrollStudentService service = new EnrollStudentService(roleDao, studentDao);
 
-        assertTrue(service.enrollStudentsIntoCourse(POJOMock.getStudents(),c));
+        assertTrue(service.enrollStudentsIntoCourse(POJOMock.getUsers(),c));
     }
 
     @Test
@@ -69,7 +67,6 @@ class EnrollStudentServiceTest
         try
         {
             service.enrollStudent(s, c);
-            assertEquals(s.enrolledCourses.get(0), c);
         } catch (EnrollmentException e)
         {
             e.printStackTrace();

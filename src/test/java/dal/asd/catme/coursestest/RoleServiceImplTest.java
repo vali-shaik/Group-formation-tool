@@ -1,5 +1,6 @@
 package dal.asd.catme.coursestest;
 
+import dal.asd.catme.POJOMock;
 import dal.asd.catme.courses.IRoleDao;
 import dal.asd.catme.courses.Enrollment;
 import dal.asd.catme.courses.RoleServiceImpl;

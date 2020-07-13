@@ -9,6 +9,7 @@ import java.util.List;
 public class QuestionManagerServiceImpl implements IQuestionManagerService
 {
     IQuestionDao questionDao;
+    IQuestionManagerModelAbstractFactory modelAbstractFactory = QuestionManagerModelAbstractFactoryImpl.instance();
 
     public QuestionManagerServiceImpl(IQuestionDao questionDao)
     {
@@ -16,7 +17,7 @@ public class QuestionManagerServiceImpl implements IQuestionManagerService
     }
 
     @Override
-    public String findQuestionType(Question question, String user)
+    public String findQuestionType(IQuestion question, String user)
     {
         if (question.getQuestionType().equalsIgnoreCase(CatmeUtil.FREE_TEXT) || question.getQuestionType().equalsIgnoreCase(CatmeUtil.NUMERIC))
         {
@@ -30,10 +31,11 @@ public class QuestionManagerServiceImpl implements IQuestionManagerService
             }
         } else
         {
-            List<Option> options = new ArrayList<Option>();
+            List<IOption> options = new ArrayList<>();
             for (int i = 1; i <= 5; i++)
             {
-                Option option = new Option(i);
+                IOption option = modelAbstractFactory.createOption();
+                option.setStoredAs(i);
                 options.add(option);
             }
             question.setOptionWithOrder(options);
@@ -42,13 +44,13 @@ public class QuestionManagerServiceImpl implements IQuestionManagerService
     }
 
     @Override
-    public int createQuestion(Question question, String user)
+    public int createQuestion(IQuestion question, String user)
     {
         return questionDao.createQuestion(question, user);
     }
 
     @Override
-    public int createOptions(int questionId, List<Option> options)
+    public int createOptions(int questionId, List<IOption> options)
     {
         return questionDao.createOptions(questionId, options);
     }

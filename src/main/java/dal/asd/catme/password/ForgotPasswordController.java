@@ -1,9 +1,6 @@
 package dal.asd.catme.password;
 
-import dal.asd.catme.accesscontrol.AccessControlAbstractFactoryImpl;
-import dal.asd.catme.accesscontrol.IAccessControlAbstractFactory;
-import dal.asd.catme.accesscontrol.IMailSenderService;
-import dal.asd.catme.accesscontrol.User;
+import dal.asd.catme.accesscontrol.*;
 import dal.asd.catme.exception.CatmeException;
 import dal.asd.catme.util.CatmeUtil;
 import org.springframework.stereotype.Controller;
@@ -27,6 +24,8 @@ public class ForgotPasswordController
 
     String bannerid;
 
+    IAccessControlModelAbstractFactory accessControlModelAbstractFactory = AccessControlModelAbstractFactoryImpl.instance();
+
     @RequestMapping("forgotPassword")
     public String forgotPassword()
     {
@@ -39,7 +38,7 @@ public class ForgotPasswordController
         IPasswordResetService passwordResetService = passwordAbstractFactory.getPasswordResetService();
         IMailSenderService mailSenderService = accessControlAbstractFactory.getMailSenderService();
 
-        User u = passwordResetService.generateResetLink(bannerid);
+        IUser u = passwordResetService.generateResetLink(bannerid);
 
         if (u == null)
         {
@@ -80,7 +79,7 @@ public class ForgotPasswordController
         IPasswordResetService passwordResetService = passwordAbstractFactory.getPasswordResetService();
         IPasswordPolicyCheckerService passwordPolicyCheckerService = passwordAbstractFactory.getPasswordPolicyCheckerService();
 
-        User u = new User();
+        IUser u = accessControlModelAbstractFactory.createUser();
         u.setBannerId(bannerid);
         u.setPassword(password);
 

@@ -2,6 +2,7 @@ package dal.asd.catme.questionmanagertest;
 
 import dal.asd.catme.exception.QuestionDatabaseException;
 import dal.asd.catme.questionmanager.IListQuestionsService;
+import dal.asd.catme.questionmanager.IQuestion;
 import dal.asd.catme.questionmanager.ListQuestionsServiceImpl;
 import dal.asd.catme.questionmanager.Question;
 
@@ -48,10 +49,10 @@ public class ListQuestionsServiceTest
         {
             listQuestionsService.getQuestions("instructor");
 
-            List<Question> questionList = listQuestionsService.sortByDate();
+            List<IQuestion> questionList = listQuestionsService.sortByDate();
 
-            Question q1 = questionList.get(0);
-            Question q2 = questionList.get(1);
+            IQuestion q1 = questionList.get(0);
+            IQuestion q2 = questionList.get(1);
 
             //date of question1 comes after date of question2
             if (q1.getCreatedDate().compareTo(q2.getCreatedDate()) >= 0)
@@ -73,10 +74,10 @@ public class ListQuestionsServiceTest
         {
             listQuestionsService.getQuestions("instructor");
 
-            List<Question> questionList = listQuestionsService.sortByTitle();
+            List<IQuestion> questionList = listQuestionsService.sortByTitle();
 
-            Question q1 = questionList.get(0);
-            Question q2 = questionList.get(1);
+            IQuestion q1 = questionList.get(0);
+            IQuestion q2 = questionList.get(1);
 
             //question 1 comes after question2
             if (q1.getQuestionTitle().compareTo(q2.getQuestionTitle()) < 0)

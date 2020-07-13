@@ -1,11 +1,8 @@
 package dal.asd.catme.coursestest;
 
-import dal.asd.catme.accesscontrol.Instructor;
-import dal.asd.catme.accesscontrol.Student;
 import dal.asd.catme.courses.Course;
 import org.junit.jupiter.api.Test;
-import dal.asd.catme.coursestest.POJOMock;
-
+import dal.asd.catme.POJOMock;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -46,51 +43,5 @@ public class CourseTest
 
         c.setCourseName("ABCD");
         assertEquals(c.getCourseName(),"ABCD");
-    }
-
-    @Test
-    public void getStudentsTest()
-    {
-        Course c = new Course();
-
-        List<Student> list = POJOMock.getStudents();
-
-        c.setStudents(list);
-        assertEquals(c.getStudents(),list);
-    }
-
-    @Test
-    public void setStudentsTest()
-    {
-        Course c = new Course();
-
-        List<Student> list = POJOMock.getStudents();
-
-        c.setStudents(list);
-        assertEquals(c.getStudents(),list);
-    }
-
-
-
-    @Test
-    public void getInstructorTest()
-    {
-        Course c = new Course();
-
-        List<Instructor> list = POJOMock.getInstructors();
-
-        c.setInstructors(list);
-        assertEquals(c.getInstructors(),list);
-    }
-
-    @Test
-    public void setInstructorTest()
-    {
-        Course c = new Course();
-
-        List<Instructor> list = POJOMock.getInstructors();
-
-        c.setInstructors(list);
-        assertEquals(c.getInstructors(),list);
     }
 }

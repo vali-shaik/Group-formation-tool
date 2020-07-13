@@ -1,6 +1,6 @@
 package dal.asd.catme.surveyresponse;
 
-import dal.asd.catme.coursestest.POJOMock;
+import dal.asd.catme.POJOMock;
 import dal.asd.catme.questionmanager.Question;
 import dal.asd.catme.util.CatmeUtil;
 
@@ -24,11 +24,11 @@ public class SurveyResponseDaoMock implements ISurveyResponseDao
     }
 
     @Override
-    public List<SurveyResponse> getSurveyQuestions(String surveyId)
+    public List<ISurveyResponse> getSurveyQuestions(String surveyId)
     {
-        List<SurveyResponse> responses = new ArrayList<>();
+        List<ISurveyResponse> responses = new ArrayList<>();
 
-        SurveyResponse s = new SurveyResponse();
+        ISurveyResponse s = new SurveyResponse();
         responses.add(s);
 
         Question q = new Question();
@@ -45,7 +45,7 @@ public class SurveyResponseDaoMock implements ISurveyResponseDao
     }
 
     @Override
-    public boolean saveResponses(SurveyResponseBinder binder, String bannerId)
+    public boolean saveResponses(ISurveyResponseBinder binder, String bannerId)
     {
         if(binder.getQuestionList().size()==0)
             return false;

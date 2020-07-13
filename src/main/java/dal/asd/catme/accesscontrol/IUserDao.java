@@ -9,10 +9,10 @@ public interface IUserDao
 {
     int checkExistingUser(String bannerId, Connection con);
 
-    int addUser(User user, Connection con);
+    int addUser(IUser user, Connection con);
 
-    User getUser(String bannerId, Connection con);
+    IUser getUser(String bannerId, Connection con);
 
-    List<User> getUsers();
+    List<IUser> getUsers();
 
 }

@@ -16,13 +16,14 @@ import java.util.List;
 public class QuestionDaoImpl implements IQuestionDao
 {
     DatabaseAccess db;
+    IQuestionManagerModelAbstractFactory modelAbstractFactory = QuestionManagerModelAbstractFactoryImpl.instance();
 
     public QuestionDaoImpl()
     {
     }
 
     @Override
-    public List<Question> getQuestionTitles(String instructor) throws QuestionDatabaseException
+    public List<IQuestion> getQuestionTitles(String instructor) throws QuestionDatabaseException
     {
         int QUESTIONID = 1;
         int QUESTIONTITLE = 2;
@@ -31,7 +32,7 @@ public class QuestionDaoImpl implements IQuestionDao
         int CREATEDDATE = 5;
 
 
-        List<Question> questionList = new ArrayList<>();
+        List<IQuestion> questionList = new ArrayList<>();
         db = SystemConfig.instance().getDatabaseAccess();
         Connection con = null;
         try
@@ -44,7 +45,7 @@ public class QuestionDaoImpl implements IQuestionDao
 
             while (rs.next())
             {
-                Question q = new Question();
+                IQuestion q =  modelAbstractFactory.createQuestion();
                 q.setQuestionId(rs.getInt(QUESTIONID));
                 q.setQuestionTitle(rs.getString(QUESTIONTITLE));
                 q.setQuestionText(rs.getString(QUESTION));
@@ -126,7 +127,7 @@ public class QuestionDaoImpl implements IQuestionDao
     }
 
     @Override
-    public int createQuestion(Question question, String user)
+    public int createQuestion(IQuestion question, String user)
     {
         int result = 0;
         db = SystemConfig.instance().getDatabaseAccess();
@@ -268,14 +269,14 @@ public class QuestionDaoImpl implements IQuestionDao
     }
 
     @Override
-    public int createOptions(int questionId, List<Option> options)
+    public int createOptions(int questionId, List<IOption> options)
     {
         int result = 0;
         db = SystemConfig.instance().getDatabaseAccess();
         Connection con = null;
         for (int i = 0; i < options.size(); i++)
         {
-            Option option = options.get(i);
+            IOption option = options.get(i);
             if (option.getDisplayText().trim().length() > 0 && option.getDisplayText() != "")
             {
                 try

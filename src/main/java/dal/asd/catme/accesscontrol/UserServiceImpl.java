@@ -24,7 +24,7 @@ public class UserServiceImpl implements IUserService
     }
 
     @Override
-    public String addUser(User user)
+    public String addUser(IUser user)
     {
         String isUserAdded = "An account already exists with this BannerId.";
         Connection con = null;
@@ -64,7 +64,7 @@ public class UserServiceImpl implements IUserService
 
 
     @Override
-    public List<User> getUsers()
+    public List<IUser> getUsers()
     {
         return userDao.getUsers();
     }

@@ -1,16 +1,9 @@
 package dal.asd.catme.courses;
 
-import java.util.List;
-
-import dal.asd.catme.accesscontrol.Instructor;
-import dal.asd.catme.accesscontrol.Student;
-
-public class Course
+public class Course implements ICourse
 {
     String courseId;
     String courseName;
-    List<Student> students;
-    List<Instructor> instructors;
 
     public Course()
     {
@@ -41,23 +34,4 @@ public class Course
         this.courseName = courseName;
     }
 
-    public List<Student> getStudents()
-    {
-        return students;
-    }
-
-    public void setStudents(List<Student> students)
-    {
-        this.students = students;
-    }
-
-    public List<Instructor> getInstructors()
-    {
-        return instructors;
-    }
-
-    public void setInstructors(List<Instructor> instructors)
-    {
-        this.instructors = instructors;
-    }
 }

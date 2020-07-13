@@ -2,6 +2,7 @@ package dal.asd.catme.accesscontrol;
 
 import dal.asd.catme.courses.Course;
 
+import dal.asd.catme.courses.ICourse;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -40,7 +41,7 @@ public class MailSenderServiceImpl implements IMailSenderService
 
 
     @Override
-    public void sendMail(User user, String subject, String bodyText) throws MailException, MessagingException
+    public void sendMail(IUser user, String subject, String bodyText) throws MailException, MessagingException
     {
         //code taken from https://stackoverflow.com/questions/5289849/how-do-i-send-html-email-in-spring-mvc
         MimeMessage mimeMessage = mailSender.createMimeMessage();
@@ -54,25 +55,25 @@ public class MailSenderServiceImpl implements IMailSenderService
     }
 
     @Override
-    public void sendCredentialsToStudent(Student s, Course c) throws MessagingException
+    public void sendCredentialsToStudent(IUser u, ICourse c) throws MessagingException
     {
-        String bodyText = getFormattedEmailForNewStudent(s, c);
+        String bodyText = getFormattedEmailForNewStudent(u, c);
 
         if (bodyText == null)
             throw new MessagingException("Error Creating Mail Text From Template");
 
         String subject = NEW_STUDENT_EMAIL_SUBJECT;
 
-        sendMail(s, subject, bodyText);
+        sendMail(u, subject, bodyText);
     }
 
     @Override
-    public void sendResetLink(User u) throws MailException, MessagingException
+    public void sendResetLink(IUser u) throws MailException, MessagingException
     {
         sendMail(u, FORGOT_PASSWORD_EMAIL_SUBJECT, getFormattedEmailForForgotPassword(u));
     }
 
-    public String getFormattedEmailForNewStudent(Student s, Course c)
+    public String getFormattedEmailForNewStudent(IUser u, ICourse c)
     {
         try
         {
@@ -84,9 +85,9 @@ public class MailSenderServiceImpl implements IMailSenderService
 
             String str = new String(data, "UTF-8");
 
-            str = str.replace(TEMPLATE_USERNAME, s.getFirstName());
-            str = str.replace(TEMPLATE_BANNERID, s.getBannerId());
-            str = str.replace(TEMPLATE_PASSWORD, s.getPassword());
+            str = str.replace(TEMPLATE_USERNAME, u.getFirstName());
+            str = str.replace(TEMPLATE_BANNERID, u.getBannerId());
+            str = str.replace(TEMPLATE_PASSWORD, u.getPassword());
             str = str.replace(TEMPLATE_COURSE, c.getCourseId());
 
             return str;
@@ -102,7 +103,7 @@ public class MailSenderServiceImpl implements IMailSenderService
         }
     }
 
-    public String getFormattedEmailForForgotPassword(User u)
+    public String getFormattedEmailForForgotPassword(IUser u)
     {
         try
         {

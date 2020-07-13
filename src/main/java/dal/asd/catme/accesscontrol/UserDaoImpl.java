@@ -1,6 +1,7 @@
 package dal.asd.catme.accesscontrol;
 
 import dal.asd.catme.config.SystemConfig;
+import dal.asd.catme.courses.CourseAbstractFactoryImpl;
 import dal.asd.catme.courses.IRoleDao;
 import dal.asd.catme.database.DatabaseAccess;
 import dal.asd.catme.util.CatmeUtil;
@@ -20,6 +21,8 @@ public class UserDaoImpl implements IUserDao
     IRoleDao roleDao;
 
     PasswordEncoder p;
+
+    IAccessControlModelAbstractFactory modelAbstractFactory = AccessControlModelAbstractFactoryImpl.instance();
 
     @Override
     public int checkExistingUser(String bannerId, Connection con)
@@ -41,7 +44,7 @@ public class UserDaoImpl implements IUserDao
     }
 
     @Override
-    public int addUser(User user, Connection con)
+    public int addUser(IUser user, Connection con)
     {
         String bannerId = user.getBannerId();
         try
@@ -57,7 +60,7 @@ public class UserDaoImpl implements IUserDao
                 stmt.setString(5, p.encode(user.getPassword()));
 
                 stmt.executeUpdate();
-                roleDao = SystemConfig.instance().getRoleDao();
+                roleDao = CourseAbstractFactoryImpl.instance().getRoleDao();
                 roleDao.assignRole(bannerId, CatmeUtil.GUEST_ROLE_ID, con);
                 return 1;
             }
@@ -70,7 +73,7 @@ public class UserDaoImpl implements IUserDao
     }
 
     @Override
-    public User getUser(String bannerId, Connection con)
+    public IUser getUser(String bannerId, Connection con)
     {
         try
         {
@@ -84,7 +87,11 @@ public class UserDaoImpl implements IUserDao
             String lastname = rs.getString(3);
             String emailid = rs.getString(4);
 
-            User u = new User(bannerId, lastname, firstname, emailid);
+            IUser u = modelAbstractFactory.createUser();
+            u.setBannerId(bannerId);
+            u.setFirstName(firstname);
+            u.setLastName(lastname);
+            u.setEmail(emailid);
 
             return u;
         } catch (Exception e)
@@ -96,11 +103,11 @@ public class UserDaoImpl implements IUserDao
     }
 
     @Override
-    public List<User> getUsers()
+    public List<IUser> getUsers()
     {
         DatabaseAccess db;
         Connection connection = null;
-        List<User> users = new ArrayList<User>();
+        List<IUser> users = new ArrayList<>();
         try
         {
             db = SystemConfig.instance().getDatabaseAccess();
@@ -109,7 +116,7 @@ public class UserDaoImpl implements IUserDao
 
             while (resultSet.next())
             {
-                User user = new User();
+                IUser user = modelAbstractFactory.createUser();
                 user.setBannerId(resultSet.getString(CatmeUtil.BANNER_ID));
                 user.setFirstName(resultSet.getString(CatmeUtil.FIRST_NAME));
                 user.setLastName(resultSet.getString(CatmeUtil.LAST_NAME));

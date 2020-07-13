@@ -32,8 +32,8 @@ public class SurveyResponseServiceImplTest
     {
         ISurveyResponseService surveyResponseService = SurveyResponseAbstractFactoryMock.instance().getSurveyResponseService();
 
-        SurveyResponseBinder binder = new SurveyResponseBinder();
-        List<SurveyResponse> questions = new ArrayList<>();
+        ISurveyResponseBinder binder = new SurveyResponseBinder();
+        List<ISurveyResponse> questions = new ArrayList<>();
 
         questions.add(new SurveyResponse());
         binder.setQuestionList(questions);

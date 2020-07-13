@@ -12,7 +12,7 @@ public class SurveyResonseBinderTest
     @Test
     void getSurveyIdTest()
     {
-        SurveyResponseBinder binder = new SurveyResponseBinder();
+        ISurveyResponseBinder binder = new SurveyResponseBinder();
 
         binder.setSurveyId("ID1");
         assertEquals("ID1",binder.getSurveyId());
@@ -21,7 +21,7 @@ public class SurveyResonseBinderTest
     @Test
     void setSurveyIdTest()
     {
-        SurveyResponseBinder binder = new SurveyResponseBinder();
+        ISurveyResponseBinder binder = new SurveyResponseBinder();
 
         binder.setSurveyId("ID1");
         assertEquals("ID1",binder.getSurveyId());
@@ -30,7 +30,7 @@ public class SurveyResonseBinderTest
     @Test
     void getCourseIdTest()
     {
-        SurveyResponseBinder binder = new SurveyResponseBinder();
+        ISurveyResponseBinder binder = new SurveyResponseBinder();
 
         binder.setCourseId("ID1");
         assertEquals("ID1",binder.getCourseId());
@@ -38,7 +38,7 @@ public class SurveyResonseBinderTest
     @Test
     void setCourseIdTest()
     {
-        SurveyResponseBinder binder = new SurveyResponseBinder();
+        ISurveyResponseBinder binder = new SurveyResponseBinder();
 
         binder.setCourseId("ID1");
         assertEquals("ID1",binder.getCourseId());
@@ -48,18 +48,18 @@ public class SurveyResonseBinderTest
     @Test
     void setQuestionListTest()
     {
-        SurveyResponseBinder binder = new SurveyResponseBinder();
+        ISurveyResponseBinder binder = new SurveyResponseBinder();
 
-        List<SurveyResponse> list = new ArrayList<>();
+        List<ISurveyResponse> list = new ArrayList<>();
         binder.setQuestionList(list);
 
         assertEquals(list,binder.getQuestionList());
     }    @Test
     void getQuestionListTest()
     {
-        SurveyResponseBinder binder = new SurveyResponseBinder();
+        ISurveyResponseBinder binder = new SurveyResponseBinder();
 
-        List<SurveyResponse> list = new ArrayList<>();
+        List<ISurveyResponse> list = new ArrayList<>();
         binder.setQuestionList(list);
 
         assertEquals(list,binder.getQuestionList());

@@ -2,7 +2,7 @@ package dal.asd.catme.accesscontroltest;
 
 import dal.asd.catme.accesscontrol.AdminServiceImpl;
 import dal.asd.catme.accesscontrol.IAdminDao;
-import dal.asd.catme.coursestest.POJOMock;
+import dal.asd.catme.POJOMock;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

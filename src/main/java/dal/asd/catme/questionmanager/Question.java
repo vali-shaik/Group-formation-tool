@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class Question
+public class Question implements IQuestion
 {
     int questionId;
     String questionText;
     String questionType;
     String questionTitle;
-    List<Option> optionWithOrder = new ArrayList<Option>();
+    List<IOption> optionWithOrder = new ArrayList<>();
     Date createdDate;
 
     public Question()
@@ -18,7 +18,7 @@ public class Question
     }
 
     public Question(int questionId, String questionText, String questionType, String questionTitle,
-                    List<Option> optionWithOrder, Date createdDate)
+                    List<IOption> optionWithOrder, Date createdDate)
     {
         super();
         this.questionId = questionId;
@@ -69,17 +69,17 @@ public class Question
         this.questionTitle = questionTitle;
     }
 
-    public List<Option> getOptionWithOrder()
+    public List<IOption> getOptionWithOrder()
     {
         return optionWithOrder;
     }
 
-    public void addOption(Option option)
+    public void addOption(IOption option)
     {
         optionWithOrder.add(option);
     }
 
-    public void setOptionWithOrder(List<Option> optionWithOrder)
+    public void setOptionWithOrder(List<IOption> optionWithOrder)
     {
         this.optionWithOrder = optionWithOrder;
     }
