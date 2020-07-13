@@ -15,7 +15,7 @@ public class RoleServiceImpl implements IRoleService
     DatabaseAccess db;
 
     @Override
-    public String assignTa(Enrollment user)
+    public int assignTa(Enrollment user)
     {
         Connection con = null;
         try
@@ -46,6 +46,7 @@ public class RoleServiceImpl implements IRoleService
                 }
             }
         }
-        return "";
+		return 0;
+       
     }
 }

@@ -3,6 +3,7 @@ package dal.asd.catme.accesscontrol;
 import dal.asd.catme.config.SystemConfig;
 import dal.asd.catme.courses.Course;
 import dal.asd.catme.database.DatabaseAccess;
+import dal.asd.catme.exception.CatmeException;
 import dal.asd.catme.util.CatmeUtil;
 import org.springframework.stereotype.Component;
 
@@ -56,7 +57,11 @@ public class AdminDaoImpl implements IAdminDao
         int result = 0;
         try
         {
-            if (courseId.length() > CatmeUtil.ZERO)
+            if (courseId == null)
+            {
+            	throw new CatmeException("Course Id is empty");
+            }
+            else
             {
                 db = SystemConfig.instance().getDatabaseAccess();
                 connection = db.getConnection();

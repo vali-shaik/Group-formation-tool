@@ -3,6 +3,7 @@ package dal.asd.catme.courses;
 import dal.asd.catme.accesscontrol.IRoleDao;
 import dal.asd.catme.accesscontrol.IUserDao;
 import dal.asd.catme.config.SystemConfig;
+import dal.asd.catme.exception.CatmeException;
 import dal.asd.catme.util.CatmeUtil;
 
 import java.sql.Connection;
@@ -121,52 +122,52 @@ public class RoleDaoImpl implements IRoleDao
     }
 
     @Override
-    public String assignTa(Enrollment user, Connection con)
+    public int assignTa(Enrollment user, Connection con)
     {
         String isAssigned = "";
-
+        int result=0;
         try
         {
             userDao = SystemConfig.instance().getUserDao();
-            if (0 != userDao.checkExistingUser(user.bannerId, con))
+            if (CatmeUtil.ONE == userDao.checkExistingUser(user.bannerId, con))
             {
                 courseDao = SystemConfig.instance().getCourseDao();
-                if (0 != courseDao.checkCourseExists(user.courseId, con))
+                if (CatmeUtil.ONE == courseDao.checkCourseExists(user.courseId, con))
                 {
-                    if (0 == courseDao.checkCourseRegistration(user.bannerId, user.courseId, con))
+                    if (CatmeUtil.ZERO == courseDao.checkCourseRegistration(user.bannerId, user.courseId, con))
                     {
-                        if (0 == checkCourseInstructor(user.bannerId, user.courseId, con))
+                        if (CatmeUtil.ZERO == checkCourseInstructor(user.bannerId, user.courseId, con))
                         {
-                            if (0 != checkUserRole(user.bannerId, CatmeUtil.TA_ROLE_ID, con))
+                            if (CatmeUtil.ONE == checkUserRole(user.bannerId, CatmeUtil.TA_ROLE_ID, con))
                             {
                                 int userRoleId = getUserRoleId(user.bannerId, CatmeUtil.TA_ROLE_ID, con);
-                                addInstructor(user.courseId, userRoleId, con);
+                                result=addInstructor(user.courseId, userRoleId, con);
                             }
 
                             else
                             {
                                 assignRole(user.bannerId, CatmeUtil.TA_ROLE_ID, con);
                                 int userRoleId = getUserRoleId(user.bannerId, CatmeUtil.TA_ROLE_ID, con);
-                                addInstructor(user.courseId, userRoleId, con);
+                                result=addInstructor(user.courseId, userRoleId, con);
                             }
-                            isAssigned = "The user is successfully assigned as TA.";
+                            throw new CatmeException("The user is successfully assigned as TA.");
 
                         } else
                         {
-                            isAssigned = "This user is already an instructor for this course.";
+                        	throw new CatmeException("This user is already an instructor for this course.");
                         }
                     } else
                     {
-                        isAssigned = "This user is currently registered in this course. Failed to assign.";
+                    	throw new CatmeException("This user is currently registered in this course. Failed to assign.");
                     }
                 } else
                 {
-                    isAssigned = "No course exists with this Course Id. Failed to assign.";
+                	throw new CatmeException("No course exists with this Course Id. Failed to assign.");
                 }
 
             } else
             {
-                isAssigned = "No user exists with this Banner Id. Failed to assign.";
+            	throw new CatmeException("No user exists with this Banner Id. Failed to assign.");
             }
         } catch (Exception e)
         {
@@ -184,7 +185,7 @@ public class RoleDaoImpl implements IRoleDao
                 }
             }
         }
-        return isAssigned;
+        return result;
     }
 }
 

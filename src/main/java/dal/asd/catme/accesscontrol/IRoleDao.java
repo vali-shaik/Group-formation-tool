@@ -11,7 +11,7 @@ public interface IRoleDao
 
     public int addInstructor(String courseId, int userRoleId, Connection con);
 
-    public String assignTa(Enrollment user, Connection con);
+    public int assignTa(Enrollment user, Connection con);
 
     public int checkCourseInstructor(String bannerId, String courseId, Connection con);
 

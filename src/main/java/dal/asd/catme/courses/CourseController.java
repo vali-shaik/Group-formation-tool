@@ -42,10 +42,19 @@ public class CourseController
     @RequestMapping("taEnrollment/{courseId}")
     public String enrollTa(@PathVariable("courseId") String courseId, @RequestParam String bannerId, Model model)
     {
+    	String message;
         Enrollment user = new Enrollment(bannerId, courseId);
         model.addAttribute("user", user);
         roleService = SystemConfig.instance().getRoleService();
-        String message = roleService.assignTa(user);
+        int result = roleService.assignTa(user);
+        if(result==CatmeUtil.ONE)
+        {
+        	message="TA assigned successfully.";
+        }
+        else
+        {
+        	message="Error in Assigning TA.";
+        }
         model.addAttribute("message", message);
         return CatmeUtil.TA_ENROLLED_PAGE;
     }
