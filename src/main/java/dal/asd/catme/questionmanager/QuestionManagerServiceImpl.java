@@ -1,6 +1,6 @@
 package dal.asd.catme.questionmanager;
 
-import dal.asd.catme.config.SystemConfig;
+import dal.asd.catme.BaseAbstractFactoryImpl;
 import dal.asd.catme.util.CatmeUtil;
 
 import java.util.ArrayList;
@@ -9,7 +9,7 @@ import java.util.List;
 public class QuestionManagerServiceImpl implements IQuestionManagerService
 {
     IQuestionDao questionDao;
-    IQuestionManagerModelAbstractFactory modelAbstractFactory = QuestionManagerModelAbstractFactoryImpl.instance();
+    IQuestionManagerModelAbstractFactory modelAbstractFactory = BaseAbstractFactoryImpl.instance().makeQuestionManagerModelAbstractFactory();
 
     public QuestionManagerServiceImpl(IQuestionDao questionDao)
     {
@@ -34,7 +34,7 @@ public class QuestionManagerServiceImpl implements IQuestionManagerService
             List<IOption> options = new ArrayList<>();
             for (int i = 1; i <= 5; i++)
             {
-                IOption option = modelAbstractFactory.createOption();
+                IOption option = modelAbstractFactory.makeOption();
                 option.setStoredAs(i);
                 options.add(option);
             }

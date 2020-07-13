@@ -1,5 +1,6 @@
 package dal.asd.catme.surveyresponse;
 
+import dal.asd.catme.BaseAbstractFactoryImpl;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -8,7 +9,7 @@ public class SurveyResponseAbstractFactoryTest
     @Test
     void getSurveyResponseDaoTest()
     {
-        ISurveyResponseDao surveyResponseDao = SurveyResponseAbstractFactoryImpl.instance().getSurveyResponseDao();
+        ISurveyResponseDao surveyResponseDao = BaseAbstractFactoryImpl.instance().makeSurveyResponseAbstractFactory().makeSurveyResponseDao();
 
         assertNotNull(surveyResponseDao);
     }
@@ -16,7 +17,7 @@ public class SurveyResponseAbstractFactoryTest
     @Test
     void getSurveyResponseServiceTest()
     {
-        ISurveyResponseService surveyResponseService = SurveyResponseAbstractFactoryImpl.instance().getSurveyResponseService();
+        ISurveyResponseService surveyResponseService = BaseAbstractFactoryImpl.instance().makeSurveyResponseAbstractFactory().makeSurveyResponseService();
 
         assertNotNull(surveyResponseService);
     }

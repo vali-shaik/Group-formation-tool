@@ -32,25 +32,25 @@ public class PasswordAbstractFactoryImpl implements IPasswordAbstractFactory
     }
 
     @Override
-    public IPasswordDao getPasswordDao()
+    public IPasswordDao makePasswordDao()
     {
         return passwordDao;
     }
 
     @Override
-    public IPasswordPolicyCheckerService getPasswordPolicyCheckerService()
+    public IPasswordPolicyCheckerService makePasswordPolicyCheckerService()
     {
         return passwordPolicyCheckerService;
     }
 
     @Override
-    public IPasswordResetService getPasswordResetService()
+    public IPasswordResetService makePasswordResetService()
     {
         return passwordResetService;
     }
 
     @Override
-    public IPasswordRulesConfig getPasswordRulesConfig()
+    public IPasswordRulesConfig makePasswordRulesConfig()
     {
         return passwordRulesConfig;
     }

@@ -3,11 +3,11 @@ package dal.asd.catme.courses;
 
 public interface ICourseAbstractFactory
 {
-    ICourseService getCourseService();
-    IEnrollStudentService getEnrollmentService();
-    IRoleService getRoleService();
+    ICourseService makeCourseService();
+    IEnrollStudentService makeEnrollmentService();
+    IRoleService makeRoleService();
 
-    ICourseDao getCourseDao();
-    IStudentDao getStudentDao();
-    IRoleDao getRoleDao();
+    ICourseDao makeCourseDao();
+    IStudentDao makeStudentDao();
+    IRoleDao makeRoleDao();
 }

@@ -13,13 +13,13 @@ public class CourseModelAbstractFactoryImpl implements ICourseModelAbstractFacto
         return modelAbstractFactory;
     }
     @Override
-    public ICourse createCourse()
+    public ICourse makeCourse()
     {
         return new Course();
     }
 
     @Override
-    public IEnrollment createEnrollment()
+    public IEnrollment makeEnrollment()
     {
         return new Enrollment();
     }

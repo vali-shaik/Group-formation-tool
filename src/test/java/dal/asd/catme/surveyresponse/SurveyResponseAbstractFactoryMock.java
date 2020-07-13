@@ -22,13 +22,13 @@ public class SurveyResponseAbstractFactoryMock implements ISurveyResponseAbstrac
     }
 
     @Override
-    public ISurveyResponseDao getSurveyResponseDao()
+    public ISurveyResponseDao makeSurveyResponseDao()
     {
         return surveyResponseDao;
     }
 
     @Override
-    public ISurveyResponseService getSurveyResponseService()
+    public ISurveyResponseService makeSurveyResponseService()
     {
         return surveyResponseService;
     }

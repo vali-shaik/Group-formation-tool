@@ -1,6 +1,6 @@
 package dal.asd.catme.surveyresponse;
 
-import dal.asd.catme.questionmanager.*;
+import dal.asd.catme.BaseAbstractFactoryImpl;
 import dal.asd.catme.util.CatmeUtil;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -10,14 +10,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
 public class SurveyResponseController
 {
-    ISurveyResponseService surveyService = SurveyResponseAbstractFactoryImpl.instance().getSurveyResponseService();
-    ISurveyResponseModelAbstractFactory modelAbstractFactory = SurveyResponseModelAbstractFactoryImpl.instance();
+    ISurveyResponseService surveyService = BaseAbstractFactoryImpl.instance().makeSurveyResponseAbstractFactory().makeSurveyResponseService();
+    ISurveyResponseModelAbstractFactory modelAbstractFactory = BaseAbstractFactoryImpl.instance().makeSurveyResponseModelAbstractFactory();
 
     @RequestMapping("/viewSurvey")
     public String viewSurvey(@RequestParam(name = "courseId") String courseId, Model m)
@@ -42,7 +41,7 @@ public class SurveyResponseController
         m.addAttribute("attempted",false);
         List<ISurveyResponse> surveyQuestions = surveyService.getSurveyQuestions(publishedSurveyId);
 
-        ISurveyResponseBinder binder = modelAbstractFactory.createSurveyResponseBinder();
+        ISurveyResponseBinder binder = modelAbstractFactory.makeSurveyResponseBinder();
         binder.setQuestionList(surveyQuestions);
         binder.setSurveyId(publishedSurveyId);
         binder.setCourseId(courseId);

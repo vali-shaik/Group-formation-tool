@@ -36,31 +36,31 @@ public class AccessControlAbstractFactoryImpl implements IAccessControlAbstractF
     }
 
     @Override
-    public IAdminDao getAdminDao()
+    public IAdminDao makeAdminDao()
     {
         return adminDao;
     }
 
     @Override
-    public IAdminService getAdminService()
+    public IAdminService makeAdminService()
     {
         return adminService;
     }
 
     @Override
-    public IMailSenderService getMailSenderService()
+    public IMailSenderService makeMailSenderService()
     {
         return mailSenderService;
     }
 
     @Override
-    public IUserDao getUserDao()
+    public IUserDao makeUserDao()
     {
         return userDao;
     }
 
     @Override
-    public IUserService getUserService()
+    public IUserService makeUserService()
     {
         return userService;
     }

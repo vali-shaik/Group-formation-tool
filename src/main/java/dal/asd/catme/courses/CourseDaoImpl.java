@@ -1,9 +1,9 @@
 package dal.asd.catme.courses;
 
+import dal.asd.catme.BaseAbstractFactoryImpl;
 import dal.asd.catme.accesscontrol.AccessControlModelAbstractFactoryImpl;
 import dal.asd.catme.accesscontrol.IAccessControlModelAbstractFactory;
 import dal.asd.catme.accesscontrol.IUser;
-import dal.asd.catme.accesscontrol.User;
 import dal.asd.catme.config.SystemConfig;
 import dal.asd.catme.database.DatabaseAccess;
 import dal.asd.catme.exception.CatmeException;
@@ -32,8 +32,8 @@ public class CourseDaoImpl implements ICourseDao
     private static final Logger log = LoggerFactory.getLogger(CourseDaoImpl.class);
 
     DatabaseAccess database;
-    ICourseModelAbstractFactory modelAbstractFactory = CourseModelAbstractFactoryImpl.instance();
-    IAccessControlModelAbstractFactory accessControlModelAbstractFactory = AccessControlModelAbstractFactoryImpl.instance();
+    ICourseModelAbstractFactory modelAbstractFactory = BaseAbstractFactoryImpl.instance().makeCourseModelAbstractFactory();
+    IAccessControlModelAbstractFactory accessControlModelAbstractFactory = BaseAbstractFactoryImpl.instance().makeAccessControlModelAbstractFactory();
 
     @Override
     public List<ICourse> getCourses(String role) throws CatmeException
@@ -85,7 +85,7 @@ public class CourseDaoImpl implements ICourseDao
                 while (resultSet.next())
                 {
                     log.info("Fetched all courses from Database");
-                    ICourse course = modelAbstractFactory.createCourse();
+                    ICourse course = modelAbstractFactory.makeCourse();
                     course.setCourseId(resultSet.getString(CatmeUtil.COURSE_ID_FIELD));
                     course.setCourseName(resultSet.getString(CatmeUtil.COURSE_NAME_FIELD));
 
@@ -129,7 +129,7 @@ public class CourseDaoImpl implements ICourseDao
             ResultSet resultSet = db.executeQuery(SELECT_COURSE);
             while (resultSet.next())
             {
-                ICourse course =  modelAbstractFactory.createCourse();
+                ICourse course =  modelAbstractFactory.makeCourse();
                 course.setCourseId(resultSet.getString(CatmeUtil.COURSE_ID));
                 course.setCourseName(resultSet.getString(CatmeUtil.COURSE_NAME));
                 courses.add(course);
@@ -160,7 +160,7 @@ public class CourseDaoImpl implements ICourseDao
         Statement statement = null;
         Connection connection = null;
 
-        ICourse course = modelAbstractFactory.createCourse();
+        ICourse course = modelAbstractFactory.makeCourse();
         try
         {
             database = SystemConfig.instance().getDatabaseAccess();
@@ -263,7 +263,7 @@ public class CourseDaoImpl implements ICourseDao
 
             while (rs.next())
             {
-                IUser u = accessControlModelAbstractFactory.createUser();
+                IUser u = accessControlModelAbstractFactory.makeUser();
                 u.setBannerId(rs.getString(1));
                 u.setLastName(rs.getString(2));
                 u.setFirstName(rs.getString(3));

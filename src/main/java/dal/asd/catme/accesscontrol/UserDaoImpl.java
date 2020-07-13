@@ -1,7 +1,9 @@
 package dal.asd.catme.accesscontrol;
 
+import dal.asd.catme.BaseAbstractFactoryImpl;
 import dal.asd.catme.config.SystemConfig;
 import dal.asd.catme.courses.CourseAbstractFactoryImpl;
+import dal.asd.catme.courses.ICourseAbstractFactory;
 import dal.asd.catme.courses.IRoleDao;
 import dal.asd.catme.database.DatabaseAccess;
 import dal.asd.catme.util.CatmeUtil;
@@ -22,7 +24,8 @@ public class UserDaoImpl implements IUserDao
 
     PasswordEncoder p;
 
-    IAccessControlModelAbstractFactory modelAbstractFactory = AccessControlModelAbstractFactoryImpl.instance();
+    IAccessControlModelAbstractFactory modelAbstractFactory = BaseAbstractFactoryImpl.instance().makeAccessControlModelAbstractFactory();
+    ICourseAbstractFactory courseAbstractFactory = BaseAbstractFactoryImpl.instance().makeCourseAbstractFactory();
 
     @Override
     public int checkExistingUser(String bannerId, Connection con)
@@ -60,7 +63,7 @@ public class UserDaoImpl implements IUserDao
                 stmt.setString(5, p.encode(user.getPassword()));
 
                 stmt.executeUpdate();
-                roleDao = CourseAbstractFactoryImpl.instance().getRoleDao();
+                roleDao = courseAbstractFactory.makeRoleDao();
                 roleDao.assignRole(bannerId, CatmeUtil.GUEST_ROLE_ID, con);
                 return 1;
             }
@@ -87,7 +90,7 @@ public class UserDaoImpl implements IUserDao
             String lastname = rs.getString(3);
             String emailid = rs.getString(4);
 
-            IUser u = modelAbstractFactory.createUser();
+            IUser u = modelAbstractFactory.makeUser();
             u.setBannerId(bannerId);
             u.setFirstName(firstname);
             u.setLastName(lastname);
@@ -116,7 +119,7 @@ public class UserDaoImpl implements IUserDao
 
             while (resultSet.next())
             {
-                IUser user = modelAbstractFactory.createUser();
+                IUser user = modelAbstractFactory.makeUser();
                 user.setBannerId(resultSet.getString(CatmeUtil.BANNER_ID));
                 user.setFirstName(resultSet.getString(CatmeUtil.FIRST_NAME));
                 user.setLastName(resultSet.getString(CatmeUtil.LAST_NAME));

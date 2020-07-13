@@ -22,13 +22,13 @@ public class CSVParserAbstractFactoryImpl implements ICSVParserAbstractFactory
     }
 
     @Override
-    public ICSVReader getCSVReader(InputStream inputStream)
+    public ICSVReader makeCSVReader(InputStream inputStream)
     {
         return new CSVReader(inputStream);
     }
 
     @Override
-    public ICSVParser getCSVParser()
+    public ICSVParser makeCSVParser()
     {
         return icsvParser;
     }

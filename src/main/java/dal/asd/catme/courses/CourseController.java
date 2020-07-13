@@ -1,5 +1,6 @@
 package dal.asd.catme.courses;
 
+import dal.asd.catme.BaseAbstractFactoryImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -11,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import dal.asd.catme.accesscontrol.User;
-import dal.asd.catme.config.CatmeSecurityConfig;
 import dal.asd.catme.exception.CatmeException;
 import dal.asd.catme.util.CatmeUtil;
 
@@ -19,6 +19,8 @@ import dal.asd.catme.util.CatmeUtil;
 public class CourseController
 {
     private static final Logger log = LoggerFactory.getLogger(CourseController.class);
+
+    ICourseAbstractFactory courseAbstractFactory = BaseAbstractFactoryImpl.instance().makeCourseAbstractFactory();
 
     @GetMapping("taEnrollment/{courseId}")
     public String enrollTa(@PathVariable("courseId") String courseId, Model model)
@@ -37,7 +39,7 @@ public class CourseController
     @RequestMapping("taEnrollment/{courseId}")
     public String enrollTa(@PathVariable("courseId") String courseId, @RequestParam String bannerId, Model model)
     {
-        IRoleService roleService = CourseAbstractFactoryImpl.instance().getRoleService();
+        IRoleService roleService = courseAbstractFactory.makeRoleService();
 
         Enrollment user = new Enrollment(bannerId, courseId);
         model.addAttribute("user", user);
@@ -82,7 +84,7 @@ public class CourseController
     @RequestMapping("/courseDisplay")
     public ModelAndView diplayCoursePage(@RequestParam(name = "courseId") String courseId) throws CatmeException
     {
-        ICourseService courseService = CourseAbstractFactoryImpl.instance().getCourseService();
+        ICourseService courseService = courseAbstractFactory.makeCourseService();
 
         log.info("Selected Course page ID: " + courseId);
         User currentUser = new User();

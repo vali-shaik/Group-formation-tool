@@ -14,13 +14,13 @@ public class SurveyResponseModelAbstractFactoryImpl implements ISurveyResponseMo
     }
 
     @Override
-    public ISurveyResponse createSurveyResponse()
+    public ISurveyResponse makeSurveyResponse()
     {
         return new SurveyResponse();
     }
 
     @Override
-    public ISurveyResponseBinder createSurveyResponseBinder()
+    public ISurveyResponseBinder makeSurveyResponseBinder()
     {
         return new SurveyResponseBinder();
     }

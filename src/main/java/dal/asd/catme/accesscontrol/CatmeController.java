@@ -2,6 +2,7 @@ package dal.asd.catme.accesscontrol;
 
 import java.util.List;
 
+import dal.asd.catme.BaseAbstractFactoryImpl;
 import dal.asd.catme.config.SystemConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,7 +24,8 @@ public class CatmeController
 
     CatmeSecurityConfig catmeServiceConfig;
 
-    IAccessControlModelAbstractFactory modelAbstractFactory = AccessControlModelAbstractFactoryImpl.instance();
+    IAccessControlModelAbstractFactory modelAbstractFactory = BaseAbstractFactoryImpl.instance().makeAccessControlModelAbstractFactory();
+    IAccessControlAbstractFactory accessControlAbstractFactory = BaseAbstractFactoryImpl.instance().makeAccessControlAbstractFactory();
 
     private static final Logger log = LoggerFactory.getLogger(CatmeController.class);
 
@@ -37,14 +39,14 @@ public class CatmeController
     @GetMapping("register")
     public String signupPage(Model model)
     {
-        model.addAttribute("user", modelAbstractFactory.createUser());
+        model.addAttribute("user", modelAbstractFactory.makeUser());
         return CatmeUtil.SIGNUP_PAGE;
     }
 
     @RequestMapping("signup")
     public String signupPage(@ModelAttribute IUser user, Model model)
     {
-        userService = AccessControlAbstractFactoryImpl.instance().getUserService();
+        userService = accessControlAbstractFactory.makeUserService();
         String message = userService.addUser(user);
         model.addAttribute("message", message);
         return CatmeUtil.SIGNEDUP_PAGE;

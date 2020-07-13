@@ -12,7 +12,7 @@ public class SurveyResponseServiceImplTest
     @Test
     public void isSurveyPublishedTest()
     {
-        ISurveyResponseService surveyResponseService = SurveyResponseAbstractFactoryMock.instance().getSurveyResponseService();
+        ISurveyResponseService surveyResponseService = SurveyResponseAbstractFactoryMock.instance().makeSurveyResponseService();
 
         assertNotNull(surveyResponseService.isSurveyPublished("5308"));
         assertNull(surveyResponseService.isSurveyPublished(""));
@@ -21,7 +21,7 @@ public class SurveyResponseServiceImplTest
     @Test
     public void getSurveyQuestionsTest()
     {
-        ISurveyResponseService surveyResponseService = SurveyResponseAbstractFactoryMock.instance().getSurveyResponseService();
+        ISurveyResponseService surveyResponseService = SurveyResponseAbstractFactoryMock.instance().makeSurveyResponseService();
 
         assertNotNull(surveyResponseService.getSurveyQuestions("5308"));
         assertNull(surveyResponseService.getSurveyQuestions(""));
@@ -30,7 +30,7 @@ public class SurveyResponseServiceImplTest
     @Test
     public void saveResponsesTest()
     {
-        ISurveyResponseService surveyResponseService = SurveyResponseAbstractFactoryMock.instance().getSurveyResponseService();
+        ISurveyResponseService surveyResponseService = SurveyResponseAbstractFactoryMock.instance().makeSurveyResponseService();
 
         ISurveyResponseBinder binder = new SurveyResponseBinder();
         List<ISurveyResponse> questions = new ArrayList<>();
@@ -48,7 +48,7 @@ public class SurveyResponseServiceImplTest
     @Test
     public void isSurveyAttemptedTest()
     {
-        ISurveyResponseService surveyResponseService = SurveyResponseAbstractFactoryMock.instance().getSurveyResponseService();
+        ISurveyResponseService surveyResponseService = SurveyResponseAbstractFactoryMock.instance().makeSurveyResponseService();
 
         assertTrue(surveyResponseService.isSurveyAttempted("5100","B00121212"));
     }

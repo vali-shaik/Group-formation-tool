@@ -13,13 +13,13 @@ public class AccessControlModelAbstractFactoryImpl implements IAccessControlMode
         return modelAbstractFactory;
     }
     @Override
-    public IRole createRole()
+    public IRole makeRole()
     {
         return new Role();
     }
 
     @Override
-    public IUser createUser()
+    public IUser makeUser()
     {
         return new User();
     }

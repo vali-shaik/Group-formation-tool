@@ -1,5 +1,6 @@
 package dal.asd.catme.courses;
 
+import dal.asd.catme.BaseAbstractFactoryImpl;
 import dal.asd.catme.accesscontrol.AccessControlAbstractFactoryImpl;
 import dal.asd.catme.accesscontrol.IUserDao;
 import dal.asd.catme.util.CatmeUtil;
@@ -126,10 +127,10 @@ public class RoleDaoImpl implements IRoleDao
 
         try
         {
-            userDao = AccessControlAbstractFactoryImpl.instance().getUserDao();
+            userDao = BaseAbstractFactoryImpl.instance().makeAccessControlAbstractFactory().makeUserDao();
             if (0 != userDao.checkExistingUser(user.getBannerId(), con))
             {
-                courseDao = CourseAbstractFactoryImpl.instance().getCourseDao();
+                courseDao = BaseAbstractFactoryImpl.instance().makeCourseAbstractFactory().makeCourseDao();
                 if (0 != courseDao.checkCourseExists(user.getCourseId(), con))
                 {
                     if (0 == courseDao.checkCourseRegistration(user.getBannerId(), user.getCourseId(), con))

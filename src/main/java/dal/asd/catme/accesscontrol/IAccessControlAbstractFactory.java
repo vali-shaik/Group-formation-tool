@@ -2,11 +2,11 @@ package dal.asd.catme.accesscontrol;
 
 public interface IAccessControlAbstractFactory
 {
-    IAdminDao getAdminDao();
-    IAdminService getAdminService();
+    IAdminDao makeAdminDao();
+    IAdminService makeAdminService();
 
-    IMailSenderService getMailSenderService();
+    IMailSenderService makeMailSenderService();
 
-    IUserDao getUserDao();
-    IUserService getUserService();
+    IUserDao makeUserDao();
+    IUserService makeUserService();
 }

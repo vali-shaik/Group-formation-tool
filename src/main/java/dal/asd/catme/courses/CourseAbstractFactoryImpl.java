@@ -32,37 +32,37 @@ public class CourseAbstractFactoryImpl implements ICourseAbstractFactory
     }
 
     @Override
-    public ICourseService getCourseService()
+    public ICourseService makeCourseService()
     {
         return courseService;
     }
 
     @Override
-    public IEnrollStudentService getEnrollmentService()
+    public IEnrollStudentService makeEnrollmentService()
     {
         return enrollStudentService;
     }
 
     @Override
-    public IRoleService getRoleService()
+    public IRoleService makeRoleService()
     {
         return roleService;
     }
 
     @Override
-    public ICourseDao getCourseDao()
+    public ICourseDao makeCourseDao()
     {
         return courseDao;
     }
 
     @Override
-    public IStudentDao getStudentDao()
+    public IStudentDao makeStudentDao()
     {
         return studentDao;
     }
 
     @Override
-    public IRoleDao getRoleDao()
+    public IRoleDao makeRoleDao()
     {
         return roleDao;
     }

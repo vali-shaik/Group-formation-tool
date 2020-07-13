@@ -21,13 +21,13 @@ public class SurveyResponseAbstractFactoryImpl implements ISurveyResponseAbstrac
         return surveyResponseAbstractFactory;
     }
     @Override
-    public ISurveyResponseDao getSurveyResponseDao()
+    public ISurveyResponseDao makeSurveyResponseDao()
     {
         return surveyResponseDao;
     }
 
     @Override
-    public ISurveyResponseService getSurveyResponseService()
+    public ISurveyResponseService makeSurveyResponseService()
     {
         return surveyResponseService;
     }

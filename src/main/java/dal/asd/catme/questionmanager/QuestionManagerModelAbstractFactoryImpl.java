@@ -14,19 +14,19 @@ public class QuestionManagerModelAbstractFactoryImpl implements IQuestionManager
     }
 
     @Override
-    public IQuestion createQuestion()
+    public IQuestion makeQuestion()
     {
         return new Question();
     }
 
     @Override
-    public IOption createOption()
+    public IOption makeOption()
     {
         return new Option();
     }
 
     @Override
-    public IQuestionTitle createQuestionTitle()
+    public IQuestionTitle makeQuestionTitle()
     {
         return new QuestionTitle();
     }

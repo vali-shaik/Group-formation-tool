@@ -1,5 +1,6 @@
 package dal.asd.catme.password;
 
+import dal.asd.catme.BaseAbstractFactoryImpl;
 import dal.asd.catme.accesscontrol.*;
 import dal.asd.catme.config.SystemConfig;
 import dal.asd.catme.database.DatabaseAccess;
@@ -19,7 +20,7 @@ public class PasswordResetService implements IPasswordResetService
     DatabaseAccess db;
     Connection con;
 
-    IAccessControlModelAbstractFactory accessControlModelAbstractFactory = AccessControlModelAbstractFactoryImpl.instance();
+    IAccessControlModelAbstractFactory accessControlModelAbstractFactory = BaseAbstractFactoryImpl.instance().makeAccessControlModelAbstractFactory();
 
     public PasswordResetService(IUserDao userDao, IPasswordDao passwordDao)
     {
@@ -91,7 +92,7 @@ public class PasswordResetService implements IPasswordResetService
     @Override
     public void resetPassword(String bannerId, String password) throws CatmeException
     {
-        IUser u = accessControlModelAbstractFactory.createUser();
+        IUser u = accessControlModelAbstractFactory.makeUser();
         u.setBannerId(bannerId);
         u.setPassword(password);
 

@@ -2,6 +2,6 @@ package dal.asd.catme.surveyresponse;
 
 public interface ISurveyResponseAbstractFactory
 {
-    ISurveyResponseDao getSurveyResponseDao();
-    ISurveyResponseService getSurveyResponseService();
+    ISurveyResponseDao makeSurveyResponseDao();
+    ISurveyResponseService makeSurveyResponseService();
 }

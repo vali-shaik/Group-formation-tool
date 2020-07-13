@@ -1,5 +1,6 @@
 package dal.asd.catme.surveyresponse;
 
+import dal.asd.catme.BaseAbstractFactoryImpl;
 import dal.asd.catme.config.SystemConfig;
 import dal.asd.catme.database.DatabaseAccess;
 import dal.asd.catme.questionmanager.Option;
@@ -22,7 +23,7 @@ public class SurveyResponseDaoImpl implements ISurveyResponseDao
     private static int OPTIONTEXT=4;
     private static int OPTIONORDER=5;
 
-    ISurveyResponseModelAbstractFactory modelAbstractFactory = SurveyResponseModelAbstractFactoryImpl.instance();
+    ISurveyResponseModelAbstractFactory modelAbstractFactory = BaseAbstractFactoryImpl.instance().makeSurveyResponseModelAbstractFactory();
 
     public String isSurveyPublished(String courseId)
     {
@@ -230,12 +231,12 @@ public class SurveyResponseDaoImpl implements ISurveyResponseDao
         try
         {
             int prevId=-1;
-            ISurveyResponse q=modelAbstractFactory.createSurveyResponse();
+            ISurveyResponse q=modelAbstractFactory.makeSurveyResponse();
             while(rs.next())
             {
                 if(rs.getInt(ID)!=prevId)
                 {
-                    q=modelAbstractFactory.createSurveyResponse();
+                    q=modelAbstractFactory.makeSurveyResponse();
                     q.setQuestion(new Question());
                     q.getQuestion().setQuestionId(rs.getInt(ID));
                     q.getQuestion().setQuestionText(rs.getString(TEXT));

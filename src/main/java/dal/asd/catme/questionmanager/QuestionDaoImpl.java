@@ -1,5 +1,6 @@
 package dal.asd.catme.questionmanager;
 
+import dal.asd.catme.BaseAbstractFactoryImpl;
 import dal.asd.catme.config.SystemConfig;
 import dal.asd.catme.database.DatabaseAccess;
 import dal.asd.catme.exception.QuestionDatabaseException;
@@ -16,7 +17,7 @@ import java.util.List;
 public class QuestionDaoImpl implements IQuestionDao
 {
     DatabaseAccess db;
-    IQuestionManagerModelAbstractFactory modelAbstractFactory = QuestionManagerModelAbstractFactoryImpl.instance();
+    IQuestionManagerModelAbstractFactory modelAbstractFactory = BaseAbstractFactoryImpl.instance().makeQuestionManagerModelAbstractFactory();
 
     public QuestionDaoImpl()
     {
@@ -45,7 +46,7 @@ public class QuestionDaoImpl implements IQuestionDao
 
             while (rs.next())
             {
-                IQuestion q =  modelAbstractFactory.createQuestion();
+                IQuestion q =  modelAbstractFactory.makeQuestion();
                 q.setQuestionId(rs.getInt(QUESTIONID));
                 q.setQuestionTitle(rs.getString(QUESTIONTITLE));
                 q.setQuestionText(rs.getString(QUESTION));

@@ -1,6 +1,6 @@
 package dal.asd.catme.accesscontrol;
 
-import dal.asd.catme.config.SystemConfig;
+import dal.asd.catme.BaseAbstractFactoryImpl;
 import dal.asd.catme.courses.*;
 import dal.asd.catme.util.CatmeUtil;
 import org.slf4j.Logger;
@@ -22,7 +22,9 @@ public class AdminController
     IAdminService adminServiceImpl;
     IUserService userService;
 
-    ICourseModelAbstractFactory modelAbstractFactory = CourseModelAbstractFactoryImpl.instance();
+    ICourseModelAbstractFactory modelAbstractFactory = BaseAbstractFactoryImpl.instance().makeCourseModelAbstractFactory();
+    ICourseAbstractFactory courseAbstractFactory = BaseAbstractFactoryImpl.instance().makeCourseAbstractFactory();
+    IAccessControlAbstractFactory accessControlAbstractFactory = BaseAbstractFactoryImpl.instance().makeAccessControlAbstractFactory();
 
     private static final Logger logger = LoggerFactory.getLogger(AdminController.class);
 
@@ -37,7 +39,7 @@ public class AdminController
     public String addCourse(Model model)
     {
         logger.info("****Admin Controller - Add Course Invoked*****");
-        model.addAttribute("course", modelAbstractFactory.createCourse());
+        model.addAttribute("course", modelAbstractFactory.makeCourse());
         return CatmeUtil.ADD_COURSE;
     }
 
@@ -45,7 +47,7 @@ public class AdminController
     public String addCourseToDatabase(@ModelAttribute Course course)
     {
         logger.info("****Admin Controller - Add Course to Database Invoked*****");
-        adminServiceImpl = AccessControlAbstractFactoryImpl.instance().getAdminService();
+        adminServiceImpl = accessControlAbstractFactory.makeAdminService();
         int result = adminServiceImpl.addCourse(course);
         if (result == 1)
         {
@@ -62,14 +64,14 @@ public class AdminController
     @ModelAttribute("courses")
     public List<ICourse> getCourseList()
     {
-        ICourseService courseService = CourseAbstractFactoryImpl.instance().getCourseService();
+        ICourseService courseService = courseAbstractFactory.makeCourseService();
         return courseService.getAllCourses();
     }
 
     @ModelAttribute("users")
     public List<IUser> getUsersList()
     {
-        userService = AccessControlAbstractFactoryImpl.instance().getUserService();
+        userService = accessControlAbstractFactory.makeUserService();
         return userService.getUsers();
     }
 
@@ -77,7 +79,7 @@ public class AdminController
     public String deleteCourse(@RequestParam String course)
     {
         logger.info("****Admin Controller - Delete Course Invoked*****");
-        adminServiceImpl = AccessControlAbstractFactoryImpl.instance().getAdminService();
+        adminServiceImpl = accessControlAbstractFactory.makeAdminService();
         int result = adminServiceImpl.deleteCourse(course);
         if (result > 0)
         {
@@ -92,7 +94,7 @@ public class AdminController
     public String addInstructor(@RequestParam String course, @RequestParam String user)
     {
         logger.info("****Admin Controller - Add Instructor Invoked*****");
-        adminServiceImpl = AccessControlAbstractFactoryImpl.instance().getAdminService();
+        adminServiceImpl = accessControlAbstractFactory.makeAdminService();
         int result = adminServiceImpl.addInstructorToCourse(user, course);
         if (result == 1)
         {

@@ -24,19 +24,19 @@ public class QuestionManagerAbstractFactoryImpl implements IQuestionManagerAbstr
     }
 
     @Override
-    public IQuestionDao getQuestionDao()
+    public IQuestionDao makeQuestionDao()
     {
         return questionDao;
     }
 
     @Override
-    public IQuestionManagerService getQuestionManagerService()
+    public IQuestionManagerService makeQuestionManagerService()
     {
         return questionManagerService;
     }
 
     @Override
-    public IListQuestionsService getListQuestionsService()
+    public IListQuestionsService makeListQuestionsService()
     {
         return listQuestionsService;
     }
