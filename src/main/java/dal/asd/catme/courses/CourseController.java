@@ -40,10 +40,16 @@ public class CourseController
     public String enrollTa(@PathVariable("courseId") String courseId, @RequestParam String bannerId, Model model)
     {
         IRoleService roleService = courseAbstractFactory.makeRoleService();
-
+        String message;
         Enrollment user = new Enrollment(bannerId, courseId);
         model.addAttribute("user", user);
-        String message = roleService.assignTa(user);
+        int result = roleService.assignTa(user);
+        if(result==CatmeUtil.ONE)
+        {
+            message="TA enrolled successfully.";
+        }else{
+            message="Error enrolling the TA";
+        }
         model.addAttribute("message", message);
         return CatmeUtil.TA_ENROLLED_PAGE;
     }
