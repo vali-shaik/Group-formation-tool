@@ -1,10 +1,9 @@
 package dal.asd.catme.questionmanagertest;
 
+import dal.asd.catme.BaseAbstractFactoryMock;
+import dal.asd.catme.IBaseAbstractFactory;
 import dal.asd.catme.exception.QuestionDatabaseException;
-import dal.asd.catme.questionmanager.IListQuestionsService;
-import dal.asd.catme.questionmanager.IQuestion;
-import dal.asd.catme.questionmanager.ListQuestionsServiceImpl;
-import dal.asd.catme.questionmanager.Question;
+import dal.asd.catme.questionmanager.*;
 
 import org.junit.jupiter.api.Test;
 
@@ -14,11 +13,13 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 public class ListQuestionsServiceTest
 {
+    IBaseAbstractFactory baseAbstractFactory = BaseAbstractFactoryMock.instance();
+    IQuestionManagerAbstractFactory questionManagerAbstractFactory = baseAbstractFactory.makeQuestionManagerAbstractFactory();
     @Test
     void getQuestionsTest()
     {
 
-        IListQuestionsService listQuestionsService = new ListQuestionsServiceImpl(new QuestionDaoMock());
+        IListQuestionsService listQuestionsService = questionManagerAbstractFactory.makeListQuestionsService();
 
         try
         {
@@ -43,7 +44,7 @@ public class ListQuestionsServiceTest
     @Test
     void sortByDateTest()
     {
-        IListQuestionsService listQuestionsService = new ListQuestionsServiceImpl(new QuestionDaoMock());
+        IListQuestionsService listQuestionsService = questionManagerAbstractFactory.makeListQuestionsService();
 
         try
         {
@@ -68,7 +69,7 @@ public class ListQuestionsServiceTest
     @Test
     void sortByTitleTest()
     {
-        IListQuestionsService listQuestionsService = new ListQuestionsServiceImpl(new QuestionDaoMock());
+        IListQuestionsService listQuestionsService = questionManagerAbstractFactory.makeListQuestionsService();
 
         try
         {

@@ -1,9 +1,8 @@
 package dal.asd.catme.questionmanagertest;
 
-import dal.asd.catme.questionmanager.IQuestion;
-import dal.asd.catme.questionmanager.IQuestionTitle;
-import dal.asd.catme.questionmanager.Question;
-import dal.asd.catme.questionmanager.QuestionTitle;
+import dal.asd.catme.BaseAbstractFactoryMock;
+import dal.asd.catme.IBaseAbstractFactory;
+import dal.asd.catme.questionmanager.*;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -12,10 +11,13 @@ import java.util.List;
 
 public class QuestionTitleTest
 {
+    IBaseAbstractFactory baseAbstractFactory = BaseAbstractFactoryMock.instance();
+    IQuestionManagerModelAbstractFactory modelAbstractFactory = baseAbstractFactory.makeQuestionManagerModelAbstractFactory();
     @Test
     public void getQuestionTitleTest()
     {
-        IQuestionTitle questionTitle = new QuestionTitle("Title");
+        IQuestionTitle questionTitle = modelAbstractFactory.makeQuestionTitle();
+        questionTitle.setQuestionTitle("Title");
 
         assertEquals(questionTitle.getQuestionTitle(),"Title");
     }
@@ -24,6 +26,7 @@ public class QuestionTitleTest
     public void setQuestionTitleTest()
     {
         IQuestionTitle questionTitle = new QuestionTitle();
+        questionTitle.setQuestionTitle("Title");
 
         questionTitle.setQuestionTitle("Title");
         assertEquals(questionTitle.getQuestionTitle(),"Title");

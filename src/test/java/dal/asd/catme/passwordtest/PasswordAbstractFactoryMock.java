@@ -46,7 +46,7 @@ public class PasswordAbstractFactoryMock implements IPasswordAbstractFactory
     {
         if(passwordRulesConfig == null)
         {
-            passwordRulesConfig = new PasswordRulesConfigImpl();
+            passwordRulesConfig = new PassordRulesConfigMock();
         }
         return passwordRulesConfig;
     }
