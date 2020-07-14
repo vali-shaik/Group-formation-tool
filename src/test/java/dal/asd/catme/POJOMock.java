@@ -1,9 +1,11 @@
 package dal.asd.catme;
 
 import dal.asd.catme.accesscontrol.IUser;
+import dal.asd.catme.accesscontrol.Role;
 import dal.asd.catme.accesscontrol.User;
 import dal.asd.catme.courses.Course;
 import dal.asd.catme.courses.ICourse;
+import dal.asd.catme.util.CatmeUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +20,9 @@ public class POJOMock
         IUser user=new User();
         user.setBannerId("B00835717");
         user.setRole(new ArrayList<>());
+        Role r = new Role();
+        r.setRoleId(String.valueOf(CatmeUtil.STUDENT_ROLE_ID));
+        user.getRole().add(r);
         listOfUsers.add(user);
         IUser user1 = new User();
         user1.setBannerId("B00835718");

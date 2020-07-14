@@ -1,5 +1,7 @@
 package dal.asd.catme.coursestest;
 
+import dal.asd.catme.BaseAbstractFactoryMock;
+import dal.asd.catme.IBaseAbstractFactory;
 import dal.asd.catme.POJOMock;
 import dal.asd.catme.accesscontrol.IUser;
 import dal.asd.catme.courses.*;
@@ -9,25 +11,21 @@ import dal.asd.catme.exception.EnrollmentException;
 import dal.asd.catme.util.CatmeUtil;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class EnrollStudentServiceImplTest
 {
-
-    ArrayList<IUser> users = POJOMock.getUsers();
+    IBaseAbstractFactory baseAbstractFactory = BaseAbstractFactoryMock.instance();
+    ICourseAbstractFactory courseAbstractFactory  = baseAbstractFactory.makeCourseAbstractFactory();
     ICourse c = POJOMock.getCourses().get(0);
     IUser s = POJOMock.getUsers().get(0);
-
-    IRoleDao roleDao = new RoleDaoMock(users, c);
-    IStudentDao studentDao = new StudentDaoMock();
 
     @Test
     public void enrollStudentsIntoCourseTest()
     {
-        EnrollStudentServiceImpl service = new EnrollStudentServiceImpl(roleDao, studentDao);
+        IEnrollStudentService service = courseAbstractFactory.makeEnrollmentService();
 
         assertTrue(service.enrollStudentsIntoCourse(POJOMock.getUsers(),c));
     }
@@ -35,13 +33,13 @@ class EnrollStudentServiceImplTest
     @Test
     void assignStudentRoleTest()
     {
-        EnrollStudentServiceImpl service = new EnrollStudentServiceImpl(roleDao, studentDao);
+        IEnrollStudentService service = courseAbstractFactory.makeEnrollmentService();
 
         try
         {
-            service.assignStudentRole(users.get(0));
+            service.assignStudentRole(POJOMock.getUsers().get(0));
 
-            List<Role> roles = users.get(0).getRole();
+            List<Role> roles = POJOMock.getUsers().get(0).getRole();
             assertEquals(String.valueOf(CatmeUtil.STUDENT_ROLE_ID), roles.get(roles.size() - 1).getRoleId());
         } catch (EnrollmentException e)
         {
@@ -62,7 +60,7 @@ class EnrollStudentServiceImplTest
     @Test
     void enrollStudentTest()
     {
-        EnrollStudentServiceImpl service = new EnrollStudentServiceImpl(roleDao, studentDao);
+        IEnrollStudentService service = courseAbstractFactory.makeEnrollmentService();
         try
         {
             service.enrollStudent(s, c);

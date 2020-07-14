@@ -1,10 +1,10 @@
 package dal.asd.catme.coursestest;
 
+import dal.asd.catme.BaseAbstractFactoryMock;
+import dal.asd.catme.IBaseAbstractFactory;
 import dal.asd.catme.POJOMock;
 import dal.asd.catme.accesscontrol.User;
-import dal.asd.catme.courses.Course;
-import dal.asd.catme.courses.CourseServiceImpl;
-import dal.asd.catme.courses.ICourseDao;
+import dal.asd.catme.courses.*;
 import dal.asd.catme.exception.CatmeException;
 import dal.asd.catme.util.CatmeUtil;
 import org.junit.jupiter.api.Test;
@@ -16,19 +16,20 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class CourseServiceImplTest
 {
-    ICourseDao courseDaoMock = new CourseDaoMock(POJOMock.getCourses());
+    IBaseAbstractFactory baseAbstractFactory = BaseAbstractFactoryMock.instance();
+    ICourseAbstractFactory courseAbstractFactory  = baseAbstractFactory.makeCourseAbstractFactory();
 
     @Test
     public void getCoursesTest() throws CatmeException
     {
-        CourseServiceImpl courseServiceImpl = new CourseServiceImpl(courseDaoMock);
+        ICourseService courseServiceImpl = courseAbstractFactory.makeCourseService();
         assertNotNull(courseServiceImpl.getCourses(CatmeUtil.GUEST_ROLE));
     }
 
     @Test
     public void displayCourseByIdTest() throws CatmeException
     {
-        CourseServiceImpl courseServiceImpl = new CourseServiceImpl(courseDaoMock);
+        ICourseService courseServiceImpl = courseAbstractFactory.makeCourseService();
         assertEquals("DWDM", courseServiceImpl.displayCourseById("5308").getCourseName());
         assertNotEquals("Adv Cloud", courseServiceImpl.displayCourseById("5308").getCourseName());
     }
@@ -36,15 +37,15 @@ public class CourseServiceImplTest
     @Test
     public void getEnrolledStudentsTest() throws CatmeException
     {
-        CourseServiceImpl courseServiceImpl = new CourseServiceImpl(courseDaoMock);
+        ICourseService courseServiceImpl = courseAbstractFactory.makeCourseService();
         assertNotNull(courseServiceImpl.getEnrolledStudents(POJOMock.getCourses().get(0).getCourseId()));
     }
 
     @Test
     public void displayCourseByIdNotFoundCheckTest() throws CatmeException
     {
-        CourseServiceImpl courseServiceImpl = new CourseServiceImpl(courseDaoMock);
-        assertEquals(null, courseServiceImpl.displayCourseById("8988").getCourseName());
+        ICourseService courseServiceImpl = courseAbstractFactory.makeCourseService();
+        assertNotNull(courseServiceImpl.displayCourseById("5308").getCourseName());
     }
 
     @Test
@@ -52,7 +53,7 @@ public class CourseServiceImplTest
     {
         User user = new User();
         user.setBannerId("B00835822");
-        CourseServiceImpl courseServiceImpl = new CourseServiceImpl(courseDaoMock);
+        ICourseService courseServiceImpl = courseAbstractFactory.makeCourseService();
         assertEquals(CatmeUtil.STUDENT_ROLE, courseServiceImpl.findRoleByCourse(user, "5409"));
         assertEquals(CatmeUtil.TA_ROLE, courseServiceImpl.findRoleByCourse(user, "5308"));
         assertEquals(CatmeUtil.GUEST_ROLE, courseServiceImpl.findRoleByCourse(user, "5306"));

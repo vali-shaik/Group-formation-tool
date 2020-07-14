@@ -96,7 +96,7 @@ public class RoleDaoMock implements IRoleDao
                 }
             }
         }
-        return null;
+        return "";
     }
 
     @Override

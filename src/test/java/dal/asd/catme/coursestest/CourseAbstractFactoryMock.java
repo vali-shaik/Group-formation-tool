@@ -68,7 +68,7 @@ public class CourseAbstractFactoryMock implements ICourseAbstractFactory
     {
         if(roleDao==null)
         {
-            roleDao = new RoleDaoMock(POJOMock.getUsers(),POJOMock.getCourses().get(0));
+            roleDao = new RoleDaoMock(POJOMock.getUsers(),POJOMock.getCourses());
         }
         return roleDao;
     }

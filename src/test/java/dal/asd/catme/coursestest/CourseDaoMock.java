@@ -42,15 +42,14 @@ public class CourseDaoMock implements ICourseDao
     @Override
     public ICourse displayCourseById(String courseId) throws CatmeException
     {
-        ICourse course = new Course();
         for (ICourse c : listOfCourses)
         {
             if (c.getCourseId().equals(courseId))
             {
-                course = c;
+                return c;
             }
         }
-        return course;
+        return null;
     }
 
     @Override
