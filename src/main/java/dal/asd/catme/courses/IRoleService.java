@@ -2,6 +2,6 @@ package dal.asd.catme.courses;
 
 public interface IRoleService
 {
-    public String assignTa(Enrollment user);
+    public String assignTa(IEnrollment user);
 
 }

@@ -3,10 +3,8 @@ package dal.asd.catme.coursestest;
 import dal.asd.catme.BaseAbstractFactoryMock;
 import dal.asd.catme.IBaseAbstractFactory;
 import dal.asd.catme.POJOMock;
-import dal.asd.catme.accesscontrol.IUser;
+import dal.asd.catme.accesscontrol.*;
 import dal.asd.catme.courses.*;
-import dal.asd.catme.accesscontrol.Role;
-import dal.asd.catme.accesscontrol.User;
 import dal.asd.catme.exception.EnrollmentException;
 import dal.asd.catme.util.CatmeUtil;
 import org.junit.jupiter.api.Test;
@@ -19,6 +17,7 @@ class EnrollStudentServiceImplTest
 {
     IBaseAbstractFactory baseAbstractFactory = BaseAbstractFactoryMock.instance();
     ICourseAbstractFactory courseAbstractFactory  = baseAbstractFactory.makeCourseAbstractFactory();
+    IAccessControlModelAbstractFactory accessControlModelAbstractFactory = baseAbstractFactory.makeAccessControlModelAbstractFactory();
     ICourse c = POJOMock.getCourses().get(0);
     IUser s = POJOMock.getUsers().get(0);
 
@@ -39,7 +38,7 @@ class EnrollStudentServiceImplTest
         {
             service.assignStudentRole(POJOMock.getUsers().get(0));
 
-            List<Role> roles = POJOMock.getUsers().get(0).getRole();
+            List<IRole> roles = POJOMock.getUsers().get(0).getRole();
             assertEquals(String.valueOf(CatmeUtil.STUDENT_ROLE_ID), roles.get(roles.size() - 1).getRoleId());
         } catch (EnrollmentException e)
         {
@@ -49,7 +48,12 @@ class EnrollStudentServiceImplTest
 
         try
         {
-            service.assignStudentRole(new User("B00454545", "A", "B", "a@b"));
+            IUser user = accessControlModelAbstractFactory.makeUser();
+            user.setEmail("a@b");
+            user.setBannerId("B00454545");
+            user.setFirstName("B");
+            user.setLastName("A");
+            service.assignStudentRole(user);
 
             fail();
         } catch (EnrollmentException e)

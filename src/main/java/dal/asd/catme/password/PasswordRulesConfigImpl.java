@@ -1,9 +1,5 @@
 package dal.asd.catme.password;
 
-import dal.asd.catme.database.DatabaseAccess;
-
-import org.springframework.security.crypto.password.PasswordEncoder;
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 

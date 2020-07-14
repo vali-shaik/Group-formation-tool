@@ -18,7 +18,7 @@ public interface IUser
 
     public void setPassword(String password);
 
-    public List<Role> getRole();
+    public List<IRole> getRole();
 
-    public void setRole(List<Role> role);
+    public void setRole(List<IRole> role);
 }

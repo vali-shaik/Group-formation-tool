@@ -9,7 +9,7 @@ public class User implements IUser
     String firstName;
     String email;
     String password;
-    List<Role> role;
+    List<IRole> role;
 
     public User(String bannerId, String lastName, String firstName)
     {
@@ -23,7 +23,7 @@ public class User implements IUser
     {
     }
 
-    public User(String bannerId, String lastName, String firstName, String email, String password, List<Role> role)
+    public User(String bannerId, String lastName, String firstName, String email, String password, List<IRole> role)
     {
         this.bannerId = bannerId;
         this.lastName = lastName;
@@ -100,12 +100,12 @@ public class User implements IUser
         this.password = password;
     }
 
-    public List<Role> getRole()
+    public List<IRole> getRole()
     {
         return role;
     }
 
-    public void setRole(List<Role> role)
+    public void setRole(List<IRole> role)
     {
         this.role = role;
     }

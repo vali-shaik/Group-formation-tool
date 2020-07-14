@@ -1,11 +1,9 @@
 package dal.asd.catme.coursestest;
 
+import dal.asd.catme.BaseAbstractFactoryMock;
 import dal.asd.catme.POJOMock;
-import dal.asd.catme.accesscontrol.IUser;
+import dal.asd.catme.accesscontrol.*;
 import dal.asd.catme.courses.*;
-import dal.asd.catme.accesscontrol.IUserDao;
-import dal.asd.catme.accesscontrol.Role;
-import dal.asd.catme.accesscontrol.User;
 import dal.asd.catme.accesscontroltest.UserDaoMock;
 
 import java.sql.Connection;
@@ -21,21 +19,18 @@ public class RoleDaoMock implements IRoleDao
     List<ICourse> courses;
     ICourse c;
 
-    public RoleDaoMock(List<IUser> users, ICourse c)
-    {
-        this.users = users;
-        this.c = c;
-        userDao = new UserDaoMock(users);
-
-    }
+    IAccessControlModelAbstractFactory accessControlModelAbstractFactory = BaseAbstractFactoryMock.instance().makeAccessControlModelAbstractFactory();
+    ICourseModelAbstractFactory courseModelAbstractFactory = BaseAbstractFactoryMock.instance().makeCourseModelAbstractFactory();
+    IAccessControlAbstractFactory accessControlAbstractFactory = BaseAbstractFactoryMock.instance().makeAccessControlAbstractFactory();
+    ICourseAbstractFactory courseAbstractFactory = BaseAbstractFactoryMock.instance().makeCourseAbstractFactory();
 
     public RoleDaoMock(ArrayList<IUser> users, List<ICourse> courses)
     {
         this.users = users;
         this.courses = courses;
         this.c = courses.get(2);
-        userDao = new UserDaoMock(users);
-        courseDao = new CourseDaoMock(courses);
+        userDao = accessControlAbstractFactory.makeUserDao();
+        courseDao = courseAbstractFactory.makeCourseDao();
     }
 
 
@@ -46,9 +41,9 @@ public class RoleDaoMock implements IRoleDao
         {
             if (u.getBannerId().equalsIgnoreCase(bannerId))
             {
-                Role l = new Role();
+                IRole l = accessControlModelAbstractFactory.makeRole();
                 l.setRoleId(String.valueOf(roleId));
-                ArrayList<Role> roles = new ArrayList<>();
+                ArrayList<IRole> roles = new ArrayList<>();
                 roles.add(l);
 
                 u.setRole(roles);
@@ -118,7 +113,7 @@ public class RoleDaoMock implements IRoleDao
         {
             if (u.getBannerId().equalsIgnoreCase(bannerId))
             {
-                for (Role l : u.getRole())
+                for (IRole l : u.getRole())
                 {
                     if (l.getRoleId().equals(String.valueOf(roleId)))
                         return 1;

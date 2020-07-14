@@ -17,7 +17,7 @@ public class RoleServiceImpl implements IRoleService
     }
 
     @Override
-    public String assignTa(Enrollment user)
+    public String assignTa(IEnrollment user)
     {
         Connection con = null;
         try

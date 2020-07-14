@@ -11,12 +11,16 @@ public class RoleServiceImplTest
 {
     IBaseAbstractFactory baseAbstractFactory = BaseAbstractFactoryMock.instance();
     ICourseAbstractFactory courseAbstractFactory  = baseAbstractFactory.makeCourseAbstractFactory();
+    ICourseModelAbstractFactory courseModelAbstractFactory = baseAbstractFactory.makeCourseModelAbstractFactory();
 
     @Test
     public void assignTATest()
     {
         IRoleService roleService = courseAbstractFactory.makeRoleService();
+        IEnrollment enrollment = courseModelAbstractFactory.makeEnrollment();
+        enrollment.setBannerId("B00835717");
+        enrollment.setCourseId("5306");
 
-        assertEquals("",roleService.assignTa(new Enrollment("B00835717","5308")));
+        assertEquals("",roleService.assignTa(enrollment));
     }
 }

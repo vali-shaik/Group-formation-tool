@@ -2,10 +2,7 @@ package dal.asd.catme.accesscontroltest;
 
 import dal.asd.catme.BaseAbstractFactoryMock;
 import dal.asd.catme.IBaseAbstractFactory;
-import dal.asd.catme.accesscontrol.IAccessControlModelAbstractFactory;
-import dal.asd.catme.accesscontrol.IUser;
-import dal.asd.catme.accesscontrol.Role;
-import dal.asd.catme.accesscontrol.User;
+import dal.asd.catme.accesscontrol.*;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -114,7 +111,7 @@ public class UserTest
     public void setRoleTest()
     {
         IUser u = accessControlModelAbstractFactory.makeUser();
-        List<Role> roles = listRole();
+        List<IRole> roles = listRole();
 
         u.setRole(roles);
         assertEquals(u.getRole(),roles);
@@ -124,18 +121,18 @@ public class UserTest
     public void getRoleTest()
     {
         IUser u = accessControlModelAbstractFactory.makeUser();
-        List<Role> roles = listRole();
+        List<IRole> roles = listRole();
 
         u.setRole(roles);
         assertEquals(u.getRole(),roles);
     }
 
 
-    private List<Role> listRole()
+    private List<IRole> listRole()
     {
-        List<Role> list = new ArrayList<>();
+        List<IRole> list = new ArrayList<>();
 
-        Role r = new Role();
+        IRole r = accessControlModelAbstractFactory.makeRole();
         r.setRoleName("Admin");
         r.setRoleName("1");
 
