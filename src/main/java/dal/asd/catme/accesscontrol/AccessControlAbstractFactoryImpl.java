@@ -5,8 +5,6 @@ import dal.asd.catme.password.PasswordPolicyCheckerImpl;
 
 public class AccessControlAbstractFactoryImpl implements IAccessControlAbstractFactory
 {
-    private static IAccessControlAbstractFactory abstractFactory = null;
-
     private IAdminDao adminDao;
     private IUserDao userDao;
 
@@ -15,7 +13,7 @@ public class AccessControlAbstractFactoryImpl implements IAccessControlAbstractF
     private IUserService userService;
     private IPasswordPolicyCheckerService passwordPolicyCheckerService;
 
-    AccessControlAbstractFactoryImpl()
+    public AccessControlAbstractFactoryImpl()
     {
         adminDao = new AdminDaoImpl();
         userDao = new UserDaoImpl();
@@ -24,15 +22,6 @@ public class AccessControlAbstractFactoryImpl implements IAccessControlAbstractF
         mailSenderService = new MailSenderServiceImpl();
         passwordPolicyCheckerService = new PasswordPolicyCheckerImpl();
         userService = new UserServiceImpl(userDao,passwordPolicyCheckerService);
-    }
-
-    public static IAccessControlAbstractFactory instance()
-    {
-        if(abstractFactory==null)
-        {
-            abstractFactory = new AccessControlAbstractFactoryImpl();
-        }
-        return abstractFactory;
     }
 
     @Override
