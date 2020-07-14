@@ -17,7 +17,7 @@ public class CourseAbstractFactoryImpl implements ICourseAbstractFactory
 
         courseService = new CourseServiceImpl(courseDao);
         roleService = new RoleServiceImpl(roleDao);
-        enrollStudentService = new EnrollStudentService(roleDao,studentDao);
+        enrollStudentService = new EnrollStudentServiceImpl(roleDao,studentDao);
     }
 
     @Override

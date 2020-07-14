@@ -11,14 +11,14 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class EnrollStudentService implements IEnrollStudentService
+public class EnrollStudentServiceImpl implements IEnrollStudentService
 {
     DatabaseAccess db;
     IRoleDao roleDao;
     IStudentDao studentDao;
     Connection con = null;
 
-    public EnrollStudentService(IRoleDao roleDao, IStudentDao studentDao)
+    public EnrollStudentServiceImpl(IRoleDao roleDao, IStudentDao studentDao)
     {
         this.roleDao = roleDao;
         this.studentDao = studentDao;

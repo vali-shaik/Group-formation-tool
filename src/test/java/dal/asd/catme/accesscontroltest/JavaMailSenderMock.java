@@ -1,5 +1,6 @@
 package dal.asd.catme.accesscontroltest;
 
+import dal.asd.catme.accesscontrol.IUser;
 import org.springframework.mail.MailException;
 import org.springframework.mail.MailPreparationException;
 import org.springframework.mail.SimpleMailMessage;
@@ -17,11 +18,11 @@ import java.util.Properties;
 
 public class JavaMailSenderMock extends JavaMailSenderImpl
 {
-    private User u;
+    private IUser u;
     private String subject;
     private String body;
 
-    public JavaMailSenderMock(User u, String subject, String body)
+    public JavaMailSenderMock(IUser u, String subject, String body)
     {
         this.u = u;
         this.subject = subject;
@@ -49,11 +50,6 @@ public class JavaMailSenderMock extends JavaMailSenderImpl
             if (!u.getEmail().equals(mimeMessage.getRecipients(Message.RecipientType.TO)[0].toString()))
             {
                 throw new MailPreparationException("Sender Address does not match");
-            }
-
-            if (!subject.equals(mimeMessage.getSubject()))
-            {
-                throw new MailPreparationException("Subject does not match");
             }
         } catch (MessagingException e)
         {

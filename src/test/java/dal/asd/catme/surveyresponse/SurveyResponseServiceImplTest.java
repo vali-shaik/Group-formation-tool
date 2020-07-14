@@ -1,5 +1,7 @@
 package dal.asd.catme.surveyresponse;
 
+import dal.asd.catme.BaseAbstractFactoryMock;
+import dal.asd.catme.IBaseAbstractFactory;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -9,10 +11,12 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class SurveyResponseServiceImplTest
 {
+    IBaseAbstractFactory baseAbstractFactory = BaseAbstractFactoryMock.instance();
+    ISurveyResponseAbstractFactory surveyResponseAbstractFactory = baseAbstractFactory.makeSurveyResponseAbstractFactory();
     @Test
     public void isSurveyPublishedTest()
     {
-        ISurveyResponseService surveyResponseService = SurveyResponseAbstractFactoryMock.instance().makeSurveyResponseService();
+        ISurveyResponseService surveyResponseService = surveyResponseAbstractFactory.makeSurveyResponseService();
 
         assertNotNull(surveyResponseService.isSurveyPublished("5308"));
         assertNull(surveyResponseService.isSurveyPublished(""));
@@ -21,8 +25,7 @@ public class SurveyResponseServiceImplTest
     @Test
     public void getSurveyQuestionsTest()
     {
-        ISurveyResponseService surveyResponseService = SurveyResponseAbstractFactoryMock.instance().makeSurveyResponseService();
-
+        ISurveyResponseService surveyResponseService = surveyResponseAbstractFactory.makeSurveyResponseService();
         assertNotNull(surveyResponseService.getSurveyQuestions("5308"));
         assertNull(surveyResponseService.getSurveyQuestions(""));
     }
@@ -30,8 +33,7 @@ public class SurveyResponseServiceImplTest
     @Test
     public void saveResponsesTest()
     {
-        ISurveyResponseService surveyResponseService = SurveyResponseAbstractFactoryMock.instance().makeSurveyResponseService();
-
+        ISurveyResponseService surveyResponseService = surveyResponseAbstractFactory.makeSurveyResponseService();
         ISurveyResponseBinder binder = new SurveyResponseBinder();
         List<ISurveyResponse> questions = new ArrayList<>();
 
@@ -48,8 +50,7 @@ public class SurveyResponseServiceImplTest
     @Test
     public void isSurveyAttemptedTest()
     {
-        ISurveyResponseService surveyResponseService = SurveyResponseAbstractFactoryMock.instance().makeSurveyResponseService();
-
+        ISurveyResponseService surveyResponseService = surveyResponseAbstractFactory.makeSurveyResponseService();
         assertTrue(surveyResponseService.isSurveyAttempted("5100","B00121212"));
     }
 }

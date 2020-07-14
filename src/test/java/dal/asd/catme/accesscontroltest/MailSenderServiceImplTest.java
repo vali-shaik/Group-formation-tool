@@ -1,8 +1,11 @@
 package dal.asd.catme.accesscontroltest;
 
-import dal.asd.catme.accesscontrol.MailSenderServiceImpl;
-import dal.asd.catme.accesscontrol.User;
+import dal.asd.catme.BaseAbstractFactoryMock;
+import dal.asd.catme.IBaseAbstractFactory;
+import dal.asd.catme.accesscontrol.*;
 import dal.asd.catme.courses.Course;
+import dal.asd.catme.courses.ICourse;
+import dal.asd.catme.courses.ICourseModelAbstractFactory;
 import dal.asd.catme.util.RandomTokenGenerator;
 import org.junit.jupiter.api.Test;
 import org.springframework.mail.MailException;
@@ -16,77 +19,80 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 public class MailSenderServiceImplTest
 {
-
+    IBaseAbstractFactory baseAbstractFactory = BaseAbstractFactoryMock.instance();
+    IAccessControlAbstractFactory accessControlAbstractFactory = baseAbstractFactory.makeAccessControlAbstractFactory();
+    IAccessControlModelAbstractFactory accessControlModelAbstractFactory = baseAbstractFactory.makeAccessControlModelAbstractFactory();
+    ICourseModelAbstractFactory courseModelAbstractFactory = baseAbstractFactory.makeCourseModelAbstractFactory();
 
     @Test
     void sendMailTest()
     {
 
-        User s = new User("B00101010", "Test", "User", "test@mail.com");
+        IUser s = accessControlModelAbstractFactory.makeUser();
+        s.setBannerId("B00101010");
+        s.setFirstName("User");
+        s.setLastName("Last");
+        s.setEmail("test@mail.com");
         String
                 sub = "This is subject of mail";
         String body =
                 "You are registered in new course";
 
-        MailSenderServiceImpl mailSenderService = new MailSenderServiceImpl(new
-                JavaMailSenderMock(s, sub, body));
+        IMailSenderService mailSenderService = accessControlAbstractFactory.makeMailSenderService();
 
         try
         {
             mailSenderService.sendMail(s, sub, body);
         } catch (MessagingException e)
         {
-            e.printStackTrace();
-        }
-
-    }
-
-    @Test
-    void getFormattedEmailForNewStudentTest()
-    {
-
-        MailSenderServiceImpl mailSenderService = new MailSenderServiceImpl(new JavaMailSenderImpl());
-
-        User s = new User("B00851820", "Prajapati", "Tapan", "Tapan.Prajapati@dal.ca", "ABCE@1234");
-
-        Course c = new Course();
-        c.setCourseId("5308");
-
-        try
-        {
-            assertNotNull(mailSenderService.getFormattedEmailForNewStudent(s, c));
-        } catch (MailException e)
-        {
-            e.printStackTrace();
-        }
-    }
-
-    @Test
-    void getFormattedEmailForForgotPasswordTest()
-    {
-        MailSenderServiceImpl mailSenderService = new MailSenderServiceImpl(new JavaMailSenderImpl());
-
-        User u = new User();
-        u.setBannerId("B00000000");
-        u.setPassword(RandomTokenGenerator.generateRandomPassword(TOKEN_LENGTH));
-        u.setFirstName("Test");
-
-        assertNotNull(mailSenderService.getFormattedEmailForForgotPassword(u));
-
-        User u1 = new User();
-        u1.setBannerId("B00000000");
-        u1.setPassword(RandomTokenGenerator.generateRandomPassword(TOKEN_LENGTH));
-
-        try
-        {
-
-            assertNotNull(mailSenderService.getFormattedEmailForForgotPassword(u1));
             fail();
-        } catch (NullPointerException n)
-        {
+            e.printStackTrace();
+        }
 
+    }
+
+    @Test
+    void sendCredentialsToStudentTest()
+    {
+        IMailSenderService mailSenderService = accessControlAbstractFactory.makeMailSenderService();
+
+        IUser s = accessControlModelAbstractFactory.makeUser();
+        s.setBannerId("B00000000");
+        s.setFirstName("Test");
+        s.setPassword(RandomTokenGenerator.generateRandomPassword(TOKEN_LENGTH));
+        s.setEmail("test@mail.com");
+
+        ICourse course = courseModelAbstractFactory.makeCourse();
+        course.setCourseId("5308");
+
+        try
+        {
+            mailSenderService.sendCredentialsToStudent(s,course);
+        } catch (MessagingException e)
+        {
+            fail();
+            e.printStackTrace();
         }
     }
 
+    @Test
+    void sendResetLinkTest()
+    {
+        IMailSenderService mailSenderService = accessControlAbstractFactory.makeMailSenderService();
 
+        IUser s = accessControlModelAbstractFactory.makeUser();
+        s.setBannerId("B00000000");
+        s.setFirstName("Test");
+        s.setPassword(RandomTokenGenerator.generateRandomPassword(TOKEN_LENGTH));
+        s.setEmail("test@mail.com");
+
+        try
+        {
+            mailSenderService.sendResetLink(s);
+        } catch (MessagingException e)
+        {
+            fail();
+            e.printStackTrace();
+        }
+    }
 }

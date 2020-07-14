@@ -1,5 +1,9 @@
 package dal.asd.catme.accesscontroltest;
 
+import dal.asd.catme.BaseAbstractFactoryMock;
+import dal.asd.catme.IBaseAbstractFactory;
+import dal.asd.catme.accesscontrol.IAccessControlModelAbstractFactory;
+import dal.asd.catme.accesscontrol.IUser;
 import dal.asd.catme.accesscontrol.Role;
 import dal.asd.catme.accesscontrol.User;
 import org.junit.jupiter.api.Test;
@@ -11,10 +15,13 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class UserTest
 {
+    IBaseAbstractFactory baseAbstractFactory = BaseAbstractFactoryMock.instance();
+    IAccessControlModelAbstractFactory accessControlModelAbstractFactory = baseAbstractFactory.makeAccessControlModelAbstractFactory();
+
     @Test
     public void setBannerIdTest()
     {
-        User u = new User();
+        IUser u = accessControlModelAbstractFactory.makeUser();
 
         u.setBannerId("B00121212");
         assertEquals(u.getBannerId(),"B00121212");
@@ -24,7 +31,7 @@ public class UserTest
     @Test
     public void getBannerIdTest()
     {
-        User u = new User();
+        IUser u = accessControlModelAbstractFactory.makeUser();
 
         u.setBannerId("B00121212");
         assertEquals(u.getBannerId(),"B00121212");
@@ -34,7 +41,7 @@ public class UserTest
     @Test
     public void setFirstNameTest()
     {
-        User u = new User();
+        IUser u = accessControlModelAbstractFactory.makeUser();
 
         u.setFirstName("First");
         assertEquals(u.getFirstName(),"First");
@@ -43,7 +50,7 @@ public class UserTest
     @Test
     public void getFirstNameTest()
     {
-        User u = new User();
+        IUser u = accessControlModelAbstractFactory.makeUser();
 
         u.setFirstName("First");
         assertEquals(u.getFirstName(),"First");
@@ -52,7 +59,7 @@ public class UserTest
     @Test
     public void setLastNameTest()
     {
-        User u = new User();
+        IUser u = accessControlModelAbstractFactory.makeUser();
 
         u.setLastName("Last");
         assertEquals(u.getLastName(),"Last");
@@ -61,7 +68,7 @@ public class UserTest
     @Test
     public void getLastNameTest()
     {
-        User u = new User();
+        IUser u = accessControlModelAbstractFactory.makeUser();
 
         u.setLastName("Last");
         assertEquals(u.getLastName(),"Last");
@@ -70,7 +77,7 @@ public class UserTest
     @Test
     public void setPasswordTest()
     {
-        User u = new User();
+        IUser u = accessControlModelAbstractFactory.makeUser();
 
         u.setPassword("Password");
         assertEquals(u.getPassword(),"Password");
@@ -79,7 +86,7 @@ public class UserTest
     @Test
     public void getPasswordTest()
     {
-        User u = new User();
+        IUser u = accessControlModelAbstractFactory.makeUser();
 
         u.setPassword("Password");
         assertEquals(u.getPassword(),"Password");
@@ -88,7 +95,7 @@ public class UserTest
     @Test
     public void setEmailTest()
     {
-        User u = new User();
+        IUser u = accessControlModelAbstractFactory.makeUser();
 
         u.setEmail("abc@xyz.com");
         assertEquals(u.getEmail(),"abc@xyz.com");
@@ -97,7 +104,7 @@ public class UserTest
     @Test
     public void getEmailTest()
     {
-        User u = new User();
+        IUser u = accessControlModelAbstractFactory.makeUser();
 
         u.setEmail("abc@xyz.com");
         assertEquals(u.getEmail(),"abc@xyz.com");
@@ -106,7 +113,7 @@ public class UserTest
     @Test
     public void setRoleTest()
     {
-        User u = new User();
+        IUser u = accessControlModelAbstractFactory.makeUser();
         List<Role> roles = listRole();
 
         u.setRole(roles);
@@ -116,7 +123,7 @@ public class UserTest
     @Test
     public void getRoleTest()
     {
-        User u = new User();
+        IUser u = accessControlModelAbstractFactory.makeUser();
         List<Role> roles = listRole();
 
         u.setRole(roles);

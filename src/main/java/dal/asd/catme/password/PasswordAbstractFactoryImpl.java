@@ -17,7 +17,7 @@ public class PasswordAbstractFactoryImpl implements IPasswordAbstractFactory
         passwordDao = new PasswordDaoImpl();
         userDao = new UserDaoImpl();
         passwordPolicyCheckerService = new PasswordPolicyCheckerImpl();
-        passwordResetService = new PasswordResetService(userDao,passwordDao);
+        passwordResetService = new PasswordResetServiceImpl(userDao,passwordDao);
         passwordRulesConfig = new PasswordRulesConfigImpl();
     }
 

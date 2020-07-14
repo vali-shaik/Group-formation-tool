@@ -8,7 +8,7 @@ import dal.asd.catme.accesscontroltest.UserDaoMock;
 import dal.asd.catme.exception.CatmeException;
 import dal.asd.catme.password.IPasswordDao;
 import dal.asd.catme.password.IPasswordResetService;
-import dal.asd.catme.password.PasswordResetService;
+import dal.asd.catme.password.PasswordResetServiceImpl;
 
 import org.junit.jupiter.api.Test;
 
@@ -16,7 +16,7 @@ import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class PasswordResetServiceTest
+class PasswordResetServiceImplTest
 {
 
     ArrayList<IUser> users = getUsers();
@@ -26,7 +26,7 @@ class PasswordResetServiceTest
     @Test
     void generateResetLinkTest()
     {
-        IPasswordResetService service = new PasswordResetService(userDao, passwordDao);
+        IPasswordResetService service = new PasswordResetServiceImpl(userDao, passwordDao);
 
         assertNotNull(service.generateResetLink(users.get(0).getBannerId()));
 
@@ -36,7 +36,7 @@ class PasswordResetServiceTest
     @Test
     void validateTokenTest()
     {
-        IPasswordResetService service = new PasswordResetService(userDao, passwordDao);
+        IPasswordResetService service = new PasswordResetServiceImpl(userDao, passwordDao);
 
         assertNotNull(service.validateToken("@@@@"));
 
@@ -46,7 +46,7 @@ class PasswordResetServiceTest
     @Test
     void resetPasswordTest()
     {
-        IPasswordResetService service = new PasswordResetService(userDao, passwordDao);
+        IPasswordResetService service = new PasswordResetServiceImpl(userDao, passwordDao);
 
         try
         {

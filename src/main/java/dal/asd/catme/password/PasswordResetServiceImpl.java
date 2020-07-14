@@ -13,7 +13,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 
-public class PasswordResetService implements IPasswordResetService
+public class PasswordResetServiceImpl implements IPasswordResetService
 {
     IUserDao userDao;
     IPasswordDao passwordDao;
@@ -22,7 +22,7 @@ public class PasswordResetService implements IPasswordResetService
 
     IAccessControlModelAbstractFactory accessControlModelAbstractFactory = BaseAbstractFactoryImpl.instance().makeAccessControlModelAbstractFactory();
 
-    public PasswordResetService(IUserDao userDao, IPasswordDao passwordDao)
+    public PasswordResetServiceImpl(IUserDao userDao, IPasswordDao passwordDao)
     {
         this.userDao = userDao;
         this.passwordDao = passwordDao;

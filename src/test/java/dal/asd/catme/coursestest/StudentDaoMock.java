@@ -10,13 +10,6 @@ import java.sql.Connection;
 
 public class StudentDaoMock implements IStudentDao
 {
-    IUser s;
-
-    public StudentDaoMock(IUser s)
-    {
-        this.s = s;
-    }
-
     @Override
     public boolean enroll(IUser s, ICourse c, Connection con)
     {

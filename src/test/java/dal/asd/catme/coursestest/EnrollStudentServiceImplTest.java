@@ -7,7 +7,6 @@ import dal.asd.catme.accesscontrol.Role;
 import dal.asd.catme.accesscontrol.User;
 import dal.asd.catme.exception.EnrollmentException;
 import dal.asd.catme.util.CatmeUtil;
-import org.junit.Rule;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -15,7 +14,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class EnrollStudentServiceTest
+class EnrollStudentServiceImplTest
 {
 
     ArrayList<IUser> users = POJOMock.getUsers();
@@ -23,12 +22,12 @@ class EnrollStudentServiceTest
     IUser s = POJOMock.getUsers().get(0);
 
     IRoleDao roleDao = new RoleDaoMock(users, c);
-    IStudentDao studentDao = new StudentDaoMock(s);
+    IStudentDao studentDao = new StudentDaoMock();
 
     @Test
     public void enrollStudentsIntoCourseTest()
     {
-        EnrollStudentService service = new EnrollStudentService(roleDao, studentDao);
+        EnrollStudentServiceImpl service = new EnrollStudentServiceImpl(roleDao, studentDao);
 
         assertTrue(service.enrollStudentsIntoCourse(POJOMock.getUsers(),c));
     }
@@ -36,7 +35,7 @@ class EnrollStudentServiceTest
     @Test
     void assignStudentRoleTest()
     {
-        EnrollStudentService service = new EnrollStudentService(roleDao, studentDao);
+        EnrollStudentServiceImpl service = new EnrollStudentServiceImpl(roleDao, studentDao);
 
         try
         {
@@ -63,7 +62,7 @@ class EnrollStudentServiceTest
     @Test
     void enrollStudentTest()
     {
-        EnrollStudentService service = new EnrollStudentService(roleDao, studentDao);
+        EnrollStudentServiceImpl service = new EnrollStudentServiceImpl(roleDao, studentDao);
         try
         {
             service.enrollStudent(s, c);
