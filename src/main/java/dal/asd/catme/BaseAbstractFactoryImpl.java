@@ -15,6 +15,7 @@ import dal.asd.catme.questionmanager.IQuestionManagerModelAbstractFactory;
 import dal.asd.catme.questionmanager.QuestionManagerAbstractFactoryImpl;
 import dal.asd.catme.questionmanager.QuestionManagerModelAbstractFactoryImpl;
 import dal.asd.catme.studentlistimport.CSVParserAbstractFactoryImpl;
+import dal.asd.catme.studentlistimport.ICSVParser;
 import dal.asd.catme.studentlistimport.ICSVParserAbstractFactory;
 import dal.asd.catme.surveyresponse.ISurveyResponseAbstractFactory;
 import dal.asd.catme.surveyresponse.ISurveyResponseModelAbstractFactory;
@@ -24,6 +25,17 @@ import dal.asd.catme.surveyresponse.SurveyResponseModelAbstractFactoryImpl;
 public class BaseAbstractFactoryImpl implements IBaseAbstractFactory
 {
     private static IBaseAbstractFactory baseAbstractFactory = null;
+
+    private IAccessControlAbstractFactory accessControlAbstractFactory = null;
+    private IAccessControlModelAbstractFactory accessControlModelAbstractFactory = null;
+    private ICourseAbstractFactory courseAbstractFactory = null;
+    private ICourseModelAbstractFactory courseModelAbstractFactory = null;
+    private IPasswordAbstractFactory passwordAbstractFactory = null;
+    private IQuestionManagerAbstractFactory questionManagerAbstractFactory = null;
+    private IQuestionManagerModelAbstractFactory questionManagerModelAbstractFactory = null;
+    private ICSVParserAbstractFactory icsvParserAbstractFactory = null;
+    private ISurveyResponseAbstractFactory surveyResponseAbstractFactory = null;
+    private ISurveyResponseModelAbstractFactory surveyResponseModelAbstractFactory = null;
 
     public static IBaseAbstractFactory instance()
     {
@@ -36,51 +48,91 @@ public class BaseAbstractFactoryImpl implements IBaseAbstractFactory
 
     public IAccessControlAbstractFactory makeAccessControlAbstractFactory()
     {
-        return AccessControlAbstractFactoryImpl.instance();
+        if(accessControlAbstractFactory == null)
+        {
+            accessControlAbstractFactory = new AccessControlAbstractFactoryImpl();
+        }
+        return accessControlAbstractFactory;
     }
 
     public IAccessControlModelAbstractFactory makeAccessControlModelAbstractFactory()
     {
-        return AccessControlModelAbstractFactoryImpl.instance();
+        if(accessControlModelAbstractFactory == null)
+        {
+            accessControlModelAbstractFactory = new AccessControlModelAbstractFactoryImpl();
+        }
+        return accessControlModelAbstractFactory;
     }
 
     public ICourseAbstractFactory makeCourseAbstractFactory()
     {
-        return CourseAbstractFactoryImpl.instance();
+        if(courseAbstractFactory==null)
+        {
+            courseAbstractFactory = new CourseAbstractFactoryImpl();
+        }
+        return courseAbstractFactory;
     }
 
     public ICourseModelAbstractFactory makeCourseModelAbstractFactory()
     {
-        return CourseModelAbstractFactoryImpl.instance();
+        if(courseModelAbstractFactory == null)
+        {
+            courseModelAbstractFactory = new CourseModelAbstractFactoryImpl();
+        }
+        return courseModelAbstractFactory;
     }
 
     public IPasswordAbstractFactory makePasswordAbstractFactory()
     {
-        return PasswordAbstractFactoryImpl.instance();
+        if(passwordAbstractFactory == null)
+        {
+            passwordAbstractFactory = new PasswordAbstractFactoryImpl();
+        }
+        return passwordAbstractFactory;
     }
 
     public IQuestionManagerAbstractFactory makeQuestionManagerAbstractFactory()
     {
-        return QuestionManagerAbstractFactoryImpl.instance();
+        if(questionManagerAbstractFactory == null)
+        {
+            questionManagerAbstractFactory = new QuestionManagerAbstractFactoryImpl();
+        }
+        return questionManagerAbstractFactory;
     }
 
     public IQuestionManagerModelAbstractFactory makeQuestionManagerModelAbstractFactory()
     {
-        return QuestionManagerModelAbstractFactoryImpl.instance();
+        if(questionManagerModelAbstractFactory == null)
+        {
+            questionManagerModelAbstractFactory = new QuestionManagerModelAbstractFactoryImpl();
+        }
+        return questionManagerModelAbstractFactory;
     }
 
     public ICSVParserAbstractFactory makeIcsvParserAbstractFactory()
     {
-        return CSVParserAbstractFactoryImpl.instance();
+        if(icsvParserAbstractFactory == null)
+        {
+            icsvParserAbstractFactory = new CSVParserAbstractFactoryImpl();
+        }
+        return icsvParserAbstractFactory;
     }
 
     public ISurveyResponseAbstractFactory makeSurveyResponseAbstractFactory()
     {
-        return SurveyResponseAbstractFactoryImpl.instance();
+        if(surveyResponseAbstractFactory == null)
+        {
+            surveyResponseAbstractFactory = new SurveyResponseAbstractFactoryImpl();
+        }
+        return surveyResponseAbstractFactory;
     }
 
     public ISurveyResponseModelAbstractFactory makeSurveyResponseModelAbstractFactory()
     {
-        return SurveyResponseModelAbstractFactoryImpl.instance();
+        if(surveyResponseModelAbstractFactory == null)
+        {
+            surveyResponseModelAbstractFactory = new SurveyResponseModelAbstractFactoryImpl();
+        }
+        return surveyResponseModelAbstractFactory;
     }
 }

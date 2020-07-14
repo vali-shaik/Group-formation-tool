@@ -2,7 +2,6 @@ package dal.asd.catme.questionmanager;
 
 public class QuestionManagerAbstractFactoryImpl implements IQuestionManagerAbstractFactory
 {
-    private static IQuestionManagerAbstractFactory questionManagerAbstractFactory=null;
     private IQuestionDao questionDao;
     private IQuestionManagerService questionManagerService;
     private IListQuestionsService listQuestionsService;
@@ -12,15 +11,6 @@ public class QuestionManagerAbstractFactoryImpl implements IQuestionManagerAbstr
         questionDao = new QuestionDaoImpl();
         questionManagerService = new QuestionManagerServiceImpl(questionDao);
         listQuestionsService = new ListQuestionsServiceImpl(questionDao);
-    }
-
-    public static IQuestionManagerAbstractFactory instance()
-    {
-        if(questionManagerAbstractFactory == null)
-        {
-            questionManagerAbstractFactory = new QuestionManagerAbstractFactoryImpl();
-        }
-        return questionManagerAbstractFactory;
     }
 
     @Override
