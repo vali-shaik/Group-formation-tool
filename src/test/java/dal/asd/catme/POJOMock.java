@@ -12,12 +12,12 @@ import java.util.List;
 
 public class POJOMock
 {
-    private static List<ICourse> courses = new ArrayList<>();
+    private static final List<ICourse> courses = new ArrayList<>();
 
     public static ArrayList<IUser> getUsers()
     {
-        List<IUser> listOfUsers=new ArrayList<>();
-        IUser user=new User();
+        List<IUser> listOfUsers = new ArrayList<>();
+        IUser user = new User();
         user.setBannerId("B00835717");
         user.setRole(new ArrayList<>());
         Role r = new Role();
@@ -35,19 +35,19 @@ public class POJOMock
 
     public static ArrayList<ICourse> getCourses()
     {
-        List<ICourse> listOfCourses=new ArrayList<>();
-        ICourse course=new Course();
+        List<ICourse> listOfCourses = new ArrayList<>();
+        ICourse course = new Course();
         course.setCourseId("5409");
         course.setCourseName("Adv Web Development");
         listOfCourses.add(course);
 
-        ICourse course1=new Course();
+        ICourse course1 = new Course();
         course1.setCourseId("5308");
         course1.setCourseName("DWDM");
 
         listOfCourses.add(course1);
 
-        ICourse course2=new Course();
+        ICourse course2 = new Course();
         course2.setCourseId("5306");
         course2.setCourseName("Sofware Comprehension");
 

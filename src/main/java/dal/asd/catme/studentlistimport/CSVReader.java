@@ -19,7 +19,7 @@ public class CSVReader implements ICSVReader
     }
 
     @Override
-    public ArrayList<String> readFile() throws InvalidFileFormatException, FileNotFoundException, IOException
+    public ArrayList<String> readFile() throws InvalidFileFormatException, IOException
     {
 
         ArrayList<String> lines = new ArrayList<>();

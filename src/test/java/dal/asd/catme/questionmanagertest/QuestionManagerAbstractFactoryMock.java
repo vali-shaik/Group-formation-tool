@@ -11,7 +11,7 @@ public class QuestionManagerAbstractFactoryMock implements IQuestionManagerAbstr
     @Override
     public IQuestionDao makeQuestionDao()
     {
-        if(questionDao ==null)
+        if (questionDao == null)
         {
             questionDao = new QuestionDaoMock();
         }
@@ -21,7 +21,7 @@ public class QuestionManagerAbstractFactoryMock implements IQuestionManagerAbstr
     @Override
     public IQuestionManagerService makeQuestionManagerService()
     {
-        if(questionManagerService == null)
+        if (questionManagerService == null)
         {
             questionManagerService = new QuestionManagerServiceImpl(makeQuestionDao());
         }
@@ -31,7 +31,7 @@ public class QuestionManagerAbstractFactoryMock implements IQuestionManagerAbstr
     @Override
     public IListQuestionsService makeListQuestionsService()
     {
-        if(listQuestionsService == null)
+        if (listQuestionsService == null)
         {
             listQuestionsService = new ListQuestionsServiceImpl(makeQuestionDao());
         }

@@ -37,7 +37,7 @@ public class BaseAbstractFactoryMock implements IBaseAbstractFactory
 
     public static IBaseAbstractFactory instance()
     {
-        if(baseAbstractFactory == null)
+        if (baseAbstractFactory == null)
         {
             baseAbstractFactory = new BaseAbstractFactoryMock();
         }
@@ -47,7 +47,7 @@ public class BaseAbstractFactoryMock implements IBaseAbstractFactory
     @Override
     public IAccessControlAbstractFactory makeAccessControlAbstractFactory()
     {
-        if(accessControlAbstractFactory == null)
+        if (accessControlAbstractFactory == null)
         {
             accessControlAbstractFactory = new AccessControlAbstractFactoryMock();
         }
@@ -57,9 +57,9 @@ public class BaseAbstractFactoryMock implements IBaseAbstractFactory
     @Override
     public IAccessControlModelAbstractFactory makeAccessControlModelAbstractFactory()
     {
-        if(accessControlModelAbstractFactory == null)
+        if (accessControlModelAbstractFactory == null)
         {
-            accessControlModelAbstractFactory=new AccessControlModelAbstractFactoryImpl();
+            accessControlModelAbstractFactory = new AccessControlModelAbstractFactoryImpl();
         }
         return accessControlModelAbstractFactory;
     }
@@ -67,7 +67,7 @@ public class BaseAbstractFactoryMock implements IBaseAbstractFactory
     @Override
     public ICourseAbstractFactory makeCourseAbstractFactory()
     {
-        if(courseAbstractFactory == null)
+        if (courseAbstractFactory == null)
         {
             courseAbstractFactory = new CourseAbstractFactoryMock();
         }
@@ -77,9 +77,9 @@ public class BaseAbstractFactoryMock implements IBaseAbstractFactory
     @Override
     public ICourseModelAbstractFactory makeCourseModelAbstractFactory()
     {
-        if(courseModelAbstractFactory==null)
+        if (courseModelAbstractFactory == null)
         {
-            courseModelAbstractFactory=new CourseModelAbstractFactoryImpl();
+            courseModelAbstractFactory = new CourseModelAbstractFactoryImpl();
         }
         return courseModelAbstractFactory;
     }
@@ -87,7 +87,7 @@ public class BaseAbstractFactoryMock implements IBaseAbstractFactory
     @Override
     public IPasswordAbstractFactory makePasswordAbstractFactory()
     {
-        if(passwordAbstractFactory == null)
+        if (passwordAbstractFactory == null)
         {
             passwordAbstractFactory = new PasswordAbstractFactoryMock();
         }
@@ -97,7 +97,7 @@ public class BaseAbstractFactoryMock implements IBaseAbstractFactory
     @Override
     public IQuestionManagerAbstractFactory makeQuestionManagerAbstractFactory()
     {
-        if(questionManagerAbstractFactory ==null)
+        if (questionManagerAbstractFactory == null)
         {
             questionManagerAbstractFactory = new QuestionManagerAbstractFactoryMock();
         }
@@ -107,17 +107,17 @@ public class BaseAbstractFactoryMock implements IBaseAbstractFactory
     @Override
     public IQuestionManagerModelAbstractFactory makeQuestionManagerModelAbstractFactory()
     {
-        if(questionManagerModelAbstractFactory==null)
+        if (questionManagerModelAbstractFactory == null)
         {
-            questionManagerModelAbstractFactory=new QuestionManagerModelAbstractFactoryImpl();
+            questionManagerModelAbstractFactory = new QuestionManagerModelAbstractFactoryImpl();
         }
         return questionManagerModelAbstractFactory;
     }
 
     @Override
-    public ICSVParserAbstractFactory makeIcsvParserAbstractFactory()
+    public ICSVParserAbstractFactory makeCSVParserAbstractFactory()
     {
-        if(icsvParserAbstractFactory == null)
+        if (icsvParserAbstractFactory == null)
         {
             icsvParserAbstractFactory = new CSVParserAbstractFactoryImpl();
         }
@@ -127,7 +127,7 @@ public class BaseAbstractFactoryMock implements IBaseAbstractFactory
     @Override
     public ISurveyResponseAbstractFactory makeSurveyResponseAbstractFactory()
     {
-        if(surveyResponseAbstractFactory == null)
+        if (surveyResponseAbstractFactory == null)
         {
             surveyResponseAbstractFactory = new SurveyResponseAbstractFactoryMock();
         }
@@ -137,9 +137,9 @@ public class BaseAbstractFactoryMock implements IBaseAbstractFactory
     @Override
     public ISurveyResponseModelAbstractFactory makeSurveyResponseModelAbstractFactory()
     {
-        if(surveyResponseModelAbstractFactory==null)
+        if (surveyResponseModelAbstractFactory == null)
         {
-            surveyResponseModelAbstractFactory=new SurveyResponseModelAbstractFactoryImpl();
+            surveyResponseModelAbstractFactory = new SurveyResponseModelAbstractFactoryImpl();
         }
         return surveyResponseModelAbstractFactory;
     }

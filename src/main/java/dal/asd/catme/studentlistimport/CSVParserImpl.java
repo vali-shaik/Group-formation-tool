@@ -80,12 +80,7 @@ public class CSVParserImpl implements ICSVParser
             return false;
         }
 
-        if (Pattern.matches("\\d{6}", bannerId.substring(3))==false)
-        {
-            return false;
-        }
-
-        return true;
+        return Pattern.matches("\\d{6}", bannerId.substring(3)) != false;
     }
 
     @Override
@@ -112,11 +107,6 @@ public class CSVParserImpl implements ICSVParser
     {
         emailId = emailId.trim();
         //credit for regex: https://regexr.com/2rhq7
-        if (Pattern.matches("[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", emailId))
-        {
-            return true;
-        }
-
-        return false;
+        return Pattern.matches("[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", emailId);
     }
 }

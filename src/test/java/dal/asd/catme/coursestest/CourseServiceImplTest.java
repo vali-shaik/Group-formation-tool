@@ -5,13 +5,11 @@ import dal.asd.catme.IBaseAbstractFactory;
 import dal.asd.catme.POJOMock;
 import dal.asd.catme.accesscontrol.IAccessControlModelAbstractFactory;
 import dal.asd.catme.accesscontrol.IUser;
-import dal.asd.catme.accesscontrol.User;
-import dal.asd.catme.courses.*;
+import dal.asd.catme.courses.ICourseAbstractFactory;
+import dal.asd.catme.courses.ICourseService;
 import dal.asd.catme.exception.CatmeException;
 import dal.asd.catme.util.CatmeUtil;
 import org.junit.jupiter.api.Test;
-
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -19,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class CourseServiceImplTest
 {
     IBaseAbstractFactory baseAbstractFactory = BaseAbstractFactoryMock.instance();
-    ICourseAbstractFactory courseAbstractFactory  = baseAbstractFactory.makeCourseAbstractFactory();
+    ICourseAbstractFactory courseAbstractFactory = baseAbstractFactory.makeCourseAbstractFactory();
     IAccessControlModelAbstractFactory accessControlModelAbstractFactory = baseAbstractFactory.makeAccessControlModelAbstractFactory();
 
     @Test

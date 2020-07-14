@@ -14,7 +14,7 @@ public class PasswordAbstractFactoryMock implements IPasswordAbstractFactory
     @Override
     public IPasswordDao makePasswordDao()
     {
-        if(passwordDao==null)
+        if (passwordDao == null)
         {
             passwordDao = new PasswordDaoMock();
         }
@@ -24,7 +24,7 @@ public class PasswordAbstractFactoryMock implements IPasswordAbstractFactory
     @Override
     public IPasswordPolicyCheckerService makePasswordPolicyCheckerService()
     {
-        if(passwordPolicyCheckerService == null)
+        if (passwordPolicyCheckerService == null)
         {
             passwordPolicyCheckerService = new PasswordPolicyCheckerImpl();
         }
@@ -34,9 +34,9 @@ public class PasswordAbstractFactoryMock implements IPasswordAbstractFactory
     @Override
     public IPasswordResetService makePasswordResetService()
     {
-        if(passwordResetService == null)
+        if (passwordResetService == null)
         {
-            passwordResetService = new PasswordResetServiceImpl(new UserDaoMock(POJOMock.getUsers()),makePasswordDao());
+            passwordResetService = new PasswordResetServiceImpl(new UserDaoMock(POJOMock.getUsers()), makePasswordDao());
         }
         return passwordResetService;
     }
@@ -44,7 +44,7 @@ public class PasswordAbstractFactoryMock implements IPasswordAbstractFactory
     @Override
     public IPasswordRulesConfig makePasswordRulesConfig()
     {
-        if(passwordRulesConfig == null)
+        if (passwordRulesConfig == null)
         {
             passwordRulesConfig = new PassordRulesConfigMock();
         }

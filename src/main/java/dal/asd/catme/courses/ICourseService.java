@@ -8,13 +8,13 @@ import java.util.List;
 
 public interface ICourseService
 {
-    public List<ICourse> getCourses(String role) throws CatmeException;
+    List<ICourse> getCourses(String role) throws CatmeException;
 
-    public List<ICourse> getAllCourses();
+    List<ICourse> getAllCourses();
 
-    public ICourse displayCourseById(String courseId) throws CatmeException;
+    ICourse displayCourseById(String courseId) throws CatmeException;
 
-    public String findRoleByCourse(IUser user, String courseId) throws CatmeException;
+    String findRoleByCourse(IUser user, String courseId) throws CatmeException;
 
-    public List<IUser> getEnrolledStudents(String courseId);
+    List<IUser> getEnrolledStudents(String courseId);
 }

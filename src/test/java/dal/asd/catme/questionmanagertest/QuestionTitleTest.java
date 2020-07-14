@@ -4,22 +4,24 @@ import dal.asd.catme.BaseAbstractFactoryMock;
 import dal.asd.catme.IBaseAbstractFactory;
 import dal.asd.catme.questionmanager.*;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class QuestionTitleTest
 {
     IBaseAbstractFactory baseAbstractFactory = BaseAbstractFactoryMock.instance();
     IQuestionManagerModelAbstractFactory modelAbstractFactory = baseAbstractFactory.makeQuestionManagerModelAbstractFactory();
+
     @Test
     public void getQuestionTitleTest()
     {
         IQuestionTitle questionTitle = modelAbstractFactory.makeQuestionTitle();
         questionTitle.setQuestionTitle("Title");
 
-        assertEquals(questionTitle.getQuestionTitle(),"Title");
+        assertEquals(questionTitle.getQuestionTitle(), "Title");
     }
 
     @Test
@@ -29,7 +31,7 @@ public class QuestionTitleTest
         questionTitle.setQuestionTitle("Title");
 
         questionTitle.setQuestionTitle("Title");
-        assertEquals(questionTitle.getQuestionTitle(),"Title");
+        assertEquals(questionTitle.getQuestionTitle(), "Title");
     }
 
     @Test
@@ -40,7 +42,7 @@ public class QuestionTitleTest
         List<IQuestion> list = listQuestion();
         questionTitle.setQuestions(list);
 
-        assertEquals(questionTitle.getQuestions(),list);
+        assertEquals(questionTitle.getQuestions(), list);
     }
 
     @Test
@@ -51,7 +53,7 @@ public class QuestionTitleTest
         List<IQuestion> list = listQuestion();
         questionTitle.setQuestions(list);
 
-        assertEquals(questionTitle.getQuestions(),list);
+        assertEquals(questionTitle.getQuestions(), list);
     }
 
     private List<IQuestion> listQuestion()

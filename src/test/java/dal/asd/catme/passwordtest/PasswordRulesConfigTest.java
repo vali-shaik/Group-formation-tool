@@ -6,7 +6,6 @@ import dal.asd.catme.password.IPasswordAbstractFactory;
 import dal.asd.catme.password.IPasswordRulesConfig;
 import org.junit.jupiter.api.Test;
 
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class PasswordRulesConfigTest

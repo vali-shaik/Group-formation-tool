@@ -7,9 +7,9 @@ import dal.asd.catme.exception.CatmeException;
 
 public interface IPasswordResetService
 {
-    public IUser generateResetLink(String bannerid);
+    IUser generateResetLink(String bannerid);
 
-    public String validateToken(String token);
+    String validateToken(String token);
 
-    public void resetPassword(String bannerid, String password) throws CatmeException;
+    void resetPassword(String bannerid, String password) throws CatmeException;
 }

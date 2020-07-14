@@ -4,7 +4,7 @@ import java.io.InputStream;
 
 public class CSVParserAbstractFactoryImpl implements ICSVParserAbstractFactory
 {
-    private ICSVParser icsvParser;
+    private final ICSVParser icsvParser;
 
     public CSVParserAbstractFactoryImpl()
     {

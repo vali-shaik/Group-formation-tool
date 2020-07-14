@@ -13,11 +13,12 @@ import javax.mail.internet.MimeMessage;
 import static dal.asd.catme.accesscontrol.MailSenderUtil.*;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.Properties;
 
 public class MailSenderServiceImpl implements IMailSenderService
 {
-    private JavaMailSenderImpl mailSender;
+    private final JavaMailSenderImpl mailSender;
 
     public MailSenderServiceImpl(JavaMailSenderImpl mailSender)
     {
@@ -83,7 +84,7 @@ public class MailSenderServiceImpl implements IMailSenderService
             fis.read(data);
             fis.close();
 
-            String str = new String(data, "UTF-8");
+            String str = new String(data, StandardCharsets.UTF_8);
 
             str = str.replace(TEMPLATE_USERNAME, u.getFirstName());
             str = str.replace(TEMPLATE_BANNERID, u.getBannerId());
@@ -113,7 +114,7 @@ public class MailSenderServiceImpl implements IMailSenderService
             fis.read(data);
             fis.close();
 
-            String str = new String(data, "UTF-8");
+            String str = new String(data, StandardCharsets.UTF_8);
 
             str = str.replace(TEMPLATE_USERNAME, u.getFirstName());
             str = str.replace(TEMPLATE_RESETLINK, RESETLINK + u.getPassword());

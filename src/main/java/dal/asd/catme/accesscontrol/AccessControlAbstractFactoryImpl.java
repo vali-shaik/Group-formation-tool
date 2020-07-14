@@ -5,13 +5,13 @@ import dal.asd.catme.password.PasswordPolicyCheckerImpl;
 
 public class AccessControlAbstractFactoryImpl implements IAccessControlAbstractFactory
 {
-    private IAdminDao adminDao;
-    private IUserDao userDao;
+    private final IAdminDao adminDao;
+    private final IUserDao userDao;
 
-    private IAdminService adminService;
-    private IMailSenderService mailSenderService;
-    private IUserService userService;
-    private IPasswordPolicyCheckerService passwordPolicyCheckerService;
+    private final IAdminService adminService;
+    private final IMailSenderService mailSenderService;
+    private final IUserService userService;
+    private final IPasswordPolicyCheckerService passwordPolicyCheckerService;
 
     public AccessControlAbstractFactoryImpl()
     {

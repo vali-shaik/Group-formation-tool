@@ -3,8 +3,8 @@ package dal.asd.catme.courses;
 public interface IEnrollment
 {
 
-    public String getBannerId();
-    public void setBannerId(String bannerId);
-    public String getCourseId();
-    public void setCourseId(String courseId);
+    String getBannerId();
+    void setBannerId(String bannerId);
+    String getCourseId();
+    void setCourseId(String courseId);
 }

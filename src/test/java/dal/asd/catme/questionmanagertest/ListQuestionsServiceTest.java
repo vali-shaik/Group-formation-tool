@@ -3,8 +3,9 @@ package dal.asd.catme.questionmanagertest;
 import dal.asd.catme.BaseAbstractFactoryMock;
 import dal.asd.catme.IBaseAbstractFactory;
 import dal.asd.catme.exception.QuestionDatabaseException;
-import dal.asd.catme.questionmanager.*;
-
+import dal.asd.catme.questionmanager.IListQuestionsService;
+import dal.asd.catme.questionmanager.IQuestion;
+import dal.asd.catme.questionmanager.IQuestionManagerAbstractFactory;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -15,6 +16,7 @@ public class ListQuestionsServiceTest
 {
     IBaseAbstractFactory baseAbstractFactory = BaseAbstractFactoryMock.instance();
     IQuestionManagerAbstractFactory questionManagerAbstractFactory = baseAbstractFactory.makeQuestionManagerAbstractFactory();
+
     @Test
     void getQuestionsTest()
     {

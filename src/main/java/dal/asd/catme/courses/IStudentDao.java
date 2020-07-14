@@ -7,5 +7,5 @@ import java.sql.Connection;
 
 public interface IStudentDao
 {
-    public boolean enroll(IUser u, ICourse c, Connection con);
+    boolean enroll(IUser u, ICourse c, Connection con);
 }

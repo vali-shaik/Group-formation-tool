@@ -1,11 +1,10 @@
 package dal.asd.catme.passwordtest;
 
-import static dal.asd.catme.accesscontrol.MailSenderUtil.TOKEN_LENGTH;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
+import dal.asd.catme.util.RandomTokenGenerator;
 import org.junit.jupiter.api.Test;
 
-import dal.asd.catme.util.RandomTokenGenerator;
+import static dal.asd.catme.accesscontrol.MailSenderUtil.TOKEN_LENGTH;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class RandomTokenGeneratorTest
 {

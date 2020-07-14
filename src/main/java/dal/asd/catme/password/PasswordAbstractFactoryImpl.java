@@ -6,11 +6,11 @@ import dal.asd.catme.accesscontrol.UserDaoImpl;
 public class PasswordAbstractFactoryImpl implements IPasswordAbstractFactory
 {
 
-    private IPasswordDao passwordDao;
-    private IPasswordRulesConfig passwordRulesConfig;
-    private IPasswordResetService passwordResetService;
-    private IPasswordPolicyCheckerService passwordPolicyCheckerService;
-    private IUserDao userDao;
+    private final IPasswordDao passwordDao;
+    private final IPasswordRulesConfig passwordRulesConfig;
+    private final IPasswordResetService passwordResetService;
+    private final IPasswordPolicyCheckerService passwordPolicyCheckerService;
+    private final IUserDao userDao;
 
     public PasswordAbstractFactoryImpl()
     {

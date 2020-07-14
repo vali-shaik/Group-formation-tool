@@ -6,7 +6,6 @@ import dal.asd.catme.config.CatmeSecurityConfig;
 import dal.asd.catme.config.SystemConfig;
 import dal.asd.catme.exception.CatmeException;
 import dal.asd.catme.exception.InvalidFileFormatException;
-import dal.asd.catme.studentlistimport.CSVParserAbstractFactoryImpl;
 import dal.asd.catme.studentlistimport.ICSVParser;
 import dal.asd.catme.studentlistimport.ICSVParserAbstractFactory;
 import dal.asd.catme.studentlistimport.ICSVReader;
@@ -29,7 +28,7 @@ import static dal.asd.catme.accesscontrol.MailSenderUtil.TOKEN_LENGTH;
 
 public class CourseManageController
 {
-	ICSVParserAbstractFactory icsvParserAbstractFactory = BaseAbstractFactoryImpl.instance().makeIcsvParserAbstractFactory();
+	ICSVParserAbstractFactory icsvParserAbstractFactory = BaseAbstractFactoryImpl.instance().makeCSVParserAbstractFactory();
 	ICourseAbstractFactory courseAbstractFactory = BaseAbstractFactoryImpl.instance().makeCourseAbstractFactory();
 	IAccessControlAbstractFactory accessControlAbstractFactory = BaseAbstractFactoryImpl.instance().makeAccessControlAbstractFactory();
 

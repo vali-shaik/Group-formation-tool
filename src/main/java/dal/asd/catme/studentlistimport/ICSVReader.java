@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 public interface ICSVReader
 {
-    public ArrayList<String> readFile() throws InvalidFileFormatException, FileNotFoundException, IOException;
+    ArrayList<String> readFile() throws InvalidFileFormatException, IOException;
 
-    public void validateFile(MultipartFile file) throws InvalidFileFormatException;
+    void validateFile(MultipartFile file) throws InvalidFileFormatException;
 }

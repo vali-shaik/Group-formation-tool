@@ -7,9 +7,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class SystemConfig
 {
     private static SystemConfig uniqueInstance = null;
-    private DatabaseAccess databaseAccess;
-    private CatmeSecurityConfig catmeServiceConfig;
-    private PasswordEncoder passwordEncoder;
+    private final DatabaseAccess databaseAccess;
+    private final CatmeSecurityConfig catmeServiceConfig;
+    private final PasswordEncoder passwordEncoder;
 
     public SystemConfig()
     {

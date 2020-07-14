@@ -5,11 +5,12 @@ import dal.asd.catme.IBaseAbstractFactory;
 import dal.asd.catme.courses.ICourseModelAbstractFactory;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class CourseModelAbstractFactoryTest
 {
     IBaseAbstractFactory baseAbstractFactory = BaseAbstractFactoryImpl.instance();
+
     @Test
     void makeCourseTest()
     {

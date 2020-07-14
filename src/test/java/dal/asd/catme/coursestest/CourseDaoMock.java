@@ -2,8 +2,6 @@ package dal.asd.catme.coursestest;
 
 import dal.asd.catme.POJOMock;
 import dal.asd.catme.accesscontrol.IUser;
-import dal.asd.catme.accesscontrol.User;
-import dal.asd.catme.courses.Course;
 import dal.asd.catme.courses.ICourse;
 import dal.asd.catme.courses.ICourseDao;
 import dal.asd.catme.exception.CatmeException;
@@ -75,9 +73,9 @@ public class CourseDaoMock implements ICourseDao
     @Override
     public List<IUser> getRegisteredStudents(String courseId)
     {
-        for(ICourse c : listOfCourses)
+        for (ICourse c : listOfCourses)
         {
-            if(c.getCourseId().equals(courseId))
+            if (c.getCourseId().equals(courseId))
                 return POJOMock.getUsers();
         }
         return null;

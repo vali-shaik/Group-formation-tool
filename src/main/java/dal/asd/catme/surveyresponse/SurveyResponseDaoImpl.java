@@ -17,11 +17,11 @@ import java.util.List;
 
 public class SurveyResponseDaoImpl implements ISurveyResponseDao
 {
-    private static int ID=1;
-    private static int TEXT=2;
-    private static int TYPE=3;
-    private static int OPTIONTEXT=4;
-    private static int OPTIONORDER=5;
+    private static final int ID=1;
+    private static final int TEXT=2;
+    private static final int TYPE=3;
+    private static final int OPTIONTEXT=4;
+    private static final int OPTIONORDER=5;
 
     ISurveyResponseModelAbstractFactory modelAbstractFactory = BaseAbstractFactoryImpl.instance().makeSurveyResponseModelAbstractFactory();
 

@@ -5,8 +5,8 @@ import java.util.List;
 public interface IQuestionTitle
 {
 
-    public String getQuestionTitle();
-    public void setQuestionTitle(String questionTitle);
-    public List<IQuestion> getQuestions();
-    public void setQuestions(List<IQuestion> questions);
+    String getQuestionTitle();
+    void setQuestionTitle(String questionTitle);
+    List<IQuestion> getQuestions();
+    void setQuestions(List<IQuestion> questions);
 }

@@ -1,13 +1,12 @@
 package dal.asd.catme.coursestest;
 
 import dal.asd.catme.POJOMock;
-import dal.asd.catme.accesscontrol.User;
 import dal.asd.catme.courses.*;
 
 public class CourseAbstractFactoryMock implements ICourseAbstractFactory
 {
     private ICourseService courseService = null;
-    private IEnrollStudentService enrollStudentService =null;
+    private IEnrollStudentService enrollStudentService = null;
     private IRoleService roleService = null;
     private ICourseDao courseDao = null;
     private IStudentDao studentDao = null;
@@ -16,7 +15,7 @@ public class CourseAbstractFactoryMock implements ICourseAbstractFactory
     @Override
     public ICourseService makeCourseService()
     {
-        if(courseService==null)
+        if (courseService == null)
         {
             courseService = new CourseServiceImpl(makeCourseDao());
         }
@@ -26,9 +25,9 @@ public class CourseAbstractFactoryMock implements ICourseAbstractFactory
     @Override
     public IEnrollStudentService makeEnrollmentService()
     {
-        if(enrollStudentService == null)
+        if (enrollStudentService == null)
         {
-            enrollStudentService = new EnrollStudentServiceImpl(makeRoleDao(),makeStudentDao());
+            enrollStudentService = new EnrollStudentServiceImpl(makeRoleDao(), makeStudentDao());
         }
         return enrollStudentService;
     }
@@ -36,7 +35,7 @@ public class CourseAbstractFactoryMock implements ICourseAbstractFactory
     @Override
     public IRoleService makeRoleService()
     {
-        if(roleService==null)
+        if (roleService == null)
         {
             roleService = new RoleServiceImpl(makeRoleDao());
         }
@@ -46,7 +45,7 @@ public class CourseAbstractFactoryMock implements ICourseAbstractFactory
     @Override
     public ICourseDao makeCourseDao()
     {
-        if(courseDao==null)
+        if (courseDao == null)
         {
             courseDao = new CourseDaoMock(POJOMock.getCourses());
         }
@@ -56,7 +55,7 @@ public class CourseAbstractFactoryMock implements ICourseAbstractFactory
     @Override
     public IStudentDao makeStudentDao()
     {
-        if(studentDao==null)
+        if (studentDao == null)
         {
             studentDao = new StudentDaoMock();
         }
@@ -66,9 +65,9 @@ public class CourseAbstractFactoryMock implements ICourseAbstractFactory
     @Override
     public IRoleDao makeRoleDao()
     {
-        if(roleDao==null)
+        if (roleDao == null)
         {
-            roleDao = new RoleDaoMock(POJOMock.getUsers(),POJOMock.getCourses());
+            roleDao = new RoleDaoMock(POJOMock.getUsers(), POJOMock.getCourses());
         }
         return roleDao;
     }

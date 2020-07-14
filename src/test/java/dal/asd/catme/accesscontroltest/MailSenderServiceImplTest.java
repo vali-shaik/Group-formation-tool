@@ -2,19 +2,18 @@ package dal.asd.catme.accesscontroltest;
 
 import dal.asd.catme.BaseAbstractFactoryMock;
 import dal.asd.catme.IBaseAbstractFactory;
-import dal.asd.catme.accesscontrol.*;
-import dal.asd.catme.courses.Course;
+import dal.asd.catme.accesscontrol.IAccessControlAbstractFactory;
+import dal.asd.catme.accesscontrol.IAccessControlModelAbstractFactory;
+import dal.asd.catme.accesscontrol.IMailSenderService;
+import dal.asd.catme.accesscontrol.IUser;
 import dal.asd.catme.courses.ICourse;
 import dal.asd.catme.courses.ICourseModelAbstractFactory;
 import dal.asd.catme.util.RandomTokenGenerator;
 import org.junit.jupiter.api.Test;
-import org.springframework.mail.MailException;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
 
 import javax.mail.MessagingException;
 
 import static dal.asd.catme.accesscontrol.MailSenderUtil.TOKEN_LENGTH;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class MailSenderServiceImplTest
@@ -67,7 +66,7 @@ public class MailSenderServiceImplTest
 
         try
         {
-            mailSenderService.sendCredentialsToStudent(s,course);
+            mailSenderService.sendCredentialsToStudent(s, course);
         } catch (MessagingException e)
         {
             fail();

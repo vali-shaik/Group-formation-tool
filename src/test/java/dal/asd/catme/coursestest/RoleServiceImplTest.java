@@ -2,15 +2,18 @@ package dal.asd.catme.coursestest;
 
 import dal.asd.catme.BaseAbstractFactoryMock;
 import dal.asd.catme.IBaseAbstractFactory;
-import dal.asd.catme.POJOMock;
-import dal.asd.catme.courses.*;
+import dal.asd.catme.courses.ICourseAbstractFactory;
+import dal.asd.catme.courses.ICourseModelAbstractFactory;
+import dal.asd.catme.courses.IEnrollment;
+import dal.asd.catme.courses.IRoleService;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class RoleServiceImplTest
 {
     IBaseAbstractFactory baseAbstractFactory = BaseAbstractFactoryMock.instance();
-    ICourseAbstractFactory courseAbstractFactory  = baseAbstractFactory.makeCourseAbstractFactory();
+    ICourseAbstractFactory courseAbstractFactory = baseAbstractFactory.makeCourseAbstractFactory();
     ICourseModelAbstractFactory courseModelAbstractFactory = baseAbstractFactory.makeCourseModelAbstractFactory();
 
     @Test
@@ -21,6 +24,6 @@ public class RoleServiceImplTest
         enrollment.setBannerId("B00835717");
         enrollment.setCourseId("5306");
 
-        assertEquals("",roleService.assignTa(enrollment));
+        assertEquals("", roleService.assignTa(enrollment));
     }
 }

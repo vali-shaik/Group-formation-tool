@@ -1,9 +1,7 @@
 package dal.asd.catme.accesscontroltest;
 
-import dal.asd.catme.accesscontrol.IAdminDao;
-import dal.asd.catme.accesscontrol.User;
-import dal.asd.catme.courses.Course;
 import dal.asd.catme.POJOMock;
+import dal.asd.catme.accesscontrol.IAdminDao;
 import dal.asd.catme.courses.ICourse;
 import dal.asd.catme.util.CatmeUtil;
 

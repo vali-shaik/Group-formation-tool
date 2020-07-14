@@ -4,11 +4,13 @@ import dal.asd.catme.BaseAbstractFactoryImpl;
 import dal.asd.catme.IBaseAbstractFactory;
 import dal.asd.catme.accesscontrol.IAccessControlModelAbstractFactory;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class AccessControlModelAbstractFactoryTest
 {
     IBaseAbstractFactory baseAbstractFactory = BaseAbstractFactoryImpl.instance();
+
     @Test
     void makeRoleTest()
     {

@@ -5,20 +5,20 @@ import java.util.List;
 public interface IUser
 {
 
-    public String getBannerId();
-    public void setBannerId(String bannerId);
-    public String getLastName();
-    public void setLastName(String lastName);
-    public String getFirstName();
-    public void setFirstName(String firstName);
-    public String getEmail();
-    public void setEmail(String email);
+    String getBannerId();
+    void setBannerId(String bannerId);
+    String getLastName();
+    void setLastName(String lastName);
+    String getFirstName();
+    void setFirstName(String firstName);
+    String getEmail();
+    void setEmail(String email);
 
-    public String getPassword();
+    String getPassword();
 
-    public void setPassword(String password);
+    void setPassword(String password);
 
-    public List<IRole> getRole();
+    List<IRole> getRole();
 
-    public void setRole(List<IRole> role);
+    void setRole(List<IRole> role);
 }

@@ -10,18 +10,21 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 public class QuestionManagerModelAbstractFactoryTest
 {
     IBaseAbstractFactory baseAbstractFactory = BaseAbstractFactoryImpl.instance();
+
     @Test
     void makeQuestionTest()
     {
         IQuestionManagerModelAbstractFactory questionManagerModelAbstractFactory = baseAbstractFactory.makeQuestionManagerModelAbstractFactory();
         assertNotNull(questionManagerModelAbstractFactory.makeQuestion());
     }
+
     @Test
     void makeOptionTest()
     {
         IQuestionManagerModelAbstractFactory questionManagerModelAbstractFactory = baseAbstractFactory.makeQuestionManagerModelAbstractFactory();
         assertNotNull(questionManagerModelAbstractFactory.makeOption());
     }
+
     @Test
     void makeQuestionTitleTest()
     {

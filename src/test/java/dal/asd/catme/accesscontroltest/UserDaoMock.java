@@ -1,14 +1,11 @@
 package dal.asd.catme.accesscontroltest;
 
-import java.sql.Connection;
-import java.util.ArrayList;
-import java.util.List;
-
+import dal.asd.catme.POJOMock;
 import dal.asd.catme.accesscontrol.IUser;
 import dal.asd.catme.accesscontrol.IUserDao;
-import dal.asd.catme.accesscontrol.User;
-import dal.asd.catme.courses.Course;
-import dal.asd.catme.POJOMock;
+
+import java.sql.Connection;
+import java.util.List;
 
 public class UserDaoMock implements IUserDao
 {

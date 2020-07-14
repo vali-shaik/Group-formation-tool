@@ -2,9 +2,9 @@ package dal.asd.catme.questionmanager;
 
 public class QuestionManagerAbstractFactoryImpl implements IQuestionManagerAbstractFactory
 {
-    private IQuestionDao questionDao;
-    private IQuestionManagerService questionManagerService;
-    private IListQuestionsService listQuestionsService;
+    private final IQuestionDao questionDao;
+    private final IQuestionManagerService questionManagerService;
+    private final IListQuestionsService listQuestionsService;
 
     public QuestionManagerAbstractFactoryImpl()
     {

@@ -11,12 +11,13 @@ public class AccessControlAbstractFactoryMock implements IAccessControlAbstractF
     private IMailSenderService mailSenderService = null;
     private IUserDao userDao = null;
     private IUserService userService = null;
+
     @Override
     public IAdminDao makeAdminDao()
     {
-        if(adminDao==null)
+        if (adminDao == null)
         {
-            adminDao=new AdminDaoMock();
+            adminDao = new AdminDaoMock();
         }
         return adminDao;
     }
@@ -24,9 +25,9 @@ public class AccessControlAbstractFactoryMock implements IAccessControlAbstractF
     @Override
     public IAdminService makeAdminService()
     {
-        if(adminService==null)
+        if (adminService == null)
         {
-            adminService=new AdminServiceImpl(makeAdminDao());
+            adminService = new AdminServiceImpl(makeAdminDao());
         }
         return adminService;
     }
@@ -34,7 +35,7 @@ public class AccessControlAbstractFactoryMock implements IAccessControlAbstractF
     @Override
     public IMailSenderService makeMailSenderService()
     {
-        if(mailSenderService==null)
+        if (mailSenderService == null)
         {
             IAccessControlModelAbstractFactory accessControlModelAbstractFactory = BaseAbstractFactoryMock.instance().makeAccessControlModelAbstractFactory();
             IUser s = accessControlModelAbstractFactory.makeUser();
@@ -48,7 +49,7 @@ public class AccessControlAbstractFactoryMock implements IAccessControlAbstractF
             String body =
                     "You are registered in new course";
 
-            mailSenderService = new MailSenderServiceImpl(new JavaMailSenderMock(s,sub,body));
+            mailSenderService = new MailSenderServiceImpl(new JavaMailSenderMock(s, sub, body));
         }
         return mailSenderService;
     }
@@ -56,9 +57,9 @@ public class AccessControlAbstractFactoryMock implements IAccessControlAbstractF
     @Override
     public IUserDao makeUserDao()
     {
-        if(userDao ==null)
+        if (userDao == null)
         {
-            userDao=new UserDaoMock(POJOMock.getUsers());
+            userDao = new UserDaoMock(POJOMock.getUsers());
         }
         return userDao;
     }
@@ -66,9 +67,9 @@ public class AccessControlAbstractFactoryMock implements IAccessControlAbstractF
     @Override
     public IUserService makeUserService()
     {
-        if(userService==null)
+        if (userService == null)
         {
-            userService=new UserServiceImpl(makeUserDao(),null);
+            userService = new UserServiceImpl(makeUserDao(), null);
         }
         return userService;
     }

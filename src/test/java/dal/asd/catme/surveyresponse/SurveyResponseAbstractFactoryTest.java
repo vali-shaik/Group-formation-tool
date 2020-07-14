@@ -2,7 +2,8 @@ package dal.asd.catme.surveyresponse;
 
 import dal.asd.catme.BaseAbstractFactoryImpl;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class SurveyResponseAbstractFactoryTest
 {

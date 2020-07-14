@@ -109,7 +109,7 @@ public class BaseAbstractFactoryImpl implements IBaseAbstractFactory
         return questionManagerModelAbstractFactory;
     }
 
-    public ICSVParserAbstractFactory makeIcsvParserAbstractFactory()
+    public ICSVParserAbstractFactory makeCSVParserAbstractFactory()
     {
         if(icsvParserAbstractFactory == null)
         {

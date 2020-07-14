@@ -7,10 +7,10 @@ import java.util.ArrayList;
 
 public interface ICSVParser
 {
-    public ArrayList<IUser> getStudentsFromFile(ICSVReader reader);
-    public boolean validBannerId(String bannerId);
+    ArrayList<IUser> getStudentsFromFile(ICSVReader reader);
+    boolean validBannerId(String bannerId);
 
-    public boolean validNames(String firstname, String lastname);
+    boolean validNames(String firstname, String lastname);
 
-    public boolean validEmailId(String emailId);
+    boolean validEmailId(String emailId);
 }

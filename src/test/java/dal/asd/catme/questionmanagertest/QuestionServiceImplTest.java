@@ -2,13 +2,12 @@ package dal.asd.catme.questionmanagertest;
 
 import dal.asd.catme.BaseAbstractFactoryMock;
 import dal.asd.catme.IBaseAbstractFactory;
-import dal.asd.catme.questionmanager.*;
-
+import dal.asd.catme.questionmanager.IQuestionDao;
+import dal.asd.catme.questionmanager.IQuestionManagerAbstractFactory;
+import dal.asd.catme.questionmanager.IQuestionManagerModelAbstractFactory;
 import org.junit.Test;
 
 import java.sql.Connection;
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;

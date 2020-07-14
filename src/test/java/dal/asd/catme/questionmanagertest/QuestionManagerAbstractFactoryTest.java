@@ -17,12 +17,14 @@ public class QuestionManagerAbstractFactoryTest
         IQuestionManagerAbstractFactory questionManagerAbstractFactory = baseAbstractFactory.makeQuestionManagerAbstractFactory();
         assertNotNull(questionManagerAbstractFactory.makeQuestionDao());
     }
+
     @Test
     void makeQuestionManagerServiceTest()
     {
         IQuestionManagerAbstractFactory questionManagerAbstractFactory = baseAbstractFactory.makeQuestionManagerAbstractFactory();
         assertNotNull(questionManagerAbstractFactory.makeQuestionManagerService());
     }
+
     @Test
     void makeListQuestionsServiceTest()
     {

@@ -6,5 +6,5 @@ import dal.asd.catme.exception.CatmeException;
 
 public interface IPasswordPolicyCheckerService
 {
-    public boolean enforcePasswordPolicy(IUser user) throws CatmeException;
+    boolean enforcePasswordPolicy(IUser user) throws CatmeException;
 }

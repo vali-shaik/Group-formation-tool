@@ -7,8 +7,6 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessagePreparator;
 
-import dal.asd.catme.accesscontrol.User;
-
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Session;
@@ -18,9 +16,9 @@ import java.util.Properties;
 
 public class JavaMailSenderMock extends JavaMailSenderImpl
 {
-    private IUser u;
-    private String subject;
-    private String body;
+    private final IUser u;
+    private final String subject;
+    private final String body;
 
     public JavaMailSenderMock(IUser u, String subject, String body)
     {

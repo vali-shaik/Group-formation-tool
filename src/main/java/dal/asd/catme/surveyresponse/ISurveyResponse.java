@@ -7,8 +7,8 @@ import java.util.List;
 
 public interface ISurveyResponse
 {
-    public IQuestion getQuestion();
-    public void setQuestion(IQuestion question);
-    public List<String> getAnswer();
-    public void setAnswer(List<String> answer);
+    IQuestion getQuestion();
+    void setQuestion(IQuestion question);
+    List<String> getAnswer();
+    void setAnswer(List<String> answer);
 }

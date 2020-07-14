@@ -3,8 +3,12 @@ package dal.asd.catme.coursestest;
 import dal.asd.catme.BaseAbstractFactoryMock;
 import dal.asd.catme.IBaseAbstractFactory;
 import dal.asd.catme.POJOMock;
-import dal.asd.catme.accesscontrol.*;
-import dal.asd.catme.courses.*;
+import dal.asd.catme.accesscontrol.IAccessControlModelAbstractFactory;
+import dal.asd.catme.accesscontrol.IRole;
+import dal.asd.catme.accesscontrol.IUser;
+import dal.asd.catme.courses.ICourse;
+import dal.asd.catme.courses.ICourseAbstractFactory;
+import dal.asd.catme.courses.IEnrollStudentService;
 import dal.asd.catme.exception.EnrollmentException;
 import dal.asd.catme.util.CatmeUtil;
 import org.junit.jupiter.api.Test;
@@ -16,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class EnrollStudentServiceImplTest
 {
     IBaseAbstractFactory baseAbstractFactory = BaseAbstractFactoryMock.instance();
-    ICourseAbstractFactory courseAbstractFactory  = baseAbstractFactory.makeCourseAbstractFactory();
+    ICourseAbstractFactory courseAbstractFactory = baseAbstractFactory.makeCourseAbstractFactory();
     IAccessControlModelAbstractFactory accessControlModelAbstractFactory = baseAbstractFactory.makeAccessControlModelAbstractFactory();
     ICourse c = POJOMock.getCourses().get(0);
     IUser s = POJOMock.getUsers().get(0);
@@ -26,7 +30,7 @@ class EnrollStudentServiceImplTest
     {
         IEnrollStudentService service = courseAbstractFactory.makeEnrollmentService();
 
-        assertTrue(service.enrollStudentsIntoCourse(POJOMock.getUsers(),c));
+        assertTrue(service.enrollStudentsIntoCourse(POJOMock.getUsers(), c));
     }
 
     @Test

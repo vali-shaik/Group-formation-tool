@@ -1,56 +1,63 @@
 package dal.asd.catme.surveyresponse;
 
-import dal.asd.catme.questionmanager.Question;
+import dal.asd.catme.BaseAbstractFactoryMock;
+import dal.asd.catme.IBaseAbstractFactory;
+import dal.asd.catme.questionmanager.IQuestion;
+import dal.asd.catme.questionmanager.IQuestionManagerModelAbstractFactory;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class SurveyResponseTest
 {
+    IBaseAbstractFactory baseAbstractFactory = BaseAbstractFactoryMock.instance();
+    IQuestionManagerModelAbstractFactory questionManagerModelAbstractFactory = baseAbstractFactory.makeQuestionManagerModelAbstractFactory();
+    ISurveyResponseModelAbstractFactory modelAbstractFactory = baseAbstractFactory.makeSurveyResponseModelAbstractFactory();
+
     @Test
     void getQuestionTest()
     {
-        SurveyResponse response = new SurveyResponse();
+        ISurveyResponse surveyResponse = modelAbstractFactory.makeSurveyResponse();
 
-        Question q = new Question();
-        response.setQuestion(q);
+        IQuestion q = questionManagerModelAbstractFactory.makeQuestion();
+        surveyResponse.setQuestion(q);
 
-        assertEquals(q,response.getQuestion());
+        assertEquals(q, surveyResponse.getQuestion());
     }
 
     @Test
     void setQuestionTest()
     {
-        SurveyResponse response = new SurveyResponse();
+        ISurveyResponse surveyResponse = modelAbstractFactory.makeSurveyResponse();
 
-        Question q = new Question();
-        response.setQuestion(q);
+        IQuestion q = questionManagerModelAbstractFactory.makeQuestion();
+        surveyResponse.setQuestion(q);
 
-        assertEquals(q,response.getQuestion());
+        assertEquals(q, surveyResponse.getQuestion());
     }
 
     @Test
     void getAnswerTest()
     {
-        SurveyResponse response = new SurveyResponse();
+        ISurveyResponse surveyResponse = modelAbstractFactory.makeSurveyResponse();
 
         List<String> answers = new ArrayList<>();
-        response.setAnswer(answers);
+        surveyResponse.setAnswer(answers);
 
-        assertEquals(answers,response.getAnswer());
+        assertEquals(answers, surveyResponse.getAnswer());
     }
 
     @Test
     void getSetAnswerTest()
     {
-        SurveyResponse response = new SurveyResponse();
+        ISurveyResponse surveyResponse = modelAbstractFactory.makeSurveyResponse();
 
         List<String> answers = new ArrayList<>();
-        response.setAnswer(answers);
+        surveyResponse.setAnswer(answers);
 
-        assertEquals(answers,response.getAnswer());
+        assertEquals(answers, surveyResponse.getAnswer());
     }
 }

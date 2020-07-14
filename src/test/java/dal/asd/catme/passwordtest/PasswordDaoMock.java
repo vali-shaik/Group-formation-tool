@@ -1,7 +1,6 @@
 package dal.asd.catme.passwordtest;
 
 import dal.asd.catme.accesscontrol.IUser;
-import dal.asd.catme.accesscontrol.User;
 import dal.asd.catme.exception.CatmeException;
 import dal.asd.catme.password.IPasswordDao;
 

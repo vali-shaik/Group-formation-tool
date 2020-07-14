@@ -13,6 +13,8 @@ public class SurveyResponseServiceImplTest
 {
     IBaseAbstractFactory baseAbstractFactory = BaseAbstractFactoryMock.instance();
     ISurveyResponseAbstractFactory surveyResponseAbstractFactory = baseAbstractFactory.makeSurveyResponseAbstractFactory();
+    ISurveyResponseModelAbstractFactory modelAbstractFactory = baseAbstractFactory.makeSurveyResponseModelAbstractFactory();
+
     @Test
     public void isSurveyPublishedTest()
     {
@@ -34,23 +36,23 @@ public class SurveyResponseServiceImplTest
     public void saveResponsesTest()
     {
         ISurveyResponseService surveyResponseService = surveyResponseAbstractFactory.makeSurveyResponseService();
-        ISurveyResponseBinder binder = new SurveyResponseBinder();
+        ISurveyResponseBinder binder = modelAbstractFactory.makeSurveyResponseBinder();
         List<ISurveyResponse> questions = new ArrayList<>();
 
-        questions.add(new SurveyResponse());
+        questions.add(modelAbstractFactory.makeSurveyResponse());
         binder.setQuestionList(questions);
 
-        assertFalse(surveyResponseService.saveResponses(binder,"B00121212"));
+        assertFalse(surveyResponseService.saveResponses(binder, "B00121212"));
         binder.setSurveyId("1");
 
-        assertTrue(surveyResponseService.saveResponses(binder,"B00121212"));
-        assertFalse(surveyResponseService.saveResponses(binder,""));
+        assertTrue(surveyResponseService.saveResponses(binder, "B00121212"));
+        assertFalse(surveyResponseService.saveResponses(binder, ""));
     }
 
     @Test
     public void isSurveyAttemptedTest()
     {
         ISurveyResponseService surveyResponseService = surveyResponseAbstractFactory.makeSurveyResponseService();
-        assertTrue(surveyResponseService.isSurveyAttempted("5100","B00121212"));
+        assertTrue(surveyResponseService.isSurveyAttempted("5100", "B00121212"));
     }
 }

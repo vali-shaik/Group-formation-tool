@@ -4,7 +4,6 @@ import dal.asd.catme.BaseAbstractFactoryMock;
 import dal.asd.catme.POJOMock;
 import dal.asd.catme.accesscontrol.*;
 import dal.asd.catme.courses.*;
-import dal.asd.catme.accesscontroltest.UserDaoMock;
 
 import java.sql.Connection;
 import java.util.ArrayList;

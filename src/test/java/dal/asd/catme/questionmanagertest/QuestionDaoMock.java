@@ -198,7 +198,7 @@ public class QuestionDaoMock implements IQuestionDao
 
         return ret;
     }
-    
+
     private List<IQuestionTitle> getTitles()
     {
         List<IQuestionTitle> listOfQuestions = new ArrayList<>();
@@ -241,6 +241,6 @@ public class QuestionDaoMock implements IQuestionDao
         listOfQuestions.add(questionTitle1);
         listOfQuestions.add(questionTitle2);
 
-        return (ArrayList<IQuestionTitle>) listOfQuestions;
+        return listOfQuestions;
     }
 }
