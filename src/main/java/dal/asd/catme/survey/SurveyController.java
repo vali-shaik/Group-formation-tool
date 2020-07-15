@@ -73,7 +73,6 @@ public class SurveyController
 				log.error("Failed to fetch Course details");
 				throw new SurveyException("Error in fetching c details ");
 			}
-
 		} 
 		catch (SurveyException e) 
 		{

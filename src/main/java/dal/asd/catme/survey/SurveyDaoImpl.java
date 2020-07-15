@@ -178,14 +178,16 @@ public class SurveyDaoImpl implements ISurveyDao
 
 	@Override
 	public Survey getSurvey(String courseId) throws SurveyException {
-		Survey survey=null;
+		Survey survey=new Survey();
 		database = SystemConfig.instance().getDatabaseAccess();
 		Connection connection = null;
 		PreparedStatement statement = null;
+		PreparedStatement statement2 = null;
 		ResultSet rs=null;
+		ResultSet rs2=null;
 		if(courseId==null)
 		{
-			log.error("Unable to find course Id");;
+			log.error("Unable to find course Id");
 			throw new SurveyException("Course Id is unavailable");
 		}
 		else 
@@ -199,13 +201,23 @@ public class SurveyDaoImpl implements ISurveyDao
 				statement = connection.prepareStatement(DBQueriesUtil.GET_SURVEY_BY_COURSE);
 				statement.setString(1,courseId );
 				rs = statement.executeQuery();
-				while (rs.next())
+				if (rs.next())
 				{
 					log.info("Fetched the survey details");
 					survey=surveyModelAbstractFactory.makeSurvey();
 					survey.setSurveyId(rs.getInt("SurveyId"));
 					survey.setGroupSize(rs.getInt("GroupSize"));
 					survey.setSurveyName(rs.getString("SurveyName"));
+				}
+				else
+				{
+					statement2 = connection.prepareStatement(DBQueriesUtil.CREATE_SURVEY);
+					statement2.setString(1,courseId );
+					rs2=statement2.executeQuery();
+					while(rs2.next())
+					{
+						survey.setSurveyId(rs.getInt(1));
+					}
 				}
 			} 
 			catch (SQLException e) 
@@ -241,6 +253,24 @@ public class SurveyDaoImpl implements ISurveyDao
 					{
 						log.warn("Closing DB Result set");
 						rs.close();					
+					}
+					if(statement2==null)
+					{
+						log.info("No open Statements found");
+					}
+					else
+					{
+						log.warn("Closing DB Statements");
+						statement2.close();
+					}
+					if(rs2==null)
+					{
+						log.info("No open Resultset found");
+					}
+					else
+					{
+						log.warn("Closing DB Result set");
+						rs2.close();					
 					}
 						
 				} catch (SQLException | NullPointerException throwables)
@@ -416,13 +446,13 @@ public class SurveyDaoImpl implements ISurveyDao
 						statement3.setString(1, surveyQuestion.getRule().getRuleType().trim());
 						statement3.setString(2, surveyQuestion.getRule().getRuleValue());
 						rs=statement3.executeQuery();
-						statement3.close();
+						
 						while(rs.next())
 						{
 							int ruleId=rs.getInt(1);
 							surveyQuestion.getRule().setRuleId(ruleId);
 						}
-						
+						statement3.close();
 					log.info("Adding question to surveys");
 					statement2 = connection.prepareStatement(DBQueriesUtil.ADD_QUESTION_TO_SURVEY);
 					statement2.setInt(1,survey.getSurveyId());

@@ -88,6 +88,7 @@ public class DBQueriesUtil
     public static final String FETCH_SURVEY_QUESTIONS="CALL getSurveyQuestionsByCourse(?)";
     public static final String GET_SURVEY_QUESTION_RULE="CALL getSurveyQuestionRule(?)";
     public static final String GET_SURVEY_BY_COURSE="CALL getSurveyByCourse(?)";
+    public static final String CREATE_SURVEY="CALL createSurvey(?)";
     public static final String ADD_QUESTION_TO_SURVEY="CALL createSurveyQuestion(?,?,?,?)";
     public static final String ADD_RULE_SURVEY_QUESTION="CALL createSurveyQuestionRule(?,?)";
     public static final String DELETE_ALL_SURVEY_QUESTIONS="CALL deleteAllSurveyQuestions(?)";
