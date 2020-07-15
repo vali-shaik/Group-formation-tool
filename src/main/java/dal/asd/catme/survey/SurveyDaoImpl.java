@@ -70,10 +70,34 @@ public class SurveyDaoImpl implements ISurveyDao
 			{
 				try
 				{
-					log.warn("Closing DB connections");
+					if(connection==null)
+					{
+						log.info("No connetionsfound");
+					}
+					else
+					{
+						log.warn("Closing DB connections");
 						connection.close();
+					}
+					if(statement==null)
+					{
+						log.info("No open Statements found");
+					}
+					else
+					{
+						log.warn("Closing DB Statements");
 						statement.close();
-						rs.close();
+					}
+					if(rs==null)
+					{
+						log.info("No open Resultset found");
+					}
+					else
+					{
+						log.warn("Closing DB Result set");
+						rs.close();					
+					}
+						
 				} catch (SQLException | NullPointerException throwables)
 				{
 					log.error("Error closing DB connections");
@@ -115,10 +139,34 @@ public class SurveyDaoImpl implements ISurveyDao
 		{
 			try
 			{
-				log.warn("Closing DB connections");
+				if(connection==null)
+				{
+					log.info("No connetionsfound");
+				}
+				else
+				{
+					log.warn("Closing DB connections");
 					connection.close();
+				}
+				if(statement==null)
+				{
+					log.info("No open Statements found");
+				}
+				else
+				{
+					log.warn("Closing DB Statements");
 					statement.close();
-					rs.close();
+				}
+				if(rs==null)
+				{
+					log.info("No open Resultset found");
+				}
+				else
+				{
+					log.warn("Closing DB Result set");
+					rs.close();					
+				}
+					
 			} catch (SQLException | NullPointerException throwables)
 			{
 				log.error("Error closing DB connections");
@@ -167,10 +215,34 @@ public class SurveyDaoImpl implements ISurveyDao
 			finally {
 				try
 				{
-					log.warn("Closing DB connections");
+					if(connection==null)
+					{
+						log.info("No connetionsfound");
+					}
+					else
+					{
+						log.warn("Closing DB connections");
 						connection.close();
+					}
+					if(statement==null)
+					{
+						log.info("No open Statements found");
+					}
+					else
+					{
+						log.warn("Closing DB Statements");
 						statement.close();
-						rs.close();
+					}
+					if(rs==null)
+					{
+						log.info("No open Resultset found");
+					}
+					else
+					{
+						log.warn("Closing DB Result set");
+						rs.close();					
+					}
+						
 				} catch (SQLException | NullPointerException throwables)
 				{
 					log.error("Error closing DB connections");
@@ -215,9 +287,24 @@ public class SurveyDaoImpl implements ISurveyDao
 			{
 				try
 				{
-					log.warn("Closing DB connections");
+					if(connection==null)
+					{
+						log.info("No connetionsfound");
+					}
+					else
+					{
+						log.warn("Closing DB connections");
 						connection.close();
+					}
+					if(statement==null)
+					{
+						log.info("No open Statements found");
+					}
+					else
+					{
+						log.warn("Closing DB Statements");
 						statement.close();
+					}
 				} catch (SQLException | NullPointerException throwables)
 				{
 					log.error("Error closing DB connections");
@@ -261,9 +348,24 @@ public class SurveyDaoImpl implements ISurveyDao
 			{
 				try
 				{
-					log.warn("Closing DB connections");
+					if(connection==null)
+					{
+						log.info("No connetionsfound");
+					}
+					else
+					{
+						log.warn("Closing DB connections");
 						connection.close();
+					}
+					if(statement==null)
+					{
+						log.info("No open Statements found");
+					}
+					else
+					{
+						log.warn("Closing DB Statements");
 						statement.close();
+					}
 				} catch (SQLException | NullPointerException throwables)
 				{
 					log.error("Error closing DB connections");
@@ -314,6 +416,7 @@ public class SurveyDaoImpl implements ISurveyDao
 						statement3.setString(1, surveyQuestion.getRule().getRuleType().trim());
 						statement3.setString(2, surveyQuestion.getRule().getRuleValue());
 						rs=statement3.executeQuery();
+						statement3.close();
 						while(rs.next())
 						{
 							int ruleId=rs.getInt(1);
@@ -327,15 +430,17 @@ public class SurveyDaoImpl implements ISurveyDao
 					statement2.setInt(3, surveyQuestion.getRule().getRuleId());
 					statement2.setInt(4, surveyQuestion.getPriority());
 					rowsAdded = rowsAdded+statement2.executeUpdate();
+					statement2.close();
 					}
 					log.info("Updating group size of a survey");
 					statement4 = connection.prepareStatement(DBQueriesUtil.UPDATE_SURVEY_GROUPSIZE);
 					statement4.setInt(1,survey.getSurveyId());
 					statement4.setInt(2,survey.getGroupSize());
 					statement4.executeUpdate();
+					statement4.close();
 				}
 			} 
-			catch (SQLException e) 
+			catch (SQLException  | NullPointerException e) 
 			{
 				e.printStackTrace();
 			}
@@ -343,11 +448,34 @@ public class SurveyDaoImpl implements ISurveyDao
 			{
 				try
 				{
-					log.warn("Closing DB connections");
+					if(connection==null)
+					{
+						log.info("No connetionsfound");
+					}
+					else
+					{
+						log.warn("Closing DB connections");
 						connection.close();
+					}
+					if(statement==null)
+					{
+						log.info("No open Statements found");
+					}
+					else
+					{
+						log.warn("Closing DB Statements");
 						statement.close();
-						statement4.close();
-						rs.close();
+					}
+					if(rs==null)
+					{
+						log.info("No open Resultset found");
+					}
+					else
+					{
+						log.warn("Closing DB Result set");
+						rs.close();					
+					}
+						
 				} catch (SQLException | NullPointerException throwables)
 				{
 					log.error("Error closing DB connections");
@@ -393,10 +521,34 @@ public class SurveyDaoImpl implements ISurveyDao
 			{
 				try
 				{
-					log.warn("Closing DB connections");
+					if(connection==null)
+					{
+						log.info("No connetionsfound");
+					}
+					else
+					{
+						log.warn("Closing DB connections");
 						connection.close();
+					}
+					if(statement==null)
+					{
+						log.info("No open Statements found");
+					}
+					else
+					{
+						log.warn("Closing DB Statements");
 						statement.close();
-						rs.close();
+					}
+					if(rs==null)
+					{
+						log.info("No open Resultset found");
+					}
+					else
+					{
+						log.warn("Closing DB Result set");
+						rs.close();					
+					}
+						
 				} catch (SQLException | NullPointerException throwables)
 				{
 					log.error("Error closing DB connections");
@@ -437,9 +589,24 @@ public class SurveyDaoImpl implements ISurveyDao
 			{
 				try
 				{
-					log.warn("Closing DB connections");
+					if(connection==null)
+					{
+						log.info("No connetionsfound");
+					}
+					else
+					{
+						log.warn("Closing DB connections");
 						connection.close();
+					}
+					if(statement==null)
+					{
+						log.info("No open Statements found");
+					}
+					else
+					{
+						log.warn("Closing DB Statements");
 						statement.close();
+					}
 				} catch (SQLException | NullPointerException throwables)
 				{
 					log.error("Error closing DB connections");
@@ -488,10 +655,34 @@ public class SurveyDaoImpl implements ISurveyDao
 			{
 				try
 				{
-					log.warn("Closing DB connections");
+					if(connection==null)
+					{
+						log.info("No connetionsfound");
+					}
+					else
+					{
+						log.warn("Closing DB connections");
 						connection.close();
+					}
+					if(statement==null)
+					{
+						log.info("No open Statements found");
+					}
+					else
+					{
+						log.warn("Closing DB Statements");
 						statement.close();
-						rs.close();
+					}
+					if(rs==null)
+					{
+						log.info("No open Resultset found");
+					}
+					else
+					{
+						log.warn("Closing DB Result set");
+						rs.close();					
+					}
+						
 				} 
 				catch (SQLException | NullPointerException throwables)
 				{
