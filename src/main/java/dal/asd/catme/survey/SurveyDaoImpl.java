@@ -14,6 +14,7 @@ import dal.asd.catme.BaseAbstractFactoryImpl;
 import dal.asd.catme.config.SystemConfig;
 import dal.asd.catme.courses.Course;
 import dal.asd.catme.database.DatabaseAccess;
+import dal.asd.catme.questionmanager.IQuestionManagerModelAbstractFactory;
 import dal.asd.catme.questionmanager.Question;
 import dal.asd.catme.util.DBQueriesUtil;
 
@@ -21,6 +22,8 @@ public class SurveyDaoImpl implements ISurveyDao
 {
 	private static final Logger log = LoggerFactory.getLogger(SurveyDaoImpl.class);
 	ISurveyModelAbstractFactory surveyModelAbstractFactory=BaseAbstractFactoryImpl.instance().makeSurveyModelAbstractFactory();
+	IQuestionManagerModelAbstractFactory questionManagerModelAbstractFactory=BaseAbstractFactoryImpl.instance().makeQuestionManagerModelAbstractFactory();
+	
 	DatabaseAccess database;
 	
 	@Override
@@ -49,7 +52,7 @@ public class SurveyDaoImpl implements ISurveyDao
 				while (rs.next())
 				{
 					log.info("Fetched Survey quesitons from DB ");
-					Question question = new Question();
+					Question question = questionManagerModelAbstractFactory.makeQuestion();
 					question.setQuestionId(rs.getInt("QuestionId"));
 					question.setQuestionText(rs.getString("QuestionText"));
 					question.setQuestionType(rs.getString("QuestionType"));
@@ -98,7 +101,7 @@ public class SurveyDaoImpl implements ISurveyDao
 			while (rs.next())
 			{
 				log.info("Fetched Rule for the question");
-				rule=new Rule();
+				rule=surveyModelAbstractFactory.makeRule();
 				rule.setRuleId(rs.getInt("SurveyQuestionRuleId"));
 				rule.setRuleType(rs.getString("RuleType"));
 				rule.setRuleValue(rs.getString("RuleCriteriaValue"));

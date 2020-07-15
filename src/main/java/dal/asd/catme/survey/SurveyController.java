@@ -2,6 +2,7 @@ package dal.asd.catme.survey;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -12,12 +13,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+
 import dal.asd.catme.BaseAbstractFactoryImpl;
+import dal.asd.catme.accesscontrol.IAccessControlModelAbstractFactory;
 import dal.asd.catme.accesscontrol.User;
-import dal.asd.catme.config.SystemConfig;
 import dal.asd.catme.courses.Course;
+import dal.asd.catme.courses.ICourseModelAbstractFactory;
 import dal.asd.catme.exception.QuestionDatabaseException;
 import dal.asd.catme.questionmanager.IListQuestionsService;
+import dal.asd.catme.questionmanager.IQuestionManagerAbstractFactory;
+import dal.asd.catme.questionmanager.IQuestionManagerModelAbstractFactory;
 import dal.asd.catme.questionmanager.Question;
 import dal.asd.catme.util.CatmeUtil;
 
@@ -27,21 +32,25 @@ public class SurveyController
 	private static final Logger log = LoggerFactory.getLogger(SurveyController.class);
 
 	IListQuestionsService listQuestionsService;
+	IQuestionManagerAbstractFactory questionmanager=BaseAbstractFactoryImpl.instance().makeQuestionManagerAbstractFactory();
 	ISurveyService surveyService= BaseAbstractFactoryImpl.instance().makeSurveyAbstractFactory().makeSurveyService();
 	ISurveyModelAbstractFactory surveyModelAbstractFactory=BaseAbstractFactoryImpl.instance().makeSurveyModelAbstractFactory();
-
+	IAccessControlModelAbstractFactory accessControlModelAbstractFactory=BaseAbstractFactoryImpl.instance().makeAccessControlModelAbstractFactory();
+	ICourseModelAbstractFactory courseModelAbstractFactory=BaseAbstractFactoryImpl.instance().makeCourseModelAbstractFactory();
+	IQuestionManagerModelAbstractFactory questionManagerModelAbstractFactory=BaseAbstractFactoryImpl.instance().makeQuestionManagerModelAbstractFactory();
+	
 	@RequestMapping("/createSurvey")
 	public ModelAndView loadSurveyPage(@RequestParam(name = "courseId") String courseId)
 	{
 		log.info("Loading the survey for the course : "+courseId);
 		ModelAndView modelAndView=new ModelAndView();
-		User currentUser = new User();
-		Course course=new Course();
+		User currentUser = accessControlModelAbstractFactory.makeUser();
+		Course course=courseModelAbstractFactory.makeCourse();
 		course.setCourseId(courseId.trim());
 		Survey survey=null;
 		List<Question> questionBank=new ArrayList<>();
 		currentUser.setBannerId(SecurityContextHolder.getContext().getAuthentication().getName());
-		listQuestionsService = SystemConfig.instance().getListQuestionsService();
+		listQuestionsService = questionmanager.makeListQuestionsService();
 		try
 		{
 			log.info("Fetching questions from question bank ");
@@ -171,7 +180,7 @@ public class SurveyController
 		log.info("Deleting the survey question");
 		Survey survey=surveyModelAbstractFactory.makeSurvey();
 		survey.setSurveyId(surveyId);
-		Question question=new Question();
+		Question question=questionManagerModelAbstractFactory.makeQuestion();
 		question.setQuestionId(questionId);
 		try 
 		{

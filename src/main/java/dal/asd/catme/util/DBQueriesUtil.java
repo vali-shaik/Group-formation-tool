@@ -61,7 +61,13 @@ public class DBQueriesUtil
     public static final String GET_PRIORITY="CALL getPriority(?,?)";
     public static final int DEFAULT_SURVEY_QUESTION_RULE=1;
     public static final int DEFAULT_PRIORITY=1;
-    public static final String DELETE_SURVEY_QUESTION="DELETE FROM SurveyQuestion WHERE SurveyId=? AND QuestionId=?";
-    //public static final String DELETE_EACH_SURVEY_QUESTION="DELETE FROM SurveyQuestion WHERE surveyId=";
+    public static final String DELETE_SURVEY_QUESTION="CALL deleteSurveyQuestion(?,?)";
+    public static final String GET_PUBLISHED_SURVEY = "call GetPublishedSurvey(?);";
+    public static final String GET_SURVEY_QUESTIONS = "call GetSurveyQuestions(?);";
+    public static final String SAVE_ANSWER = "call SaveAnswer(?,?,?);";
+    public static final String SAVE_ANSWER_WITH_VALUE = "call SaveAnswerWithValue(?,?,?,?);";
+    public static final String SAVE_ATTEMPT = "call SaveSurveyAttempt(?,?)";
+    public static final String GET_ATTEMPT = "call GetSurveyAttempt(?,?)";
+
 }
 

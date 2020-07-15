@@ -34,13 +34,18 @@ public class SurveyResponseController
         {
             log.info("Survey is not published");
             m.addAttribute("surveyPublished", false);
+            //m.addAttribute("attempted",false);
             return CatmeUtil.SURVEY_PAGE;
         }
+        else
+        {
+        	 m.addAttribute("surveyPublished", true);
+        }
 
-        if (publishedSurveyId == null || surveyService.isSurveyAttempted(publishedSurveyId, bannerId))
+        if (surveyService.isSurveyAttempted(publishedSurveyId, bannerId))
         {
             log.info("Survey is already attempted");
-            m.addAttribute("surveyPublished", true);
+           
             m.addAttribute("attempted", true);
             return CatmeUtil.SURVEY_PAGE;
         }

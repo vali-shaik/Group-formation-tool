@@ -1,8 +1,8 @@
 package dal.asd.catme.surveytest;
 import java.util.ArrayList;
 import java.util.List;
-
 import dal.asd.catme.BaseAbstractFactoryImpl;
+import dal.asd.catme.questionmanager.IQuestionManagerModelAbstractFactory;
 import dal.asd.catme.questionmanager.Question;
 import dal.asd.catme.survey.ISurveyModelAbstractFactory;
 import dal.asd.catme.survey.Rule;
@@ -11,6 +11,8 @@ import dal.asd.catme.survey.SurveyQuestion;
 public class FormSurveyMock
 {
 	static ISurveyModelAbstractFactory surveyModelAbstractFactory=BaseAbstractFactoryImpl.instance().makeSurveyModelAbstractFactory();
+	static IQuestionManagerModelAbstractFactory questionManagerModelAbstractFactory=BaseAbstractFactoryImpl.instance().makeQuestionManagerModelAbstractFactory();
+	
 	public static Survey formSurvey()
     {
        Survey survey=surveyModelAbstractFactory.makeSurvey();
@@ -55,12 +57,12 @@ public class FormSurveyMock
     public static List<Question> formQuestionsList()
     {
     	List<Question> questionsList=new ArrayList<>();
-    	Question question=new Question();
+    	Question question=questionManagerModelAbstractFactory.makeQuestion();
         question.setQuestionId(22);
         question.setQuestionText("Rate youself in Java");
         question.setQuestionType("Numeric");
         questionsList.add(question);
-        Question question2=new Question();
+        Question question2=questionManagerModelAbstractFactory.makeQuestion();
         question2.setQuestionId(23);
         question2.setQuestionText("Do you know Heroku??");
         question2.setQuestionType("FreeText");
@@ -71,7 +73,7 @@ public class FormSurveyMock
     
     public static Question formQuestion()
     {
-    	Question question=new Question();
+    	Question question=questionManagerModelAbstractFactory.makeQuestion();
         question.setQuestionId(22);
         question.setQuestionText("Rate youself in Python");
         question.setQuestionType("Multiple choice");
