@@ -25,7 +25,7 @@ public class SurveyResponseController
     public String viewSurvey(@RequestParam(name = "courseId") String courseId, Model m)
     {
         log.info("Getting Survey for course: "+courseId);
-        String publishedSurveyId = surveyService.isSurveyPublished(courseId);
+        String publishedSurveyId = surveyService.getPublishedSurveyId(courseId);
         String bannerId = SecurityContextHolder.getContext().getAuthentication().getName();
 
         m.addAttribute("courseId", courseId);
@@ -36,8 +36,12 @@ public class SurveyResponseController
             m.addAttribute("surveyPublished", false);
             return CatmeUtil.SURVEY_PAGE;
         }
+        else
+        {
+            m.addAttribute("surveyPublished", true);
+        }
 
-        if (publishedSurveyId == null || surveyService.isSurveyAttempted(publishedSurveyId, bannerId))
+        if (surveyService.isSurveyAttempted(publishedSurveyId, bannerId))
         {
             log.info("Survey is already attempted");
             m.addAttribute("surveyPublished", true);

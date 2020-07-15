@@ -20,8 +20,8 @@ public class SurveyResponseServiceImplTest
     {
         ISurveyResponseService surveyResponseService = surveyResponseAbstractFactory.makeSurveyResponseService();
 
-        assertNotNull(surveyResponseService.isSurveyPublished("5308"));
-        assertNull(surveyResponseService.isSurveyPublished(""));
+        assertNotNull(surveyResponseService.getPublishedSurveyId("5308"));
+        assertNull(surveyResponseService.getPublishedSurveyId(""));
     }
 
     @Test

@@ -17,7 +17,7 @@ public class SurveyResponseDaoMock implements ISurveyResponseDao
     ISurveyResponseModelAbstractFactory modelAbstractFactory = baseAbstractFactory.makeSurveyResponseModelAbstractFactory();
 
     @Override
-    public String isSurveyPublished(String courseId)
+    public String getPublishedSurveyId(String courseId)
     {
         for (String course : POJOMock.getPublishedCourses())
         {

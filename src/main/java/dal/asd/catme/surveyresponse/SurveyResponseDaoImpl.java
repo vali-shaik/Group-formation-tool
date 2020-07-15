@@ -31,7 +31,7 @@ public class SurveyResponseDaoImpl implements ISurveyResponseDao
     ISurveyResponseModelAbstractFactory modelAbstractFactory = BaseAbstractFactoryImpl.instance().makeSurveyResponseModelAbstractFactory();
     IQuestionManagerModelAbstractFactory questionManagerModelAbstractFactory = BaseAbstractFactoryImpl.instance().makeQuestionManagerModelAbstractFactory();
 
-    public String isSurveyPublished(String courseId)
+    public String getPublishedSurveyId(String courseId)
     {
         log.info("Checking database for publish status of Survey of course: "+courseId);
         DatabaseAccess db = SystemConfig.instance().getDatabaseAccess();

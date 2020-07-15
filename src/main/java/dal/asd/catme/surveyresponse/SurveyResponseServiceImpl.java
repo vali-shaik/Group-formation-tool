@@ -15,14 +15,14 @@ public class SurveyResponseServiceImpl implements ISurveyResponseService
         this.surveyDao = surveyDao;
     }
 
-    public String isSurveyPublished(String courseId)
+    public String getPublishedSurveyId(String courseId)
     {
         log.info("calling service method to check if survey is published");
         if (stringNullOrEmpty(courseId))
         {
             return null;
         }
-        return surveyDao.isSurveyPublished(courseId);
+        return surveyDao.getPublishedSurveyId(courseId);
     }
 
     public List<SurveyResponse> getSurveyQuestions(String surveyId)

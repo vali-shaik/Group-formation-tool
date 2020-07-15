@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface ISurveyResponseDao
 {
-    String isSurveyPublished(String courseId);
+    String getPublishedSurveyId(String courseId);
 
     List<SurveyResponse> getSurveyQuestions(String surveyId);
 
