@@ -1,6 +1,6 @@
 package dal.asd.catme.coursestest;
 
-import dal.asd.catme.accesscontrol.Student;
+import dal.asd.catme.POJOMock;
 import dal.asd.catme.accesscontrol.User;
 import dal.asd.catme.courses.Course;
 import dal.asd.catme.courses.ICourseDao;
@@ -8,17 +8,10 @@ import dal.asd.catme.exception.CatmeException;
 import dal.asd.catme.util.CatmeUtil;
 
 import java.sql.Connection;
-import java.util.ArrayList;
 import java.util.List;
 
 public class CourseDaoMock implements ICourseDao
 {
-
-
-    public CourseDaoMock()
-    {
-
-    }
 
     List<Course> listOfCourses;
 
@@ -38,17 +31,23 @@ public class CourseDaoMock implements ICourseDao
     }
 
     @Override
+    public List<Course> getAllCourses()
+    {
+        return dal.asd.catme.POJOMock.getCourses();
+
+    }
+
+    @Override
     public Course displayCourseById(String courseId) throws CatmeException
     {
-        Course course = new Course();
         for (Course c : listOfCourses)
         {
             if (c.getCourseId().equals(courseId))
             {
-                course = c;
+                return c;
             }
         }
-        return course;
+        return null;
     }
 
     @Override
@@ -72,8 +71,13 @@ public class CourseDaoMock implements ICourseDao
     }
 
     @Override
-    public List<Student> getRegisteredStudents(String courseId)
+    public List<User> getRegisteredStudents(String courseId)
     {
+        for (Course c : listOfCourses)
+        {
+            if (c.getCourseId().equals(courseId))
+                return POJOMock.getUsers();
+        }
         return null;
     }
 
@@ -84,7 +88,7 @@ public class CourseDaoMock implements ICourseDao
         {
             if (c.getCourseId().equalsIgnoreCase(courseId))
             {
-                for (User u : c.getStudents())
+                for (User u : POJOMock.getUsers())
                 {
                     if (u.getBannerId().equalsIgnoreCase(bannerId))
                     {

@@ -1,12 +1,8 @@
 package dal.asd.catme.config;
 
-import static dal.asd.catme.util.DBQueriesUtil.SELECT_ROLE_SECURITY_QUERY;
-import static dal.asd.catme.util.DBQueriesUtil.SELECT_USER_SECURITY_QUERY;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
+import dal.asd.catme.database.DatabaseAccess;
+import dal.asd.catme.exception.CatmeException;
+import dal.asd.catme.util.CatmeUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
@@ -21,9 +17,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import dal.asd.catme.database.DatabaseAccess;
-import dal.asd.catme.exception.CatmeException;
-import dal.asd.catme.util.CatmeUtil;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+import static dal.asd.catme.util.DBQueriesUtil.SELECT_ROLE_SECURITY_QUERY;
+import static dal.asd.catme.util.DBQueriesUtil.SELECT_USER_SECURITY_QUERY;
 
 @Configuration
 @EnableGlobalMethodSecurity(

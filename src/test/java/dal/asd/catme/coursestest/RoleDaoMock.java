@@ -1,15 +1,9 @@
 package dal.asd.catme.coursestest;
 
-import dal.asd.catme.accesscontrol.IRoleDao;
-import dal.asd.catme.accesscontrol.IUserDao;
-import dal.asd.catme.accesscontrol.Instructor;
-import dal.asd.catme.accesscontrol.Role;
-import dal.asd.catme.accesscontrol.TInstructor;
-import dal.asd.catme.accesscontrol.User;
-import dal.asd.catme.accesscontroltest.UserDaoMock;
-import dal.asd.catme.courses.Course;
-import dal.asd.catme.courses.Enrollment;
-import dal.asd.catme.courses.ICourseDao;
+import dal.asd.catme.BaseAbstractFactoryMock;
+import dal.asd.catme.POJOMock;
+import dal.asd.catme.accesscontrol.*;
+import dal.asd.catme.courses.*;
 
 import java.sql.Connection;
 import java.util.ArrayList;
@@ -24,21 +18,18 @@ public class RoleDaoMock implements IRoleDao
     List<Course> courses;
     Course c;
 
-    public RoleDaoMock(ArrayList<User> users, Course course)
-    {
-        this.users = users;
-        this.c = course;
-        userDao = new UserDaoMock(users);
-
-    }
+    IAccessControlModelAbstractFactory accessControlModelAbstractFactory = BaseAbstractFactoryMock.instance().makeAccessControlModelAbstractFactory();
+    ICourseModelAbstractFactory courseModelAbstractFactory = BaseAbstractFactoryMock.instance().makeCourseModelAbstractFactory();
+    IAccessControlAbstractFactory accessControlAbstractFactory = BaseAbstractFactoryMock.instance().makeAccessControlAbstractFactory();
+    ICourseAbstractFactory courseAbstractFactory = BaseAbstractFactoryMock.instance().makeCourseAbstractFactory();
 
     public RoleDaoMock(ArrayList<User> users, List<Course> courses)
     {
         this.users = users;
         this.courses = courses;
         this.c = courses.get(2);
-        userDao = new UserDaoMock(users);
-        courseDao = new CourseDaoMock(courses);
+        userDao = accessControlAbstractFactory.makeUserDao();
+        courseDao = courseAbstractFactory.makeCourseDao();
     }
 
 
@@ -49,7 +40,7 @@ public class RoleDaoMock implements IRoleDao
         {
             if (u.getBannerId().equalsIgnoreCase(bannerId))
             {
-                Role l = new Role();
+                Role l = accessControlModelAbstractFactory.makeRole();
                 l.setRoleId(String.valueOf(roleId));
                 ArrayList<Role> roles = new ArrayList<>();
                 roles.add(l);
@@ -70,40 +61,27 @@ public class RoleDaoMock implements IRoleDao
     @Override
     public String assignTa(Enrollment user, Connection con)
     {
-        if (0 != userDao.checkExistingUser(user.bannerId, con))
+        if (0 != userDao.checkExistingUser(user.getBannerId(), con))
         {
 
-            if (0 != courseDao.checkCourseExists(user.courseId, con))
+            if (0 != courseDao.checkCourseExists(user.getCourseId(), con))
             {
 
-                if (0 == courseDao.checkCourseRegistration(user.bannerId, user.courseId, con))
+                if (0 == courseDao.checkCourseRegistration(user.getBannerId(), user.getCourseId(), con))
                 {
 
-                    if (0 == checkCourseInstructor(user.bannerId, user.courseId, con))
+                    if (0 == checkCourseInstructor(user.getBannerId(), user.getCourseId(), con))
                     {
                         for (Course c : courses)
                         {
-                            if (c.getCourseId().equalsIgnoreCase(user.courseId))
+                            if (c.getCourseId().equalsIgnoreCase(user.toString()))
                             {
-                                List<TInstructor> tInstructors = c.gettInstructors();
-                                if (tInstructors == null)
-                                {
-                                    tInstructors = new ArrayList<TInstructor>();
-                                }
 
                                 for (User u : users)
                                 {
-                                    if (u.getBannerId().equalsIgnoreCase(user.bannerId))
+                                    if (u.getBannerId().equalsIgnoreCase(user.getBannerId()))
                                     {
-                                        TInstructor t = new TInstructor();
-                                        t.setBannerId(user.bannerId);
-                                        t.setEmail(u.getEmail());
-                                        t.setFirstName(u.getFirstName());
-                                        t.setLastName(u.getLastName());
-
                                         return "Success";
-
-
                                     }
                                 }
                             }
@@ -112,13 +90,13 @@ public class RoleDaoMock implements IRoleDao
                 }
             }
         }
-        return null;
+        return "";
     }
 
     @Override
     public int checkCourseInstructor(String bannerId, String courseId, Connection con)
     {
-        for (Instructor i : c.getInstructors())
+        for (User i : POJOMock.getUsers())
         {
             if (i.getBannerId().equalsIgnoreCase(bannerId))
                 return 1;

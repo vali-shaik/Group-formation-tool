@@ -1,22 +1,21 @@
 package dal.asd.catme.accesscontrol;
 
 import dal.asd.catme.courses.Course;
-
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.util.Properties;
 
 import static dal.asd.catme.accesscontrol.MailSenderUtil.*;
 
-import java.io.*;
-import java.util.Properties;
-
 public class MailSenderServiceImpl implements IMailSenderService
 {
-    private JavaMailSenderImpl mailSender;
+    private final JavaMailSenderImpl mailSender;
 
     public MailSenderServiceImpl(JavaMailSenderImpl mailSender)
     {
@@ -54,16 +53,16 @@ public class MailSenderServiceImpl implements IMailSenderService
     }
 
     @Override
-    public void sendCredentialsToStudent(Student s, Course c) throws MessagingException
+    public void sendCredentialsToStudent(User u, Course c) throws MessagingException
     {
-        String bodyText = getFormattedEmailForNewStudent(s, c);
+        String bodyText = getFormattedEmailForNewStudent(u, c);
 
         if (bodyText == null)
             throw new MessagingException("Error Creating Mail Text From Template");
 
         String subject = NEW_STUDENT_EMAIL_SUBJECT;
 
-        sendMail(s, subject, bodyText);
+        sendMail(u, subject, bodyText);
     }
 
     @Override
@@ -72,7 +71,7 @@ public class MailSenderServiceImpl implements IMailSenderService
         sendMail(u, FORGOT_PASSWORD_EMAIL_SUBJECT, getFormattedEmailForForgotPassword(u));
     }
 
-    public String getFormattedEmailForNewStudent(Student s, Course c)
+    public String getFormattedEmailForNewStudent(User u, Course c)
     {
         try
         {
@@ -82,11 +81,11 @@ public class MailSenderServiceImpl implements IMailSenderService
             fis.read(data);
             fis.close();
 
-            String str = new String(data, "UTF-8");
+            String str = new String(data, StandardCharsets.UTF_8);
 
-            str = str.replace(TEMPLATE_USERNAME, s.getFirstName());
-            str = str.replace(TEMPLATE_BANNERID, s.getBannerId());
-            str = str.replace(TEMPLATE_PASSWORD, s.getPassword());
+            str = str.replace(TEMPLATE_USERNAME, u.getFirstName());
+            str = str.replace(TEMPLATE_BANNERID, u.getBannerId());
+            str = str.replace(TEMPLATE_PASSWORD, u.getPassword());
             str = str.replace(TEMPLATE_COURSE, c.getCourseId());
 
             return str;
@@ -112,7 +111,7 @@ public class MailSenderServiceImpl implements IMailSenderService
             fis.read(data);
             fis.close();
 
-            String str = new String(data, "UTF-8");
+            String str = new String(data, StandardCharsets.UTF_8);
 
             str = str.replace(TEMPLATE_USERNAME, u.getFirstName());
             str = str.replace(TEMPLATE_RESETLINK, RESETLINK + u.getPassword());

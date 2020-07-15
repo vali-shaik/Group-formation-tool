@@ -1,117 +1,51 @@
 package dal.asd.catme.coursestest;
 
-import dal.asd.catme.accesscontrol.Instructor;
-import dal.asd.catme.accesscontrol.Student;
-import dal.asd.catme.accesscontrol.TInstructor;
+import dal.asd.catme.BaseAbstractFactoryMock;
+import dal.asd.catme.IBaseAbstractFactory;
 import dal.asd.catme.courses.Course;
+import dal.asd.catme.courses.ICourseModelAbstractFactory;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class CourseTest
 {
+    IBaseAbstractFactory baseAbstractFactory = BaseAbstractFactoryMock.instance();
+    ICourseModelAbstractFactory courseModelAbstractFactory = baseAbstractFactory.makeCourseModelAbstractFactory();
+
     @Test
     public void getCourseIdTest()
     {
-        Course c = new Course();
+        Course c = courseModelAbstractFactory.makeCourse();
 
         c.setCourseId("5307");
-        assertEquals(c.getCourseId(),"5307");
+        assertEquals(c.getCourseId(), "5307");
     }
 
     @Test
     public void setCourseIdTest()
     {
-        Course c = new Course();
+        Course c = courseModelAbstractFactory.makeCourse();
 
         c.setCourseId("5307");
-        assertEquals(c.getCourseId(),"5307");
+        assertEquals(c.getCourseId(), "5307");
     }
 
     @Test
     public void getCourseNameTest()
     {
-        Course c = new Course();
+        Course c = courseModelAbstractFactory.makeCourse();
 
         c.setCourseName("ABCD");
-        assertEquals(c.getCourseName(),"ABCD");
+        assertEquals(c.getCourseName(), "ABCD");
     }
 
     @Test
     public void setCourseNameTest()
     {
-        Course c = new Course();
+        Course c = courseModelAbstractFactory.makeCourse();
 
         c.setCourseName("ABCD");
-        assertEquals(c.getCourseName(),"ABCD");
-    }
-
-    @Test
-    public void getStudentsTest()
-    {
-        Course c = new Course();
-
-        List<Student> list = POJOMock.getStudents();
-
-        c.setStudents(list);
-        assertEquals(c.getStudents(),list);
-    }
-
-    @Test
-    public void setStudentsTest()
-    {
-        Course c = new Course();
-
-        List<Student> list = POJOMock.getStudents();
-
-        c.setStudents(list);
-        assertEquals(c.getStudents(),list);
-    }
-
-    @Test
-    public void gettInstructorTest()
-    {
-        Course c = new Course();
-
-        List<TInstructor> list = POJOMock.gettInstructors();
-
-        c.settInstructors(list);
-        assertEquals(c.gettInstructors(),list);
-    }
-
-    @Test
-    public void settInstructorTest()
-    {
-        Course c = new Course();
-
-        List<TInstructor> list = POJOMock.gettInstructors();
-
-        c.settInstructors(list);
-        assertEquals(c.gettInstructors(),list);
-    }
-
-    @Test
-    public void getInstructorTest()
-    {
-        Course c = new Course();
-
-        List<Instructor> list = POJOMock.getInstructors();
-
-        c.setInstructors(list);
-        assertEquals(c.getInstructors(),list);
-    }
-
-    @Test
-    public void setInstructorTest()
-    {
-        Course c = new Course();
-
-        List<Instructor> list = POJOMock.getInstructors();
-
-        c.setInstructors(list);
-        assertEquals(c.getInstructors(),list);
+        assertEquals(c.getCourseName(), "ABCD");
     }
 }

@@ -1,18 +1,19 @@
 package dal.asd.catme.accesscontroltest;
 
-import java.sql.Connection;
-import java.util.ArrayList;
-
-import dal.asd.catme.accesscontrol.IUserDao;
+import dal.asd.catme.POJOMock;
 import dal.asd.catme.accesscontrol.User;
+import dal.asd.catme.accesscontrol.IUserDao;
+
+import java.sql.Connection;
+import java.util.List;
 
 public class UserDaoMock implements IUserDao
 {
 
-    ArrayList<User> users;
+    List<User> users;
 
 
-    public UserDaoMock(ArrayList<User> users)
+    public UserDaoMock(List<User> users)
     {
         this.users = users;
     }
@@ -32,8 +33,15 @@ public class UserDaoMock implements IUserDao
     }
 
     @Override
+    public List<User> getUsers()
+    {
+        return POJOMock.getUsers();
+    }
+
+    @Override
     public int addUser(User user, Connection con)
     {
+        // TODO Auto-generated method stub
         users.add(user);
         return 1;
 

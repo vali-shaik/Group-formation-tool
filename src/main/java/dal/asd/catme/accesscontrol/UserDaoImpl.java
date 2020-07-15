@@ -1,6 +1,11 @@
+
 package dal.asd.catme.accesscontrol;
 
+import dal.asd.catme.BaseAbstractFactoryImpl;
 import dal.asd.catme.config.SystemConfig;
+import dal.asd.catme.courses.ICourseAbstractFactory;
+import dal.asd.catme.courses.IRoleDao;
+import dal.asd.catme.database.DatabaseAccess;
 import dal.asd.catme.util.CatmeUtil;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -8,6 +13,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import static dal.asd.catme.util.DBQueriesUtil.*;
 
@@ -16,6 +23,9 @@ public class UserDaoImpl implements IUserDao
     IRoleDao roleDao;
 
     PasswordEncoder p;
+
+    IAccessControlModelAbstractFactory modelAbstractFactory = BaseAbstractFactoryImpl.instance().makeAccessControlModelAbstractFactory();
+    ICourseAbstractFactory courseAbstractFactory = BaseAbstractFactoryImpl.instance().makeCourseAbstractFactory();
 
     @Override
     public int checkExistingUser(String bannerId, Connection con)
@@ -53,7 +63,7 @@ public class UserDaoImpl implements IUserDao
                 stmt.setString(5, p.encode(user.getPassword()));
 
                 stmt.executeUpdate();
-                roleDao = SystemConfig.instance().getRoleDao();
+                roleDao = courseAbstractFactory.makeRoleDao();
                 roleDao.assignRole(bannerId, CatmeUtil.GUEST_ROLE_ID, con);
                 return 1;
             }
@@ -80,7 +90,11 @@ public class UserDaoImpl implements IUserDao
             String lastname = rs.getString(3);
             String emailid = rs.getString(4);
 
-            User u = new User(bannerId, lastname, firstname, emailid);
+            User u = modelAbstractFactory.makeUser();
+            u.setBannerId(bannerId);
+            u.setFirstName(firstname);
+            u.setLastName(lastname);
+            u.setEmail(emailid);
 
             return u;
         } catch (Exception e)
@@ -89,5 +103,56 @@ public class UserDaoImpl implements IUserDao
         }
 
         return null;
+    }
+
+    @Override
+    public List<User> getUsers()
+    {
+        DatabaseAccess db;
+        Connection connection = null;
+        List<User> users = new ArrayList<>();
+        try
+        {
+            db = SystemConfig.instance().getDatabaseAccess();
+            connection = db.getConnection();
+            ResultSet resultSet = listUsers(connection, LIST_USER_QUERY);
+
+            while (resultSet.next())
+            {
+                User user = modelAbstractFactory.makeUser();
+                user.setBannerId(resultSet.getString(CatmeUtil.BANNER_ID));
+                user.setFirstName(resultSet.getString(CatmeUtil.FIRST_NAME));
+                user.setLastName(resultSet.getString(CatmeUtil.LAST_NAME));
+                users.add(user);
+            }
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+        } finally
+        {
+            try
+            {
+                connection.close();
+            } catch (SQLException | NullPointerException e)
+            {
+                e.printStackTrace();
+            }
+        }
+        return users;
+    }
+
+    private ResultSet listUsers(Connection connection, String query)
+    {
+        ResultSet rs = null;
+        try
+        {
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, CatmeUtil.STUDENT_ROLE);
+            rs = preparedStatement.executeQuery();
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+        return rs;
     }
 }

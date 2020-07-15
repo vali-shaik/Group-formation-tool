@@ -1,18 +1,10 @@
 package dal.asd.catme.password;
 
-import dal.asd.catme.database.DatabaseAccess;
-
-import org.springframework.security.crypto.password.PasswordEncoder;
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class PasswordRulesConfigImpl implements IPasswordRulesConfig
 {
-    DatabaseAccess databaseAccess;
-
-    PasswordEncoder passwordEncoder;
-
     boolean regularExpressionMatcher(String currentPassword, String regularExpression)
     {
         Pattern pattern = Pattern.compile(regularExpression);
@@ -57,14 +49,7 @@ public class PasswordRulesConfigImpl implements IPasswordRulesConfig
         String minimumUpperCaseRegEx = PasswordRulesUtil.MINIMUM_UPPER_CASE_REGEX + "{" + mininmumUpperLength + "}";
         if (currentPassword != null)
         {
-            if (regularExpressionMatcher(currentPassword, minimumUpperCaseRegEx))
-            {
-               flag=true;
-            }
-            else
-            {
-            	flag = false;
-            }
+            flag = regularExpressionMatcher(currentPassword, minimumUpperCaseRegEx);
         }
         return flag;
     }
@@ -76,14 +61,7 @@ public class PasswordRulesConfigImpl implements IPasswordRulesConfig
         String minimumLowerCaseRegEx = PasswordRulesUtil.MINIMUM_LOWER_CASE_REGEX + "{" + mininmumLowerLength + "}";
         if (currentPassword != null)
         {
-            if (regularExpressionMatcher(currentPassword, minimumLowerCaseRegEx))
-            {
-                flag = true;
-            }
-            else
-            {
-            	 flag = false;
-            }
+            flag = regularExpressionMatcher(currentPassword, minimumLowerCaseRegEx);
         }
         return flag;
     }
@@ -95,14 +73,7 @@ public class PasswordRulesConfigImpl implements IPasswordRulesConfig
         String minimumSymbolSpecialRegEx = PasswordRulesUtil.MINIMUM_SYMBOL_SPECIAL_REGEX + "{" + minimumSymbolSpecialLength + "}";
         if (currentPassword != null)
         {
-            if (regularExpressionMatcher(currentPassword, minimumSymbolSpecialRegEx))
-            {
-                flag = true;
-            }
-            else
-            {
-            	flag=false;
-            }
+            flag = regularExpressionMatcher(currentPassword, minimumSymbolSpecialRegEx);
         }
         return flag;
     }

@@ -10,24 +10,8 @@ public class Question
     String questionText;
     String questionType;
     String questionTitle;
-    List<Option> optionWithOrder = new ArrayList<Option>();
+    List<Option> optionWithOrder = new ArrayList<>();
     Date createdDate;
-
-    public Question()
-    {
-    }
-
-    public Question(int questionId, String questionText, String questionType, String questionTitle,
-                    List<Option> optionWithOrder, Date createdDate)
-    {
-        super();
-        this.questionId = questionId;
-        this.questionText = questionText;
-        this.questionType = questionType;
-        this.questionTitle = questionTitle;
-        this.optionWithOrder = optionWithOrder;
-        this.createdDate = createdDate;
-    }
 
     public int getQuestionId()
     {
@@ -74,6 +58,11 @@ public class Question
         return optionWithOrder;
     }
 
+    public void addOption(Option option)
+    {
+        optionWithOrder.add(option);
+    }
+
     public void setOptionWithOrder(List<Option> optionWithOrder)
     {
         this.optionWithOrder = optionWithOrder;
@@ -88,13 +77,4 @@ public class Question
     {
         this.createdDate = createdDate;
     }
-
-	@Override
-	public String toString() {
-		return "Question [questionId=" + questionId + ", questionText=" + questionText + ", questionType="
-				+ questionType + ", questionTitle=" + questionTitle + ", optionWithOrder=" + optionWithOrder
-				+ ", createdDate=" + createdDate + "]";
-	}
-    
-    
 }
