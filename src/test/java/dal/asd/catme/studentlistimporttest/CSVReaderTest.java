@@ -27,6 +27,7 @@ public class CSVReaderTest
             assertNotNull(csvReader.readFile());
         } catch (Exception e)
         {
+            e.printStackTrace();
             fail();
         }
     }

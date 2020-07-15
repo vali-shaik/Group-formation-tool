@@ -81,7 +81,7 @@ public class QuestionDaoImpl implements IQuestionDao
         try
         {
             con = db.getConnection();
-            if (0 != checkExistingQuestion(questionId, con))
+            if (0 == checkExistingQuestion(questionId, con)==false)
             {
                 PreparedStatement stmt = con.prepareStatement(DBQueriesUtil.DELETE_QUESTION_QUERY);
                 stmt.setInt(1, questionId);
@@ -278,7 +278,7 @@ public class QuestionDaoImpl implements IQuestionDao
         for (int i = 0; i < options.size(); i++)
         {
             Option option = options.get(i);
-            if (option.getDisplayText().trim().length() > 0 && option.getDisplayText() != "")
+            if (option.getDisplayText().trim().length() > 0 && option.getDisplayText().isEmpty()==false)
             {
                 try
                 {

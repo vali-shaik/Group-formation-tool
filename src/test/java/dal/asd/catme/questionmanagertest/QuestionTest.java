@@ -130,6 +130,18 @@ public class QuestionTest
         assertEquals(question.getCreatedDate(), date);
     }
 
+    @Test
+    public void addOptionTest()
+    {
+        Question question = modelAbstractFactory.makeQuestion();
+        Option option = modelAbstractFactory.makeOption();
+
+        option.setDisplayText("Option 1");
+        question.addOption(option);
+
+        assertEquals("Option 1",question.getOptionWithOrder().get(0).getDisplayText());
+    }
+
     private List<Option> listOption()
     {
         List<Option> list = new ArrayList<>();

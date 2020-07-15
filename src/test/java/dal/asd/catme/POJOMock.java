@@ -10,8 +10,6 @@ import java.util.List;
 
 public class POJOMock
 {
-    private static final List<Course> courses = new ArrayList<>();
-
     public static ArrayList<User> getUsers()
     {
         List<User> listOfUsers = new ArrayList<>();

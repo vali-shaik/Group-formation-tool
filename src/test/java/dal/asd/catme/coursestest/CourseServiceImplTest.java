@@ -5,11 +5,14 @@ import dal.asd.catme.IBaseAbstractFactory;
 import dal.asd.catme.POJOMock;
 import dal.asd.catme.accesscontrol.IAccessControlModelAbstractFactory;
 import dal.asd.catme.accesscontrol.User;
+import dal.asd.catme.courses.Course;
 import dal.asd.catme.courses.ICourseAbstractFactory;
 import dal.asd.catme.courses.ICourseService;
 import dal.asd.catme.exception.CatmeException;
 import dal.asd.catme.util.CatmeUtil;
 import org.junit.jupiter.api.Test;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -59,5 +62,14 @@ public class CourseServiceImplTest
         assertEquals(CatmeUtil.TA_ROLE, courseServiceImpl.findRoleByCourse(user, "5308"));
         assertEquals(CatmeUtil.GUEST_ROLE, courseServiceImpl.findRoleByCourse(user, "5306"));
         assertNotEquals(CatmeUtil.ADMIN_ROLE, courseServiceImpl.findRoleByCourse(user, "5306"));
+    }
+
+    @Test
+    public void getAllCoursesTest()
+    {
+        ICourseService courseServiceImpl = courseAbstractFactory.makeCourseService();
+        List<Course> courses = POJOMock.getCourses();
+
+        assertEquals(courses.get(0).getCourseId(),courseServiceImpl.getAllCourses().get(0).getCourseId());
     }
 }

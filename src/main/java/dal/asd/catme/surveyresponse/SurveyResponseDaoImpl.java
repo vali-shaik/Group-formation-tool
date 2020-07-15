@@ -248,7 +248,7 @@ public class SurveyResponseDaoImpl implements ISurveyResponseDao
             SurveyResponse q = modelAbstractFactory.makeSurveyResponse();
             while (rs.next())
             {
-                if (rs.getInt(ID) != prevId)
+                if ((rs.getInt(ID)==prevId)==false)
                 {
                     q = modelAbstractFactory.makeSurveyResponse();
                     q.setQuestion(new Question());

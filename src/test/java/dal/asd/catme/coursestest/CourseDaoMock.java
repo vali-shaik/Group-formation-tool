@@ -33,7 +33,7 @@ public class CourseDaoMock implements ICourseDao
     @Override
     public List<Course> getAllCourses()
     {
-        return dal.asd.catme.POJOMock.getCourses();
+        return POJOMock.getCourses();
 
     }
 
