@@ -2,22 +2,25 @@ package dal.asd.catme.surveytest;
 
 import java.util.List;
 
+import dal.asd.catme.BaseAbstractFactoryImpl;
 import dal.asd.catme.courses.Course;
-import dal.asd.catme.exception.QuestionDatabaseException;
 import dal.asd.catme.questionmanager.Question;
 import dal.asd.catme.survey.ISurveyDao;
+import dal.asd.catme.survey.ISurveyModelAbstractFactory;
 import dal.asd.catme.survey.Rule;
 import dal.asd.catme.survey.Survey;
+import dal.asd.catme.survey.SurveyException;
 import dal.asd.catme.survey.SurveyQuestion;
 
 public class SurveyDaoMock implements ISurveyDao 
 {
+	ISurveyModelAbstractFactory surveyModelAbstractFactory=BaseAbstractFactoryImpl.instance().makeSurveyModelAbstractFactory();
 	List<Question> questionsList=FormSurveyMock.formQuestionsList();
 	
 	@Override
-	public Survey getSurvey(String courseId) throws QuestionDatabaseException 
+	public Survey getSurvey(String courseId) throws SurveyException 
 	{
-		Survey survey=new Survey();
+		Survey survey=surveyModelAbstractFactory.makeSurvey();
 		if(courseId!=null)
 		{
 			if(courseId.equalsIgnoreCase("CSCI5100"))
@@ -33,7 +36,7 @@ public class SurveyDaoMock implements ISurveyDao
 	}
 
 	@Override
-	public List<Question> fetchCourseSurveyQuestions(String courseId) throws QuestionDatabaseException 
+	public List<Question> fetchCourseSurveyQuestions(String courseId) throws SurveyException 
 	{
 		if(courseId!=null)
 		{
@@ -46,9 +49,9 @@ public class SurveyDaoMock implements ISurveyDao
 	}
 
 	@Override
-	public Rule getSurveyQuestionRule(int questionId) throws QuestionDatabaseException 
+	public Rule getSurveyQuestionRule(int questionId) throws SurveyException 
 	{
-		Rule rule=new Rule();
+		Rule rule=surveyModelAbstractFactory.makeRule();
 		if(questionId==22)
 		{
 			rule.setRuleId(78);
@@ -59,11 +62,11 @@ public class SurveyDaoMock implements ISurveyDao
 	}
 
 	@Override
-	public int addToSurvey(Survey survey, Question question) throws QuestionDatabaseException 
+	public int addToSurvey(Survey survey, Question question) throws SurveyException 
 	{
 		if(survey!=null && question!=null)
 		{
-			SurveyQuestion surveyQuestion=new SurveyQuestion();
+			SurveyQuestion surveyQuestion=surveyModelAbstractFactory.makeSurveyQuestion();
 			surveyQuestion.setQuestion(question);
 			if(survey.getSurveyQuestions().add(surveyQuestion))
 			{
@@ -74,7 +77,7 @@ public class SurveyDaoMock implements ISurveyDao
 	}
 
 	@Override
-	public int saveSurvey(Survey survey) throws QuestionDatabaseException 
+	public int saveSurvey(Survey survey) throws SurveyException 
 	{
 		if(survey!=null)
 		{
@@ -87,11 +90,11 @@ public class SurveyDaoMock implements ISurveyDao
 	}
 
 	@Override
-	public int deleteSurveyQuestion(Survey survey, Question question) throws QuestionDatabaseException 
+	public int deleteSurveyQuestion(Survey survey, Question question) throws SurveyException 
 	{
 		if(survey!=null && question!=null)
 		{
-			SurveyQuestion surveyQuestion=new SurveyQuestion();
+			SurveyQuestion surveyQuestion=surveyModelAbstractFactory.makeSurveyQuestion();
 			surveyQuestion.setQuestion(question);
 			if(survey.getSurveyQuestions().get(0).getQuestion().getQuestionId()==question.getQuestionId())
 			{
@@ -103,7 +106,7 @@ public class SurveyDaoMock implements ISurveyDao
 	}
 
 	@Override
-	public boolean isSurveyPublished(Course course) throws QuestionDatabaseException 
+	public boolean isSurveyPublished(Course course) throws SurveyException 
 	{
 		if(course!=null)
 		{
@@ -116,7 +119,7 @@ public class SurveyDaoMock implements ISurveyDao
 	}
 
 	@Override
-	public int publishSurvey(Survey survey) throws QuestionDatabaseException 
+	public int publishSurvey(Survey survey) throws SurveyException 
 	{
 		if(survey!=null)
 		{
@@ -129,7 +132,7 @@ public class SurveyDaoMock implements ISurveyDao
 	}
 
 	@Override
-	public int getSurveyQuestionPriority(Survey survey, Question question) throws QuestionDatabaseException 
+	public int getSurveyQuestionPriority(Survey survey, Question question) throws SurveyException 
 	{
 		if(survey!=null && question!=null)
 		{

@@ -1,7 +1,7 @@
 package dal.asd.catme.survey;
 
-public interface ISurveyAbstractFactory {
+public interface ISurveyAbstractFactory 
+{
 	ISurveyService makeSurveyService();
 	ISurveyDao makeSurveyDao();
-
 }

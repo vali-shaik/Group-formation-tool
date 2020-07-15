@@ -1,6 +1,7 @@
 package dal.asd.catme.survey;
 
-public class Rule {
+public class Rule 
+{
 	int ruleId;
 	String ruleType;
 	String ruleValue;

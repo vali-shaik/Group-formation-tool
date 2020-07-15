@@ -2,7 +2,6 @@ package dal.asd.catme.survey;
 
 public class SurveyAbstractFactoryImpl implements ISurveyAbstractFactory 
 {
-
 	static ISurveyAbstractFactory surveyAbstractFactory=null;
 	ISurveyService surveyService;
 	ISurveyDao surveyDao;

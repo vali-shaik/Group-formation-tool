@@ -2,21 +2,24 @@ package dal.asd.catme.surveytest;
 import java.util.ArrayList;
 import java.util.List;
 
+import dal.asd.catme.BaseAbstractFactoryImpl;
 import dal.asd.catme.questionmanager.Question;
+import dal.asd.catme.survey.ISurveyModelAbstractFactory;
 import dal.asd.catme.survey.Rule;
 import dal.asd.catme.survey.Survey;
 import dal.asd.catme.survey.SurveyQuestion;
 public class FormSurveyMock
 {
-    public static Survey formSurvey()
+	static ISurveyModelAbstractFactory surveyModelAbstractFactory=BaseAbstractFactoryImpl.instance().makeSurveyModelAbstractFactory();
+	public static Survey formSurvey()
     {
-       Survey survey=new Survey();
+       Survey survey=surveyModelAbstractFactory.makeSurvey();
        survey.setSurveyId(7);
        survey.setGroupSize(5);
        survey.setIsPublished(false);
        survey.setSurveyName("CS survey");
        List<SurveyQuestion> surveyQuesitonsList=new ArrayList<>();
-       SurveyQuestion surveyQuestion=new SurveyQuestion();
+       SurveyQuestion surveyQuestion=surveyModelAbstractFactory.makeSurveyQuestion();
        surveyQuestion.setSurveyQuestionId(19);
        surveyQuestion.setPriority(9);
        Question question=formQuestionsList().get(0);
@@ -31,18 +34,17 @@ public class FormSurveyMock
     public static List<SurveyQuestion> formSurveyQuestion()
     {
     	List<SurveyQuestion> surveyQuestionList=new ArrayList<SurveyQuestion>();
-    	SurveyQuestion surveyQuestion=new SurveyQuestion();
+    	SurveyQuestion surveyQuestion=surveyModelAbstractFactory.makeSurveyQuestion();
     	surveyQuestion.setQuestion(formQuestion());
     	surveyQuestion.setRule(formRule());
     	surveyQuestion.setPriority(9);
-    	
     	surveyQuestionList.add(surveyQuestion);
 		return surveyQuestionList;
     }
     
     public static SurveyQuestion formSurveyQuestionPojo()
     {
-    	SurveyQuestion surveyQuestion=new SurveyQuestion();
+    	SurveyQuestion surveyQuestion=surveyModelAbstractFactory.makeSurveyQuestion();
     	surveyQuestion.setSurveyQuestionId(85);
     	surveyQuestion.setQuestion(formQuestion());
     	surveyQuestion.setRule(formRule());
@@ -78,7 +80,7 @@ public class FormSurveyMock
     
     public static Rule formRule()
     {
-    	Rule rule=new Rule();
+    	Rule rule=surveyModelAbstractFactory.makeRule();
     	rule.setRuleId(78);
     	rule.setRuleType("Group Similar");
     	rule.setRuleValue("9 rating");

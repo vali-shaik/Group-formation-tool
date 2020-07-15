@@ -2,7 +2,8 @@ package dal.asd.catme.survey;
 
 import java.util.List;
 
-public class Survey {
+public class Survey
+{
 	int surveyId;
 	int groupSize;
 	String surveyName;
