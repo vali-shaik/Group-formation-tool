@@ -1,18 +1,23 @@
 package dal.asd.catme.studentlistimporttest;
 
-import dal.asd.catme.BaseAbstractFactoryImpl;
-import dal.asd.catme.studentlistimport.CSVParserAbstractFactoryImpl;
+import dal.asd.catme.BaseAbstractFactoryMock;
+import dal.asd.catme.IBaseAbstractFactory;
 import dal.asd.catme.studentlistimport.ICSVParser;
+import dal.asd.catme.studentlistimport.ICSVParserAbstractFactory;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class CSVParserTest
 {
+    IBaseAbstractFactory baseAbstractFactory = BaseAbstractFactoryMock.instance();
+    ICSVParserAbstractFactory icsvParserAbstractFactory = baseAbstractFactory.makeCSVParserAbstractFactory();
 
     @Test
     void validBannerIdTest()
     {
-        ICSVParser icsvParser= BaseAbstractFactoryImpl.instance().makeIcsvParserAbstractFactory().makeCSVParser();
+        ICSVParser icsvParser = icsvParserAbstractFactory.makeCSVParser();
 
         assertTrue(icsvParser.validBannerId("B00851820"));
         assertTrue(icsvParser.validBannerId("B00000000"));
@@ -30,7 +35,7 @@ public class CSVParserTest
     {
         System.out.println("Validating Names");
 
-        ICSVParser icsvParser= BaseAbstractFactoryImpl.instance().makeIcsvParserAbstractFactory().makeCSVParser();
+        ICSVParser icsvParser = icsvParserAbstractFactory.makeCSVParser();
 
         assertTrue(icsvParser.validNames("A", "A"));
         assertTrue(icsvParser.validNames("1", "A"));
@@ -46,7 +51,7 @@ public class CSVParserTest
     @Test
     void validEmailIdTest()
     {
-        ICSVParser icsvParser= BaseAbstractFactoryImpl.instance().makeIcsvParserAbstractFactory().makeCSVParser();
+        ICSVParser icsvParser = icsvParserAbstractFactory.makeCSVParser();
 
         assertTrue(icsvParser.validEmailId("tp890953@dal.ca"));
         assertTrue(icsvParser.validEmailId("Tapan.Prajapati@dal.ca"));

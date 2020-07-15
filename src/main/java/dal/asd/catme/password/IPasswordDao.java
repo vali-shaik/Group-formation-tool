@@ -1,6 +1,5 @@
 package dal.asd.catme.password;
 
-import dal.asd.catme.accesscontrol.IUser;
 import dal.asd.catme.accesscontrol.User;
 import dal.asd.catme.exception.CatmeException;
 
@@ -9,15 +8,15 @@ import java.sql.Connection;
 public interface IPasswordDao
 {
 
-    public void resetPassword(IUser u, Connection con) throws CatmeException;
+    void resetPassword(User u, Connection con) throws CatmeException;
 
-    public String readBannerIdFromToken(String token) throws CatmeException;
+    String readBannerIdFromToken(String token) throws CatmeException;
 
-    public void generatePasswordResetToken(IUser u, String token) throws CatmeException;
+    void generatePasswordResetToken(User u, String token) throws CatmeException;
 
-    public void removeToken(String bannerId);
+    void removeToken(String bannerId);
 
-    public boolean matchWithPasswordHistory(String bannerId, String password) throws CatmeException;
+    boolean matchWithPasswordHistory(String bannerId, String password) throws CatmeException;
 
-    public void deleteOverLimitPasswords(String bannerId) throws CatmeException;
+    void deleteOverLimitPasswords(String bannerId) throws CatmeException;
 }

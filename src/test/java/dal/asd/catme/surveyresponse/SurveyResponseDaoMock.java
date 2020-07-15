@@ -1,6 +1,9 @@
 package dal.asd.catme.surveyresponse;
 
+import dal.asd.catme.BaseAbstractFactoryMock;
+import dal.asd.catme.IBaseAbstractFactory;
 import dal.asd.catme.POJOMock;
+import dal.asd.catme.questionmanager.IQuestionManagerModelAbstractFactory;
 import dal.asd.catme.questionmanager.Question;
 import dal.asd.catme.util.CatmeUtil;
 
@@ -9,12 +12,16 @@ import java.util.List;
 
 public class SurveyResponseDaoMock implements ISurveyResponseDao
 {
+    IBaseAbstractFactory baseAbstractFactory = BaseAbstractFactoryMock.instance();
+    IQuestionManagerModelAbstractFactory questionManagerModelAbstractFactory = baseAbstractFactory.makeQuestionManagerModelAbstractFactory();
+    ISurveyResponseModelAbstractFactory modelAbstractFactory = baseAbstractFactory.makeSurveyResponseModelAbstractFactory();
+
     @Override
     public String isSurveyPublished(String courseId)
     {
-        for(String course: POJOMock.getPublishedCourses())
+        for (String course : POJOMock.getPublishedCourses())
         {
-            if(course.equals(courseId))
+            if (course.equals(courseId))
             {
                 return course;
             }
@@ -24,20 +31,20 @@ public class SurveyResponseDaoMock implements ISurveyResponseDao
     }
 
     @Override
-    public List<ISurveyResponse> getSurveyQuestions(String surveyId)
+    public List<SurveyResponse> getSurveyQuestions(String surveyId)
     {
-        List<ISurveyResponse> responses = new ArrayList<>();
+        List<SurveyResponse> responses = new ArrayList<>();
 
-        ISurveyResponse s = new SurveyResponse();
+        SurveyResponse s = modelAbstractFactory.makeSurveyResponse();
         responses.add(s);
 
-        Question q = new Question();
+        Question q = questionManagerModelAbstractFactory.makeQuestion();
         q.setQuestionText("New Question");
         q.setQuestionType(CatmeUtil.NUMERIC_DB);
 
         s.setQuestion(q);
 
-        if(surveyId.equals("5308"))
+        if (surveyId.equals("5308"))
         {
             return responses;
         }
@@ -45,26 +52,20 @@ public class SurveyResponseDaoMock implements ISurveyResponseDao
     }
 
     @Override
-    public boolean saveResponses(ISurveyResponseBinder binder, String bannerId)
+    public boolean saveResponses(SurveyResponseBinder binder, String bannerId)
     {
-        if(binder.getQuestionList().size()==0)
-            return false;
-        return true;
+        return binder.getQuestionList().size() != 0;
     }
 
     @Override
     public boolean saveAttempt(String surveyId, String bannerId)
     {
-        if(surveyId==null || bannerId==null)
-            return false;
-        return true;
+        return surveyId != null && bannerId != null;
     }
 
     @Override
     public boolean isSurveyAttempted(String surveyId, String bannerId)
     {
-        if(surveyId.equals("5100") && bannerId.equals("B00121212"))
-            return true;
-        return false;
+        return surveyId.equals("5100") && bannerId.equals("B00121212");
     }
 }

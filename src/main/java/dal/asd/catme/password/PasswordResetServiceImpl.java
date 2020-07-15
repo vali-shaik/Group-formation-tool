@@ -1,19 +1,21 @@
 package dal.asd.catme.password;
 
 import dal.asd.catme.BaseAbstractFactoryImpl;
-import dal.asd.catme.accesscontrol.*;
+import dal.asd.catme.accesscontrol.IAccessControlModelAbstractFactory;
+import dal.asd.catme.accesscontrol.IUserDao;
+import dal.asd.catme.accesscontrol.User;
 import dal.asd.catme.config.SystemConfig;
 import dal.asd.catme.database.DatabaseAccess;
 import dal.asd.catme.exception.CatmeException;
 import dal.asd.catme.util.RandomTokenGenerator;
 
-import static dal.asd.catme.accesscontrol.MailSenderUtil.TOKEN_LENGTH;
-
 import java.sql.Connection;
 import java.sql.SQLException;
 
+import static dal.asd.catme.accesscontrol.MailSenderUtil.TOKEN_LENGTH;
 
-public class PasswordResetService implements IPasswordResetService
+
+public class PasswordResetServiceImpl implements IPasswordResetService
 {
     IUserDao userDao;
     IPasswordDao passwordDao;
@@ -22,26 +24,26 @@ public class PasswordResetService implements IPasswordResetService
 
     IAccessControlModelAbstractFactory accessControlModelAbstractFactory = BaseAbstractFactoryImpl.instance().makeAccessControlModelAbstractFactory();
 
-    public PasswordResetService(IUserDao userDao, IPasswordDao passwordDao)
+    public PasswordResetServiceImpl(IUserDao userDao, IPasswordDao passwordDao)
     {
         this.userDao = userDao;
         this.passwordDao = passwordDao;
     }
 
     @Override
-    public IUser generateResetLink(String bannerid)
+    public User generateResetLink(String bannerid)
     {
         try
         {
             db = SystemConfig.instance().getDatabaseAccess();
             con = db.getConnection();
 
-            if (userDao.checkExistingUser(bannerid,con)==0)
+            if (userDao.checkExistingUser(bannerid, con) == 0)
             {
                 return null;
 
             }
-            IUser u = userDao.getUser(bannerid, con);
+            User u = userDao.getUser(bannerid, con);
 
             if (u == null)
             {
@@ -92,7 +94,7 @@ public class PasswordResetService implements IPasswordResetService
     @Override
     public void resetPassword(String bannerId, String password) throws CatmeException
     {
-        IUser u = accessControlModelAbstractFactory.makeUser();
+        User u = accessControlModelAbstractFactory.makeUser();
         u.setBannerId(bannerId);
         u.setPassword(password);
 

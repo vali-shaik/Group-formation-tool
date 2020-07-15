@@ -54,6 +54,7 @@ public class DBQueriesUtil
     public static final String GET_PUBLISHED_SURVEY = "call GetPublishedSurvey(?);";
     public static final String GET_SURVEY_QUESTIONS = "call GetSurveyQuestions(?);";
     public static final String SAVE_ANSWER = "call SaveAnswer(?,?,?);";
+    public static final String SAVE_ANSWER_WITH_VALUE = "call SaveAnswerWithValue(?,?,?,?);";
     public static final String SAVE_ATTEMPT = "call SaveSurveyAttempt(?,?)";
     public static final String GET_ATTEMPT = "call GetSurveyAttempt(?,?)";
 }

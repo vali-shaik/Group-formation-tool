@@ -2,7 +2,9 @@ package dal.asd.catme.questionmanager;
 
 public interface IQuestionManagerModelAbstractFactory
 {
-    IQuestion makeQuestion();
-    IOption makeOption();
-    IQuestionTitle makeQuestionTitle();
+    Question makeQuestion();
+
+    Option makeOption();
+
+    QuestionTitle makeQuestionTitle();
 }

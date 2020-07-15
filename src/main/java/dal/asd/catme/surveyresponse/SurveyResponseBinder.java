@@ -2,11 +2,11 @@ package dal.asd.catme.surveyresponse;
 
 import java.util.List;
 
-public class SurveyResponseBinder implements ISurveyResponseBinder
+public class SurveyResponseBinder
 {
     private String surveyId;
     private String courseId;
-    private List<ISurveyResponse> questionList;
+    private List<SurveyResponse> questionList;
 
     public String getSurveyId()
     {
@@ -28,12 +28,12 @@ public class SurveyResponseBinder implements ISurveyResponseBinder
         this.courseId = courseId;
     }
 
-    public List<ISurveyResponse> getQuestionList()
+    public List<SurveyResponse> getQuestionList()
     {
         return questionList;
     }
 
-    public void setQuestionList(List<ISurveyResponse> questionList)
+    public void setQuestionList(List<SurveyResponse> questionList)
     {
         this.questionList = questionList;
     }

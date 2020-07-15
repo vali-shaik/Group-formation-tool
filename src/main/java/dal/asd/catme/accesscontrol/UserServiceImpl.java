@@ -1,7 +1,6 @@
 package dal.asd.catme.accesscontrol;
 
 import dal.asd.catme.config.SystemConfig;
-import dal.asd.catme.courses.Course;
 import dal.asd.catme.database.DatabaseAccess;
 import dal.asd.catme.password.IPasswordPolicyCheckerService;
 
@@ -24,7 +23,7 @@ public class UserServiceImpl implements IUserService
     }
 
     @Override
-    public String addUser(IUser user)
+    public String addUser(User user)
     {
         String isUserAdded = "An account already exists with this BannerId.";
         Connection con = null;
@@ -64,7 +63,7 @@ public class UserServiceImpl implements IUserService
 
 
     @Override
-    public List<IUser> getUsers()
+    public List<User> getUsers()
     {
         return userDao.getUsers();
     }

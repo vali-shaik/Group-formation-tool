@@ -47,7 +47,7 @@ public class UserDaoImpl implements IUserDao
     }
 
     @Override
-    public int addUser(IUser user, Connection con)
+    public int addUser(User user, Connection con)
     {
         String bannerId = user.getBannerId();
         try
@@ -76,7 +76,7 @@ public class UserDaoImpl implements IUserDao
     }
 
     @Override
-    public IUser getUser(String bannerId, Connection con)
+    public User getUser(String bannerId, Connection con)
     {
         try
         {
@@ -90,7 +90,7 @@ public class UserDaoImpl implements IUserDao
             String lastname = rs.getString(3);
             String emailid = rs.getString(4);
 
-            IUser u = modelAbstractFactory.makeUser();
+            User u = modelAbstractFactory.makeUser();
             u.setBannerId(bannerId);
             u.setFirstName(firstname);
             u.setLastName(lastname);
@@ -106,11 +106,11 @@ public class UserDaoImpl implements IUserDao
     }
 
     @Override
-    public List<IUser> getUsers()
+    public List<User> getUsers()
     {
         DatabaseAccess db;
         Connection connection = null;
-        List<IUser> users = new ArrayList<>();
+        List<User> users = new ArrayList<>();
         try
         {
             db = SystemConfig.instance().getDatabaseAccess();
@@ -119,7 +119,7 @@ public class UserDaoImpl implements IUserDao
 
             while (resultSet.next())
             {
-                IUser user = modelAbstractFactory.makeUser();
+                User user = modelAbstractFactory.makeUser();
                 user.setBannerId(resultSet.getString(CatmeUtil.BANNER_ID));
                 user.setFirstName(resultSet.getString(CatmeUtil.FIRST_NAME));
                 user.setLastName(resultSet.getString(CatmeUtil.LAST_NAME));
@@ -133,7 +133,7 @@ public class UserDaoImpl implements IUserDao
             try
             {
                 connection.close();
-            } catch (SQLException|NullPointerException e)
+            } catch (SQLException | NullPointerException e)
             {
                 e.printStackTrace();
             }

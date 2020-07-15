@@ -1,7 +1,7 @@
 
 package dal.asd.catme.accesscontrol;
 
-import dal.asd.catme.courses.ICourse;
+import dal.asd.catme.courses.Course;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -15,7 +15,7 @@ public class AdminServiceImpl implements IAdminService
     }
 
     @Override
-    public int addCourse(ICourse course)
+    public int addCourse(Course course)
     {
         return admin.addCourse(course);
     }

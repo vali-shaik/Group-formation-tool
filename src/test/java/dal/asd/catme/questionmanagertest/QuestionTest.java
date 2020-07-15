@@ -1,7 +1,8 @@
 package dal.asd.catme.questionmanagertest;
 
-import dal.asd.catme.questionmanager.IOption;
-import dal.asd.catme.questionmanager.IQuestion;
+import dal.asd.catme.BaseAbstractFactoryMock;
+import dal.asd.catme.IBaseAbstractFactory;
+import dal.asd.catme.questionmanager.IQuestionManagerModelAbstractFactory;
 import dal.asd.catme.questionmanager.Option;
 import dal.asd.catme.questionmanager.Question;
 import org.junit.jupiter.api.Test;
@@ -14,123 +15,128 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class QuestionTest
 {
+    IBaseAbstractFactory baseAbstractFactory = BaseAbstractFactoryMock.instance();
+    IQuestionManagerModelAbstractFactory modelAbstractFactory = baseAbstractFactory.makeQuestionManagerModelAbstractFactory();
+
     @Test
     public void getQuestionIdTest()
     {
-        Question question = new Question();
+        Question question = modelAbstractFactory.makeQuestion();
 
         question.setQuestionId(1);
-        assertEquals(question.getQuestionId(),1);
+        assertEquals(question.getQuestionId(), 1);
     }
 
     @Test
     public void setQuestionIdTest()
     {
-        Question question = new Question();
+        Question question = modelAbstractFactory.makeQuestion();
 
         question.setQuestionId(1);
-        assertEquals(question.getQuestionId(),1);
+        assertEquals(question.getQuestionId(), 1);
     }
 
     @Test
     public void getQuestionTextTest()
     {
-        Question question = new Question();
+        Question question = modelAbstractFactory.makeQuestion();
 
         question.setQuestionText("Text");
-        assertEquals(question.getQuestionText(),"Text");
+        assertEquals(question.getQuestionText(), "Text");
     }
 
     @Test
     public void setQuestionTextTest()
     {
-        Question question = new Question();
+        Question question = modelAbstractFactory.makeQuestion();
 
         question.setQuestionText("Text");
-        assertEquals(question.getQuestionText(),"Text");
+        assertEquals(question.getQuestionText(), "Text");
     }
 
     @Test
     public void getQuestionTypeTest()
     {
-        Question question = new Question();
+        Question question = modelAbstractFactory.makeQuestion();
 
         question.setQuestionType("NUMERIC");
-        assertEquals(question.getQuestionType(),"NUMERIC");
+        assertEquals(question.getQuestionType(), "NUMERIC");
     }
 
     @Test
     public void setQuestionTypeTest()
     {
-        Question question = new Question();
+        Question question = modelAbstractFactory.makeQuestion();
 
         question.setQuestionType("NUMERIC");
-        assertEquals(question.getQuestionType(),"NUMERIC");
+        assertEquals(question.getQuestionType(), "NUMERIC");
     }
 
     @Test
     public void getQuestionTitleTest()
     {
-        Question question = new Question();
+        Question question = modelAbstractFactory.makeQuestion();
 
         question.setQuestionTitle("Title");
-        assertEquals(question.getQuestionTitle(),"Title");
+        assertEquals(question.getQuestionTitle(), "Title");
     }
 
     @Test
     public void setQuestionTitleTest()
     {
-        Question question = new Question();
+        Question question = modelAbstractFactory.makeQuestion();
 
         question.setQuestionTitle("Title");
-        assertEquals(question.getQuestionTitle(),"Title");
+        assertEquals(question.getQuestionTitle(), "Title");
     }
 
     @Test
     public void getOptionWithOrderTest()
     {
-        IQuestion question = new Question();
+        Question question = modelAbstractFactory.makeQuestion();
 
-        List<IOption> list = listOption();
+        List<Option> list = listOption();
         question.setOptionWithOrder(list);
-        assertEquals(question.getOptionWithOrder(),list);
+        assertEquals(question.getOptionWithOrder(), list);
     }
 
     @Test
     public void setOptionWithOrderTest()
     {
-        IQuestion question = new Question();
+        Question question = modelAbstractFactory.makeQuestion();
 
-        List<IOption> list = listOption();
+        List<Option> list = listOption();
         question.setOptionWithOrder(list);
-        assertEquals(question.getOptionWithOrder(),list);
+        assertEquals(question.getOptionWithOrder(), list);
     }
 
     @Test
     public void getCreatedDateTest()
     {
-        IQuestion question = new Question();
+        Question question = modelAbstractFactory.makeQuestion();
 
-        Date date = new Date(2020,7,12);
+        Date date = new Date(2020, 7, 12);
         question.setCreatedDate(date);
-        assertEquals(question.getCreatedDate(),date);
+        assertEquals(question.getCreatedDate(), date);
     }
 
     @Test
     public void setCreatedDateTest()
     {
-        IQuestion question = new Question();
+        Question question = modelAbstractFactory.makeQuestion();
 
-        Date date = new Date(2020,7,12);
+        Date date = new Date(2020, 7, 12);
         question.setCreatedDate(date);
-        assertEquals(question.getCreatedDate(),date);
+        assertEquals(question.getCreatedDate(), date);
     }
 
-    private List<IOption> listOption()
+    private List<Option> listOption()
     {
-        List<IOption> list = new ArrayList<>();
+        List<Option> list = new ArrayList<>();
 
-        Option o = new Option("Option",1);
+        Option o = modelAbstractFactory.makeOption();
+        o.setStoredAs(1);
+        o.setDisplayText("Option");
         list.add(o);
 
         return list;

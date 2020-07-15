@@ -1,17 +1,16 @@
 package dal.asd.catme.courses;
 
-import dal.asd.catme.accesscontrol.IUser;
 import dal.asd.catme.accesscontrol.User;
-
-import static dal.asd.catme.util.DBQueriesUtil.STUDENT_ENROLL_QUERY;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 
+import static dal.asd.catme.util.DBQueriesUtil.STUDENT_ENROLL_QUERY;
+
 public class StudentDaoImpl implements IStudentDao
 {
     @Override
-    public boolean enroll(IUser s, ICourse c, Connection con)
+    public boolean enroll(User s, Course c, Connection con)
     {
         try
         {

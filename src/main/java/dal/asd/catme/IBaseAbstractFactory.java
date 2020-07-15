@@ -13,14 +13,23 @@ import dal.asd.catme.surveyresponse.ISurveyResponseModelAbstractFactory;
 
 public interface IBaseAbstractFactory
 {
-    public IAccessControlAbstractFactory makeAccessControlAbstractFactory();
-    public IAccessControlModelAbstractFactory makeAccessControlModelAbstractFactory();
-    public ICourseAbstractFactory makeCourseAbstractFactory();
-    public ICourseModelAbstractFactory makeCourseModelAbstractFactory();
-    public IPasswordAbstractFactory makePasswordAbstractFactory();
-    public IQuestionManagerAbstractFactory makeQuestionManagerAbstractFactory();
-    public IQuestionManagerModelAbstractFactory makeQuestionManagerModelAbstractFactory();
-    public ICSVParserAbstractFactory makeIcsvParserAbstractFactory();
-    public ISurveyResponseAbstractFactory makeSurveyResponseAbstractFactory();
-    public ISurveyResponseModelAbstractFactory makeSurveyResponseModelAbstractFactory();
+    IAccessControlAbstractFactory makeAccessControlAbstractFactory();
+
+    IAccessControlModelAbstractFactory makeAccessControlModelAbstractFactory();
+
+    ICourseAbstractFactory makeCourseAbstractFactory();
+
+    ICourseModelAbstractFactory makeCourseModelAbstractFactory();
+
+    IPasswordAbstractFactory makePasswordAbstractFactory();
+
+    IQuestionManagerAbstractFactory makeQuestionManagerAbstractFactory();
+
+    IQuestionManagerModelAbstractFactory makeQuestionManagerModelAbstractFactory();
+
+    ICSVParserAbstractFactory makeCSVParserAbstractFactory();
+
+    ISurveyResponseAbstractFactory makeSurveyResponseAbstractFactory();
+
+    ISurveyResponseModelAbstractFactory makeSurveyResponseModelAbstractFactory();
 }

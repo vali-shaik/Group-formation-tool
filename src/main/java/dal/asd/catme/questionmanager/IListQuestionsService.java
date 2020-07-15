@@ -6,9 +6,9 @@ import java.util.List;
 
 public interface IListQuestionsService
 {
-    public List<IQuestion> getQuestions(String instructor) throws QuestionDatabaseException;
+    List<Question> getQuestions(String instructor) throws QuestionDatabaseException;
 
-    public List<IQuestion> sortByDate();
+    List<Question> sortByDate();
 
-    public List<IQuestion> sortByTitle();
+    List<Question> sortByTitle();
 }

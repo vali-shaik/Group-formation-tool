@@ -1,11 +1,11 @@
 package dal.asd.catme.questionmanagertest;
 
+import dal.asd.catme.BaseAbstractFactoryMock;
+import dal.asd.catme.IBaseAbstractFactory;
 import dal.asd.catme.exception.QuestionDatabaseException;
 import dal.asd.catme.questionmanager.IListQuestionsService;
-import dal.asd.catme.questionmanager.IQuestion;
-import dal.asd.catme.questionmanager.ListQuestionsServiceImpl;
+import dal.asd.catme.questionmanager.IQuestionManagerAbstractFactory;
 import dal.asd.catme.questionmanager.Question;
-
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -14,11 +14,14 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 public class ListQuestionsServiceTest
 {
+    IBaseAbstractFactory baseAbstractFactory = BaseAbstractFactoryMock.instance();
+    IQuestionManagerAbstractFactory questionManagerAbstractFactory = baseAbstractFactory.makeQuestionManagerAbstractFactory();
+
     @Test
     void getQuestionsTest()
     {
 
-        IListQuestionsService listQuestionsService = new ListQuestionsServiceImpl(new QuestionDaoMock());
+        IListQuestionsService listQuestionsService = questionManagerAbstractFactory.makeListQuestionsService();
 
         try
         {
@@ -43,16 +46,16 @@ public class ListQuestionsServiceTest
     @Test
     void sortByDateTest()
     {
-        IListQuestionsService listQuestionsService = new ListQuestionsServiceImpl(new QuestionDaoMock());
+        IListQuestionsService listQuestionsService = questionManagerAbstractFactory.makeListQuestionsService();
 
         try
         {
             listQuestionsService.getQuestions("instructor");
 
-            List<IQuestion> questionList = listQuestionsService.sortByDate();
+            List<Question> questionList = listQuestionsService.sortByDate();
 
-            IQuestion q1 = questionList.get(0);
-            IQuestion q2 = questionList.get(1);
+            Question q1 = questionList.get(0);
+            Question q2 = questionList.get(1);
 
             //date of question1 comes after date of question2
             if (q1.getCreatedDate().compareTo(q2.getCreatedDate()) >= 0)
@@ -68,16 +71,16 @@ public class ListQuestionsServiceTest
     @Test
     void sortByTitleTest()
     {
-        IListQuestionsService listQuestionsService = new ListQuestionsServiceImpl(new QuestionDaoMock());
+        IListQuestionsService listQuestionsService = questionManagerAbstractFactory.makeListQuestionsService();
 
         try
         {
             listQuestionsService.getQuestions("instructor");
 
-            List<IQuestion> questionList = listQuestionsService.sortByTitle();
+            List<Question> questionList = listQuestionsService.sortByTitle();
 
-            IQuestion q1 = questionList.get(0);
-            IQuestion q2 = questionList.get(1);
+            Question q1 = questionList.get(0);
+            Question q2 = questionList.get(1);
 
             //question 1 comes after question2
             if (q1.getQuestionTitle().compareTo(q2.getQuestionTitle()) < 0)
