@@ -14,7 +14,7 @@ import static org.junit.Assert.assertEquals;
 
 public class QuestionManagerServiceImplTest
 {
-    IOption option;
+    Option option;
     IBaseAbstractFactory baseAbstractFactory = BaseAbstractFactoryMock.instance();
     IQuestionManagerAbstractFactory questionManagerAbstractFactory = baseAbstractFactory.makeQuestionManagerAbstractFactory();
     IQuestionManagerModelAbstractFactory modelAbstractFactory = baseAbstractFactory.makeQuestionManagerModelAbstractFactory();
@@ -24,10 +24,14 @@ public class QuestionManagerServiceImplTest
     {
         IQuestionDao questionDaoMock = questionManagerAbstractFactory.makeQuestionDao();
 
-        List<IOption> options = formQuestionOptions();
-        Question question = new Question(CatmeUtil.ONE, "Which Framework?", "Free Text", "UI", options, new Date());
+        List<Option> options = formQuestionOptions();
+        Question question = modelAbstractFactory.makeQuestion();
+        question.setQuestionText("Which Framework?");
+        question.setQuestionType("Free Text");
+        question.setQuestionTitle("UI");
+        question.setOptionWithOrder(options);
+        question.setCreatedDate(new Date());
         assertEquals(CatmeUtil.ONE, questionDaoMock.createQuestion(question, CatmeUtil.USER_ROLE_ID));
-
     }
 
     @Test
@@ -41,13 +45,13 @@ public class QuestionManagerServiceImplTest
     public void createOptions()
     {
         IQuestionDao questionDaoMock = questionManagerAbstractFactory.makeQuestionDao();
-        List<IOption> options = formQuestionOptions();
+        List<Option> options = formQuestionOptions();
         assertEquals(CatmeUtil.ONE, questionDaoMock.createOptions(CatmeUtil.QUESTION_ID, options));
     }
 
-    private List<IOption> formQuestionOptions()
+    private List<Option> formQuestionOptions()
     {
-        List<IOption> options = new ArrayList<>();
+        List<Option> options = new ArrayList<>();
         option = modelAbstractFactory.makeOption();
         option.setDisplayText("Angular");
         option.setStoredAs(1);

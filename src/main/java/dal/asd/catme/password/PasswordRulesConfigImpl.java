@@ -49,7 +49,7 @@ public class PasswordRulesConfigImpl implements IPasswordRulesConfig
         String minimumUpperCaseRegEx = PasswordRulesUtil.MINIMUM_UPPER_CASE_REGEX + "{" + mininmumUpperLength + "}";
         if (currentPassword != null)
         {
-            flag= regularExpressionMatcher(currentPassword, minimumUpperCaseRegEx);
+            flag = regularExpressionMatcher(currentPassword, minimumUpperCaseRegEx);
         }
         return flag;
     }

@@ -1,9 +1,8 @@
 package dal.asd.catme.courses;
 
 import dal.asd.catme.BaseAbstractFactoryImpl;
-import dal.asd.catme.accesscontrol.AccessControlModelAbstractFactoryImpl;
 import dal.asd.catme.accesscontrol.IAccessControlModelAbstractFactory;
-import dal.asd.catme.accesscontrol.IUser;
+import dal.asd.catme.accesscontrol.User;
 import dal.asd.catme.config.SystemConfig;
 import dal.asd.catme.database.DatabaseAccess;
 import dal.asd.catme.exception.CatmeException;
@@ -36,11 +35,11 @@ public class CourseDaoImpl implements ICourseDao
     IAccessControlModelAbstractFactory accessControlModelAbstractFactory = BaseAbstractFactoryImpl.instance().makeAccessControlModelAbstractFactory();
 
     @Override
-    public List<ICourse> getCourses(String role) throws CatmeException
+    public List<Course> getCourses(String role) throws CatmeException
     {
         log.info("Fetching all courses related to User");
 
-        List<ICourse> listOfCourses = new ArrayList<>();
+        List<Course> listOfCourses = new ArrayList<>();
         ResultSet resultSet = null;
         Statement statement = null;
         Connection connection = null;
@@ -85,7 +84,7 @@ public class CourseDaoImpl implements ICourseDao
                 while (resultSet.next())
                 {
                     log.info("Fetched all courses from Database");
-                    ICourse course = modelAbstractFactory.makeCourse();
+                    Course course = modelAbstractFactory.makeCourse();
                     course.setCourseId(resultSet.getString(CatmeUtil.COURSE_ID_FIELD));
                     course.setCourseName(resultSet.getString(CatmeUtil.COURSE_NAME_FIELD));
 
@@ -115,11 +114,11 @@ public class CourseDaoImpl implements ICourseDao
     }
 
     @Override
-    public List<ICourse> getAllCourses()
+    public List<Course> getAllCourses()
     {
         DatabaseAccess db;
-        Connection connection=null;
-        List<ICourse> courses = new ArrayList<>();
+        Connection connection = null;
+        List<Course> courses = new ArrayList<>();
 
         try
         {
@@ -129,7 +128,7 @@ public class CourseDaoImpl implements ICourseDao
             ResultSet resultSet = db.executeQuery(SELECT_COURSE);
             while (resultSet.next())
             {
-                ICourse course =  modelAbstractFactory.makeCourse();
+                Course course = modelAbstractFactory.makeCourse();
                 course.setCourseId(resultSet.getString(CatmeUtil.COURSE_ID));
                 course.setCourseName(resultSet.getString(CatmeUtil.COURSE_NAME));
                 courses.add(course);
@@ -154,13 +153,13 @@ public class CourseDaoImpl implements ICourseDao
     }
 
     @Override
-    public ICourse displayCourseById(String courseId) throws CatmeException
+    public Course displayCourseById(String courseId) throws CatmeException
     {
         ResultSet resultSet = null;
         Statement statement = null;
         Connection connection = null;
 
-        ICourse course = modelAbstractFactory.makeCourse();
+        Course course = modelAbstractFactory.makeCourse();
         try
         {
             database = SystemConfig.instance().getDatabaseAccess();
@@ -201,7 +200,7 @@ public class CourseDaoImpl implements ICourseDao
     }
 
     @Override
-    public String findRoleByCourse(IUser user, String courseId) throws CatmeException
+    public String findRoleByCourse(User user, String courseId) throws CatmeException
     {
         ResultSet resultSet = null;
         Statement statement = null;
@@ -246,9 +245,9 @@ public class CourseDaoImpl implements ICourseDao
     }
 
     @Override
-    public ArrayList<IUser> getRegisteredStudents(String courseId)
+    public ArrayList<User> getRegisteredStudents(String courseId)
     {
-        ArrayList<IUser> registeredStudents = new ArrayList<>();
+        ArrayList<User> registeredStudents = new ArrayList<>();
 
         Connection con = null;
         try
@@ -263,7 +262,7 @@ public class CourseDaoImpl implements ICourseDao
 
             while (rs.next())
             {
-                IUser u = accessControlModelAbstractFactory.makeUser();
+                User u = accessControlModelAbstractFactory.makeUser();
                 u.setBannerId(rs.getString(1));
                 u.setLastName(rs.getString(2));
                 u.setFirstName(rs.getString(3));

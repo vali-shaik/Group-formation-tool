@@ -15,7 +15,6 @@ import dal.asd.catme.questionmanager.IQuestionManagerModelAbstractFactory;
 import dal.asd.catme.questionmanager.QuestionManagerAbstractFactoryImpl;
 import dal.asd.catme.questionmanager.QuestionManagerModelAbstractFactoryImpl;
 import dal.asd.catme.studentlistimport.CSVParserAbstractFactoryImpl;
-import dal.asd.catme.studentlistimport.ICSVParser;
 import dal.asd.catme.studentlistimport.ICSVParserAbstractFactory;
 import dal.asd.catme.surveyresponse.ISurveyResponseAbstractFactory;
 import dal.asd.catme.surveyresponse.ISurveyResponseModelAbstractFactory;
@@ -39,7 +38,7 @@ public class BaseAbstractFactoryImpl implements IBaseAbstractFactory
 
     public static IBaseAbstractFactory instance()
     {
-        if(baseAbstractFactory == null)
+        if (baseAbstractFactory == null)
         {
             baseAbstractFactory = new BaseAbstractFactoryImpl();
         }
@@ -48,7 +47,7 @@ public class BaseAbstractFactoryImpl implements IBaseAbstractFactory
 
     public IAccessControlAbstractFactory makeAccessControlAbstractFactory()
     {
-        if(accessControlAbstractFactory == null)
+        if (accessControlAbstractFactory == null)
         {
             accessControlAbstractFactory = new AccessControlAbstractFactoryImpl();
         }
@@ -57,7 +56,7 @@ public class BaseAbstractFactoryImpl implements IBaseAbstractFactory
 
     public IAccessControlModelAbstractFactory makeAccessControlModelAbstractFactory()
     {
-        if(accessControlModelAbstractFactory == null)
+        if (accessControlModelAbstractFactory == null)
         {
             accessControlModelAbstractFactory = new AccessControlModelAbstractFactoryImpl();
         }
@@ -66,7 +65,7 @@ public class BaseAbstractFactoryImpl implements IBaseAbstractFactory
 
     public ICourseAbstractFactory makeCourseAbstractFactory()
     {
-        if(courseAbstractFactory==null)
+        if (courseAbstractFactory == null)
         {
             courseAbstractFactory = new CourseAbstractFactoryImpl();
         }
@@ -75,7 +74,7 @@ public class BaseAbstractFactoryImpl implements IBaseAbstractFactory
 
     public ICourseModelAbstractFactory makeCourseModelAbstractFactory()
     {
-        if(courseModelAbstractFactory == null)
+        if (courseModelAbstractFactory == null)
         {
             courseModelAbstractFactory = new CourseModelAbstractFactoryImpl();
         }
@@ -84,7 +83,7 @@ public class BaseAbstractFactoryImpl implements IBaseAbstractFactory
 
     public IPasswordAbstractFactory makePasswordAbstractFactory()
     {
-        if(passwordAbstractFactory == null)
+        if (passwordAbstractFactory == null)
         {
             passwordAbstractFactory = new PasswordAbstractFactoryImpl();
         }
@@ -93,7 +92,7 @@ public class BaseAbstractFactoryImpl implements IBaseAbstractFactory
 
     public IQuestionManagerAbstractFactory makeQuestionManagerAbstractFactory()
     {
-        if(questionManagerAbstractFactory == null)
+        if (questionManagerAbstractFactory == null)
         {
             questionManagerAbstractFactory = new QuestionManagerAbstractFactoryImpl();
         }
@@ -102,7 +101,7 @@ public class BaseAbstractFactoryImpl implements IBaseAbstractFactory
 
     public IQuestionManagerModelAbstractFactory makeQuestionManagerModelAbstractFactory()
     {
-        if(questionManagerModelAbstractFactory == null)
+        if (questionManagerModelAbstractFactory == null)
         {
             questionManagerModelAbstractFactory = new QuestionManagerModelAbstractFactoryImpl();
         }
@@ -111,7 +110,7 @@ public class BaseAbstractFactoryImpl implements IBaseAbstractFactory
 
     public ICSVParserAbstractFactory makeCSVParserAbstractFactory()
     {
-        if(icsvParserAbstractFactory == null)
+        if (icsvParserAbstractFactory == null)
         {
             icsvParserAbstractFactory = new CSVParserAbstractFactoryImpl();
         }
@@ -120,7 +119,7 @@ public class BaseAbstractFactoryImpl implements IBaseAbstractFactory
 
     public ISurveyResponseAbstractFactory makeSurveyResponseAbstractFactory()
     {
-        if(surveyResponseAbstractFactory == null)
+        if (surveyResponseAbstractFactory == null)
         {
             surveyResponseAbstractFactory = new SurveyResponseAbstractFactoryImpl();
         }
@@ -129,7 +128,7 @@ public class BaseAbstractFactoryImpl implements IBaseAbstractFactory
 
     public ISurveyResponseModelAbstractFactory makeSurveyResponseModelAbstractFactory()
     {
-        if(surveyResponseModelAbstractFactory == null)
+        if (surveyResponseModelAbstractFactory == null)
         {
             surveyResponseModelAbstractFactory = new SurveyResponseModelAbstractFactoryImpl();
         }

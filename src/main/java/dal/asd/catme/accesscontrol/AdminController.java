@@ -1,7 +1,10 @@
 package dal.asd.catme.accesscontrol;
 
 import dal.asd.catme.BaseAbstractFactoryImpl;
-import dal.asd.catme.courses.*;
+import dal.asd.catme.courses.Course;
+import dal.asd.catme.courses.ICourseAbstractFactory;
+import dal.asd.catme.courses.ICourseModelAbstractFactory;
+import dal.asd.catme.courses.ICourseService;
 import dal.asd.catme.util.CatmeUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,14 +65,14 @@ public class AdminController
     }
 
     @ModelAttribute("courses")
-    public List<ICourse> getCourseList()
+    public List<Course> getCourseList()
     {
         ICourseService courseService = courseAbstractFactory.makeCourseService();
         return courseService.getAllCourses();
     }
 
     @ModelAttribute("users")
-    public List<IUser> getUsersList()
+    public List<User> getUsersList()
     {
         userService = accessControlAbstractFactory.makeUserService();
         return userService.getUsers();

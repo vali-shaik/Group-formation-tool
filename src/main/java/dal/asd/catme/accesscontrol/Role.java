@@ -1,6 +1,6 @@
 package dal.asd.catme.accesscontrol;
 
-public class Role implements IRole
+public class Role
 {
     String roleId;
     String roleName;

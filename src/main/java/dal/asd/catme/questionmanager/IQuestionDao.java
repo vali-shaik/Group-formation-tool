@@ -7,17 +7,17 @@ import java.util.List;
 
 public interface IQuestionDao
 {
-    List<IQuestion> getQuestionTitles(String instructor) throws QuestionDatabaseException;
+    List<Question> getQuestionTitles(String instructor) throws QuestionDatabaseException;
 
     int deleteQuestion(int questionId);
 
     int checkExistingQuestion(int questionId, Connection con);
 
-    int createQuestion(IQuestion question, String user);
+    int createQuestion(Question question, String user);
 
     int createQuestionTitle(String questionTitle, String user);
 
-    int createOptions(int questionId, List<IOption> options);
+    int createOptions(int questionId, List<Option> options);
 }
 
 

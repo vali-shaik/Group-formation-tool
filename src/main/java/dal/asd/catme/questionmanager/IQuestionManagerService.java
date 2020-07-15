@@ -4,11 +4,11 @@ import java.util.List;
 
 public interface IQuestionManagerService
 {
-    int createQuestion(IQuestion question, String user);
+    int createQuestion(Question question, String user);
 
-    String findQuestionType(IQuestion question, String user);
+    String findQuestionType(Question question, String user);
 
-    int createOptions(int questionId, List<IOption> options);
+    int createOptions(int questionId, List<Option> options);
 
     int deleteQuestion(int questionId);
 

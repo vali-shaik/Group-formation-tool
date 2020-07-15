@@ -1,6 +1,5 @@
 package dal.asd.catme.courses;
 
-import dal.asd.catme.accesscontrol.IUser;
 import dal.asd.catme.accesscontrol.User;
 import dal.asd.catme.exception.EnrollmentException;
 
@@ -8,9 +7,9 @@ import java.util.ArrayList;
 
 public interface IEnrollStudentService
 {
-    boolean enrollStudentsIntoCourse(ArrayList<IUser> students, ICourse c);
+    boolean enrollStudentsIntoCourse(ArrayList<User> students, Course c);
 
-    void enrollStudent(IUser s, ICourse c) throws EnrollmentException;
+    void enrollStudent(User s, Course c) throws EnrollmentException;
 
-    void assignStudentRole(IUser student) throws EnrollmentException;
+    void assignStudentRole(User student) throws EnrollmentException;
 }

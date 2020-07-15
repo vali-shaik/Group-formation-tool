@@ -17,7 +17,7 @@ public class QuestionManagerServiceImpl implements IQuestionManagerService
     }
 
     @Override
-    public String findQuestionType(IQuestion question, String user)
+    public String findQuestionType(Question question, String user)
     {
         if (question.getQuestionType().equalsIgnoreCase(CatmeUtil.FREE_TEXT) || question.getQuestionType().equalsIgnoreCase(CatmeUtil.NUMERIC))
         {
@@ -31,10 +31,10 @@ public class QuestionManagerServiceImpl implements IQuestionManagerService
             }
         } else
         {
-            List<IOption> options = new ArrayList<>();
+            List<Option> options = new ArrayList<>();
             for (int i = 1; i <= 5; i++)
             {
-                IOption option = modelAbstractFactory.makeOption();
+                Option option = modelAbstractFactory.makeOption();
                 option.setStoredAs(i);
                 options.add(option);
             }
@@ -44,13 +44,13 @@ public class QuestionManagerServiceImpl implements IQuestionManagerService
     }
 
     @Override
-    public int createQuestion(IQuestion question, String user)
+    public int createQuestion(Question question, String user)
     {
         return questionDao.createQuestion(question, user);
     }
 
     @Override
-    public int createOptions(int questionId, List<IOption> options)
+    public int createOptions(int questionId, List<Option> options)
     {
         return questionDao.createOptions(questionId, options);
     }

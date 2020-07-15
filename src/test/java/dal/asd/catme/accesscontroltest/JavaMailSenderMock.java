@@ -1,6 +1,6 @@
 package dal.asd.catme.accesscontroltest;
 
-import dal.asd.catme.accesscontrol.IUser;
+import dal.asd.catme.accesscontrol.User;
 import org.springframework.mail.MailException;
 import org.springframework.mail.MailPreparationException;
 import org.springframework.mail.SimpleMailMessage;
@@ -16,11 +16,11 @@ import java.util.Properties;
 
 public class JavaMailSenderMock extends JavaMailSenderImpl
 {
-    private final IUser u;
+    private final User u;
     private final String subject;
     private final String body;
 
-    public JavaMailSenderMock(IUser u, String subject, String body)
+    public JavaMailSenderMock(User u, String subject, String body)
     {
         this.u = u;
         this.subject = subject;

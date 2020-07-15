@@ -14,16 +14,16 @@ public class RoleDaoMock implements IRoleDao
 
     IUserDao userDao;
     ICourseDao courseDao;
-    List<IUser> users;
-    List<ICourse> courses;
-    ICourse c;
+    List<User> users;
+    List<Course> courses;
+    Course c;
 
     IAccessControlModelAbstractFactory accessControlModelAbstractFactory = BaseAbstractFactoryMock.instance().makeAccessControlModelAbstractFactory();
     ICourseModelAbstractFactory courseModelAbstractFactory = BaseAbstractFactoryMock.instance().makeCourseModelAbstractFactory();
     IAccessControlAbstractFactory accessControlAbstractFactory = BaseAbstractFactoryMock.instance().makeAccessControlAbstractFactory();
     ICourseAbstractFactory courseAbstractFactory = BaseAbstractFactoryMock.instance().makeCourseAbstractFactory();
 
-    public RoleDaoMock(ArrayList<IUser> users, List<ICourse> courses)
+    public RoleDaoMock(ArrayList<User> users, List<Course> courses)
     {
         this.users = users;
         this.courses = courses;
@@ -36,13 +36,13 @@ public class RoleDaoMock implements IRoleDao
     @Override
     public int assignRole(String bannerId, int roleId, Connection con)
     {
-        for (IUser u : users)
+        for (User u : users)
         {
             if (u.getBannerId().equalsIgnoreCase(bannerId))
             {
-                IRole l = accessControlModelAbstractFactory.makeRole();
+                Role l = accessControlModelAbstractFactory.makeRole();
                 l.setRoleId(String.valueOf(roleId));
-                ArrayList<IRole> roles = new ArrayList<>();
+                ArrayList<Role> roles = new ArrayList<>();
                 roles.add(l);
 
                 u.setRole(roles);
@@ -59,7 +59,7 @@ public class RoleDaoMock implements IRoleDao
     }
 
     @Override
-    public String assignTa(IEnrollment user, Connection con)
+    public String assignTa(Enrollment user, Connection con)
     {
         if (0 != userDao.checkExistingUser(user.getBannerId(), con))
         {
@@ -72,12 +72,12 @@ public class RoleDaoMock implements IRoleDao
 
                     if (0 == checkCourseInstructor(user.getBannerId(), user.getCourseId(), con))
                     {
-                        for (ICourse c : courses)
+                        for (Course c : courses)
                         {
                             if (c.getCourseId().equalsIgnoreCase(user.toString()))
                             {
 
-                                for (IUser u : users)
+                                for (User u : users)
                                 {
                                     if (u.getBannerId().equalsIgnoreCase(user.getBannerId()))
                                     {
@@ -96,7 +96,7 @@ public class RoleDaoMock implements IRoleDao
     @Override
     public int checkCourseInstructor(String bannerId, String courseId, Connection con)
     {
-        for (IUser i : POJOMock.getUsers())
+        for (User i : POJOMock.getUsers())
         {
             if (i.getBannerId().equalsIgnoreCase(bannerId))
                 return 1;
@@ -108,11 +108,11 @@ public class RoleDaoMock implements IRoleDao
     @Override
     public int checkUserRole(String bannerId, int roleId, Connection con)
     {
-        for (IUser u : users)
+        for (User u : users)
         {
             if (u.getBannerId().equalsIgnoreCase(bannerId))
             {
-                for (IRole l : u.getRole())
+                for (Role l : u.getRole())
                 {
                     if (l.getRoleId().equals(String.valueOf(roleId)))
                         return 1;

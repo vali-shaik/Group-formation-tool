@@ -13,16 +13,16 @@ public class SurveyResponseServiceImpl implements ISurveyResponseService
 
     public String isSurveyPublished(String courseId)
     {
-        if(stringNullOrEmpty(courseId))
+        if (stringNullOrEmpty(courseId))
         {
             return null;
         }
         return surveyDao.isSurveyPublished(courseId);
     }
 
-    public List<ISurveyResponse> getSurveyQuestions(String surveyId)
+    public List<SurveyResponse> getSurveyQuestions(String surveyId)
     {
-        if(stringNullOrEmpty(surveyId))
+        if (stringNullOrEmpty(surveyId))
         {
             return null;
         }
@@ -31,22 +31,22 @@ public class SurveyResponseServiceImpl implements ISurveyResponseService
     }
 
     @Override
-    public boolean saveResponses(ISurveyResponseBinder binder, String bannerId)
+    public boolean saveResponses(SurveyResponseBinder binder, String bannerId)
     {
-        if(stringNullOrEmpty(bannerId))
+        if (stringNullOrEmpty(bannerId))
             return false;
-        return surveyDao.saveResponses(binder,bannerId) &&
-                surveyDao.saveAttempt(binder.getSurveyId(),bannerId);
+        return surveyDao.saveResponses(binder, bannerId) &&
+                surveyDao.saveAttempt(binder.getSurveyId(), bannerId);
     }
 
     @Override
     public boolean isSurveyAttempted(String suveyId, String bannerId)
     {
-        return surveyDao.isSurveyAttempted(suveyId,bannerId);
+        return surveyDao.isSurveyAttempted(suveyId, bannerId);
     }
 
     private boolean stringNullOrEmpty(String str)
     {
-        return (str==null || str.equals(""));
+        return (str == null || str.equals(""));
     }
 }

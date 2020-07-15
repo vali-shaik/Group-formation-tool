@@ -1,7 +1,10 @@
 package dal.asd.catme.courses;
 
 import dal.asd.catme.BaseAbstractFactoryImpl;
-import dal.asd.catme.accesscontrol.*;
+import dal.asd.catme.accesscontrol.IAccessControlAbstractFactory;
+import dal.asd.catme.accesscontrol.IMailSenderService;
+import dal.asd.catme.accesscontrol.IUserService;
+import dal.asd.catme.accesscontrol.User;
 import dal.asd.catme.config.CatmeSecurityConfig;
 import dal.asd.catme.config.SystemConfig;
 import dal.asd.catme.exception.CatmeException;
@@ -28,11 +31,11 @@ import static dal.asd.catme.accesscontrol.MailSenderUtil.TOKEN_LENGTH;
 
 public class CourseManageController
 {
-	ICSVParserAbstractFactory icsvParserAbstractFactory = BaseAbstractFactoryImpl.instance().makeCSVParserAbstractFactory();
-	ICourseAbstractFactory courseAbstractFactory = BaseAbstractFactoryImpl.instance().makeCourseAbstractFactory();
-	IAccessControlAbstractFactory accessControlAbstractFactory = BaseAbstractFactoryImpl.instance().makeAccessControlAbstractFactory();
+    ICSVParserAbstractFactory icsvParserAbstractFactory = BaseAbstractFactoryImpl.instance().makeCSVParserAbstractFactory();
+    ICourseAbstractFactory courseAbstractFactory = BaseAbstractFactoryImpl.instance().makeCourseAbstractFactory();
+    IAccessControlAbstractFactory accessControlAbstractFactory = BaseAbstractFactoryImpl.instance().makeAccessControlAbstractFactory();
 
-	ICourseModelAbstractFactory modelAbstractFactory = BaseAbstractFactoryImpl.instance().makeCourseModelAbstractFactory();
+    ICourseModelAbstractFactory modelAbstractFactory = BaseAbstractFactoryImpl.instance().makeCourseModelAbstractFactory();
     private static final Logger log = LoggerFactory.getLogger(CourseController.class);
 
 
@@ -72,30 +75,30 @@ public class CourseManageController
     public ModelAndView uploadFile(@RequestParam("student-list-csv") MultipartFile file, @RequestParam("courseId") String courseId)
     {
         ModelAndView model = new ModelAndView();
-		model.setViewName(CatmeUtil.MANAGE_COURSE_PAGE);
+        model.setViewName(CatmeUtil.MANAGE_COURSE_PAGE);
 
 
-		try
+        try
         {
-			ICSVReader icsvReader = icsvParserAbstractFactory.makeCSVReader(file.getInputStream());
-			ICSVParser icsvParser = icsvParserAbstractFactory.makeCSVParser();
-			IUserService userService = accessControlAbstractFactory.makeUserService();
-			IEnrollStudentService enrollStudentService = courseAbstractFactory.makeEnrollmentService();
-			IMailSenderService mailSenderService = accessControlAbstractFactory.makeMailSenderService();
+            ICSVReader icsvReader = icsvParserAbstractFactory.makeCSVReader(file.getInputStream());
+            ICSVParser icsvParser = icsvParserAbstractFactory.makeCSVParser();
+            IUserService userService = accessControlAbstractFactory.makeUserService();
+            IEnrollStudentService enrollStudentService = courseAbstractFactory.makeEnrollmentService();
+            IMailSenderService mailSenderService = accessControlAbstractFactory.makeMailSenderService();
 
-			icsvReader.validateFile(file);
-			ICourse c = modelAbstractFactory.makeCourse();
-			c.setCourseId(courseId);
+            icsvReader.validateFile(file);
+            Course c = modelAbstractFactory.makeCourse();
+            c.setCourseId(courseId);
 
-			ArrayList<IUser> students = icsvParser.getStudentsFromFile(icsvReader);
+            ArrayList<User> students = icsvParser.getStudentsFromFile(icsvReader);
 
-			if(students==null)
-			{
-				model.addObject("message", "Error Enrolling Students");
-				return model;
-			}
+            if (students == null)
+            {
+                model.addObject("message", "Error Enrolling Students");
+                return model;
+            }
 
-            for (IUser s : students)
+            for (User s : students)
             {
                 s.setPassword(RandomTokenGenerator.generateRandomPassword(TOKEN_LENGTH));
                 if (userService.addUser(s).equals(CatmeUtil.USER_CREATED))

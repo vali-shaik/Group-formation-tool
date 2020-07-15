@@ -8,7 +8,7 @@ import java.util.List;
 public class ListQuestionsServiceImpl implements IListQuestionsService
 {
     IQuestionDao questionDao;
-    List<IQuestion> questions;
+    List<Question> questions;
 
     public ListQuestionsServiceImpl(IQuestionDao questionDao)
     {
@@ -16,14 +16,14 @@ public class ListQuestionsServiceImpl implements IListQuestionsService
     }
 
     @Override
-    public List<IQuestion> getQuestions(String instructor) throws QuestionDatabaseException
+    public List<Question> getQuestions(String instructor) throws QuestionDatabaseException
     {
         this.questions = questionDao.getQuestionTitles(instructor);
         return questions;
     }
 
     @Override
-    public List<IQuestion> sortByDate()
+    public List<Question> sortByDate()
     {
         Collections.sort(questions, (question1, question2) ->
         {
@@ -33,7 +33,7 @@ public class ListQuestionsServiceImpl implements IListQuestionsService
     }
 
     @Override
-    public List<IQuestion> sortByTitle()
+    public List<Question> sortByTitle()
     {
         Collections.sort(questions, (question1, question2) ->
         {

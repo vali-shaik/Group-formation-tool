@@ -3,8 +3,8 @@ package dal.asd.catme.surveyresponse;
 import dal.asd.catme.BaseAbstractFactoryMock;
 import dal.asd.catme.IBaseAbstractFactory;
 import dal.asd.catme.POJOMock;
-import dal.asd.catme.questionmanager.IQuestion;
 import dal.asd.catme.questionmanager.IQuestionManagerModelAbstractFactory;
+import dal.asd.catme.questionmanager.Question;
 import dal.asd.catme.util.CatmeUtil;
 
 import java.util.ArrayList;
@@ -31,14 +31,14 @@ public class SurveyResponseDaoMock implements ISurveyResponseDao
     }
 
     @Override
-    public List<ISurveyResponse> getSurveyQuestions(String surveyId)
+    public List<SurveyResponse> getSurveyQuestions(String surveyId)
     {
-        List<ISurveyResponse> responses = new ArrayList<>();
+        List<SurveyResponse> responses = new ArrayList<>();
 
-        ISurveyResponse s = modelAbstractFactory.makeSurveyResponse();
+        SurveyResponse s = modelAbstractFactory.makeSurveyResponse();
         responses.add(s);
 
-        IQuestion q = questionManagerModelAbstractFactory.makeQuestion();
+        Question q = questionManagerModelAbstractFactory.makeQuestion();
         q.setQuestionText("New Question");
         q.setQuestionType(CatmeUtil.NUMERIC_DB);
 
@@ -52,7 +52,7 @@ public class SurveyResponseDaoMock implements ISurveyResponseDao
     }
 
     @Override
-    public boolean saveResponses(ISurveyResponseBinder binder, String bannerId)
+    public boolean saveResponses(SurveyResponseBinder binder, String bannerId)
     {
         return binder.getQuestionList().size() != 0;
     }

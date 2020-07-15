@@ -36,6 +36,7 @@ public class RandomTokenGenerator
         return sb.toString();
 
     }
+
     public static String shuffleString(String string)
     {
         List<String> letters = Arrays.asList(string.split(""));

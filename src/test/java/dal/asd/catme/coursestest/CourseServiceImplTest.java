@@ -4,7 +4,7 @@ import dal.asd.catme.BaseAbstractFactoryMock;
 import dal.asd.catme.IBaseAbstractFactory;
 import dal.asd.catme.POJOMock;
 import dal.asd.catme.accesscontrol.IAccessControlModelAbstractFactory;
-import dal.asd.catme.accesscontrol.IUser;
+import dal.asd.catme.accesscontrol.User;
 import dal.asd.catme.courses.ICourseAbstractFactory;
 import dal.asd.catme.courses.ICourseService;
 import dal.asd.catme.exception.CatmeException;
@@ -52,7 +52,7 @@ public class CourseServiceImplTest
     @Test
     public void findRoleByCourseTest() throws CatmeException
     {
-        IUser user = accessControlModelAbstractFactory.makeUser();
+        User user = accessControlModelAbstractFactory.makeUser();
         user.setBannerId("B00835822");
         ICourseService courseServiceImpl = courseAbstractFactory.makeCourseService();
         assertEquals(CatmeUtil.STUDENT_ROLE, courseServiceImpl.findRoleByCourse(user, "5409"));

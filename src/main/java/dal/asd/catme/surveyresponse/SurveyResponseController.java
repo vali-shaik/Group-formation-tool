@@ -24,29 +24,29 @@ public class SurveyResponseController
         String publishedSurveyId = surveyService.isSurveyPublished(courseId);
         String bannerId = SecurityContextHolder.getContext().getAuthentication().getName();
 
-        m.addAttribute("surveyPublished",(publishedSurveyId!=null));
-        m.addAttribute("courseId",courseId);
+        m.addAttribute("surveyPublished", (publishedSurveyId != null));
+        m.addAttribute("courseId", courseId);
 
-        if(publishedSurveyId==null)
+        if (publishedSurveyId == null)
         {
             return CatmeUtil.SURVEY_PAGE;
         }
 
-        if(publishedSurveyId==null || surveyService.isSurveyAttempted(publishedSurveyId,bannerId))
+        if (publishedSurveyId == null || surveyService.isSurveyAttempted(publishedSurveyId, bannerId))
         {
-            m.addAttribute("attempted",true);
+            m.addAttribute("attempted", true);
             return CatmeUtil.SURVEY_PAGE;
         }
 
-        m.addAttribute("attempted",false);
-        List<ISurveyResponse> surveyQuestions = surveyService.getSurveyQuestions(publishedSurveyId);
+        m.addAttribute("attempted", false);
+        List<SurveyResponse> surveyQuestions = surveyService.getSurveyQuestions(publishedSurveyId);
 
-        ISurveyResponseBinder binder = modelAbstractFactory.makeSurveyResponseBinder();
+        SurveyResponseBinder binder = modelAbstractFactory.makeSurveyResponseBinder();
         binder.setQuestionList(surveyQuestions);
         binder.setSurveyId(publishedSurveyId);
         binder.setCourseId(courseId);
 
-        m.addAttribute("response",binder);
+        m.addAttribute("response", binder);
 
         return CatmeUtil.SURVEY_PAGE;
     }
@@ -55,13 +55,8 @@ public class SurveyResponseController
     public String saveResponse(@ModelAttribute SurveyResponseBinder binder)
     {
         String bannerId = SecurityContextHolder.getContext().getAuthentication().getName();
-        surveyService.saveResponses(binder,bannerId);
+        surveyService.saveResponses(binder, bannerId);
 
-        for(ISurveyResponse response: binder.getQuestionList())
-        {
-            System.out.println(response.getQuestion().getQuestionId()+": "+response.getAnswer());
-        }
-
-        return "redirect:/viewSurvey?courseId="+binder.getCourseId();
+        return "redirect:/viewSurvey?courseId=" + binder.getCourseId();
     }
 }

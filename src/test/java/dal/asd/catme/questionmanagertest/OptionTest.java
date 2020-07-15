@@ -2,8 +2,8 @@ package dal.asd.catme.questionmanagertest;
 
 import dal.asd.catme.BaseAbstractFactoryMock;
 import dal.asd.catme.IBaseAbstractFactory;
-import dal.asd.catme.questionmanager.IOption;
 import dal.asd.catme.questionmanager.IQuestionManagerModelAbstractFactory;
+import dal.asd.catme.questionmanager.Option;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -16,7 +16,7 @@ public class OptionTest
     @Test
     public void getDisplayTextTest()
     {
-        IOption option = modelAbstractFactory.makeOption();
+        Option option = modelAbstractFactory.makeOption();
         option.setDisplayText("ABCD");
 
         assertEquals(option.getDisplayText(), "ABCD");
@@ -25,7 +25,7 @@ public class OptionTest
     @Test
     public void setDisplayTextTest()
     {
-        IOption option = modelAbstractFactory.makeOption();
+        Option option = modelAbstractFactory.makeOption();
         option.setDisplayText("ABCD");
 
         assertEquals(option.getDisplayText(), "ABCD");
@@ -34,7 +34,7 @@ public class OptionTest
     @Test
     public void getStoreAsTest()
     {
-        IOption option = modelAbstractFactory.makeOption();
+        Option option = modelAbstractFactory.makeOption();
         option.setStoredAs(1);
 
         assertEquals(option.getStoredAs(), 1);
@@ -43,7 +43,7 @@ public class OptionTest
     @Test
     public void setStoreAsTest()
     {
-        IOption option = modelAbstractFactory.makeOption();
+        Option option = modelAbstractFactory.makeOption();
         option.setStoredAs(1);
 
         assertEquals(option.getStoredAs(), 1);

@@ -1,18 +1,9 @@
 package dal.asd.catme.courses;
 
-public class Course implements ICourse
+public class Course
 {
     String courseId;
     String courseName;
-
-    public Course()
-    {
-    }
-    public Course(String courseId, String courseName)
-    {
-        this.courseId = courseId;
-        this.courseName = courseName;
-    }
 
     public String getCourseId()
     {

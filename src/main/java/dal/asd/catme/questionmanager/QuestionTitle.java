@@ -2,20 +2,10 @@ package dal.asd.catme.questionmanager;
 
 import java.util.List;
 
-public class QuestionTitle implements IQuestionTitle
+public class QuestionTitle
 {
-
     String questionTitle;
-    List<IQuestion> questions;
-
-    public QuestionTitle(String questionTitle)
-    {
-        this.questionTitle = questionTitle;
-    }
-
-    public QuestionTitle()
-    {
-    }
+    List<Question> questions;
 
     public String getQuestionTitle()
     {
@@ -27,15 +17,13 @@ public class QuestionTitle implements IQuestionTitle
         this.questionTitle = questionTitle;
     }
 
-    public List<IQuestion> getQuestions()
+    public List<Question> getQuestions()
     {
         return questions;
     }
 
-    public void setQuestions(List<IQuestion> questions)
+    public void setQuestions(List<Question> questions)
     {
         this.questions = questions;
     }
-
-
 }

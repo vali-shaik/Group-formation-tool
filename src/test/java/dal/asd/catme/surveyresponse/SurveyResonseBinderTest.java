@@ -17,7 +17,7 @@ public class SurveyResonseBinderTest
     @Test
     void getSurveyIdTest()
     {
-        ISurveyResponseBinder binder = modelAbstractFactory.makeSurveyResponseBinder();
+        SurveyResponseBinder binder = modelAbstractFactory.makeSurveyResponseBinder();
 
         binder.setSurveyId("ID1");
         assertEquals("ID1", binder.getSurveyId());
@@ -26,7 +26,7 @@ public class SurveyResonseBinderTest
     @Test
     void setSurveyIdTest()
     {
-        ISurveyResponseBinder binder = modelAbstractFactory.makeSurveyResponseBinder();
+        SurveyResponseBinder binder = modelAbstractFactory.makeSurveyResponseBinder();
 
         binder.setSurveyId("ID1");
         assertEquals("ID1", binder.getSurveyId());
@@ -35,7 +35,7 @@ public class SurveyResonseBinderTest
     @Test
     void getCourseIdTest()
     {
-        ISurveyResponseBinder binder = modelAbstractFactory.makeSurveyResponseBinder();
+        SurveyResponseBinder binder = modelAbstractFactory.makeSurveyResponseBinder();
 
         binder.setCourseId("ID1");
         assertEquals("ID1", binder.getCourseId());
@@ -44,7 +44,7 @@ public class SurveyResonseBinderTest
     @Test
     void setCourseIdTest()
     {
-        ISurveyResponseBinder binder = modelAbstractFactory.makeSurveyResponseBinder();
+        SurveyResponseBinder binder = modelAbstractFactory.makeSurveyResponseBinder();
 
         binder.setCourseId("ID1");
         assertEquals("ID1", binder.getCourseId());
@@ -54,9 +54,9 @@ public class SurveyResonseBinderTest
     @Test
     void setQuestionListTest()
     {
-        ISurveyResponseBinder binder = modelAbstractFactory.makeSurveyResponseBinder();
+        SurveyResponseBinder binder = modelAbstractFactory.makeSurveyResponseBinder();
 
-        List<ISurveyResponse> list = new ArrayList<>();
+        List<SurveyResponse> list = new ArrayList<>();
         binder.setQuestionList(list);
 
         assertEquals(list, binder.getQuestionList());
@@ -65,9 +65,9 @@ public class SurveyResonseBinderTest
     @Test
     void getQuestionListTest()
     {
-        ISurveyResponseBinder binder = modelAbstractFactory.makeSurveyResponseBinder();
+        SurveyResponseBinder binder = modelAbstractFactory.makeSurveyResponseBinder();
 
-        List<ISurveyResponse> list = new ArrayList<>();
+        List<SurveyResponse> list = new ArrayList<>();
         binder.setQuestionList(list);
 
         assertEquals(list, binder.getQuestionList());

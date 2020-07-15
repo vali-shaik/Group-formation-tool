@@ -5,8 +5,8 @@ import dal.asd.catme.IBaseAbstractFactory;
 import dal.asd.catme.accesscontrol.IAccessControlAbstractFactory;
 import dal.asd.catme.accesscontrol.IAccessControlModelAbstractFactory;
 import dal.asd.catme.accesscontrol.IMailSenderService;
-import dal.asd.catme.accesscontrol.IUser;
-import dal.asd.catme.courses.ICourse;
+import dal.asd.catme.accesscontrol.User;
+import dal.asd.catme.courses.Course;
 import dal.asd.catme.courses.ICourseModelAbstractFactory;
 import dal.asd.catme.util.RandomTokenGenerator;
 import org.junit.jupiter.api.Test;
@@ -27,7 +27,7 @@ public class MailSenderServiceImplTest
     void sendMailTest()
     {
 
-        IUser s = accessControlModelAbstractFactory.makeUser();
+        User s = accessControlModelAbstractFactory.makeUser();
         s.setBannerId("B00101010");
         s.setFirstName("User");
         s.setLastName("Last");
@@ -55,13 +55,13 @@ public class MailSenderServiceImplTest
     {
         IMailSenderService mailSenderService = accessControlAbstractFactory.makeMailSenderService();
 
-        IUser s = accessControlModelAbstractFactory.makeUser();
+        User s = accessControlModelAbstractFactory.makeUser();
         s.setBannerId("B00000000");
         s.setFirstName("Test");
         s.setPassword(RandomTokenGenerator.generateRandomPassword(TOKEN_LENGTH));
         s.setEmail("test@mail.com");
 
-        ICourse course = courseModelAbstractFactory.makeCourse();
+        Course course = courseModelAbstractFactory.makeCourse();
         course.setCourseId("5308");
 
         try
@@ -79,7 +79,7 @@ public class MailSenderServiceImplTest
     {
         IMailSenderService mailSenderService = accessControlAbstractFactory.makeMailSenderService();
 
-        IUser s = accessControlModelAbstractFactory.makeUser();
+        User s = accessControlModelAbstractFactory.makeUser();
         s.setBannerId("B00000000");
         s.setFirstName("Test");
         s.setPassword(RandomTokenGenerator.generateRandomPassword(TOKEN_LENGTH));

@@ -4,9 +4,9 @@ import dal.asd.catme.BaseAbstractFactoryMock;
 import dal.asd.catme.IBaseAbstractFactory;
 import dal.asd.catme.POJOMock;
 import dal.asd.catme.accesscontrol.IAccessControlModelAbstractFactory;
-import dal.asd.catme.accesscontrol.IRole;
-import dal.asd.catme.accesscontrol.IUser;
-import dal.asd.catme.courses.ICourse;
+import dal.asd.catme.accesscontrol.Role;
+import dal.asd.catme.accesscontrol.User;
+import dal.asd.catme.courses.Course;
 import dal.asd.catme.courses.ICourseAbstractFactory;
 import dal.asd.catme.courses.IEnrollStudentService;
 import dal.asd.catme.exception.EnrollmentException;
@@ -22,8 +22,8 @@ class EnrollStudentServiceImplTest
     IBaseAbstractFactory baseAbstractFactory = BaseAbstractFactoryMock.instance();
     ICourseAbstractFactory courseAbstractFactory = baseAbstractFactory.makeCourseAbstractFactory();
     IAccessControlModelAbstractFactory accessControlModelAbstractFactory = baseAbstractFactory.makeAccessControlModelAbstractFactory();
-    ICourse c = POJOMock.getCourses().get(0);
-    IUser s = POJOMock.getUsers().get(0);
+    Course c = POJOMock.getCourses().get(0);
+    User s = POJOMock.getUsers().get(0);
 
     @Test
     public void enrollStudentsIntoCourseTest()
@@ -42,7 +42,7 @@ class EnrollStudentServiceImplTest
         {
             service.assignStudentRole(POJOMock.getUsers().get(0));
 
-            List<IRole> roles = POJOMock.getUsers().get(0).getRole();
+            List<Role> roles = POJOMock.getUsers().get(0).getRole();
             assertEquals(String.valueOf(CatmeUtil.STUDENT_ROLE_ID), roles.get(roles.size() - 1).getRoleId());
         } catch (EnrollmentException e)
         {
@@ -52,7 +52,7 @@ class EnrollStudentServiceImplTest
 
         try
         {
-            IUser user = accessControlModelAbstractFactory.makeUser();
+            User user = accessControlModelAbstractFactory.makeUser();
             user.setEmail("a@b");
             user.setBannerId("B00454545");
             user.setFirstName("B");

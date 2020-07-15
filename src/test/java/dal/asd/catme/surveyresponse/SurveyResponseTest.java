@@ -2,8 +2,8 @@ package dal.asd.catme.surveyresponse;
 
 import dal.asd.catme.BaseAbstractFactoryMock;
 import dal.asd.catme.IBaseAbstractFactory;
-import dal.asd.catme.questionmanager.IQuestion;
 import dal.asd.catme.questionmanager.IQuestionManagerModelAbstractFactory;
+import dal.asd.catme.questionmanager.Question;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -20,9 +20,9 @@ public class SurveyResponseTest
     @Test
     void getQuestionTest()
     {
-        ISurveyResponse surveyResponse = modelAbstractFactory.makeSurveyResponse();
+        SurveyResponse surveyResponse = modelAbstractFactory.makeSurveyResponse();
 
-        IQuestion q = questionManagerModelAbstractFactory.makeQuestion();
+        Question q = questionManagerModelAbstractFactory.makeQuestion();
         surveyResponse.setQuestion(q);
 
         assertEquals(q, surveyResponse.getQuestion());
@@ -31,9 +31,9 @@ public class SurveyResponseTest
     @Test
     void setQuestionTest()
     {
-        ISurveyResponse surveyResponse = modelAbstractFactory.makeSurveyResponse();
+        SurveyResponse surveyResponse = modelAbstractFactory.makeSurveyResponse();
 
-        IQuestion q = questionManagerModelAbstractFactory.makeQuestion();
+        Question q = questionManagerModelAbstractFactory.makeQuestion();
         surveyResponse.setQuestion(q);
 
         assertEquals(q, surveyResponse.getQuestion());
@@ -42,7 +42,7 @@ public class SurveyResponseTest
     @Test
     void getAnswerTest()
     {
-        ISurveyResponse surveyResponse = modelAbstractFactory.makeSurveyResponse();
+        SurveyResponse surveyResponse = modelAbstractFactory.makeSurveyResponse();
 
         List<String> answers = new ArrayList<>();
         surveyResponse.setAnswer(answers);
@@ -53,7 +53,7 @@ public class SurveyResponseTest
     @Test
     void getSetAnswerTest()
     {
-        ISurveyResponse surveyResponse = modelAbstractFactory.makeSurveyResponse();
+        SurveyResponse surveyResponse = modelAbstractFactory.makeSurveyResponse();
 
         List<String> answers = new ArrayList<>();
         surveyResponse.setAnswer(answers);

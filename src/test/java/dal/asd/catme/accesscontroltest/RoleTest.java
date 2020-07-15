@@ -3,7 +3,7 @@ package dal.asd.catme.accesscontroltest;
 import dal.asd.catme.BaseAbstractFactoryMock;
 import dal.asd.catme.IBaseAbstractFactory;
 import dal.asd.catme.accesscontrol.IAccessControlModelAbstractFactory;
-import dal.asd.catme.accesscontrol.IRole;
+import dal.asd.catme.accesscontrol.Role;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -16,7 +16,7 @@ public class RoleTest
     @Test
     public void getRoleIdTest()
     {
-        IRole role = accessControlModelAbstractFactory.makeRole();
+        Role role = accessControlModelAbstractFactory.makeRole();
 
         role.setRoleId("001");
         assertEquals(role.getRoleId(), "001");
@@ -25,7 +25,7 @@ public class RoleTest
     @Test
     public void setRoleIdTest()
     {
-        IRole role = accessControlModelAbstractFactory.makeRole();
+        Role role = accessControlModelAbstractFactory.makeRole();
 
         role.setRoleId("001");
         assertEquals(role.getRoleId(), "001");
@@ -34,7 +34,7 @@ public class RoleTest
     @Test
     public void getRoleNameTest()
     {
-        IRole role = accessControlModelAbstractFactory.makeRole();
+        Role role = accessControlModelAbstractFactory.makeRole();
 
         role.setRoleName("Admin");
         assertEquals(role.getRoleName(), "Admin");
@@ -43,7 +43,7 @@ public class RoleTest
     @Test
     public void setRoleNameTest()
     {
-        IRole role = accessControlModelAbstractFactory.makeRole();
+        Role role = accessControlModelAbstractFactory.makeRole();
 
         role.setRoleName("Admin");
         assertEquals(role.getRoleName(), "Admin");

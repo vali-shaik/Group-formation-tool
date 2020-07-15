@@ -2,7 +2,6 @@ package dal.asd.catme.accesscontrol;
 
 import dal.asd.catme.config.SystemConfig;
 import dal.asd.catme.courses.Course;
-import dal.asd.catme.courses.ICourse;
 import dal.asd.catme.database.DatabaseAccess;
 import dal.asd.catme.util.CatmeUtil;
 import org.springframework.stereotype.Component;
@@ -24,7 +23,7 @@ public class AdminDaoImpl implements IAdminDao
     Connection connection;
 
     @Override
-    public int addCourse(ICourse course)
+    public int addCourse(Course course)
     {
         int result = 0;
         try
@@ -184,7 +183,7 @@ public class AdminDaoImpl implements IAdminDao
         return result;
     }
 
-    public int addCourse(Connection connection, String query, ICourse course)
+    public int addCourse(Connection connection, String query, Course course)
     {
         int result = CatmeUtil.ZERO;
         try

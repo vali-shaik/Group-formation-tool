@@ -1,12 +1,13 @@
 package dal.asd.catme.studentlistimport;
 
-import dal.asd.catme.accesscontrol.User;
 import dal.asd.catme.exception.InvalidFileFormatException;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.regex.Pattern;
 
 public class CSVReader implements ICSVReader
 {
@@ -57,7 +58,7 @@ public class CSVReader implements ICSVReader
         } else if (file.getSize() >= 10 * 1024 * 1024)
         {
             throw new InvalidFileFormatException("Please Upload File less than 10 mb");
-        } else if (file.getContentType().equals("text/csv")==false)
+        } else if (file.getContentType().equals("text/csv") == false)
         {
             throw new InvalidFileFormatException("Please Select CSV File");
         }

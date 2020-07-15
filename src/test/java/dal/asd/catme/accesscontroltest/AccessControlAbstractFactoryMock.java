@@ -38,7 +38,7 @@ public class AccessControlAbstractFactoryMock implements IAccessControlAbstractF
         if (mailSenderService == null)
         {
             IAccessControlModelAbstractFactory accessControlModelAbstractFactory = BaseAbstractFactoryMock.instance().makeAccessControlModelAbstractFactory();
-            IUser s = accessControlModelAbstractFactory.makeUser();
+            User s = accessControlModelAbstractFactory.makeUser();
             s.setBannerId("B00101010");
             s.setFirstName("User");
             s.setLastName("Last");

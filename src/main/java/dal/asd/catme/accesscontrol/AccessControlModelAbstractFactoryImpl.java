@@ -3,13 +3,13 @@ package dal.asd.catme.accesscontrol;
 public class AccessControlModelAbstractFactoryImpl implements IAccessControlModelAbstractFactory
 {
     @Override
-    public IRole makeRole()
+    public Role makeRole()
     {
         return new Role();
     }
 
     @Override
-    public IUser makeUser()
+    public User makeUser()
     {
         return new User();
     }

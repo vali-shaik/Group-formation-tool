@@ -3,8 +3,8 @@ package dal.asd.catme.accesscontroltest;
 import dal.asd.catme.BaseAbstractFactoryMock;
 import dal.asd.catme.IBaseAbstractFactory;
 import dal.asd.catme.accesscontrol.IAccessControlModelAbstractFactory;
-import dal.asd.catme.accesscontrol.IRole;
-import dal.asd.catme.accesscontrol.IUser;
+import dal.asd.catme.accesscontrol.Role;
+import dal.asd.catme.accesscontrol.User;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -20,7 +20,7 @@ public class UserTest
     @Test
     public void setBannerIdTest()
     {
-        IUser u = accessControlModelAbstractFactory.makeUser();
+        User u = accessControlModelAbstractFactory.makeUser();
 
         u.setBannerId("B00121212");
         assertEquals(u.getBannerId(), "B00121212");
@@ -30,7 +30,7 @@ public class UserTest
     @Test
     public void getBannerIdTest()
     {
-        IUser u = accessControlModelAbstractFactory.makeUser();
+        User u = accessControlModelAbstractFactory.makeUser();
 
         u.setBannerId("B00121212");
         assertEquals(u.getBannerId(), "B00121212");
@@ -40,7 +40,7 @@ public class UserTest
     @Test
     public void setFirstNameTest()
     {
-        IUser u = accessControlModelAbstractFactory.makeUser();
+        User u = accessControlModelAbstractFactory.makeUser();
 
         u.setFirstName("First");
         assertEquals(u.getFirstName(), "First");
@@ -49,7 +49,7 @@ public class UserTest
     @Test
     public void getFirstNameTest()
     {
-        IUser u = accessControlModelAbstractFactory.makeUser();
+        User u = accessControlModelAbstractFactory.makeUser();
 
         u.setFirstName("First");
         assertEquals(u.getFirstName(), "First");
@@ -58,7 +58,7 @@ public class UserTest
     @Test
     public void setLastNameTest()
     {
-        IUser u = accessControlModelAbstractFactory.makeUser();
+        User u = accessControlModelAbstractFactory.makeUser();
 
         u.setLastName("Last");
         assertEquals(u.getLastName(), "Last");
@@ -67,7 +67,7 @@ public class UserTest
     @Test
     public void getLastNameTest()
     {
-        IUser u = accessControlModelAbstractFactory.makeUser();
+        User u = accessControlModelAbstractFactory.makeUser();
 
         u.setLastName("Last");
         assertEquals(u.getLastName(), "Last");
@@ -76,7 +76,7 @@ public class UserTest
     @Test
     public void setPasswordTest()
     {
-        IUser u = accessControlModelAbstractFactory.makeUser();
+        User u = accessControlModelAbstractFactory.makeUser();
 
         u.setPassword("Password");
         assertEquals(u.getPassword(), "Password");
@@ -85,7 +85,7 @@ public class UserTest
     @Test
     public void getPasswordTest()
     {
-        IUser u = accessControlModelAbstractFactory.makeUser();
+        User u = accessControlModelAbstractFactory.makeUser();
 
         u.setPassword("Password");
         assertEquals(u.getPassword(), "Password");
@@ -94,7 +94,7 @@ public class UserTest
     @Test
     public void setEmailTest()
     {
-        IUser u = accessControlModelAbstractFactory.makeUser();
+        User u = accessControlModelAbstractFactory.makeUser();
 
         u.setEmail("abc@xyz.com");
         assertEquals(u.getEmail(), "abc@xyz.com");
@@ -103,7 +103,7 @@ public class UserTest
     @Test
     public void getEmailTest()
     {
-        IUser u = accessControlModelAbstractFactory.makeUser();
+        User u = accessControlModelAbstractFactory.makeUser();
 
         u.setEmail("abc@xyz.com");
         assertEquals(u.getEmail(), "abc@xyz.com");
@@ -112,8 +112,8 @@ public class UserTest
     @Test
     public void setRoleTest()
     {
-        IUser u = accessControlModelAbstractFactory.makeUser();
-        List<IRole> roles = listRole();
+        User u = accessControlModelAbstractFactory.makeUser();
+        List<Role> roles = listRole();
 
         u.setRole(roles);
         assertEquals(u.getRole(), roles);
@@ -122,19 +122,19 @@ public class UserTest
     @Test
     public void getRoleTest()
     {
-        IUser u = accessControlModelAbstractFactory.makeUser();
-        List<IRole> roles = listRole();
+        User u = accessControlModelAbstractFactory.makeUser();
+        List<Role> roles = listRole();
 
         u.setRole(roles);
         assertEquals(u.getRole(), roles);
     }
 
 
-    private List<IRole> listRole()
+    private List<Role> listRole()
     {
-        List<IRole> list = new ArrayList<>();
+        List<Role> list = new ArrayList<>();
 
-        IRole r = accessControlModelAbstractFactory.makeRole();
+        Role r = accessControlModelAbstractFactory.makeRole();
         r.setRoleName("Admin");
         r.setRoleName("1");
 

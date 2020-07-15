@@ -54,6 +54,7 @@
                         <input type="checkbox"
                                th:value="${option.displayText}"
                                th:text="${option.displayText}"
+                               th:name="${option.storedAs}"
                                th:field="*{questionList[__${i.index}__].answer}"
                         >
                     </div>

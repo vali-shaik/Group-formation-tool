@@ -18,7 +18,7 @@ public class QuestionTitleTest
     @Test
     public void getQuestionTitleTest()
     {
-        IQuestionTitle questionTitle = modelAbstractFactory.makeQuestionTitle();
+        QuestionTitle questionTitle = modelAbstractFactory.makeQuestionTitle();
         questionTitle.setQuestionTitle("Title");
 
         assertEquals(questionTitle.getQuestionTitle(), "Title");
@@ -27,7 +27,7 @@ public class QuestionTitleTest
     @Test
     public void setQuestionTitleTest()
     {
-        IQuestionTitle questionTitle = new QuestionTitle();
+        QuestionTitle questionTitle = new QuestionTitle();
         questionTitle.setQuestionTitle("Title");
 
         questionTitle.setQuestionTitle("Title");
@@ -37,9 +37,9 @@ public class QuestionTitleTest
     @Test
     public void getQuestionsTest()
     {
-        IQuestionTitle questionTitle = new QuestionTitle();
+        QuestionTitle questionTitle = new QuestionTitle();
 
-        List<IQuestion> list = listQuestion();
+        List<Question> list = listQuestion();
         questionTitle.setQuestions(list);
 
         assertEquals(questionTitle.getQuestions(), list);
@@ -48,17 +48,17 @@ public class QuestionTitleTest
     @Test
     public void setQuestionsTest()
     {
-        IQuestionTitle questionTitle = new QuestionTitle();
+        QuestionTitle questionTitle = new QuestionTitle();
 
-        List<IQuestion> list = listQuestion();
+        List<Question> list = listQuestion();
         questionTitle.setQuestions(list);
 
         assertEquals(questionTitle.getQuestions(), list);
     }
 
-    private List<IQuestion> listQuestion()
+    private List<Question> listQuestion()
     {
-        List<IQuestion> list = new ArrayList<>();
+        List<Question> list = new ArrayList<>();
 
         Question q = new Question();
         q.setQuestionText("Text");

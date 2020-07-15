@@ -1,8 +1,8 @@
 package dal.asd.catme.coursestest;
 
 import dal.asd.catme.POJOMock;
-import dal.asd.catme.accesscontrol.IUser;
-import dal.asd.catme.courses.ICourse;
+import dal.asd.catme.accesscontrol.User;
+import dal.asd.catme.courses.Course;
 import dal.asd.catme.courses.ICourseDao;
 import dal.asd.catme.exception.CatmeException;
 import dal.asd.catme.util.CatmeUtil;
@@ -13,15 +13,15 @@ import java.util.List;
 public class CourseDaoMock implements ICourseDao
 {
 
-    List<ICourse> listOfCourses;
+    List<Course> listOfCourses;
 
-    public CourseDaoMock(List<ICourse> listOfCourses)
+    public CourseDaoMock(List<Course> listOfCourses)
     {
         this.listOfCourses = listOfCourses;
     }
 
     @Override
-    public List<ICourse> getCourses(String role) throws CatmeException
+    public List<Course> getCourses(String role) throws CatmeException
     {
         if (role.equals(CatmeUtil.GUEST_ROLE) == false)
         {
@@ -31,16 +31,16 @@ public class CourseDaoMock implements ICourseDao
     }
 
     @Override
-    public List<ICourse> getAllCourses()
+    public List<Course> getAllCourses()
     {
         return dal.asd.catme.POJOMock.getCourses();
 
     }
 
     @Override
-    public ICourse displayCourseById(String courseId) throws CatmeException
+    public Course displayCourseById(String courseId) throws CatmeException
     {
-        for (ICourse c : listOfCourses)
+        for (Course c : listOfCourses)
         {
             if (c.getCourseId().equals(courseId))
             {
@@ -51,7 +51,7 @@ public class CourseDaoMock implements ICourseDao
     }
 
     @Override
-    public String findRoleByCourse(IUser user, String courseId) throws CatmeException
+    public String findRoleByCourse(User user, String courseId) throws CatmeException
     {
         String role = "";
 
@@ -71,9 +71,9 @@ public class CourseDaoMock implements ICourseDao
     }
 
     @Override
-    public List<IUser> getRegisteredStudents(String courseId)
+    public List<User> getRegisteredStudents(String courseId)
     {
-        for (ICourse c : listOfCourses)
+        for (Course c : listOfCourses)
         {
             if (c.getCourseId().equals(courseId))
                 return POJOMock.getUsers();
@@ -84,11 +84,11 @@ public class CourseDaoMock implements ICourseDao
     @Override
     public int checkCourseRegistration(String bannerId, String courseId, Connection con)
     {
-        for (ICourse c : listOfCourses)
+        for (Course c : listOfCourses)
         {
             if (c.getCourseId().equalsIgnoreCase(courseId))
             {
-                for (IUser u : POJOMock.getUsers())
+                for (User u : POJOMock.getUsers())
                 {
                     if (u.getBannerId().equalsIgnoreCase(bannerId))
                     {
@@ -103,7 +103,7 @@ public class CourseDaoMock implements ICourseDao
     @Override
     public int checkCourseExists(String courseId, Connection con)
     {
-        for (ICourse c : listOfCourses)
+        for (Course c : listOfCourses)
         {
             if (c.getCourseId().equalsIgnoreCase(courseId))
                 return 1;

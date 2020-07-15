@@ -1,11 +1,9 @@
 package dal.asd.catme.password;
 
-import dal.asd.catme.accesscontrol.IUser;
 import dal.asd.catme.accesscontrol.User;
 import dal.asd.catme.config.SystemConfig;
 import dal.asd.catme.database.DatabaseAccess;
 import dal.asd.catme.exception.CatmeException;
-
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.sql.Connection;
@@ -21,7 +19,7 @@ public class PasswordDaoImpl implements IPasswordDao
     PasswordEncoder p;
 
     @Override
-    public void resetPassword(IUser u, Connection con) throws CatmeException
+    public void resetPassword(User u, Connection con) throws CatmeException
     {
         p = SystemConfig.instance().getPasswordEncoder();
         try
@@ -60,7 +58,7 @@ public class PasswordDaoImpl implements IPasswordDao
         }
     }
 
-    public void generatePasswordResetToken(IUser u, String token) throws CatmeException
+    public void generatePasswordResetToken(User u, String token) throws CatmeException
     {
         DatabaseAccess db = SystemConfig.instance().getDatabaseAccess();
         Connection con = null;

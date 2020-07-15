@@ -2,53 +2,14 @@ package dal.asd.catme.accesscontrol;
 
 import java.util.List;
 
-public class User implements IUser
+public class User
 {
     String bannerId;
     String lastName;
     String firstName;
     String email;
     String password;
-    List<IRole> role;
-
-    public User(String bannerId, String lastName, String firstName)
-    {
-        super();
-        this.bannerId = bannerId;
-        this.lastName = lastName;
-        this.firstName = firstName;
-    }
-
-    public User()
-    {
-    }
-
-    public User(String bannerId, String lastName, String firstName, String email, String password, List<IRole> role)
-    {
-        this.bannerId = bannerId;
-        this.lastName = lastName;
-        this.firstName = firstName;
-        this.email = email;
-        this.password = password;
-        this.role = role;
-    }
-
-    public User(String bannerId, String lastName, String firstName, String email, String password)
-    {
-        this.bannerId = bannerId;
-        this.lastName = lastName;
-        this.firstName = firstName;
-        this.email = email;
-        this.password = password;
-    }
-
-    public User(String bannerId, String lastName, String firstName, String email)
-    {
-        this.bannerId = bannerId;
-        this.lastName = lastName;
-        this.firstName = firstName;
-        this.email = email;
-    }
+    List<Role> role;
 
     public String getBannerId()
     {
@@ -100,12 +61,12 @@ public class User implements IUser
         this.password = password;
     }
 
-    public List<IRole> getRole()
+    public List<Role> getRole()
     {
         return role;
     }
 
-    public void setRole(List<IRole> role)
+    public void setRole(List<Role> role)
     {
         this.role = role;
     }

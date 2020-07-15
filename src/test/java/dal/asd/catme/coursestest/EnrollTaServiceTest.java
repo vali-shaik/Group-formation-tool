@@ -4,7 +4,7 @@ import dal.asd.catme.BaseAbstractFactoryMock;
 import dal.asd.catme.IBaseAbstractFactory;
 import dal.asd.catme.courses.ICourseAbstractFactory;
 import dal.asd.catme.courses.ICourseModelAbstractFactory;
-import dal.asd.catme.courses.IEnrollment;
+import dal.asd.catme.courses.Enrollment;
 import dal.asd.catme.courses.IRoleDao;
 import org.junit.jupiter.api.Test;
 
@@ -28,7 +28,7 @@ public class EnrollTaServiceTest
         IRoleDao roleDaoMock = courseAbstractFactory.makeRoleDao();
         try
         {
-            IEnrollment enrollment = courseModelAbstractFactory.makeEnrollment();
+            Enrollment enrollment = courseModelAbstractFactory.makeEnrollment();
             enrollment.setBannerId("B00835717");
             enrollment.setCourseId("5306");
             assertNotNull(roleDaoMock.assignTa(enrollment, con));

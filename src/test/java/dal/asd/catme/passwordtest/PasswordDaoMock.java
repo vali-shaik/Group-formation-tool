@@ -1,6 +1,6 @@
 package dal.asd.catme.passwordtest;
 
-import dal.asd.catme.accesscontrol.IUser;
+import dal.asd.catme.accesscontrol.User;
 import dal.asd.catme.exception.CatmeException;
 import dal.asd.catme.password.IPasswordDao;
 
@@ -9,7 +9,7 @@ import java.sql.Connection;
 public class PasswordDaoMock implements IPasswordDao
 {
     @Override
-    public void resetPassword(IUser u, Connection con) throws CatmeException
+    public void resetPassword(User u, Connection con) throws CatmeException
     {
         if (u.getPassword() == null)
             throw new CatmeException();
@@ -27,7 +27,7 @@ public class PasswordDaoMock implements IPasswordDao
     }
 
     @Override
-    public void generatePasswordResetToken(IUser u, String token) throws CatmeException
+    public void generatePasswordResetToken(User u, String token) throws CatmeException
     {
 
     }

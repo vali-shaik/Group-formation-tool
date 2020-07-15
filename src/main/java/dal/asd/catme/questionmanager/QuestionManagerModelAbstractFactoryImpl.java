@@ -3,19 +3,19 @@ package dal.asd.catme.questionmanager;
 public class QuestionManagerModelAbstractFactoryImpl implements IQuestionManagerModelAbstractFactory
 {
     @Override
-    public IQuestion makeQuestion()
+    public Question makeQuestion()
     {
         return new Question();
     }
 
     @Override
-    public IOption makeOption()
+    public Option makeOption()
     {
         return new Option();
     }
 
     @Override
-    public IQuestionTitle makeQuestionTitle()
+    public QuestionTitle makeQuestionTitle()
     {
         return new QuestionTitle();
     }

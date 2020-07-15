@@ -1,7 +1,6 @@
 package dal.asd.catme.courses;
 
 import dal.asd.catme.BaseAbstractFactoryImpl;
-import dal.asd.catme.accesscontrol.AccessControlAbstractFactoryImpl;
 import dal.asd.catme.accesscontrol.IUserDao;
 import dal.asd.catme.util.CatmeUtil;
 
@@ -121,7 +120,7 @@ public class RoleDaoImpl implements IRoleDao
     }
 
     @Override
-    public String assignTa(IEnrollment user, Connection con)
+    public String assignTa(Enrollment user, Connection con)
     {
         String isAssigned = "";
 
@@ -141,9 +140,7 @@ public class RoleDaoImpl implements IRoleDao
                             {
                                 int userRoleId = getUserRoleId(user.getBannerId(), CatmeUtil.TA_ROLE_ID, con);
                                 addInstructor(user.getCourseId(), userRoleId, con);
-                            }
-
-                            else
+                            } else
                             {
                                 assignRole(user.getBannerId(), CatmeUtil.TA_ROLE_ID, con);
                                 int userRoleId = getUserRoleId(user.getBannerId(), CatmeUtil.TA_ROLE_ID, con);

@@ -36,8 +36,8 @@ public class SurveyResponseServiceImplTest
     public void saveResponsesTest()
     {
         ISurveyResponseService surveyResponseService = surveyResponseAbstractFactory.makeSurveyResponseService();
-        ISurveyResponseBinder binder = modelAbstractFactory.makeSurveyResponseBinder();
-        List<ISurveyResponse> questions = new ArrayList<>();
+        SurveyResponseBinder binder = modelAbstractFactory.makeSurveyResponseBinder();
+        List<SurveyResponse> questions = new ArrayList<>();
 
         questions.add(modelAbstractFactory.makeSurveyResponse());
         binder.setQuestionList(questions);

@@ -21,7 +21,7 @@ public class AccessControlAbstractFactoryImpl implements IAccessControlAbstractF
         adminService = new AdminServiceImpl(adminDao);
         mailSenderService = new MailSenderServiceImpl();
         passwordPolicyCheckerService = new PasswordPolicyCheckerImpl();
-        userService = new UserServiceImpl(userDao,passwordPolicyCheckerService);
+        userService = new UserServiceImpl(userDao, passwordPolicyCheckerService);
     }
 
     @Override

@@ -1,20 +1,17 @@
 package dal.asd.catme.accesscontrol;
 
 import dal.asd.catme.courses.Course;
-
-import dal.asd.catme.courses.ICourse;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
-
-import static dal.asd.catme.accesscontrol.MailSenderUtil.*;
-
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.Properties;
+
+import static dal.asd.catme.accesscontrol.MailSenderUtil.*;
 
 public class MailSenderServiceImpl implements IMailSenderService
 {
@@ -42,7 +39,7 @@ public class MailSenderServiceImpl implements IMailSenderService
 
 
     @Override
-    public void sendMail(IUser user, String subject, String bodyText) throws MailException, MessagingException
+    public void sendMail(User user, String subject, String bodyText) throws MailException, MessagingException
     {
         //code taken from https://stackoverflow.com/questions/5289849/how-do-i-send-html-email-in-spring-mvc
         MimeMessage mimeMessage = mailSender.createMimeMessage();
@@ -56,7 +53,7 @@ public class MailSenderServiceImpl implements IMailSenderService
     }
 
     @Override
-    public void sendCredentialsToStudent(IUser u, ICourse c) throws MessagingException
+    public void sendCredentialsToStudent(User u, Course c) throws MessagingException
     {
         String bodyText = getFormattedEmailForNewStudent(u, c);
 
@@ -69,12 +66,12 @@ public class MailSenderServiceImpl implements IMailSenderService
     }
 
     @Override
-    public void sendResetLink(IUser u) throws MailException, MessagingException
+    public void sendResetLink(User u) throws MailException, MessagingException
     {
         sendMail(u, FORGOT_PASSWORD_EMAIL_SUBJECT, getFormattedEmailForForgotPassword(u));
     }
 
-    public String getFormattedEmailForNewStudent(IUser u, ICourse c)
+    public String getFormattedEmailForNewStudent(User u, Course c)
     {
         try
         {
@@ -104,7 +101,7 @@ public class MailSenderServiceImpl implements IMailSenderService
         }
     }
 
-    public String getFormattedEmailForForgotPassword(IUser u)
+    public String getFormattedEmailForForgotPassword(User u)
     {
         try
         {
