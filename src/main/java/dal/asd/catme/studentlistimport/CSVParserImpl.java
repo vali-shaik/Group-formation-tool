@@ -2,6 +2,8 @@ package dal.asd.catme.studentlistimport;
 
 import dal.asd.catme.accesscontrol.User;
 import dal.asd.catme.exception.InvalidFileFormatException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -9,6 +11,7 @@ import java.util.regex.Pattern;
 
 public class CSVParserImpl implements ICSVParser
 {
+    private static final Logger log = LoggerFactory.getLogger(CSVParserImpl.class);
     static int BANNERID = 0;
     static int LASTNAME = 1;
     static int FIRSTNAME = 2;
@@ -42,6 +45,7 @@ public class CSVParserImpl implements ICSVParser
                     students.add(student);
                 } else
                 {
+                    log.info("Invalid data in line: "+line);
                     return null;
                 }
             }
@@ -71,14 +75,16 @@ public class CSVParserImpl implements ICSVParser
 
         if (bannerId.length() < BANNERID_LENGTH || bannerId.length() > BANNERID_LENGTH)
         {
+            log.info("Invalid length for Banner Id");
             return false;
         }
         if (bannerId.substring(0, 3).equalsIgnoreCase("B00") == false)
         {
+            log.info("Banner Id not starting with 'B00'");
             return false;
         }
 
-        return Pattern.matches("\\d{6}", bannerId.substring(3)) != false;
+        return Pattern.matches("\\d{6}", bannerId.substring(3));
     }
 
     @Override
@@ -87,13 +93,13 @@ public class CSVParserImpl implements ICSVParser
 
         if (firstname == null || firstname.trim().isEmpty())
         {
-            System.out.println("Invalid Firstname");
+            log.info("Invalid Firstname");
             return false;
         }
 
         if (lastname == null || lastname.trim().isEmpty())
         {
-            System.out.println("Invalid Lastname");
+            log.info("Invalid Lastname");
             return false;
         }
 

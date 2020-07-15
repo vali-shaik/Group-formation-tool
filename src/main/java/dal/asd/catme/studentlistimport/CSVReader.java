@@ -1,6 +1,8 @@
 package dal.asd.catme.studentlistimport;
 
 import dal.asd.catme.exception.InvalidFileFormatException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.BufferedReader;
@@ -11,6 +13,7 @@ import java.util.ArrayList;
 
 public class CSVReader implements ICSVReader
 {
+    private static final Logger log = LoggerFactory.getLogger(CSVReader.class);
 
     InputStream inputStream;
 
@@ -22,7 +25,7 @@ public class CSVReader implements ICSVReader
     @Override
     public ArrayList<String> readFile() throws InvalidFileFormatException, IOException
     {
-
+        log.info("Reading content of file");
         ArrayList<String> lines = new ArrayList<>();
 
         boolean skip = true;
@@ -52,6 +55,7 @@ public class CSVReader implements ICSVReader
     @Override
     public void validateFile(MultipartFile file) throws InvalidFileFormatException
     {
+        log.info("Validating file: "+file.getName());
         if (file.isEmpty())
         {
             throw new InvalidFileFormatException("Please Upload File");

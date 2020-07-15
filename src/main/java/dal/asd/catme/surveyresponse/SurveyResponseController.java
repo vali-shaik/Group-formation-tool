@@ -2,6 +2,8 @@ package dal.asd.catme.surveyresponse;
 
 import dal.asd.catme.BaseAbstractFactoryImpl;
 import dal.asd.catme.util.CatmeUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,25 +17,30 @@ import java.util.List;
 @Controller
 public class SurveyResponseController
 {
+    private static final Logger log = LoggerFactory.getLogger(SurveyResponseController.class);
     ISurveyResponseService surveyService = BaseAbstractFactoryImpl.instance().makeSurveyResponseAbstractFactory().makeSurveyResponseService();
     ISurveyResponseModelAbstractFactory modelAbstractFactory = BaseAbstractFactoryImpl.instance().makeSurveyResponseModelAbstractFactory();
 
     @RequestMapping("/viewSurvey")
     public String viewSurvey(@RequestParam(name = "courseId") String courseId, Model m)
     {
+        log.info("Getting Survey for course: "+courseId);
         String publishedSurveyId = surveyService.isSurveyPublished(courseId);
         String bannerId = SecurityContextHolder.getContext().getAuthentication().getName();
 
-        m.addAttribute("surveyPublished", (publishedSurveyId != null));
         m.addAttribute("courseId", courseId);
 
         if (publishedSurveyId == null)
         {
+            log.info("Survey is not published");
+            m.addAttribute("surveyPublished", false);
             return CatmeUtil.SURVEY_PAGE;
         }
 
         if (publishedSurveyId == null || surveyService.isSurveyAttempted(publishedSurveyId, bannerId))
         {
+            log.info("Survey is already attempted");
+            m.addAttribute("surveyPublished", true);
             m.addAttribute("attempted", true);
             return CatmeUtil.SURVEY_PAGE;
         }
@@ -54,6 +61,7 @@ public class SurveyResponseController
     @PostMapping("/saveResponse")
     public String saveResponse(@ModelAttribute SurveyResponseBinder binder)
     {
+        log.info("Responses Received");
         String bannerId = SecurityContextHolder.getContext().getAuthentication().getName();
         surveyService.saveResponses(binder, bannerId);
 

@@ -5,6 +5,8 @@ import dal.asd.catme.config.SystemConfig;
 import dal.asd.catme.database.DatabaseAccess;
 import dal.asd.catme.exception.EnrollmentException;
 import dal.asd.catme.util.CatmeUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -17,6 +19,8 @@ public class EnrollStudentServiceImpl implements IEnrollStudentService
     IStudentDao studentDao;
     Connection con = null;
 
+    private static final Logger log = LoggerFactory.getLogger(EnrollStudentServiceImpl.class);
+
     public EnrollStudentServiceImpl(IRoleDao roleDao, IStudentDao studentDao)
     {
         this.roleDao = roleDao;
@@ -26,6 +30,7 @@ public class EnrollStudentServiceImpl implements IEnrollStudentService
     @Override
     public boolean enrollStudentsIntoCourse(ArrayList<User> students, Course c)
     {
+        log.info("Enrolling students in course: "+c.getCourseId());
         try
         {
             db = SystemConfig.instance().getDatabaseAccess();
@@ -39,10 +44,13 @@ public class EnrollStudentServiceImpl implements IEnrollStudentService
                     enrollStudent(s, c);
                 } catch (EnrollmentException e)
                 {
+                    log.error("Error enrolling students: "+e.getMessage());
                     e.printStackTrace();
                     return false;
                 }
             }
+
+            log.info("Students enrolled successfully");
             return true;
         } catch (SQLException e)
         {
