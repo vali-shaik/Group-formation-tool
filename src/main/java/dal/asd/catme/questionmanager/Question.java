@@ -88,4 +88,13 @@ public class Question
     {
         this.createdDate = createdDate;
     }
+
+	@Override
+	public String toString() {
+		return "Question [questionId=" + questionId + ", questionText=" + questionText + ", questionType="
+				+ questionType + ", questionTitle=" + questionTitle + ", optionWithOrder=" + optionWithOrder
+				+ ", createdDate=" + createdDate + "]";
+	}
+    
+    
 }

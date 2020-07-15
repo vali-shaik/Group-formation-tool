@@ -45,6 +45,8 @@ import dal.asd.catme.questionmanager.QuestionDaoImpl;
 import dal.asd.catme.questionmanager.QuestionManagerServiceImpl;
 import dal.asd.catme.studentlistimport.CSVReader;
 import dal.asd.catme.studentlistimport.ICSVReader;
+
+
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -77,6 +79,7 @@ public class SystemConfig
     private IQuestionManagerService questionManagerService;
     private IPasswordRulesConfig passwordEnforcementConfig;
     private IPasswordPolicyCheckerService passwordPolicyCheckerService;
+   
 
     public SystemConfig()
     {
@@ -107,6 +110,7 @@ public class SystemConfig
         passwordEnforcementConfig = new PasswordRulesConfigImpl();
         passwordPolicyCheckerService = new PasswordPolicyCheckerImpl();
         csvReaderImpl = new CSVReader();
+        
     }
 
     public static SystemConfig instance()
@@ -387,4 +391,7 @@ public class SystemConfig
     {
         this.passwordPolicyCheckerService = passwordPolicyCheckerService;
     }
+
+	
+    
 }

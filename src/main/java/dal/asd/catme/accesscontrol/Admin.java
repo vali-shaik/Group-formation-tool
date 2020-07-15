@@ -25,5 +25,6 @@ public class Admin extends User
 	public void setCourseIntrutor(Map<Course, List<Instructor>> courseIntrutor) {
 		this.courseIntrutor = courseIntrutor;
 	}
+	
     
 }

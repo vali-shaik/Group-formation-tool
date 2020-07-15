@@ -85,20 +85,14 @@ public class CourseController
     {
         log.info("Selected Course page ID: " + courseId);
         User currentUser = new User();
-
         currentUser.setBannerId(SecurityContextHolder.getContext().getAuthentication().getName());
         log.info("User is: " + currentUser.getBannerId());
         ModelAndView modelAndView = new ModelAndView();
-
         courseService = SystemConfig.instance().getCourseService();
         modelAndView.addObject("course", courseService.displayCourseById(courseId));
         log.info("Checking Database to identify " + currentUser.getBannerId() + " access to Course :" + courseId);
-
         identifyAccess(modelAndView, courseService.findRoleByCourse(currentUser, courseId));
         modelAndView.setViewName(CatmeUtil.COURSE_PAGE);
-
         return modelAndView;
     }
-
-   
 }

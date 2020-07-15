@@ -40,11 +40,15 @@ text-decoration:none;
             Instructor</a></button>
         <br><br>
         <button class="btn btn-lg buttonPrim"><a th:href="@{/questions}">Manage Questions</a></button>
+        <button class="btn btn-lg buttonPrim"><a th:href="@{/createSurvey(courseId=${course.courseId})}">Create Survey</a></button>
     </th:block>
     <th:block th:if="${isTa}">
         <button class="btn btn-lg buttonPrim"><a th:href="@{/manageCourse(courseId=${course.courseId})}">Manage as
             TA</a></button>
+    <button class="btn btn-lg buttonPrim"><a th:href="@{/questions}">Manage Questions</a></button>
+    <button class="btn btn-lg buttonPrim"><a th:href="@{/createSurvey(courseId=${course.courseId})}">Create Survey</a></button>
     </th:block>
+    
 </div>
 <!--</form>-->
 

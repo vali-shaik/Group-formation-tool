@@ -11,6 +11,12 @@ public class Student extends User
 	public Student()
     {
     }
+	public void setEnrolledCourses(List<Course> enrolledCourses) {
+		this.enrolledCourses = enrolledCourses;
+	}
+	public List<Course> getEnrolledCourses() {
+		return enrolledCourses;
+	}
 
     public Student(String bannerId, String lastName, String firstName, String email, String password, List<Role> role, List<Course> enrolledCourses)
     {
@@ -33,12 +39,8 @@ public class Student extends User
         super(bannerId, lastName, firstName, email);
     }
 
-	public List<Course> getEnrolledCourses() {
-		return enrolledCourses;
-	}
+	
 
-	public void setEnrolledCourses(List<Course> enrolledCourses) {
-		this.enrolledCourses = enrolledCourses;
-	}
+	
 
 }

@@ -36,7 +36,10 @@ public class CatmeUtil
     public static final String COURSE_PAGE = "course";
     public static final String QUESTION_CREATION_SUCCESS = "questionCreationSuccess";
     public static final String OPTION_EDITOR = "optionEditor";
-
+    public static final String CREATE_SURVEY_PAGE="createSurvey";
+    public static final String SAVE_SURVEY_PAGE="saveSurvey";
+    public static final String ADD_QUESTION_SURVEY_PAGE="redirect:/createSurvey?courseId=";
+    
     public static final String QUESTION_MANAGER_HOME = "questions";
     public static final String DELETE_QUESTION_CONFIRMATION = "deleteQuestionConfirmation";
 
@@ -82,4 +85,5 @@ public class CatmeUtil
     public static final String QUESTION_TITLE = "Heroku";
     public static final int QUESTION_ID = 109;
     public static final String QUESTION_FAILURE_PAGE = "questionCreationFailure";
+	public static final String PUBLISH_SURVEY_PAGE = "publishSurvey";
 }
