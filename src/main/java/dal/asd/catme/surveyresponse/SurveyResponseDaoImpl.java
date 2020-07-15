@@ -8,6 +8,8 @@ import dal.asd.catme.questionmanager.Option;
 import dal.asd.catme.questionmanager.Question;
 import dal.asd.catme.util.CatmeUtil;
 import dal.asd.catme.util.DBQueriesUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -18,6 +20,8 @@ import java.util.List;
 
 public class SurveyResponseDaoImpl implements ISurveyResponseDao
 {
+    private static final Logger log = LoggerFactory.getLogger(SurveyResponseDaoImpl.class);
+
     private static final int ID = 1;
     private static final int TEXT = 2;
     private static final int TYPE = 3;
@@ -29,6 +33,7 @@ public class SurveyResponseDaoImpl implements ISurveyResponseDao
 
     public String isSurveyPublished(String courseId)
     {
+        log.info("Checking database for publish status of Survey of course: "+courseId);
         DatabaseAccess db = SystemConfig.instance().getDatabaseAccess();
         Connection con = null;
 
@@ -46,6 +51,7 @@ public class SurveyResponseDaoImpl implements ISurveyResponseDao
             }
         } catch (SQLException throwables)
         {
+            log.warn("Error connecting database");
             throwables.printStackTrace();
         } finally
         {
@@ -56,6 +62,7 @@ public class SurveyResponseDaoImpl implements ISurveyResponseDao
                     con.close();
                 } catch (SQLException throwables)
                 {
+                    log.warn("Error closing connection");
                     throwables.printStackTrace();
                 }
             }
@@ -65,6 +72,7 @@ public class SurveyResponseDaoImpl implements ISurveyResponseDao
 
     public List<SurveyResponse> getSurveyQuestions(String surveyId)
     {
+        log.info("Getting survey questions from database of surveyId: "+surveyId);
         DatabaseAccess db = SystemConfig.instance().getDatabaseAccess();
         Connection con = null;
         List<SurveyResponse> questions = null;
@@ -89,6 +97,7 @@ public class SurveyResponseDaoImpl implements ISurveyResponseDao
                     con.close();
                 } catch (SQLException e)
                 {
+                    log.warn("Error closing connection");
                     e.printStackTrace();
                 }
             }
@@ -100,6 +109,7 @@ public class SurveyResponseDaoImpl implements ISurveyResponseDao
 
     public boolean saveResponses(SurveyResponseBinder binder, String bannerId)
     {
+        log.info("Saving survey responses of student: "+bannerId);
         DatabaseAccess db = SystemConfig.instance().getDatabaseAccess();
         Connection con = null;
 
@@ -130,6 +140,7 @@ public class SurveyResponseDaoImpl implements ISurveyResponseDao
 
         } catch (SQLException throwables)
         {
+            log.warn("Error saving responses");
             throwables.printStackTrace();
         } finally
         {
@@ -140,6 +151,7 @@ public class SurveyResponseDaoImpl implements ISurveyResponseDao
                     con.close();
                 } catch (SQLException throwables)
                 {
+                    log.warn("Error closing connection");
                     throwables.printStackTrace();
                 }
             }
@@ -149,6 +161,7 @@ public class SurveyResponseDaoImpl implements ISurveyResponseDao
 
     public boolean saveAttempt(String surveyId, String bannerId)
     {
+        log.info("Marking survey as attempted: \nSurvey: "+surveyId+"/tStudent: "+bannerId);
         DatabaseAccess db = SystemConfig.instance().getDatabaseAccess();
         Connection con = null;
 
@@ -165,6 +178,7 @@ public class SurveyResponseDaoImpl implements ISurveyResponseDao
 
         } catch (SQLException throwables)
         {
+            log.warn("Error connecting database");
             throwables.printStackTrace();
         } finally
         {
@@ -175,6 +189,7 @@ public class SurveyResponseDaoImpl implements ISurveyResponseDao
                     con.close();
                 } catch (SQLException throwables)
                 {
+                    log.warn("Error closing connection");
                     throwables.printStackTrace();
                 }
             }
@@ -184,6 +199,7 @@ public class SurveyResponseDaoImpl implements ISurveyResponseDao
 
     public boolean isSurveyAttempted(String surveyId, String bannerId)
     {
+        log.info("Checking if student "+bannerId+" has already attempted survey "+surveyId);
         DatabaseAccess db = SystemConfig.instance().getDatabaseAccess();
         Connection con = null;
 
@@ -202,6 +218,7 @@ public class SurveyResponseDaoImpl implements ISurveyResponseDao
             }
         } catch (SQLException throwables)
         {
+            log.warn("Error connecting database");
             throwables.printStackTrace();
         } finally
         {
@@ -212,6 +229,7 @@ public class SurveyResponseDaoImpl implements ISurveyResponseDao
                     con.close();
                 } catch (SQLException throwables)
                 {
+                    log.warn("Error closing connection");
                     throwables.printStackTrace();
                 }
             }
@@ -221,6 +239,7 @@ public class SurveyResponseDaoImpl implements ISurveyResponseDao
 
     private List<SurveyResponse> createQuestionsList(ResultSet rs)
     {
+        log.info("Converting database response to List of Survey Questions");
         List<SurveyResponse> questions = new ArrayList<>();
 
         try
@@ -251,6 +270,7 @@ public class SurveyResponseDaoImpl implements ISurveyResponseDao
             }
         } catch (SQLException throwables)
         {
+            log.warn("Error connecting database");
             throwables.printStackTrace();
         }
 

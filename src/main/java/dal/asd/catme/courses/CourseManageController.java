@@ -52,6 +52,7 @@ public class CourseManageController
 
             if (roles.contains(CatmeUtil.INSTRUCTOR_ROLE) || roles.contains(CatmeUtil.TA_ROLE))
             {
+                log.info("Loading CSV File Upload Page");
                 uploadPage.setViewName(CatmeUtil.MANAGE_COURSE_PAGE);
 
                 uploadPage.addObject("courseId", courseId);
@@ -59,6 +60,8 @@ public class CourseManageController
                 uploadPage.addObject("studentList", courseService.getEnrolledStudents(courseId));
             } else
             {
+                log.info("User is not TA or Instructor");
+                log.info("Loading Login Page");
                 uploadPage.setViewName(CatmeUtil.LOGIN_PAGE);
                 return uploadPage;
             }
@@ -77,7 +80,7 @@ public class CourseManageController
         ModelAndView model = new ModelAndView();
         model.setViewName(CatmeUtil.MANAGE_COURSE_PAGE);
 
-
+        log.info("File Received at Server: "+file.getName());
         try
         {
             ICSVReader icsvReader = icsvParserAbstractFactory.makeCSVReader(file.getInputStream());
@@ -109,19 +112,23 @@ public class CourseManageController
 
             if (enrollStudentService.enrollStudentsIntoCourse(students, c))
             {
+                log.info("Students Enrolled");
                 model.addObject("message", "Students Enrolled");
             } else
             {
+                log.error("Error Enrolling Students... Check content of file");
                 model.addObject("message", "Error Enrolling Students");
             }
         } catch (InvalidFileFormatException e)
         {
+            log.error(e.getMessage());
             model.addObject("message", e.getMessage());
         } catch (IOException e)
         {
             e.printStackTrace();
         } catch (MessagingException e)
         {
+            log.error(e.getMessage());
             model.addObject("message", e.getMessage());
         }
         return model;

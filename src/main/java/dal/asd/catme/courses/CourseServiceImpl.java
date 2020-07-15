@@ -22,7 +22,7 @@ public class CourseServiceImpl implements ICourseService
     @Override
     public List<Course> getCourses(String role) throws CatmeException
     {
-        log.info("Calling course dao for getting all course");
+        log.info("Calling course dao for getting all course by role");
 
         return courseDao.getCourses(role);
     }
@@ -30,6 +30,7 @@ public class CourseServiceImpl implements ICourseService
     @Override
     public List<Course> getAllCourses()
     {
+        log.info("Calling course dao for getting list of all courses");
         return courseDao.getAllCourses();
     }
 
@@ -50,6 +51,7 @@ public class CourseServiceImpl implements ICourseService
     @Override
     public List<User> getEnrolledStudents(String courseId)
     {
+        log.info("Calling course dao for getting list of students enrolled in: "+courseId);
         return courseDao.getRegisteredStudents(courseId);
     }
 
