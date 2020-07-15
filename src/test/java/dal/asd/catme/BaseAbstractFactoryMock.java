@@ -1,5 +1,9 @@
 package dal.asd.catme;
 
+import dal.asd.catme.survey.ISurveyAbstractFactory;
+import dal.asd.catme.survey.ISurveyModelAbstractFactory;
+import dal.asd.catme.survey.SurveyModelAbstractFactoryImpl;
+import dal.asd.catme.surveytest.SurveyAbstractFactoryMock;
 import dal.asd.catme.accesscontrol.AccessControlModelAbstractFactoryImpl;
 import dal.asd.catme.accesscontrol.IAccessControlAbstractFactory;
 import dal.asd.catme.accesscontrol.IAccessControlModelAbstractFactory;
@@ -34,6 +38,8 @@ public class BaseAbstractFactoryMock implements IBaseAbstractFactory
     private ICSVParserAbstractFactory icsvParserAbstractFactory = null;
     private ISurveyResponseAbstractFactory surveyResponseAbstractFactory = null;
     private ISurveyResponseModelAbstractFactory surveyResponseModelAbstractFactory = null;
+private ISurveyAbstractFactory surveyAbstractFactory;
+	private ISurveyModelAbstractFactory surveyModelAbstractFactory;
 
     public static IBaseAbstractFactory instance()
     {
@@ -143,4 +149,24 @@ public class BaseAbstractFactoryMock implements IBaseAbstractFactory
         }
         return surveyResponseModelAbstractFactory;
     }
+@Override
+	public ISurveyAbstractFactory makeSurveyAbstractFactory() 
+	{ 
+		if(surveyAbstractFactory == null)
+		{
+			surveyAbstractFactory = new SurveyAbstractFactoryMock();
+		}
+	return surveyAbstractFactory;
+	}
+
+
+	@Override
+	public ISurveyModelAbstractFactory makeSurveyModelAbstractFactory() {
+		if(surveyModelAbstractFactory == null)
+		{
+			surveyModelAbstractFactory = new SurveyModelAbstractFactoryImpl();
+		}
+	return surveyModelAbstractFactory;
+	}
+
 }

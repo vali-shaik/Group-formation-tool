@@ -49,12 +49,25 @@ public class DBQueriesUtil
     public static final String GET_QUESTIONS = "CALL GetQuestionsList(?)";
     public static final String CHECK_EXISTING_QUESTION_QUERY = "SELECT EXISTS(SELECT * FROM Question WHERE QuestionId = ? );";
     public static final String DELETE_QUESTION_QUERY = "DELETE FROM Question WHERE QuestionId = ? ;";
-
+    public static final String FETCH_SURVEY_QUESTIONS="CALL getSurveyQuestionsByCourse(?)";
+    public static final String GET_SURVEY_QUESTION_RULE="CALL getSurveyQuestionRule(?)";
+    public static final String GET_SURVEY_BY_COURSE="CALL getSurveyByCourse(?)";
+    public static final String ADD_QUESTION_TO_SURVEY="CALL createSurveyQuestion(?,?,?,?)";
+    public static final String ADD_RULE_SURVEY_QUESTION="CALL createSurveyQuestionRule(?,?)";
+    public static final String DELETE_ALL_SURVEY_QUESTIONS="CALL deleteAllSurveyQuestions(?)";
+    public static final String IS_PUBLISHED="CALL GetPublishedSurvey(?)";
+    public static final String PUBLISH_SURVEY="CALL publishSurvey(?)";
+    public static final String UPDATE_SURVEY_GROUPSIZE="CALL updateSurvey(?,?)";
+    public static final String GET_PRIORITY="CALL getPriority(?,?)";
+    public static final int DEFAULT_SURVEY_QUESTION_RULE=1;
+    public static final int DEFAULT_PRIORITY=1;
+    public static final String DELETE_SURVEY_QUESTION="CALL deleteSurveyQuestion(?,?)";
     public static final String GET_PUBLISHED_SURVEY = "call GetPublishedSurvey(?);";
     public static final String GET_SURVEY_QUESTIONS = "call GetSurveyQuestions(?);";
     public static final String SAVE_ANSWER = "call SaveAnswer(?,?,?);";
     public static final String SAVE_ANSWER_WITH_VALUE = "call SaveAnswerWithValue(?,?,?,?);";
     public static final String SAVE_ATTEMPT = "call SaveSurveyAttempt(?,?)";
     public static final String GET_ATTEMPT = "call GetSurveyAttempt(?,?)";
+
 }
 

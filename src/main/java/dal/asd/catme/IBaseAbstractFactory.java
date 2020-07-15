@@ -1,5 +1,7 @@
 package dal.asd.catme;
 
+import dal.asd.catme.survey.ISurveyAbstractFactory;
+import dal.asd.catme.survey.ISurveyModelAbstractFactory;
 import dal.asd.catme.accesscontrol.IAccessControlAbstractFactory;
 import dal.asd.catme.accesscontrol.IAccessControlModelAbstractFactory;
 import dal.asd.catme.courses.ICourseAbstractFactory;
@@ -13,6 +15,8 @@ import dal.asd.catme.surveyresponse.ISurveyResponseModelAbstractFactory;
 
 public interface IBaseAbstractFactory
 {
+public ISurveyAbstractFactory makeSurveyAbstractFactory();
+	public ISurveyModelAbstractFactory makeSurveyModelAbstractFactory();
     IAccessControlAbstractFactory makeAccessControlAbstractFactory();
 
     IAccessControlModelAbstractFactory makeAccessControlModelAbstractFactory();

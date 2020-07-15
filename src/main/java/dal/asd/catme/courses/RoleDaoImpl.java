@@ -1,3 +1,4 @@
+
 package dal.asd.catme.courses;
 
 import dal.asd.catme.BaseAbstractFactoryImpl;
@@ -184,4 +185,3 @@ public class RoleDaoImpl implements IRoleDao
         return isAssigned;
     }
 }
-
