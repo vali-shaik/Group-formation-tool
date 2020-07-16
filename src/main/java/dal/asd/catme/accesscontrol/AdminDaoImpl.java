@@ -1,9 +1,11 @@
 
 package dal.asd.catme.accesscontrol;
 
-import dal.asd.catme.config.SystemConfig;
+import dal.asd.catme.BaseAbstractFactoryImpl;
+import dal.asd.catme.IBaseAbstractFactory;
 import dal.asd.catme.courses.Course;
-import dal.asd.catme.database.DatabaseAccess;
+import dal.asd.catme.database.IDatabaseAbstractFactory;
+import dal.asd.catme.database.IDatabaseAccess;
 import dal.asd.catme.util.CatmeUtil;
 import org.springframework.stereotype.Component;
 
@@ -18,10 +20,13 @@ import static dal.asd.catme.util.DBQueriesUtil.*;
 public class AdminDaoImpl implements IAdminDao
 {
 
-    DatabaseAccess db;
+    IDatabaseAccess db;
     PreparedStatement preparedStatement;
     ResultSet rs;
     Connection connection;
+
+    IBaseAbstractFactory baseAbstractFactory = BaseAbstractFactoryImpl.instance();
+    IDatabaseAbstractFactory databaseAbstractFactory = baseAbstractFactory.makeDatabaseAbstractFactory();
 
     @Override
     public int addCourse(Course course)
@@ -29,7 +34,7 @@ public class AdminDaoImpl implements IAdminDao
         int result = 0;
         try
         {
-            db = SystemConfig.instance().getDatabaseAccess();
+            db = databaseAbstractFactory.makeDatabaseAccess();
             connection = db.getConnection();
             result = addCourse(connection, ADD_COURSE_QUERY, course);
         } catch (Exception e)
@@ -59,7 +64,7 @@ public class AdminDaoImpl implements IAdminDao
         {
             if (courseId.length() > CatmeUtil.ZERO)
             {
-                db = SystemConfig.instance().getDatabaseAccess();
+                db = databaseAbstractFactory.makeDatabaseAccess();
                 connection = db.getConnection();
                 updateQuery(connection, DELETE_ENROLLMENT_QUERY, courseId);
                 updateQuery(connection, DELETE_COURSE_INSTRUCTOR_QUERY, courseId);
@@ -93,7 +98,7 @@ public class AdminDaoImpl implements IAdminDao
         {
             if (user.length() > CatmeUtil.ZERO && course.length() > CatmeUtil.ZERO)
             {
-                db = SystemConfig.instance().getDatabaseAccess();
+                db = databaseAbstractFactory.makeDatabaseAccess();
                 connection = db.getConnection();
                 int roleId = selectInstructorRole(connection);
                 System.out.println("roleId " + roleId);

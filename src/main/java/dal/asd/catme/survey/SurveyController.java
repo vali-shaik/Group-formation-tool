@@ -19,7 +19,7 @@ import dal.asd.catme.accesscontrol.IAccessControlModelAbstractFactory;
 import dal.asd.catme.accesscontrol.User;
 import dal.asd.catme.courses.Course;
 import dal.asd.catme.courses.ICourseModelAbstractFactory;
-import dal.asd.catme.exception.QuestionDatabaseException;
+import dal.asd.catme.questionmanager.QuestionDatabaseException;
 import dal.asd.catme.questionmanager.IListQuestionsService;
 import dal.asd.catme.questionmanager.IQuestionManagerAbstractFactory;
 import dal.asd.catme.questionmanager.IQuestionManagerModelAbstractFactory;

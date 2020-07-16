@@ -1,7 +1,5 @@
 package dal.asd.catme.questionmanager;
 
-import dal.asd.catme.exception.QuestionDatabaseException;
-
 import java.util.Collections;
 import java.util.List;
 

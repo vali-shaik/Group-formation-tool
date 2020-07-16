@@ -1,4 +1,4 @@
-package dal.asd.catme.exception;
+package dal.asd.catme.accesscontrol;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

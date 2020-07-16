@@ -7,6 +7,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import dal.asd.catme.IBaseAbstractFactory;
+import dal.asd.catme.database.IDatabaseAbstractFactory;
+import dal.asd.catme.database.IDatabaseAccess;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,16 +24,18 @@ import dal.asd.catme.util.DBQueriesUtil;
 public class SurveyDaoImpl implements ISurveyDao
 {
 	private static final Logger log = LoggerFactory.getLogger(SurveyDaoImpl.class);
-	ISurveyModelAbstractFactory surveyModelAbstractFactory=BaseAbstractFactoryImpl.instance().makeSurveyModelAbstractFactory();
-	IQuestionManagerModelAbstractFactory questionManagerModelAbstractFactory=BaseAbstractFactoryImpl.instance().makeQuestionManagerModelAbstractFactory();
+	IBaseAbstractFactory baseAbstractFactory = BaseAbstractFactoryImpl.instance();
+	IDatabaseAbstractFactory databaseAbstractFactory = baseAbstractFactory.makeDatabaseAbstractFactory();
+	ISurveyModelAbstractFactory surveyModelAbstractFactory=baseAbstractFactory.makeSurveyModelAbstractFactory();
+	IQuestionManagerModelAbstractFactory questionManagerModelAbstractFactory=baseAbstractFactory.makeQuestionManagerModelAbstractFactory();
 	
-	DatabaseAccess database;
+	IDatabaseAccess database;
 	
 	@Override
 	public List<Question> fetchCourseSurveyQuestions(String courseId) throws SurveyException 
 	{
 		List<Question> questionList = new ArrayList<>();
-		database = SystemConfig.instance().getDatabaseAccess();
+		database = databaseAbstractFactory.makeDatabaseAccess();
 		Connection connection = null;
 		if(courseId==null || courseId.length()==0)
 		{
@@ -111,7 +116,7 @@ public class SurveyDaoImpl implements ISurveyDao
 	public Rule getSurveyQuestionRule(int questionId) throws SurveyException 
 	{
 		Rule rule=null;
-		database = SystemConfig.instance().getDatabaseAccess();
+		database = databaseAbstractFactory.makeDatabaseAccess();
 		Connection connection = null;
 		PreparedStatement statement = null;
 		ResultSet rs=null;
@@ -179,7 +184,7 @@ public class SurveyDaoImpl implements ISurveyDao
 	@Override
 	public Survey getSurvey(String courseId) throws SurveyException {
 		Survey survey=new Survey();
-		database = SystemConfig.instance().getDatabaseAccess();
+		database = databaseAbstractFactory.makeDatabaseAccess();
 		Connection connection = null;
 		PreparedStatement statement = null;
 		PreparedStatement statement2 = null;
@@ -287,7 +292,7 @@ public class SurveyDaoImpl implements ISurveyDao
 	public int addToSurvey(Survey survey, Question question) throws SurveyException
 	{
 
-		database = SystemConfig.instance().getDatabaseAccess();
+		database = databaseAbstractFactory.makeDatabaseAccess();
 		Connection connection = null;
 		int rowsAdded=0;
 		PreparedStatement statement = null;
@@ -349,7 +354,7 @@ public class SurveyDaoImpl implements ISurveyDao
 	public int deleteSurveyQuestion(Survey survey, Question question) throws SurveyException 
 	{
 
-		database = SystemConfig.instance().getDatabaseAccess();
+		database = databaseAbstractFactory.makeDatabaseAccess();
 		Connection connection = null;
 		int rowsDeleted=0;
 		PreparedStatement statement = null;
@@ -409,7 +414,7 @@ public class SurveyDaoImpl implements ISurveyDao
 	@Override
 	public int saveSurvey(Survey survey) throws SurveyException 
 	{
-		database = SystemConfig.instance().getDatabaseAccess();
+		database = databaseAbstractFactory.makeDatabaseAccess();
 		Connection connection = null;
 		int rowsAdded=0;
 		PreparedStatement statement = null;
@@ -519,7 +524,7 @@ public class SurveyDaoImpl implements ISurveyDao
 	@Override
 	public boolean isSurveyPublished(Course course) throws SurveyException 
 	{
-		database = SystemConfig.instance().getDatabaseAccess();
+		database = databaseAbstractFactory.makeDatabaseAccess();
 		Connection connection = null;
 		PreparedStatement statement = null;
 		ResultSet rs=null;
@@ -592,7 +597,7 @@ public class SurveyDaoImpl implements ISurveyDao
 	@Override
 	public int publishSurvey(Survey survey) throws SurveyException 
 	{
-		database = SystemConfig.instance().getDatabaseAccess();
+		database = databaseAbstractFactory.makeDatabaseAccess();
 		Connection connection = null;
 		int rowsAdded=0;
 		PreparedStatement statement = null;
@@ -651,7 +656,7 @@ public class SurveyDaoImpl implements ISurveyDao
 	public int getSurveyQuestionPriority(Survey survey, Question question) throws SurveyException 
 	{
 		
-		database = SystemConfig.instance().getDatabaseAccess();
+		database = databaseAbstractFactory.makeDatabaseAccess();
 		Connection connection = null;
 		PreparedStatement statement = null;
 		ResultSet rs=null;

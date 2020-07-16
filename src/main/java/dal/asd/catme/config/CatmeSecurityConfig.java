@@ -1,7 +1,7 @@
 package dal.asd.catme.config;
 
 import dal.asd.catme.database.DatabaseAccess;
-import dal.asd.catme.exception.CatmeException;
+import dal.asd.catme.accesscontrol.CatmeException;
 import dal.asd.catme.util.CatmeUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,7 +57,6 @@ public class CatmeSecurityConfig extends WebSecurityConfigurerAdapter
                     .formLogin()
                     .loginPage("/login")//this URL should match with action URL in login.html
                     .loginProcessingUrl("/catme")//URL to submit User name and password
-                    // .successForwardUrl("/home")//landing page after successful login
                     .successForwardUrl("/access")//redirecting to controller to decide the landing page
                     .and()
                     .logout()
@@ -80,7 +79,7 @@ public class CatmeSecurityConfig extends WebSecurityConfigurerAdapter
 
     protected void configure(AuthenticationManagerBuilder auth) throws CatmeException
     {
-        dataSource = SystemConfig.instance().getDatabaseAccess();
+        dataSource = new DatabaseAccess();
         try
         {
             auth.jdbcAuthentication().dataSource(dataSource)

@@ -2,11 +2,14 @@
 package dal.asd.catme.courses;
 
 import dal.asd.catme.BaseAbstractFactoryImpl;
+import dal.asd.catme.IBaseAbstractFactory;
 import dal.asd.catme.accesscontrol.IAccessControlModelAbstractFactory;
 import dal.asd.catme.accesscontrol.User;
 import dal.asd.catme.config.SystemConfig;
 import dal.asd.catme.database.DatabaseAccess;
-import dal.asd.catme.exception.CatmeException;
+import dal.asd.catme.accesscontrol.CatmeException;
+import dal.asd.catme.database.IDatabaseAbstractFactory;
+import dal.asd.catme.database.IDatabaseAccess;
 import dal.asd.catme.util.CatmeUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,18 +23,15 @@ import static dal.asd.catme.util.DBQueriesUtil.*;
 
 public class CourseDaoImpl implements ICourseDao
 {
-    public CourseDaoImpl(DatabaseAccess database)
-    {
-        this.database = database;
-    }
-
+    IBaseAbstractFactory baseAbstractFactory = BaseAbstractFactoryImpl.instance();
+    IDatabaseAbstractFactory databaseAbstractFactory = baseAbstractFactory.makeDatabaseAbstractFactory();
     public CourseDaoImpl()
     {
     }
 
     private static final Logger log = LoggerFactory.getLogger(CourseDaoImpl.class);
 
-    DatabaseAccess database;
+    IDatabaseAccess database;
     ICourseModelAbstractFactory modelAbstractFactory = BaseAbstractFactoryImpl.instance().makeCourseModelAbstractFactory();
     IAccessControlModelAbstractFactory accessControlModelAbstractFactory = BaseAbstractFactoryImpl.instance().makeAccessControlModelAbstractFactory();
 
@@ -42,13 +42,12 @@ public class CourseDaoImpl implements ICourseDao
 
         List<Course> listOfCourses = new ArrayList<>();
         ResultSet resultSet = null;
-        //Statement statement = null;
         PreparedStatement statement=null;
         Connection connection = null;
 
         try
         {
-            database = SystemConfig.instance().getDatabaseAccess();
+            database = databaseAbstractFactory.makeDatabaseAccess();
             connection = database.getConnection();
 
             if (connection != null)
@@ -124,15 +123,14 @@ public class CourseDaoImpl implements ICourseDao
     @Override
     public List<Course> getAllCourses()
     {
-        DatabaseAccess db;
         Connection connection = null;
         PreparedStatement statement=null;
         List<Course> courses = new ArrayList<>();
 
         try
         {
-            db = SystemConfig.instance().getDatabaseAccess();
-            connection = db.getConnection();
+            database = databaseAbstractFactory.makeDatabaseAccess();
+            connection = database.getConnection();
             System.out.println("&&&&&&&%$^%$#$%^");
             statement=connection.prepareStatement(SELECT_COURSE);
             ResultSet resultSet = statement.executeQuery();
@@ -172,7 +170,7 @@ public class CourseDaoImpl implements ICourseDao
         Course course = modelAbstractFactory.makeCourse();
         try
         {
-            database = SystemConfig.instance().getDatabaseAccess();
+            database = databaseAbstractFactory.makeDatabaseAccess();
             connection = database.getConnection();
 
 
@@ -221,7 +219,7 @@ public class CourseDaoImpl implements ICourseDao
 
         try
         {
-            database = SystemConfig.instance().getDatabaseAccess();
+            database = databaseAbstractFactory.makeDatabaseAccess();
             connection = database.getConnection();
             if (connection != null)
             {
@@ -263,7 +261,7 @@ public class CourseDaoImpl implements ICourseDao
         Connection con = null;
         try
         {
-            database = SystemConfig.instance().getDatabaseAccess();
+            database = databaseAbstractFactory.makeDatabaseAccess();
             con = database.getConnection();
 
             PreparedStatement stmt = con.prepareStatement(SEELCT_ENROLLED_STUDENTS_QUERY);

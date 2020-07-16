@@ -1,12 +1,15 @@
 package dal.asd.catme.password;
 
 import dal.asd.catme.BaseAbstractFactoryImpl;
+import dal.asd.catme.IBaseAbstractFactory;
 import dal.asd.catme.accesscontrol.IAccessControlModelAbstractFactory;
 import dal.asd.catme.accesscontrol.IUserDao;
 import dal.asd.catme.accesscontrol.User;
 import dal.asd.catme.config.SystemConfig;
 import dal.asd.catme.database.DatabaseAccess;
-import dal.asd.catme.exception.CatmeException;
+import dal.asd.catme.accesscontrol.CatmeException;
+import dal.asd.catme.database.IDatabaseAbstractFactory;
+import dal.asd.catme.database.IDatabaseAccess;
 import dal.asd.catme.util.RandomTokenGenerator;
 
 import java.sql.Connection;
@@ -19,10 +22,12 @@ public class PasswordResetServiceImpl implements IPasswordResetService
 {
     IUserDao userDao;
     IPasswordDao passwordDao;
-    DatabaseAccess db;
+    IDatabaseAccess db;
     Connection con;
 
-    IAccessControlModelAbstractFactory accessControlModelAbstractFactory = BaseAbstractFactoryImpl.instance().makeAccessControlModelAbstractFactory();
+    IBaseAbstractFactory baseAbstractFactory = BaseAbstractFactoryImpl.instance();
+    IDatabaseAbstractFactory databaseAbstractFactory = baseAbstractFactory.makeDatabaseAbstractFactory();
+    IAccessControlModelAbstractFactory accessControlModelAbstractFactory = baseAbstractFactory.makeAccessControlModelAbstractFactory();
 
     public PasswordResetServiceImpl(IUserDao userDao, IPasswordDao passwordDao)
     {
@@ -35,7 +40,7 @@ public class PasswordResetServiceImpl implements IPasswordResetService
     {
         try
         {
-            db = SystemConfig.instance().getDatabaseAccess();
+            db = databaseAbstractFactory.makeDatabaseAccess();
             con = db.getConnection();
 
             if (userDao.checkExistingUser(bannerid, con) == 0)
@@ -100,7 +105,7 @@ public class PasswordResetServiceImpl implements IPasswordResetService
 
         try
         {
-            db = SystemConfig.instance().getDatabaseAccess();
+            db = databaseAbstractFactory.makeDatabaseAccess();
             con = db.getConnection();
 
             passwordDao.resetPassword(u, con);

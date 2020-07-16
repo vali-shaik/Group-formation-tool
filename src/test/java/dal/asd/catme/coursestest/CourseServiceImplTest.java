@@ -8,7 +8,7 @@ import dal.asd.catme.accesscontrol.User;
 import dal.asd.catme.courses.Course;
 import dal.asd.catme.courses.ICourseAbstractFactory;
 import dal.asd.catme.courses.ICourseService;
-import dal.asd.catme.exception.CatmeException;
+import dal.asd.catme.accesscontrol.CatmeException;
 import dal.asd.catme.util.CatmeUtil;
 import org.junit.jupiter.api.Test;
 

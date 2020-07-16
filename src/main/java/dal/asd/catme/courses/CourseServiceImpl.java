@@ -2,7 +2,7 @@ package dal.asd.catme.courses;
 
 import dal.asd.catme.accesscontrol.CatmeController;
 import dal.asd.catme.accesscontrol.User;
-import dal.asd.catme.exception.CatmeException;
+import dal.asd.catme.accesscontrol.CatmeException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

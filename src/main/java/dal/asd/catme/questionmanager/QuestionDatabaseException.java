@@ -1,4 +1,4 @@
-package dal.asd.catme.exception;
+package dal.asd.catme.questionmanager;
 
 public class QuestionDatabaseException extends Exception
 {

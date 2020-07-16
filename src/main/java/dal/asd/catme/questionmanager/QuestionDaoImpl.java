@@ -1,9 +1,11 @@
 package dal.asd.catme.questionmanager;
 
 import dal.asd.catme.BaseAbstractFactoryImpl;
+import dal.asd.catme.IBaseAbstractFactory;
 import dal.asd.catme.config.SystemConfig;
 import dal.asd.catme.database.DatabaseAccess;
-import dal.asd.catme.exception.QuestionDatabaseException;
+import dal.asd.catme.database.IDatabaseAbstractFactory;
+import dal.asd.catme.database.IDatabaseAccess;
 import dal.asd.catme.util.CatmeUtil;
 import dal.asd.catme.util.DBQueriesUtil;
 
@@ -16,8 +18,10 @@ import java.util.List;
 
 public class QuestionDaoImpl implements IQuestionDao
 {
-    DatabaseAccess db;
-    IQuestionManagerModelAbstractFactory modelAbstractFactory = BaseAbstractFactoryImpl.instance().makeQuestionManagerModelAbstractFactory();
+    IDatabaseAccess db;
+    IBaseAbstractFactory baseAbstractFactory = BaseAbstractFactoryImpl.instance();
+    IDatabaseAbstractFactory databaseAbstractFactory = baseAbstractFactory.makeDatabaseAbstractFactory();
+    IQuestionManagerModelAbstractFactory modelAbstractFactory = baseAbstractFactory.makeQuestionManagerModelAbstractFactory();
 
     public QuestionDaoImpl()
     {
@@ -34,7 +38,7 @@ public class QuestionDaoImpl implements IQuestionDao
 
 
         List<Question> questionList = new ArrayList<>();
-        db = SystemConfig.instance().getDatabaseAccess();
+        db = databaseAbstractFactory.makeDatabaseAccess();
         Connection con = null;
         try
         {
@@ -76,7 +80,7 @@ public class QuestionDaoImpl implements IQuestionDao
     public int deleteQuestion(int questionId)
     {
         int questionDeleted = 0;
-        db = SystemConfig.instance().getDatabaseAccess();
+        db = databaseAbstractFactory.makeDatabaseAccess();
         Connection con = null;
         try
         {
@@ -131,7 +135,7 @@ public class QuestionDaoImpl implements IQuestionDao
     public int createQuestion(Question question, String user)
     {
         int result = 0;
-        db = SystemConfig.instance().getDatabaseAccess();
+        db = databaseAbstractFactory.makeDatabaseAccess();
         Connection con = null;
         try
         {
@@ -183,7 +187,7 @@ public class QuestionDaoImpl implements IQuestionDao
     {
         int result = 0;
 
-        db = SystemConfig.instance().getDatabaseAccess();
+        db = databaseAbstractFactory.makeDatabaseAccess();
         Connection con = null;
         try
         {
@@ -273,7 +277,7 @@ public class QuestionDaoImpl implements IQuestionDao
     public int createOptions(int questionId, List<Option> options)
     {
         int result = 0;
-        db = SystemConfig.instance().getDatabaseAccess();
+        db = databaseAbstractFactory.makeDatabaseAccess();
         Connection con = null;
         for (int i = 0; i < options.size(); i++)
         {

@@ -1,4 +1,6 @@
 package dal.asd.catme;
+import dal.asd.catme.database.DatabaseAbstractFactoryImpl;
+import dal.asd.catme.database.IDatabaseAbstractFactory;
 import dal.asd.catme.survey.ISurveyAbstractFactory;
 import dal.asd.catme.survey.ISurveyModelAbstractFactory;
 import dal.asd.catme.survey.SurveyAbstractFactoryImpl;
@@ -34,6 +36,7 @@ private ISurveyAbstractFactory surveyAbstractFactory;
     private IAccessControlModelAbstractFactory accessControlModelAbstractFactory = null;
     private ICourseAbstractFactory courseAbstractFactory = null;
     private ICourseModelAbstractFactory courseModelAbstractFactory = null;
+    private IDatabaseAbstractFactory databaseAbstractFactory = null;
     private IPasswordAbstractFactory passwordAbstractFactory = null;
     private IQuestionManagerAbstractFactory questionManagerAbstractFactory = null;
     private IQuestionManagerModelAbstractFactory questionManagerModelAbstractFactory = null;
@@ -84,6 +87,16 @@ private ISurveyAbstractFactory surveyAbstractFactory;
             courseModelAbstractFactory = new CourseModelAbstractFactoryImpl();
         }
         return courseModelAbstractFactory;
+    }
+
+    @Override
+    public IDatabaseAbstractFactory makeDatabaseAbstractFactory()
+    {
+        if(databaseAbstractFactory == null)
+        {
+            databaseAbstractFactory = new DatabaseAbstractFactoryImpl();
+        }
+        return databaseAbstractFactory;
     }
 
     public IPasswordAbstractFactory makePasswordAbstractFactory()

@@ -8,7 +8,7 @@ import java.sql.*;
 import java.util.logging.Logger;
 
 @Configuration
-public class DatabaseAccess implements DataSource
+public class DatabaseAccess implements DataSource,IDatabaseAccess
 {
 
     private Connection connection;
@@ -16,21 +16,14 @@ public class DatabaseAccess implements DataSource
     private ResultSet resultSet;
     private int result;
 
-
     private static final String url = System.getenv("DB_URL");
     private static final String username = System.getenv("DB_USERNAME");
     private static final String password = System.getenv("DB_PASSWORD");
 
-
     public Connection getConnection() throws SQLException
     {
-        try
-        {
-            connection = DriverManager.getConnection(url, username, password);
-        } catch (SQLException e)
-        {
-            e.printStackTrace();
-        }
+        connection = DriverManager.getConnection(url, username, password);
+
         return connection;
 
     }
@@ -38,7 +31,6 @@ public class DatabaseAccess implements DataSource
     @Override
     public PrintWriter getLogWriter() throws SQLException
     {
-        // TODO Auto-generated method stub
         return null;
     }
 
@@ -46,7 +38,6 @@ public class DatabaseAccess implements DataSource
     @Override
     public void setLogWriter(PrintWriter out) throws SQLException
     {
-        // TODO Auto-generated method stub
 
     }
 
@@ -54,7 +45,6 @@ public class DatabaseAccess implements DataSource
     @Override
     public void setLoginTimeout(int seconds) throws SQLException
     {
-        // TODO Auto-generated method stub
 
     }
 
@@ -62,7 +52,6 @@ public class DatabaseAccess implements DataSource
     @Override
     public int getLoginTimeout() throws SQLException
     {
-        // TODO Auto-generated method stub
         return 0;
     }
 
@@ -70,7 +59,6 @@ public class DatabaseAccess implements DataSource
     @Override
     public Logger getParentLogger() throws SQLFeatureNotSupportedException
     {
-        // TODO Auto-generated method stub
         return null;
     }
 
@@ -78,7 +66,6 @@ public class DatabaseAccess implements DataSource
     @Override
     public <T> T unwrap(Class<T> iface) throws SQLException
     {
-        // TODO Auto-generated method stub
         return null;
     }
 
@@ -86,7 +73,6 @@ public class DatabaseAccess implements DataSource
     @Override
     public boolean isWrapperFor(Class<?> iface) throws SQLException
     {
-        // TODO Auto-generated method stub
         return false;
     }
 
@@ -108,7 +94,6 @@ public class DatabaseAccess implements DataSource
             resultSet = statement.executeQuery(query);
         } catch (SQLException e)
         {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
@@ -123,7 +108,6 @@ public class DatabaseAccess implements DataSource
             result = statement.executeUpdate(query);
         } catch (SQLException e)
         {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         return result;

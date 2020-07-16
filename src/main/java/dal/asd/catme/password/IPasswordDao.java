@@ -1,7 +1,7 @@
 package dal.asd.catme.password;
 
 import dal.asd.catme.accesscontrol.User;
-import dal.asd.catme.exception.CatmeException;
+import dal.asd.catme.accesscontrol.CatmeException;
 
 import java.sql.Connection;
 

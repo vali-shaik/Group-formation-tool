@@ -9,7 +9,7 @@ import dal.asd.catme.accesscontrol.User;
 import dal.asd.catme.courses.Course;
 import dal.asd.catme.courses.ICourseAbstractFactory;
 import dal.asd.catme.courses.IEnrollStudentService;
-import dal.asd.catme.exception.EnrollmentException;
+import dal.asd.catme.courses.EnrollmentException;
 import dal.asd.catme.util.CatmeUtil;
 import org.junit.jupiter.api.Test;
 
