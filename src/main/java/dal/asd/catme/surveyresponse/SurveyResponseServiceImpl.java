@@ -15,17 +15,17 @@ public class SurveyResponseServiceImpl implements ISurveyResponseService
         this.surveyDao = surveyDao;
     }
 
-    public String isSurveyPublished(String courseId)
+    public String getPublishedSurveyId(String courseId) throws SurveyResponseException
     {
         log.info("calling service method to check if survey is published");
         if (stringNullOrEmpty(courseId))
         {
             return null;
         }
-        return surveyDao.isSurveyPublished(courseId);
+        return surveyDao.getPublishedSurveyId(courseId);
     }
 
-    public List<SurveyResponse> getSurveyQuestions(String surveyId)
+    public List<SurveyResponse> getSurveyQuestions(String surveyId) throws SurveyResponseException
     {
         log.info("calling service method to check get list of survey questions");
         if (stringNullOrEmpty(surveyId))
@@ -36,20 +36,18 @@ public class SurveyResponseServiceImpl implements ISurveyResponseService
         return surveyDao.getSurveyQuestions(surveyId);
     }
 
-    @Override
-    public boolean saveResponses(SurveyResponseBinder binder, String bannerId)
+    public boolean saveResponses(SurveyResponseBinder binder, String bannerId) throws SurveyResponseException
     {
-        log.info("calling service method to save responses of student: "+bannerId);
+        log.info("calling service method to save responses of student: " + bannerId);
         if (stringNullOrEmpty(bannerId))
             return false;
         return surveyDao.saveResponses(binder, bannerId) &&
                 surveyDao.saveAttempt(binder.getSurveyId(), bannerId);
     }
 
-    @Override
-    public boolean isSurveyAttempted(String suveyId, String bannerId)
+    public boolean isSurveyAttempted(String suveyId, String bannerId) throws SurveyResponseException
     {
-        log.info("calling service method to check if survey is already attempted by student: "+bannerId);
+        log.info("calling service method to check if survey is already attempted by student: " + bannerId);
         return surveyDao.isSurveyAttempted(suveyId, bannerId);
     }
 

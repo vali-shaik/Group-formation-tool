@@ -1,8 +1,8 @@
 package dal.asd.catme.accesscontroltest;
 
 import dal.asd.catme.POJOMock;
-import dal.asd.catme.accesscontrol.User;
 import dal.asd.catme.accesscontrol.IUserDao;
+import dal.asd.catme.accesscontrol.User;
 
 import java.sql.Connection;
 import java.util.List;
@@ -22,7 +22,6 @@ public class UserDaoMock implements IUserDao
     @Override
     public int checkExistingUser(String bannerId, Connection con)
     {
-        // TODO Auto-generated method stub
         for (User u : users)
         {
             if (u.getBannerId().equalsIgnoreCase(bannerId))
@@ -41,7 +40,6 @@ public class UserDaoMock implements IUserDao
     @Override
     public int addUser(User user, Connection con)
     {
-        // TODO Auto-generated method stub
         users.add(user);
         return 1;
 

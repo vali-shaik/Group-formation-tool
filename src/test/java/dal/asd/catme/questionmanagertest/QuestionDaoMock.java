@@ -2,7 +2,6 @@ package dal.asd.catme.questionmanagertest;
 
 import dal.asd.catme.BaseAbstractFactoryMock;
 import dal.asd.catme.IBaseAbstractFactory;
-import dal.asd.catme.exception.QuestionDatabaseException;
 import dal.asd.catme.questionmanager.*;
 import dal.asd.catme.util.CatmeUtil;
 
@@ -38,7 +37,6 @@ public class QuestionDaoMock implements IQuestionDao
     @Override
     public int deleteQuestion(int questionId)
     {
-        // TODO Auto-generated method stub
         Connection con = null;
         if (0 != checkExistingQuestion(questionId, con))
         {
@@ -59,7 +57,6 @@ public class QuestionDaoMock implements IQuestionDao
     @Override
     public int checkExistingQuestion(int questionId, Connection con)
     {
-        // TODO Auto-generated method stub
         for (QuestionTitle qT : questions)
         {
             for (Question q : qT.getQuestions())

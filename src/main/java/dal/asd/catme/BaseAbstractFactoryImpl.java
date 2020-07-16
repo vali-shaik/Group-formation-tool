@@ -1,8 +1,4 @@
 package dal.asd.catme;
-import dal.asd.catme.survey.ISurveyAbstractFactory;
-import dal.asd.catme.survey.ISurveyModelAbstractFactory;
-import dal.asd.catme.survey.SurveyAbstractFactoryImpl;
-import dal.asd.catme.survey.SurveyModelAbstractFactoryImpl;
 
 import dal.asd.catme.accesscontrol.AccessControlAbstractFactoryImpl;
 import dal.asd.catme.accesscontrol.AccessControlModelAbstractFactoryImpl;
@@ -12,6 +8,8 @@ import dal.asd.catme.courses.CourseAbstractFactoryImpl;
 import dal.asd.catme.courses.CourseModelAbstractFactoryImpl;
 import dal.asd.catme.courses.ICourseAbstractFactory;
 import dal.asd.catme.courses.ICourseModelAbstractFactory;
+import dal.asd.catme.database.DatabaseAbstractFactoryImpl;
+import dal.asd.catme.database.IDatabaseAbstractFactory;
 import dal.asd.catme.password.IPasswordAbstractFactory;
 import dal.asd.catme.password.PasswordAbstractFactoryImpl;
 import dal.asd.catme.questionmanager.IQuestionManagerAbstractFactory;
@@ -20,6 +18,10 @@ import dal.asd.catme.questionmanager.QuestionManagerAbstractFactoryImpl;
 import dal.asd.catme.questionmanager.QuestionManagerModelAbstractFactoryImpl;
 import dal.asd.catme.studentlistimport.CSVParserAbstractFactoryImpl;
 import dal.asd.catme.studentlistimport.ICSVParserAbstractFactory;
+import dal.asd.catme.survey.ISurveyAbstractFactory;
+import dal.asd.catme.survey.ISurveyModelAbstractFactory;
+import dal.asd.catme.survey.SurveyAbstractFactoryImpl;
+import dal.asd.catme.survey.SurveyModelAbstractFactoryImpl;
 import dal.asd.catme.surveyresponse.ISurveyResponseAbstractFactory;
 import dal.asd.catme.surveyresponse.ISurveyResponseModelAbstractFactory;
 import dal.asd.catme.surveyresponse.SurveyResponseAbstractFactoryImpl;
@@ -28,12 +30,13 @@ import dal.asd.catme.surveyresponse.SurveyResponseModelAbstractFactoryImpl;
 public class BaseAbstractFactoryImpl implements IBaseAbstractFactory
 {
     private static IBaseAbstractFactory baseAbstractFactory = null;
-private ISurveyAbstractFactory surveyAbstractFactory;
-	private ISurveyModelAbstractFactory surveyModelAbstractFactory;
+    private ISurveyAbstractFactory surveyAbstractFactory;
+    private ISurveyModelAbstractFactory surveyModelAbstractFactory;
     private IAccessControlAbstractFactory accessControlAbstractFactory = null;
     private IAccessControlModelAbstractFactory accessControlModelAbstractFactory = null;
     private ICourseAbstractFactory courseAbstractFactory = null;
     private ICourseModelAbstractFactory courseModelAbstractFactory = null;
+    private IDatabaseAbstractFactory databaseAbstractFactory = null;
     private IPasswordAbstractFactory passwordAbstractFactory = null;
     private IQuestionManagerAbstractFactory questionManagerAbstractFactory = null;
     private IQuestionManagerModelAbstractFactory questionManagerModelAbstractFactory = null;
@@ -84,6 +87,16 @@ private ISurveyAbstractFactory surveyAbstractFactory;
             courseModelAbstractFactory = new CourseModelAbstractFactoryImpl();
         }
         return courseModelAbstractFactory;
+    }
+
+    @Override
+    public IDatabaseAbstractFactory makeDatabaseAbstractFactory()
+    {
+        if (databaseAbstractFactory == null)
+        {
+            databaseAbstractFactory = new DatabaseAbstractFactoryImpl();
+        }
+        return databaseAbstractFactory;
     }
 
     public IPasswordAbstractFactory makePasswordAbstractFactory()
@@ -139,22 +152,25 @@ private ISurveyAbstractFactory surveyAbstractFactory;
         }
         return surveyResponseModelAbstractFactory;
     }
-@Override
-	public ISurveyAbstractFactory makeSurveyAbstractFactory() {
-		 if(surveyAbstractFactory == null)
-	        {
-			 surveyAbstractFactory = new SurveyAbstractFactoryImpl();
-	        }
-	        return surveyAbstractFactory;
-	}
+
+    @Override
+    public ISurveyAbstractFactory makeSurveyAbstractFactory()
+    {
+        if (surveyAbstractFactory == null)
+        {
+            surveyAbstractFactory = new SurveyAbstractFactoryImpl();
+        }
+        return surveyAbstractFactory;
+    }
 
 
-	@Override
-	public ISurveyModelAbstractFactory makeSurveyModelAbstractFactory() {
-		 if(surveyModelAbstractFactory == null)
-	        {
-			 surveyModelAbstractFactory = new SurveyModelAbstractFactoryImpl();
-	        }
-	        return surveyModelAbstractFactory;
-	}
+    @Override
+    public ISurveyModelAbstractFactory makeSurveyModelAbstractFactory()
+    {
+        if (surveyModelAbstractFactory == null)
+        {
+            surveyModelAbstractFactory = new SurveyModelAbstractFactoryImpl();
+        }
+        return surveyModelAbstractFactory;
+    }
 }

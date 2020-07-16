@@ -2,7 +2,9 @@ package dal.asd.catme.questionmanagertest;
 
 import dal.asd.catme.BaseAbstractFactoryMock;
 import dal.asd.catme.IBaseAbstractFactory;
-import dal.asd.catme.questionmanager.*;
+import dal.asd.catme.questionmanager.IQuestionManagerModelAbstractFactory;
+import dal.asd.catme.questionmanager.Question;
+import dal.asd.catme.questionmanager.QuestionTitle;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;

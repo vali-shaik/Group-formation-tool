@@ -1,7 +1,7 @@
 package dal.asd.catme;
 
-import dal.asd.catme.accesscontrol.User;
 import dal.asd.catme.accesscontrol.Role;
+import dal.asd.catme.accesscontrol.User;
 import dal.asd.catme.courses.Course;
 import dal.asd.catme.util.CatmeUtil;
 
@@ -10,8 +10,6 @@ import java.util.List;
 
 public class POJOMock
 {
-    private static final List<Course> courses = new ArrayList<>();
-
     public static ArrayList<User> getUsers()
     {
         List<User> listOfUsers = new ArrayList<>();
@@ -62,8 +60,7 @@ public class POJOMock
         publishedCourses.add("5308");
         return publishedCourses;
     }
-    
-    public static Course formCourse()
+public static Course formCourse()
     {
     	Course course=new Course();
     	course.setCourseId("5306");

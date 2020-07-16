@@ -4,15 +4,42 @@ import dal.asd.catme.BaseAbstractFactoryMock;
 import dal.asd.catme.IBaseAbstractFactory;
 import dal.asd.catme.studentlistimport.ICSVParser;
 import dal.asd.catme.studentlistimport.ICSVParserAbstractFactory;
+import dal.asd.catme.studentlistimport.ICSVReader;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class CSVParserTest
 {
     IBaseAbstractFactory baseAbstractFactory = BaseAbstractFactoryMock.instance();
     ICSVParserAbstractFactory icsvParserAbstractFactory = baseAbstractFactory.makeCSVParserAbstractFactory();
+
+    @Test
+    void getStudentsFromFileTest()
+    {
+        ICSVParser icsvParser = icsvParserAbstractFactory.makeCSVParser();
+
+        File file1 = new File("src/test/java/dal/asd/catme/studentlistimporttest/test.csv");
+        File file2 = new File("src/test/java/dal/asd/catme/studentlistimporttest/test1.csv");
+        try
+        {
+            ICSVReader icsvReader = icsvParserAbstractFactory.makeCSVReader(new FileInputStream(file1));
+            ICSVReader icsvReader1 = icsvParserAbstractFactory.makeCSVReader(new FileInputStream(file2));
+            assertNotNull(icsvParser.getStudentsFromFile(icsvReader));
+            assertNull(icsvParser.getStudentsFromFile(icsvReader1));
+        } catch (FileNotFoundException e)
+        {
+            fail();
+            e.printStackTrace();
+        }
+
+        assertNull(icsvParser.getStudentsFromFile(null));
+
+    }
 
     @Test
     void validBannerIdTest()

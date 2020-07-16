@@ -1,11 +1,12 @@
-
 package dal.asd.catme.accesscontrol;
 
 import dal.asd.catme.BaseAbstractFactoryImpl;
+import dal.asd.catme.IBaseAbstractFactory;
 import dal.asd.catme.config.SystemConfig;
 import dal.asd.catme.courses.ICourseAbstractFactory;
 import dal.asd.catme.courses.IRoleDao;
-import dal.asd.catme.database.DatabaseAccess;
+import dal.asd.catme.database.IDatabaseAbstractFactory;
+import dal.asd.catme.database.IDatabaseAccess;
 import dal.asd.catme.util.CatmeUtil;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -24,8 +25,10 @@ public class UserDaoImpl implements IUserDao
 
     PasswordEncoder p;
 
-    IAccessControlModelAbstractFactory modelAbstractFactory = BaseAbstractFactoryImpl.instance().makeAccessControlModelAbstractFactory();
-    ICourseAbstractFactory courseAbstractFactory = BaseAbstractFactoryImpl.instance().makeCourseAbstractFactory();
+    IBaseAbstractFactory baseAbstractFactory = BaseAbstractFactoryImpl.instance();
+    IDatabaseAbstractFactory databaseAbstractFactory = baseAbstractFactory.makeDatabaseAbstractFactory();
+    IAccessControlModelAbstractFactory modelAbstractFactory = baseAbstractFactory.makeAccessControlModelAbstractFactory();
+    ICourseAbstractFactory courseAbstractFactory = baseAbstractFactory.makeCourseAbstractFactory();
 
     @Override
     public int checkExistingUser(String bannerId, Connection con)
@@ -108,12 +111,12 @@ public class UserDaoImpl implements IUserDao
     @Override
     public List<User> getUsers()
     {
-        DatabaseAccess db;
+        IDatabaseAccess db;
         Connection connection = null;
         List<User> users = new ArrayList<>();
         try
         {
-            db = SystemConfig.instance().getDatabaseAccess();
+            db = databaseAbstractFactory.makeDatabaseAccess();
             connection = db.getConnection();
             ResultSet resultSet = listUsers(connection, LIST_USER_QUERY);
 

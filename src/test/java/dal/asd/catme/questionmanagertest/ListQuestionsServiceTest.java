@@ -2,10 +2,10 @@ package dal.asd.catme.questionmanagertest;
 
 import dal.asd.catme.BaseAbstractFactoryMock;
 import dal.asd.catme.IBaseAbstractFactory;
-import dal.asd.catme.exception.QuestionDatabaseException;
 import dal.asd.catme.questionmanager.IListQuestionsService;
 import dal.asd.catme.questionmanager.IQuestionManagerAbstractFactory;
 import dal.asd.catme.questionmanager.Question;
+import dal.asd.catme.questionmanager.QuestionDatabaseException;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;

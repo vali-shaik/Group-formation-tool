@@ -1,9 +1,10 @@
 package dal.asd.catme.courses;
 
+import dal.asd.catme.BaseAbstractFactoryImpl;
+import dal.asd.catme.IBaseAbstractFactory;
 import dal.asd.catme.accesscontrol.User;
-import dal.asd.catme.config.SystemConfig;
-import dal.asd.catme.database.DatabaseAccess;
-import dal.asd.catme.exception.EnrollmentException;
+import dal.asd.catme.database.IDatabaseAbstractFactory;
+import dal.asd.catme.database.IDatabaseAccess;
 import dal.asd.catme.util.CatmeUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,11 +15,13 @@ import java.util.ArrayList;
 
 public class EnrollStudentServiceImpl implements IEnrollStudentService
 {
-    DatabaseAccess db;
+    IDatabaseAccess db;
     IRoleDao roleDao;
     IStudentDao studentDao;
     Connection con = null;
 
+    IBaseAbstractFactory baseAbstractFactory = BaseAbstractFactoryImpl.instance();
+    IDatabaseAbstractFactory databaseAbstractFactory = baseAbstractFactory.makeDatabaseAbstractFactory();
     private static final Logger log = LoggerFactory.getLogger(EnrollStudentServiceImpl.class);
 
     public EnrollStudentServiceImpl(IRoleDao roleDao, IStudentDao studentDao)
@@ -30,10 +33,10 @@ public class EnrollStudentServiceImpl implements IEnrollStudentService
     @Override
     public boolean enrollStudentsIntoCourse(ArrayList<User> students, Course c)
     {
-        log.info("Enrolling students in course: "+c.getCourseId());
+        log.info("Enrolling students in course: " + c.getCourseId());
         try
         {
-            db = SystemConfig.instance().getDatabaseAccess();
+            db = databaseAbstractFactory.makeDatabaseAccess();
             con = db.getConnection();
 
             for (User s : students)
@@ -44,7 +47,7 @@ public class EnrollStudentServiceImpl implements IEnrollStudentService
                     enrollStudent(s, c);
                 } catch (EnrollmentException e)
                 {
-                    log.error("Error enrolling students: "+e.getMessage());
+                    log.error("Error enrolling students: " + e.getMessage());
                     e.printStackTrace();
                     return false;
                 }

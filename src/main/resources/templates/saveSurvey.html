@@ -9,25 +9,26 @@ text-decoration: underline;
 color:blue;
 }
 
+
     </style>
 </head>
 <body>
 <div th:insert="header"></div>
 <div align="center">
-<table>
-<tbody>
-<tr>
-<td>
+    <table>
+        <tbody>
+        <tr>
+            <td>
 <span th:if="${returnedRows > 0}">
 <h1>Survey saved successfully!</h1>
 </span>
-<span th:if="${returnedRows == 0}">
+                <span th:if="${returnedRows == 0}">
 <h1>Failed to save, please try again!</h1>
 </span>
-</td>
-</tr>
-</tbody>
-</table>
+            </td>
+        </tr>
+        </tbody>
+    </table>
     <h2><a href="/access" class="aTry">Go back to home page...</a></h2>
 </div>
 </body>

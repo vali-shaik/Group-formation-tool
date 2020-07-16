@@ -7,7 +7,6 @@ import dal.asd.catme.util.CatmeUtil;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -20,33 +19,51 @@ public class QuestionManagerServiceImplTest
     IQuestionManagerModelAbstractFactory modelAbstractFactory = baseAbstractFactory.makeQuestionManagerModelAbstractFactory();
 
     @Test
-    public void createQuestionTest()
+    public void findQuestionTypeTest()
     {
-        IQuestionDao questionDaoMock = questionManagerAbstractFactory.makeQuestionDao();
+        IQuestionManagerService questionManagerService = questionManagerAbstractFactory.makeQuestionManagerService();
 
-        List<Option> options = formQuestionOptions();
         Question question = modelAbstractFactory.makeQuestion();
         question.setQuestionText("Which Framework?");
         question.setQuestionType("Free Text");
         question.setQuestionTitle("UI");
-        question.setOptionWithOrder(options);
-        question.setCreatedDate(new Date());
-        assertEquals(CatmeUtil.ONE, questionDaoMock.createQuestion(question, CatmeUtil.USER_ROLE_ID));
+
+        Question question1 = modelAbstractFactory.makeQuestion();
+        question1.setQuestionText("Rate Java");
+        question1.setQuestionType(CatmeUtil.CHECKBOX);
+        question1.setQuestionTitle("UI");
+
+        assertEquals(CatmeUtil.QUESTION_CREATION_SUCCESS, questionManagerService.findQuestionType(question, CatmeUtil.USER_ROLE_ID));
+        assertEquals(CatmeUtil.OPTION_EDITOR, questionManagerService.findQuestionType(question1, CatmeUtil.USER_ROLE_ID));
     }
 
     @Test
-    public void createQuestionTitle()
+    public void createQuestionTest()
     {
-        IQuestionDao questionDaoMock = questionManagerAbstractFactory.makeQuestionDao();
-        assertEquals(CatmeUtil.ONE, questionDaoMock.createQuestionTitle(CatmeUtil.QUESTION_TITLE, CatmeUtil.USER_ROLE_ID));
+        IQuestionManagerService questionManagerService = questionManagerAbstractFactory.makeQuestionManagerService();
+
+        Question question = modelAbstractFactory.makeQuestion();
+        question.setQuestionText("Which Framework?");
+        question.setQuestionType("Free Text");
+        question.setQuestionTitle("UI");
+
+        assertEquals(CatmeUtil.ONE, questionManagerService.createQuestion(question, CatmeUtil.USER_ROLE_ID));
     }
 
     @Test
-    public void createOptions()
+    public void createOptionsTest()
     {
-        IQuestionDao questionDaoMock = questionManagerAbstractFactory.makeQuestionDao();
+        IQuestionManagerService questionManagerService = questionManagerAbstractFactory.makeQuestionManagerService();
         List<Option> options = formQuestionOptions();
-        assertEquals(CatmeUtil.ONE, questionDaoMock.createOptions(CatmeUtil.QUESTION_ID, options));
+        assertEquals(CatmeUtil.ONE, questionManagerService.createOptions(CatmeUtil.QUESTION_ID, options));
+    }
+
+    @Test
+    public void deleteQuestionTest()
+    {
+        IQuestionManagerService questionManagerService = questionManagerAbstractFactory.makeQuestionManagerService();
+
+        assertEquals(CatmeUtil.ONE, questionManagerService.deleteQuestion(1));
     }
 
     private List<Option> formQuestionOptions()

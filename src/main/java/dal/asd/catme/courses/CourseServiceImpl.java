@@ -1,8 +1,8 @@
 package dal.asd.catme.courses;
 
 import dal.asd.catme.accesscontrol.CatmeController;
+import dal.asd.catme.accesscontrol.CatmeException;
 import dal.asd.catme.accesscontrol.User;
-import dal.asd.catme.exception.CatmeException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -51,7 +51,7 @@ public class CourseServiceImpl implements ICourseService
     @Override
     public List<User> getEnrolledStudents(String courseId)
     {
-        log.info("Calling course dao for getting list of students enrolled in: "+courseId);
+        log.info("Calling course dao for getting list of students enrolled in: " + courseId);
         return courseDao.getRegisteredStudents(courseId);
     }
 

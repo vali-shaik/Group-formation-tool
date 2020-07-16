@@ -1,8 +1,10 @@
 package dal.asd.catme.survey;
 
-public interface ISurveyModelAbstractFactory 
+public interface ISurveyModelAbstractFactory
 {
-	public Survey makeSurvey();
-	public Rule makeRule();
-	public SurveyQuestion makeSurveyQuestion();
+    Survey makeSurvey();
+
+    Rule makeRule();
+
+    SurveyQuestion makeSurveyQuestion();
 }

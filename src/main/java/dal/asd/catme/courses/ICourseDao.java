@@ -1,8 +1,7 @@
-
 package dal.asd.catme.courses;
 
+import dal.asd.catme.accesscontrol.CatmeException;
 import dal.asd.catme.accesscontrol.User;
-import dal.asd.catme.exception.CatmeException;
 
 import java.sql.Connection;
 import java.util.List;

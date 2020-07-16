@@ -4,6 +4,7 @@ public class Option
 {
     String displayText;
     int storedAs;
+
     public String getDisplayText()
     {
         return displayText;

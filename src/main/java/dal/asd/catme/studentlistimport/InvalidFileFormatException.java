@@ -1,4 +1,4 @@
-package dal.asd.catme.exception;
+package dal.asd.catme.studentlistimport;
 
 public class InvalidFileFormatException extends Exception
 {

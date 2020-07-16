@@ -3,7 +3,6 @@ package dal.asd.catme.questionmanager;
 import dal.asd.catme.BaseAbstractFactoryImpl;
 import dal.asd.catme.accesscontrol.IAccessControlModelAbstractFactory;
 import dal.asd.catme.accesscontrol.User;
-import dal.asd.catme.exception.QuestionDatabaseException;
 import dal.asd.catme.util.CatmeUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

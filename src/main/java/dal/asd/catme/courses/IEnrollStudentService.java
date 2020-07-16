@@ -1,8 +1,6 @@
-
 package dal.asd.catme.courses;
 
 import dal.asd.catme.accesscontrol.User;
-import dal.asd.catme.exception.EnrollmentException;
 
 import java.util.ArrayList;
 

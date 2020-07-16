@@ -1,7 +1,6 @@
 package dal.asd.catme.studentlistimport;
 
 import dal.asd.catme.accesscontrol.User;
-import dal.asd.catme.exception.InvalidFileFormatException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -45,7 +44,7 @@ public class CSVParserImpl implements ICSVParser
                     students.add(student);
                 } else
                 {
-                    log.info("Invalid data in line: "+line);
+                    log.info("Invalid data in line: " + line);
                     return null;
                 }
             }

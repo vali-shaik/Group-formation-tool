@@ -1,8 +1,8 @@
 package dal.asd.catme.password;
 
 import dal.asd.catme.BaseAbstractFactoryImpl;
+import dal.asd.catme.accesscontrol.CatmeException;
 import dal.asd.catme.accesscontrol.User;
-import dal.asd.catme.exception.CatmeException;
 
 import java.util.ArrayList;
 import java.util.List;

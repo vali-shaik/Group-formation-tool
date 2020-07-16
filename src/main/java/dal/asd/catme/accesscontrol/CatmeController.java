@@ -3,7 +3,6 @@ package dal.asd.catme.accesscontrol;
 import dal.asd.catme.BaseAbstractFactoryImpl;
 import dal.asd.catme.config.CatmeSecurityConfig;
 import dal.asd.catme.config.SystemConfig;
-import dal.asd.catme.exception.CatmeException;
 import dal.asd.catme.util.CatmeUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,13 +1,11 @@
 package dal.asd.catme.config;
 
-import dal.asd.catme.database.DatabaseAccess;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 public class SystemConfig
 {
     private static SystemConfig uniqueInstance = null;
-    private final DatabaseAccess databaseAccess;
     private final CatmeSecurityConfig catmeServiceConfig;
     private final PasswordEncoder passwordEncoder;
 
@@ -15,7 +13,6 @@ public class SystemConfig
     {
         passwordEncoder = new BCryptPasswordEncoder();
         catmeServiceConfig = new CatmeSecurityConfig();
-        databaseAccess = new DatabaseAccess();
     }
 
     public static SystemConfig instance()
@@ -35,10 +32,5 @@ public class SystemConfig
     public CatmeSecurityConfig getCatmeServiceConfig()
     {
         return catmeServiceConfig;
-    }
-
-    public DatabaseAccess getDatabaseAccess()
-    {
-        return databaseAccess;
     }
 }

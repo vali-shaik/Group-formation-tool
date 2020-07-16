@@ -1,4 +1,3 @@
-
 package dal.asd.catme.courses;
 
 public class Course
