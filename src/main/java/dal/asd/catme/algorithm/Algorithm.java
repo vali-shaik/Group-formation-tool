@@ -38,7 +38,7 @@ public class Algorithm {
     List students = new ArrayList<String>();
 
     //Size of one group, number of students
-    int groupSize = 4;
+    int groupSize = 3;
     int noOfGroups = 2;
     int noOfStudents = 8;
     int noOfQuestionsMcqNumeric = 8;

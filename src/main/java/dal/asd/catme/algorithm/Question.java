@@ -7,6 +7,10 @@ public class Question implements IQuestion{
     int priority;
     int totalNoOfOptions;
 
+    public Question() {
+
+	}
+
 	public Question(int rule, int questionId, int priority) {
 		this.rule = rule;
 		this.questionId = questionId;

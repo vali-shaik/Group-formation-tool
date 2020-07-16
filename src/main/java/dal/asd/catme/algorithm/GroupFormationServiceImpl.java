@@ -29,7 +29,9 @@ public class GroupFormationServiceImpl implements IGroupFormationService {
 	List memoization = new ArrayList<String>();
 	List remainingStudents;
 
-	GroupFormationServiceImpl(){}
+	GroupFormationServiceImpl(){
+
+	}
 
 	GroupFormationServiceImpl(int surveyId) {
 		this.algorithmParameters = groupFormationDao.setAlgorithmParameter(surveyId);
@@ -38,13 +40,11 @@ public class GroupFormationServiceImpl implements IGroupFormationService {
 		this.noOfGroups = this.noOfStudents / this.groupSize;
 		this.priorityTable = new int[this.noOfStudents][this.noOfStudents];
 		this.groups = new String[this.noOfGroups][this.groupSize];
-
 	}
 
-
 	IGroupFormationDao groupFormationDao=new GroupFormationDaoImpl();
-
 	public GroupFormationServiceImpl(IGroupFormationDao groupFormationDao) {
+
 		this.groupFormationDao = groupFormationDao;
 	}
 
@@ -102,7 +102,6 @@ public class GroupFormationServiceImpl implements IGroupFormationService {
 		int priority;
 		int rule;
 		int totalNoOfOptions;
-
 		for (int j = 0; j < noOfStudents - 1; j += 1) {
 			for (int k = j + 1; k < noOfStudents; k += 1) {
 				for(int i = 0; i< noOfQuestionsMcqMultiple; i+=1){
@@ -145,13 +144,10 @@ public class GroupFormationServiceImpl implements IGroupFormationService {
 			}
 		}
 	}
-
-
 	void fillPriorityTable(){
 		fillFromMcqNumeric();
 		fillFromMcqMultiple();
 	}
-
 	void populateData(){
 		for (Question q : algorithmParameters.getQuestions()) {
 			if (q.questionType.equalsIgnoreCase("RadioButton") || q.questionType.equalsIgnoreCase("Numeric")) {
@@ -163,10 +159,8 @@ public class GroupFormationServiceImpl implements IGroupFormationService {
 				noOfQuestionsMcqMultiple += 1;
 			}
 		}
-
 		answerTableMcqNumeric = new int[noOfQuestionsMcqNumeric][noOfStudents];
 		answerTableMcqMultiple = new MCQMultiple[noOfQuestionsMcqMultiple][noOfStudents];
-
 		for(Student student :algorithmParameters.getStudents()){
 			students.add(student.getBannerId());
 		}
@@ -175,10 +169,6 @@ public class GroupFormationServiceImpl implements IGroupFormationService {
 			List<Answer> answersList = student.getAnswers();
 			for(Answer answer : answersList){
 				List<Integer> individualAnswersList =answer.getAnswers();
-
-				/*int questIndex = questionTypeOne.indexOf(answer.questionId);
-				int studentIndex = students.indexOf(student.getBannerId());
-				answerTableMcqNumeric[questIndex][] = individualAnswersList.get(CatmeUtil.ZERO);*/
 			}
 		}
 
@@ -189,8 +179,6 @@ public class GroupFormationServiceImpl implements IGroupFormationService {
 			for(int j=0;j<questionTypeOne.size();j++){
 				Question question = questionTypeOne.get(j);
 				for(Answer answer:answersList){
-//					System.out.println("answer.getQuestionId()"+answer.getQuestionId());
-//					System.out.println("question.getQuestionId()"+question.getQuestionId());
 					if (answer.getQuestionId() == question.getQuestionId()){
 						System.out.println("answer.getAnswers().get(0) "+answer.getAnswers().get(0));
 						answerTableMcqNumeric[i][j] = answer.getAnswers().get(0);
@@ -300,15 +288,15 @@ public class GroupFormationServiceImpl implements IGroupFormationService {
 				bannerIds = (ArrayList<String>) finalGroups.get("Group"+i+1);
 				bannerIds.add(groups[i][j]);
 			}
-			for(String v:bannerIds){
-				System.out.print(v+"\t");
+			for(String bannerId:bannerIds){
+				System.out.print(bannerId+"\t");
 			}
 		}
 		if(remainingStudents.size()>0 && remainingStudents.size()+1 == groupSize){
 			finalGroups.put("Group"+i+1, remainingStudents);
 			System.out.print("\n"+"Group"+(i+1)+"\t");
-			for(String v:(ArrayList<String>)finalGroups.get("Group"+i+1)){
-				System.out.print(v+"\t");
+			for(String bannerId:(ArrayList<String>)finalGroups.get("Group"+i+1)){
+				System.out.print(bannerId+"\t");
 			}
 		}
 		if(remainingStudents.size()>0 && remainingStudents.size()+1 < groupSize){
@@ -318,8 +306,8 @@ public class GroupFormationServiceImpl implements IGroupFormationService {
 					bannerIds.add((String)remainingStudents.get(remainingStudents.size()-1));
 				}
 			}
-			for(String v:(ArrayList<String>)finalGroups.get("Group"+i+1)){
-				System.out.print(v+"\t");
+			for(String bannerId:(ArrayList<String>)finalGroups.get("Group"+i+1)){
+				System.out.print(bannerId+"\t");
 			}
 		}
 		return finalGroups;
