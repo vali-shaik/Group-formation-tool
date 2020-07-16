@@ -1,9 +1,5 @@
 package dal.asd.catme.courses;
 
-import dal.asd.catme.BaseAbstractFactoryImpl;
-import dal.asd.catme.accesscontrol.CatmeException;
-import dal.asd.catme.accesscontrol.User;
-import dal.asd.catme.util.CatmeUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -15,6 +11,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import dal.asd.catme.BaseAbstractFactoryImpl;
+import dal.asd.catme.accesscontrol.CatmeException;
+import dal.asd.catme.accesscontrol.User;
+import dal.asd.catme.util.CatmeUtil;
+
 @Controller
 public class CourseController
 {
@@ -22,10 +23,11 @@ public class CourseController
 
     ICourseAbstractFactory courseAbstractFactory = BaseAbstractFactoryImpl.instance().makeCourseAbstractFactory();
     ICourseModelAbstractFactory modelAbstractFactory = BaseAbstractFactoryImpl.instance().makeCourseModelAbstractFactory();
-
+    
     @GetMapping("taEnrollment/{courseId}")
     public String enrollTa(@PathVariable("courseId") String courseId, Model model)
     {
+    	log.info("Enrolling a TA for a course");
         model.addAttribute("courseId", courseId);
         return CatmeUtil.TA_ENROLLMENT_PAGE;
     }
@@ -42,11 +44,10 @@ public class CourseController
     {
         IRoleService roleService = courseAbstractFactory.makeRoleService();
         String message;
-        
+
         Enrollment user = modelAbstractFactory.makeEnrollment();
         user.setBannerId(bannerId);
         user.setCourseId(courseId);
-
         model.addAttribute("user", user);
         int result = roleService.assignTa(user);
         if(result==CatmeUtil.ONE)
@@ -65,7 +66,6 @@ public class CourseController
 
         switch (role)
         {
-
             case CatmeUtil.TA_ROLE:
                 log.info("Identified as TA for the selected course");
                 modelAndView.addObject("isTa", true);
