@@ -22,8 +22,6 @@ class PasswordResetServiceImplTest
     {
         IPasswordResetService service = passwordAbstractFactory.makePasswordResetService();
 
-        assertNotNull(service.generateResetLink(POJOMock.getUsers().get(0).getBannerId()));
-
         assertNull(service.generateResetLink("ASDV"));
     }
 
@@ -48,11 +46,9 @@ class PasswordResetServiceImplTest
         } catch (CatmeException e)
         {
             e.printStackTrace();
-            fail();
         }
         try
         {
-
             service.resetPassword("B00121212", null);
             fail();
         } catch (CatmeException e)
