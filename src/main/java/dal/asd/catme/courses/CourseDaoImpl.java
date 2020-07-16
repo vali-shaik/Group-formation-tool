@@ -42,14 +42,14 @@ public class CourseDaoImpl implements ICourseDao
 
         List<Course> listOfCourses = new ArrayList<>();
         ResultSet resultSet = null;
-        Statement statement = null;
+        //Statement statement = null;
+        PreparedStatement statement=null;
         Connection connection = null;
 
         try
         {
             database = SystemConfig.instance().getDatabaseAccess();
             connection = database.getConnection();
-            statement = connection.createStatement();
 
             if (connection != null)
             {
@@ -60,22 +60,29 @@ public class CourseDaoImpl implements ICourseDao
                 {
                     case CatmeUtil.GUEST_ROLE:
                         log.info("Fetching courses of User " + currentUser + ": GUEST");
-                        resultSet = statement.executeQuery(SELECT_GUEST_COURSES_QUERY);
+                        statement=connection.prepareStatement(SELECT_GUEST_COURSES_QUERY);
+                        resultSet = statement.executeQuery();
                         break;
 
                     case CatmeUtil.TA_ROLE:
                         log.info("Fetching courses of User " + currentUser + ": TA");
-                        resultSet = statement.executeQuery(SELECT_STUDENT_COURSES_QUERY + "'" + currentUser + "'" + " UNION " + SELECT_INSTRUTOR_COURSES_QUERY + "'" + currentUser + "'");
+                        statement=connection.prepareStatement(SELECT_STUDENT_INSTRUCTOR_COURSE);
+                        statement.setString(1, currentUser);
+                        resultSet = statement.executeQuery();
                         break;
 
                     case CatmeUtil.INSTRUCTOR_ROLE:
                         log.info("Fetching courses of User " + currentUser + ": INSTRUCTOR");
-                        resultSet = statement.executeQuery(SELECT_INSTRUTOR_COURSES_QUERY + "" + "'" + currentUser + "'");
+                        statement=connection.prepareStatement(SELECT_INSTRUTOR_COURSES_QUERY);
+                        statement.setString(1, currentUser);
+                        resultSet = statement.executeQuery();
                         break;
 
                     case CatmeUtil.STUDENT_ROLE:
                         log.info("Fetching courses of User " + currentUser + ": STUDENT");
-                        resultSet = statement.executeQuery(SELECT_STUDENT_COURSES_QUERY + "" + "'" + currentUser + "'");
+                        statement=connection.prepareStatement(SELECT_STUDENT_COURSES_QUERY);
+                        statement.setString(1, currentUser);
+                        resultSet = statement.executeQuery();
                         break;
 
                     default:
@@ -119,14 +126,16 @@ public class CourseDaoImpl implements ICourseDao
     {
         DatabaseAccess db;
         Connection connection = null;
+        PreparedStatement statement=null;
         List<Course> courses = new ArrayList<>();
 
         try
         {
             db = SystemConfig.instance().getDatabaseAccess();
             connection = db.getConnection();
-
-            ResultSet resultSet = db.executeQuery(SELECT_COURSE);
+            System.out.println("&&&&&&&%$^%$#$%^");
+            statement=connection.prepareStatement(SELECT_COURSE);
+            ResultSet resultSet = statement.executeQuery();
             while (resultSet.next())
             {
                 Course course = modelAbstractFactory.makeCourse();
@@ -157,7 +166,7 @@ public class CourseDaoImpl implements ICourseDao
     public Course displayCourseById(String courseId) throws CatmeException
     {
         ResultSet resultSet = null;
-        Statement statement = null;
+        PreparedStatement statement = null;
         Connection connection = null;
 
         Course course = modelAbstractFactory.makeCourse();
@@ -166,11 +175,13 @@ public class CourseDaoImpl implements ICourseDao
             database = SystemConfig.instance().getDatabaseAccess();
             connection = database.getConnection();
 
-            statement = connection.createStatement();
 
             if (connection != null)
             {
-                resultSet = statement.executeQuery(SELECT_COURSE_QUERY + "'" + courseId + "'");
+            	statement=connection.prepareStatement(SELECT_COURSE_QUERY);
+            	statement.setString(1, courseId);
+                resultSet = statement.executeQuery();
+                
 
                 while (resultSet.next())
                 {
@@ -204,7 +215,7 @@ public class CourseDaoImpl implements ICourseDao
     public String findRoleByCourse(User user, String courseId) throws CatmeException
     {
         ResultSet resultSet = null;
-        Statement statement = null;
+        PreparedStatement statement = null;
         Connection connection = null;
         String role = "";
 
@@ -212,13 +223,12 @@ public class CourseDaoImpl implements ICourseDao
         {
             database = SystemConfig.instance().getDatabaseAccess();
             connection = database.getConnection();
-
-            statement = connection.createStatement();
-
             if (connection != null)
             {
-                resultSet = statement.executeQuery(SELECT_COURSE_ROLE_QUERY + "'" + user.getBannerId() + "' and  c.courseId='" + courseId + "'");
-
+            	 statement=connection.prepareStatement(SELECT_COURSE_ROLE_QUERY);
+            	 statement.setString(1, user.getBannerId());
+            	 statement.setString(2, courseId);
+            	 resultSet=statement.executeQuery();
                 while (resultSet.next())
                 {
                     role = resultSet.getString(CatmeUtil.ROLE_NAME_FIELD);

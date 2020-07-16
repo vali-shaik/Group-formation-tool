@@ -10,14 +10,7 @@ public class SurveyAbstractFactoryImpl implements ISurveyAbstractFactory
 		surveyDao=new SurveyDaoImpl();
 		surveyService=new SurveyServiceImpl(surveyDao);
 	}
-	public static ISurveyAbstractFactory instance()
-	{
-		if(surveyAbstractFactory==null)
-		{
-			surveyAbstractFactory = new SurveyAbstractFactoryImpl();
-		}
-		return surveyAbstractFactory;
-	}
+
 	public ISurveyService makeSurveyService() {
 		return surveyService;
 	}
