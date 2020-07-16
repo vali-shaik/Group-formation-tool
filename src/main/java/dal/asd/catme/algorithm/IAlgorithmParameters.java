@@ -11,4 +11,8 @@ public interface IAlgorithmParameters {
 	public void setNoOfStudents(int noOfStudents);
 	public List<Question> getQuestions();
 	public void setQuestions(List<Question> questions);
+	public List<Student> getStudents();
+
+	public void setStudents(List<Student> students);
+
 }

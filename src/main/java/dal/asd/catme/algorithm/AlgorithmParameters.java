@@ -8,11 +8,15 @@ public class AlgorithmParameters implements IAlgorithmParameters{
     int noOfGroups;
     int noOfStudents;
 	List<Question> questions;
+
+
+
 	List<Student> students;
-	
+
 	public List<Student> getStudents() {
 		return students;
 	}
+
 	public void setStudents(List<Student> students) {
 		this.students = students;
 	}

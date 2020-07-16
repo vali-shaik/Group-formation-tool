@@ -2,9 +2,9 @@ package dal.asd.catme.algorithm;
 
 public interface IQuestion {
 
-	public int getTotalNumberOfAnswerOption();
+	public int getTotalNoOfOptions();
 
-	public void setTotalNumberOfAnswerOption(int totalNumberOfAnswerOption);
+	public void setTotalNoOfOptions(int totalNumberOfAnswerOption);
 
 	public int getRule();
 

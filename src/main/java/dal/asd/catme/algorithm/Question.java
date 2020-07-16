@@ -5,14 +5,18 @@ public class Question implements IQuestion{
     int questionId;
     String questionType;
     int priority;
-    int totalNumberOfAnswerOption;
+    int totalNoOfOptions;
+
     
-    public int getTotalNumberOfAnswerOption() {
-		return totalNumberOfAnswerOption;
+    public int getTotalNoOfOptions() {
+		return totalNoOfOptions;
 	}
-	public void setTotalNumberOfAnswerOption(int totalNumberOfAnswerOption) {
-		this.totalNumberOfAnswerOption = totalNumberOfAnswerOption;
+	public void setTotalNoOfOptions(int totalNoOfOptions) {
+		this.totalNoOfOptions = totalNoOfOptions;
 	}
+
+
+
 	public int getRule() {
 		return rule;
 	}

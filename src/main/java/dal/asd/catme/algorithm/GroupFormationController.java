@@ -36,7 +36,7 @@ public class GroupFormationController {
 	public String formGroups(Model model) {
 		logger.info("*** GroupFormationController - formGroups method invoked**");
 		formGroup=algorithmAbstractFactory.makeGroupFormationService();
-		model.addAttribute("groups",formGroup.formGroups(12));
+		model.addAttribute("groups",formGroup.formGroups());
 		return "listGroups";
 	}
 }

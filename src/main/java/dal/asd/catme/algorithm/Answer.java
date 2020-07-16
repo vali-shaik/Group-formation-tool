@@ -4,17 +4,17 @@ import java.util.List;
 
 public class Answer {
 	int questionId;
-	List<String> answers;
+	List<Integer> answers;
 	public int getQuestionId() {
 		return questionId;
 	}
 	public void setQuestionId(int questionId) {
 		this.questionId = questionId;
 	}
-	public List<String> getAnswers() {
+	public List<Integer> getAnswers() {
 		return answers;
 	}
-	public void setAnswers(List<String> answers) {
+	public void setAnswers(List<Integer> answers) {
 		this.answers = answers;
 	}
 	

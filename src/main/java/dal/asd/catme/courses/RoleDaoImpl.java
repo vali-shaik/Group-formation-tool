@@ -4,6 +4,7 @@ package dal.asd.catme.courses;
 import dal.asd.catme.BaseAbstractFactoryImpl;
 import dal.asd.catme.accesscontrol.AccessControlAbstractFactoryImpl;
 import dal.asd.catme.accesscontrol.IUserDao;
+import dal.asd.catme.exception.CatmeException;
 import dal.asd.catme.util.CatmeUtil;
 
 import java.sql.Connection;
@@ -125,7 +126,7 @@ public class RoleDaoImpl implements IRoleDao
     public int assignTa(IEnrollment user, Connection con)
     {
         String isAssigned = "";
-        int result = 0;
+        int result=0;
 
         try
         {
@@ -142,33 +143,33 @@ public class RoleDaoImpl implements IRoleDao
                             if (0 != checkUserRole(user.getBannerId(), CatmeUtil.TA_ROLE_ID, con))
                             {
                                 int userRoleId = getUserRoleId(user.getBannerId(), CatmeUtil.TA_ROLE_ID, con);
-                                result=addInstructor(user.getCourseId(), userRoleId, con);
+                                result= addInstructor(user.getCourseId(), userRoleId, con);
                             }
 
                             else
                             {
                                 assignRole(user.getBannerId(), CatmeUtil.TA_ROLE_ID, con);
                                 int userRoleId = getUserRoleId(user.getBannerId(), CatmeUtil.TA_ROLE_ID, con);
-                                result=addInstructor(user.getCourseId(), userRoleId, con);
+                                result= addInstructor(user.getCourseId(), userRoleId, con);
                             }
-                            isAssigned = "The user is successfully assigned as TA.";
+                            throw new CatmeException("The user is successfully assigned as TA.");
 
                         } else
                         {
-                            isAssigned = "This user is already an instructor for this course.";
+                            throw new CatmeException("This user is already an instructor for this course.");
                         }
                     } else
                     {
-                        isAssigned = "This user is currently registered in this course. Failed to assign.";
+                        throw new CatmeException("This user is currently registered in this course. Failed to assign.");
                     }
                 } else
                 {
-                    isAssigned = "No course exists with this Course Id. Failed to assign.";
+                    throw new CatmeException("No course exists with this Course Id. Failed to assign.");
                 }
 
             } else
             {
-                isAssigned = "No user exists with this Banner Id. Failed to assign.";
+                throw new CatmeException("No user exists with this Banner Id. Failed to assign.");
             }
         } catch (Exception e)
         {

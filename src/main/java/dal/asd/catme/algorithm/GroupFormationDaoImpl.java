@@ -16,17 +16,21 @@ import dal.asd.catme.database.DatabaseAccess;
 import dal.asd.catme.surveyresponse.ISurveyResponseModelAbstractFactory;
 import dal.asd.catme.util.CatmeUtil;
 import dal.asd.catme.util.DBQueriesUtil;
+import org.springframework.jdbc.core.namedparam.NamedParameterUtils;
 
 public class GroupFormationDaoImpl implements IGroupFormationDao {
 
 	private static final Logger logger = LoggerFactory.getLogger(GroupFormationDaoImpl.class);
 	IAlgorithmModelAbstractFactory modelAbstractFactory = BaseAbstractFactoryImpl.instance().makeAlgorithmModelAbstractFactory();
-
+	DatabaseAccess db = SystemConfig.instance().getDatabaseAccess();
 
 	@Override
 	public IAlgorithmParameters setAlgorithmParameter(int surveyId) {
+		System.out.println("inside dao");
 		IAlgorithmParameters algorithmParameter = modelAbstractFactory.makeAlgorithmParameters();
-		DatabaseAccess db = SystemConfig.instance().getDatabaseAccess();
+
+//		DatabaseAccess db = new DatabaseAccess();
+
 		Connection con = null;
 		try {
 			con = db.getConnection();
@@ -36,8 +40,13 @@ public class GroupFormationDaoImpl implements IGroupFormationDao {
 			algorithmParameter.setNoOfStudents(getNumberOfStudents(con, surveyId,questions));
 			
 			
-		} catch (SQLException e) {
+		} catch (NullPointerException e) {
+			logger.error("Null exception occurred in ListGroups method.");
+			e.printStackTrace();
+		}
+		catch (Exception e) {
 			logger.error("Exeption occurred in ListGroups method.");
+			e.printStackTrace();
 		}
 		return algorithmParameter;
 
@@ -89,12 +98,22 @@ public class GroupFormationDaoImpl implements IGroupFormationDao {
 					List<String> answers = new ArrayList<String>();
 					while(resultSet.next()) {
 						String answer= resultSet.getString("Answer");
+
 						answers.add(answer);
 					}
-					answerList.setAnswers(answers);
+					List<Integer> convertedAnswers = new ArrayList<>();
+					for(String individualAnswer : answers){
+						int asciiValue=0;
+						for(int j=0;j<individualAnswer.length();j++){
+							asciiValue+=(int)individualAnswer.charAt(j);
+						}
+						convertedAnswers.add(asciiValue);
+					}
+					answerList.setAnswers(convertedAnswers);
 					answerList.setQuestionId(questionId);
 					listOfAnswers.add(answerList);
 				}
+
 				student.setAnswers(listOfAnswers);
 				student.setBannerId(bannerId);
 				
@@ -136,7 +155,7 @@ public class GroupFormationDaoImpl implements IGroupFormationDao {
 					ResultSet resultSet = stmt.executeQuery();
 					if(resultSet.next())
 					{
-						question.setTotalNumberOfAnswerOption(Integer.parseInt(resultSet.getString(0)));
+						question.setTotalNoOfOptions(Integer.parseInt(resultSet.getString(0)));
 					}
 					
 				}
