@@ -151,53 +151,52 @@ log.error("Unable to find the role Id of current user");
     }
 
     @Override
-    public int assignTa(Enrollment user)
+    public String assignTa(Enrollment user)
     {
         IDatabaseAccess db = databaseAbstractFactory.makeDatabaseAccess();
         String isAssigned = "";
-        int result=0;
 
 log.info("Assigning a TA to the course");
         try
         {
             userDao = baseAbstractFactory.makeAccessControlAbstractFactory().makeUserDao();
-            if (CatmeUtil.ONE== userDao.checkExistingUser(user.getBannerId()))
+            if (0 != userDao.checkExistingUser(user.getBannerId()))
             {
                 courseDao = BaseAbstractFactoryImpl.instance().makeCourseAbstractFactory().makeCourseDao();
-                if (CatmeUtil.ONE==  courseDao.checkCourseExists(user.getCourseId()))
+                if (0 != courseDao.checkCourseExists(user.getCourseId()))
                 {
                     if (0 == courseDao.checkCourseRegistration(user.getBannerId(), user.getCourseId()))
                     {
                         if (0 == checkCourseInstructor(user.getBannerId(), user.getCourseId()))
                         {
-                            if (CatmeUtil.ONE==  checkUserRole(user.getBannerId(), CatmeUtil.TA_ROLE_ID))
+                            if (0 != checkUserRole(user.getBannerId(), CatmeUtil.TA_ROLE_ID))
                             {
                                 int userRoleId = getUserRoleId(user.getBannerId(), CatmeUtil.TA_ROLE_ID);
-                                result=addInstructor(user.getCourseId(), userRoleId);
+                                addInstructor(user.getCourseId(), userRoleId);
                             } else
                             {
                                 assignRole(user.getBannerId(), CatmeUtil.TA_ROLE_ID);
                                 int userRoleId = getUserRoleId(user.getBannerId(), CatmeUtil.TA_ROLE_ID);
-                                result=addInstructor(user.getCourseId(), userRoleId);
+                                addInstructor(user.getCourseId(), userRoleId);
                             }
-                            throw new EnrollmentException("The user is successfully assigned as TA.");
+                            isAssigned = "The user is successfully assigned as TA.";
 
                         } else
                         {
-                            throw new EnrollmentException("This user is already an instructor for this course.");
+                            isAssigned = "This user is already an instructor for this course.";
                         }
                     } else
                     {
-                    	throw new EnrollmentException("This user is currently registered in this course. Failed to assign.");
+                        isAssigned = "This user is currently registered in this course. Failed to assign.";
                     }
                 } else
                 {
-                	throw new EnrollmentException("No course exists with this Course Id. Failed to assign.");
+                    isAssigned = "No course exists with this Course Id. Failed to assign.";
                 }
 
             } else
             {
-            	throw new EnrollmentException("No user exists with this Banner Id. Failed to assign.");
+                isAssigned = "No user exists with this Banner Id. Failed to assign.";
             }
         } catch (Exception e)
         {
@@ -207,6 +206,6 @@ log.info("Failed while assigning the TA");
         {
             db.cleanUp();
         }
-        return result;
+        return isAssigned;
     }
 }

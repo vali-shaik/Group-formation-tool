@@ -3,12 +3,10 @@ package dal.asd.catme.password;
 import dal.asd.catme.accesscontrol.CatmeException;
 import dal.asd.catme.accesscontrol.User;
 
-import java.sql.Connection;
-
 public interface IPasswordDao
 {
 
-    void resetPassword(User u, Connection con) throws CatmeException;
+    void resetPassword(User u) throws CatmeException;
 
     String readBannerIdFromToken(String token) throws CatmeException;
 

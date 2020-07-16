@@ -3,7 +3,6 @@ package dal.asd.catme.courses;
 import dal.asd.catme.accesscontrol.CatmeException;
 import dal.asd.catme.accesscontrol.User;
 
-import java.sql.Connection;
 import java.util.List;
 
 public interface ICourseDao
@@ -19,8 +18,8 @@ public interface ICourseDao
 
     List<User> getRegisteredStudents(String courseId);
 
-    int checkCourseRegistration(String bannerId, String courseId, Connection con);
+    int checkCourseRegistration(String bannerId, String courseId);
 
-    int checkCourseExists(String courseId, Connection con);
+    int checkCourseExists(String courseId);
 
 }

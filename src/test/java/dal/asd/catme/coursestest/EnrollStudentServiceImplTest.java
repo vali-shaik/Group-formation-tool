@@ -29,8 +29,7 @@ class EnrollStudentServiceImplTest
     public void enrollStudentsIntoCourseTest()
     {
         IEnrollStudentService service = courseAbstractFactory.makeEnrollmentService();
-
-        assertFalse(service.enrollStudentsIntoCourse(POJOMock.getUsers(), c));
+        assertTrue(service.enrollStudentsIntoCourse(POJOMock.getUsers(), c));
     }
 
     @Test

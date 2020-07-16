@@ -4,6 +4,7 @@ import dal.asd.catme.BaseAbstractFactoryMock;
 import dal.asd.catme.IBaseAbstractFactory;
 import dal.asd.catme.password.IPasswordAbstractFactory;
 import dal.asd.catme.password.IPasswordRulesConfig;
+import dal.asd.catme.password.PasswordException;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -14,7 +15,7 @@ public class PasswordRulesConfigTest
     IPasswordAbstractFactory passwordAbstractFactory = baseAbstractFactory.makePasswordAbstractFactory();
 
     @Test
-    public void testvalidateMinimumLength()
+    public void testvalidateMinimumLength() throws PasswordException
     {
         IPasswordRulesConfig passwordRulesConfig = passwordAbstractFactory.makePasswordRulesConfig();
         assertEquals(passwordRulesConfig.validateMinimumLength("PASSWORD", 8), true);
@@ -22,7 +23,7 @@ public class PasswordRulesConfigTest
     }
 
     @Test
-    public void testvalidateMaximumLength()
+    public void testvalidateMaximumLength() throws PasswordException
     {
         IPasswordRulesConfig passwordRulesConfig = passwordAbstractFactory.makePasswordRulesConfig();
         assertEquals(passwordRulesConfig.validateMaximumLength("PASSWORD", 10), true);
@@ -30,7 +31,7 @@ public class PasswordRulesConfigTest
     }
 
     @Test
-    public void testvalidateMinimumLowerCase()
+    public void testvalidateMinimumLowerCase() throws PasswordException
     {
         IPasswordRulesConfig passwordRulesConfig = passwordAbstractFactory.makePasswordRulesConfig();
         assertEquals(passwordRulesConfig.validateMinimumLowerCase("PassWORD", 3), true);
@@ -38,7 +39,7 @@ public class PasswordRulesConfigTest
     }
 
     @Test
-    public void testvalidateMinimumUpperCase()
+    public void testvalidateMinimumUpperCase() throws PasswordException
     {
         IPasswordRulesConfig passwordRulesConfig = passwordAbstractFactory.makePasswordRulesConfig();
         assertEquals(passwordRulesConfig.validateMinimumUpperCase("PassWORD", 3), true);
@@ -46,7 +47,7 @@ public class PasswordRulesConfigTest
     }
 
     @Test
-    public void testvalidateMinimumSymbolsSpecialCharacters()
+    public void testvalidateMinimumSymbolsSpecialCharacters() throws PasswordException
     {
         IPasswordRulesConfig passwordRulesConfig = passwordAbstractFactory.makePasswordRulesConfig();
         assertEquals(passwordRulesConfig.validateMinimumSymbolsSpecialCharacters("P&as#sW**ORD%", 3), true);
@@ -54,7 +55,7 @@ public class PasswordRulesConfigTest
     }
 
     @Test
-    public void testcheckNotAllowedCharacters()
+    public void testcheckNotAllowedCharacters() throws PasswordException
     {
         IPasswordRulesConfig passwordRulesConfig = passwordAbstractFactory.makePasswordRulesConfig();
         assertEquals(passwordRulesConfig.checkNotAllowedCharacters("P&as#sW**ORD%", "[xyz]"), true);

@@ -61,4 +61,12 @@ public class POJOMock
         return publishedCourses;
     }
 
+    public static Course formCourse()
+    {
+        Course course = new Course();
+        course.setCourseId("5306");
+        course.setCourseName("Sofware Comprehension");
+        return course;
+    }
+
 }

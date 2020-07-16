@@ -4,8 +4,6 @@ import dal.asd.catme.BaseAbstractFactoryMock;
 import dal.asd.catme.POJOMock;
 import dal.asd.catme.accesscontrol.*;
 import dal.asd.catme.courses.*;
-import dal.asd.catme.courses.IRoleDao;
-import dal.asd.catme.util.CatmeUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +31,7 @@ public class RoleDaoMock implements IRoleDao
     }
 
 
+    @Override
     public int assignRole(String bannerId, int roleId)
     {
         for (User u : users)
@@ -51,17 +50,19 @@ public class RoleDaoMock implements IRoleDao
         return 0;
     }
 
+    @Override
     public int addInstructor(String courseId, int userRoleId)
     {
         return 1;
     }
 
-    public int assignTa(Enrollment user)
+    @Override
+    public String assignTa(Enrollment user)
     {
-        if (CatmeUtil.ONE== userDao.checkExistingUser(user.getBannerId()))
+        if (0 != userDao.checkExistingUser(user.getBannerId()))
         {
 
-            if (CatmeUtil.ONE== courseDao.checkCourseExists(user.getCourseId()))
+            if (0 != courseDao.checkCourseExists(user.getCourseId()))
             {
 
                 if (0 == courseDao.checkCourseRegistration(user.getBannerId(), user.getCourseId()))
@@ -78,7 +79,7 @@ public class RoleDaoMock implements IRoleDao
                                 {
                                     if (u.getBannerId().equalsIgnoreCase(user.getBannerId()))
                                     {
-                                        return 1;
+                                        return "Success";
                                     }
                                 }
                             }
@@ -87,9 +88,10 @@ public class RoleDaoMock implements IRoleDao
                 }
             }
         }
-        return 0;
+        return "";
     }
 
+    @Override
     public int checkCourseInstructor(String bannerId, String courseId)
     {
         for (User i : POJOMock.getUsers())
@@ -101,6 +103,7 @@ public class RoleDaoMock implements IRoleDao
 
     }
 
+    @Override
     public int checkUserRole(String bannerId, int roleId)
     {
         for (User u : users)
@@ -118,6 +121,7 @@ public class RoleDaoMock implements IRoleDao
 
     }
 
+    @Override
     public int getUserRoleId(String bannerId, int roleId)
     {
         return 1;

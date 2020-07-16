@@ -42,20 +42,13 @@ public class CourseController
     @RequestMapping("taEnrollment/{courseId}")
     public String enrollTa(@PathVariable("courseId") String courseId, @RequestParam String bannerId, Model model)
     {
-        IRoleService roleService = courseAbstractFactory.makeRoleService();
-        String message;
-
+        log.info("Enrollling TA for course for given banner ID");
+    	IRoleService roleService = courseAbstractFactory.makeRoleService();
         Enrollment user = modelAbstractFactory.makeEnrollment();
         user.setBannerId(bannerId);
         user.setCourseId(courseId);
         model.addAttribute("user", user);
-        int result = roleService.assignTa(user);
-        if(result==CatmeUtil.ONE)
-        {
-            message="TA enrolled successfully.";
-        }else{
-            message="Error enrolling the TA";
-        }
+        String message = roleService.assignTa(user);
         model.addAttribute("message", message);
         return CatmeUtil.TA_ENROLLED_PAGE;
     }
