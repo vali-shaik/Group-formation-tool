@@ -27,8 +27,9 @@
     <h1 align="center" th:text="${courseId}"></h1>
     <h1 align="center" th:if="${surveyPublished}==false">No Survey Available</h1>
     <h1 align="center" th:if="${surveyPublished and attempted}">Survey Attempted</h1>
+    <h1 align="center" th:if="${message}!=null" th:text="${message}"></h1>
 
-    <div th:if="${surveyPublished and attempted==false}">
+    <div th:if="${surveyPublished and attempted==false and message==null}">
         <form method="post" th:action="@{/saveResponse}" th:object="${response}" th:if="${surveyPublished}">
             <input hidden th:field="*{surveyId}" th:value="${response.surveyId}">
             <input hidden th:field="*{courseId}" th:value="${response.courseId}">

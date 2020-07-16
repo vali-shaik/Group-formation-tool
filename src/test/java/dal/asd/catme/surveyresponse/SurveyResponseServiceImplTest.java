@@ -20,16 +20,30 @@ public class SurveyResponseServiceImplTest
     {
         ISurveyResponseService surveyResponseService = surveyResponseAbstractFactory.makeSurveyResponseService();
 
-        assertNotNull(surveyResponseService.getPublishedSurveyId("5308"));
-        assertNull(surveyResponseService.getPublishedSurveyId(""));
+        try
+        {
+            assertNotNull(surveyResponseService.getPublishedSurveyId("5308"));
+            assertNull(surveyResponseService.getPublishedSurveyId(""));
+        } catch (SurveyResponseException e)
+        {
+            e.printStackTrace();
+            fail();
+        }
     }
 
     @Test
     public void getSurveyQuestionsTest()
     {
         ISurveyResponseService surveyResponseService = surveyResponseAbstractFactory.makeSurveyResponseService();
-        assertNotNull(surveyResponseService.getSurveyQuestions("5308"));
-        assertNull(surveyResponseService.getSurveyQuestions(""));
+        try
+        {
+            assertNotNull(surveyResponseService.getSurveyQuestions("5308"));
+            assertNull(surveyResponseService.getSurveyQuestions(""));
+        } catch (SurveyResponseException e)
+        {
+            fail();
+            e.printStackTrace();
+        }
     }
 
     @Test
@@ -42,17 +56,31 @@ public class SurveyResponseServiceImplTest
         questions.add(modelAbstractFactory.makeSurveyResponse());
         binder.setQuestionList(questions);
 
-        assertFalse(surveyResponseService.saveResponses(binder, "B00121212"));
-        binder.setSurveyId("1");
+        try
+        {
+            assertFalse(surveyResponseService.saveResponses(binder, "B00121212"));
+            binder.setSurveyId("1");
 
-        assertTrue(surveyResponseService.saveResponses(binder, "B00121212"));
-        assertFalse(surveyResponseService.saveResponses(binder, ""));
+            assertTrue(surveyResponseService.saveResponses(binder, "B00121212"));
+            assertFalse(surveyResponseService.saveResponses(binder, ""));
+        } catch (SurveyResponseException e)
+        {
+            fail();
+            e.printStackTrace();
+        }
     }
 
     @Test
     public void isSurveyAttemptedTest()
     {
         ISurveyResponseService surveyResponseService = surveyResponseAbstractFactory.makeSurveyResponseService();
-        assertTrue(surveyResponseService.isSurveyAttempted("5100", "B00121212"));
+        try
+        {
+            assertTrue(surveyResponseService.isSurveyAttempted("5100", "B00121212"));
+        } catch (SurveyResponseException e)
+        {
+            fail();
+            e.printStackTrace();
+        }
     }
 }

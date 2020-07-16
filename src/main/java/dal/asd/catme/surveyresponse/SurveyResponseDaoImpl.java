@@ -36,7 +36,7 @@ public class SurveyResponseDaoImpl implements ISurveyResponseDao
     ISurveyResponseModelAbstractFactory modelAbstractFactory = baseAbstractFactory.makeSurveyResponseModelAbstractFactory();
     IQuestionManagerModelAbstractFactory questionManagerModelAbstractFactory = baseAbstractFactory.makeQuestionManagerModelAbstractFactory();
 
-    public String getPublishedSurveyId(String courseId)
+    public String getPublishedSurveyId(String courseId) throws SurveyResponseException
     {
         log.info("Checking database for publish status of Survey of course: "+courseId);
         IDatabaseAccess db = databaseAbstractFactory.makeDatabaseAccess();
@@ -58,6 +58,7 @@ public class SurveyResponseDaoImpl implements ISurveyResponseDao
         {
             log.warn("Error connecting database");
             throwables.printStackTrace();
+            throw new SurveyResponseException("Error Connecting Database\nCannot Get Survey");
         } finally
         {
             if (con != null)
@@ -75,7 +76,7 @@ public class SurveyResponseDaoImpl implements ISurveyResponseDao
         return null;
     }
 
-    public List<SurveyResponse> getSurveyQuestions(String surveyId)
+    public List<SurveyResponse> getSurveyQuestions(String surveyId) throws SurveyResponseException
     {
         log.info("Getting survey questions from database of surveyId: "+surveyId);
         IDatabaseAccess db = databaseAbstractFactory.makeDatabaseAccess();
@@ -94,7 +95,12 @@ public class SurveyResponseDaoImpl implements ISurveyResponseDao
 
         } catch (SQLException throwables)
         {
+            log.error("Error Connecting database");
             throwables.printStackTrace();
+            throw new SurveyResponseException("Error Connecting Database\nCannot Get Questions");
+        }
+        finally
+        {
             if (con != null)
             {
                 try
@@ -112,7 +118,7 @@ public class SurveyResponseDaoImpl implements ISurveyResponseDao
 
     }
 
-    public boolean saveResponses(SurveyResponseBinder binder, String bannerId)
+    public boolean saveResponses(SurveyResponseBinder binder, String bannerId) throws SurveyResponseException
     {
         log.info("Saving survey responses of student: "+bannerId);
         IDatabaseAccess db = databaseAbstractFactory.makeDatabaseAccess();
@@ -147,6 +153,7 @@ public class SurveyResponseDaoImpl implements ISurveyResponseDao
         {
             log.warn("Error saving responses");
             throwables.printStackTrace();
+            throw new SurveyResponseException("Error Connecting Database\nCannot Save Response");
         } finally
         {
             if (con != null)
@@ -161,10 +168,9 @@ public class SurveyResponseDaoImpl implements ISurveyResponseDao
                 }
             }
         }
-        return false;
     }
 
-    public boolean saveAttempt(String surveyId, String bannerId)
+    public boolean saveAttempt(String surveyId, String bannerId) throws SurveyResponseException
     {
         log.info("Marking survey as attempted: \nSurvey: "+surveyId+"/tStudent: "+bannerId);
         IDatabaseAccess db = databaseAbstractFactory.makeDatabaseAccess();
@@ -185,6 +191,7 @@ public class SurveyResponseDaoImpl implements ISurveyResponseDao
         {
             log.warn("Error connecting database");
             throwables.printStackTrace();
+            throw new SurveyResponseException("Error Connecting Database\nCannot Mark Attempt");
         } finally
         {
             if (con != null)
@@ -199,10 +206,9 @@ public class SurveyResponseDaoImpl implements ISurveyResponseDao
                 }
             }
         }
-        return false;
     }
 
-    public boolean isSurveyAttempted(String surveyId, String bannerId)
+    public boolean isSurveyAttempted(String surveyId, String bannerId) throws SurveyResponseException
     {
         log.info("Checking if student "+bannerId+" has already attempted survey "+surveyId);
         IDatabaseAccess db = databaseAbstractFactory.makeDatabaseAccess();
@@ -225,6 +231,7 @@ public class SurveyResponseDaoImpl implements ISurveyResponseDao
         {
             log.warn("Error connecting database");
             throwables.printStackTrace();
+            throw new SurveyResponseException("Error Connecting Database\nTry Again Later");
         } finally
         {
             if (con != null)
@@ -242,7 +249,7 @@ public class SurveyResponseDaoImpl implements ISurveyResponseDao
         return false;
     }
 
-    private List<SurveyResponse> createQuestionsList(ResultSet rs)
+    private List<SurveyResponse> createQuestionsList(ResultSet rs) throws SurveyResponseException
     {
         log.info("Converting database response to List of Survey Questions");
         List<SurveyResponse> questions = new ArrayList<>();
@@ -275,8 +282,9 @@ public class SurveyResponseDaoImpl implements ISurveyResponseDao
             }
         } catch (SQLException throwables)
         {
-            log.warn("Error connecting database");
+            log.warn("Error Reading result of database");
             throwables.printStackTrace();
+            throw new SurveyResponseException("Error Reading Result from Database");
         }
 
         return questions;
