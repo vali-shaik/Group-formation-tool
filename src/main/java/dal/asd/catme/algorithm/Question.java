@@ -1,6 +1,6 @@
 package dal.asd.catme.algorithm;
 
-public class Question {
+public class Question implements IQuestion{
 	int rule;
     int questionId;
     String questionType;

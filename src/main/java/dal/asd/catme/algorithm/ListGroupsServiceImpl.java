@@ -5,7 +5,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ListGroupsServiceImpl implements IListGroups {
+public class ListGroupsServiceImpl implements IListGroupsService {
 
 	private static final Logger logger = LoggerFactory.getLogger(ListGroupsServiceImpl.class);
 	

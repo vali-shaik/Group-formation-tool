@@ -4,6 +4,10 @@ import dal.asd.catme.accesscontrol.AccessControlAbstractFactoryImpl;
 import dal.asd.catme.accesscontrol.AccessControlModelAbstractFactoryImpl;
 import dal.asd.catme.accesscontrol.IAccessControlAbstractFactory;
 import dal.asd.catme.accesscontrol.IAccessControlModelAbstractFactory;
+import dal.asd.catme.algorithm.AlgorithmAbstractFactoryImpl;
+import dal.asd.catme.algorithm.AlgorithmModelAbstractFactoryImpl;
+import dal.asd.catme.algorithm.IAlgorithmAbstractFactory;
+import dal.asd.catme.algorithm.IAlgorithmModelAbstractFactory;
 import dal.asd.catme.courses.CourseAbstractFactoryImpl;
 import dal.asd.catme.courses.CourseModelAbstractFactoryImpl;
 import dal.asd.catme.courses.ICourseAbstractFactory;
@@ -44,6 +48,17 @@ public class BaseAbstractFactoryImpl implements IBaseAbstractFactory
         return AccessControlModelAbstractFactoryImpl.instance();
     }
 
+    public IAlgorithmAbstractFactory makeAlgorithmAbstractFactory()
+    {
+        return AlgorithmAbstractFactoryImpl.instance();
+    }
+
+    public IAlgorithmModelAbstractFactory makeAlgorithmModelAbstractFactory()
+    {
+        return AlgorithmModelAbstractFactoryImpl.instance();
+    }
+
+    
     public ICourseAbstractFactory makeCourseAbstractFactory()
     {
         return CourseAbstractFactoryImpl.instance();

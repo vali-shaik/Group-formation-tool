@@ -10,11 +10,15 @@ public class GroupFormationServiceImpl implements IGroupFormationService{
 	 * ArrayList<String>();
 	 */
 	
-	IGroupFormationDao groupFormationDao = new GroupFormationDaoImpl();
+	IGroupFormationDao groupFormationDao;
 	
+	public GroupFormationServiceImpl(IGroupFormationDao groupFormationDao) {
+		this.groupFormationDao=groupFormationDao;
+	}
 
 	@Override
 	public HashMap formGroups(int surveyId) {
+		
 		groupFormationDao.setAlgorithmParameter(surveyId);
 		return null;
 	}

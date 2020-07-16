@@ -57,8 +57,9 @@ public class DBQueriesUtil
     public static final String GET_GROUP_SIZE="call selectGroupSize(?);";
     public static final String GET_QUESTIONS_LIST="GET_QUESTIONS(?)";
     public static final String GET_ANSWER_OPTION="getAnswerOption(?)";
-    public static final String GET_NUMBER_OF_STUDENTS="call selectNumberOfStudents(?)"; 
+    public static final String GET_STUDENTS="call getBannerIds(?)"; 
     public static final String SAVE_ANSWER = "call SaveAnswer(?,?,?);";
     public static final String SAVE_ATTEMPT = "call SaveSurveyAttempt(?,?)";
     public static final String GET_ATTEMPT = "call GetSurveyAttempt(?,?)";
+    public static final String GET_STUDENTS_WITH_ANSWERS = "getStudentsWithAnswerList(?,?)";
 }

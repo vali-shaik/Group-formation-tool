@@ -2,14 +2,21 @@ package dal.asd.catme.algorithm;
 
 import java.util.List;
 
-public class AlgorithmParameters {
+public class AlgorithmParameters implements IAlgorithmParameters{
 	
     int groupSize;
     int noOfGroups;
     int noOfStudents;
 	List<Question> questions;
-
-    public int getGroupSize() {
+	List<Student> students;
+	
+	public List<Student> getStudents() {
+		return students;
+	}
+	public void setStudents(List<Student> students) {
+		this.students = students;
+	}
+	public int getGroupSize() {
 		return groupSize;
 	}
 	public void setGroupSize(int groupSize) {
