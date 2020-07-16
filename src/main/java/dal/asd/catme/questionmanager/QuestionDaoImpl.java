@@ -6,6 +6,8 @@ import dal.asd.catme.database.IDatabaseAbstractFactory;
 import dal.asd.catme.database.IDatabaseAccess;
 import dal.asd.catme.util.CatmeUtil;
 import dal.asd.catme.util.DBQueriesUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -16,6 +18,7 @@ import java.util.List;
 
 public class QuestionDaoImpl implements IQuestionDao
 {
+    private static final Logger log = LoggerFactory.getLogger(QuestionDaoImpl.class);
     IDatabaseAccess db;
     IBaseAbstractFactory baseAbstractFactory = BaseAbstractFactoryImpl.instance();
     IDatabaseAbstractFactory databaseAbstractFactory = baseAbstractFactory.makeDatabaseAbstractFactory();
@@ -34,17 +37,15 @@ public class QuestionDaoImpl implements IQuestionDao
         int QUESTIONTYPE = 4;
         int CREATEDDATE = 5;
 
-
+        log.info("Getting List of Questions for instructor: "+instructor);
         List<Question> questionList = new ArrayList<>();
         db = databaseAbstractFactory.makeDatabaseAccess();
-        Connection con = null;
         try
         {
-            con = db.getConnection();
-            PreparedStatement stmt = con.prepareStatement(DBQueriesUtil.GET_QUESTIONS);
+            PreparedStatement stmt = db.getPreparedStatement(DBQueriesUtil.GET_QUESTIONS);
             stmt.setString(1, instructor);
 
-            ResultSet rs = stmt.executeQuery();
+            ResultSet rs = db.executeForResultSet(stmt);
 
             while (rs.next())
             {
@@ -58,19 +59,15 @@ public class QuestionDaoImpl implements IQuestionDao
                 questionList.add(q);
             }
 
+            log.info("Total Questions found: "+questionList.size());
             return questionList;
         } catch (SQLException throwables)
         {
+            log.error("Error Getting Questions");
             throw new QuestionDatabaseException("Error Getting Questions");
         } finally
         {
-            try
-            {
-                con.close();
-            } catch (SQLException | NullPointerException throwables)
-            {
-                throw new QuestionDatabaseException("Error Getting Questions");
-            }
+            db.cleanUp();
         }
     }
 
