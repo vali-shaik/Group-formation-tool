@@ -1,10 +1,12 @@
 package dal.asd.catme.courses;
 
 import dal.asd.catme.BaseAbstractFactoryImpl;
+import dal.asd.catme.IBaseAbstractFactory;
 import dal.asd.catme.accesscontrol.IUserDao;
+import dal.asd.catme.database.IDatabaseAbstractFactory;
+import dal.asd.catme.database.IDatabaseAccess;
 import dal.asd.catme.util.CatmeUtil;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,16 +16,19 @@ import static dal.asd.catme.util.DBQueriesUtil.*;
 public class RoleDaoImpl implements IRoleDao
 {
     IUserDao userDao;
-
     ICourseDao courseDao;
 
+    IBaseAbstractFactory baseAbstractFactory = BaseAbstractFactoryImpl.instance();
+    IDatabaseAbstractFactory databaseAbstractFactory = baseAbstractFactory.makeDatabaseAbstractFactory();
+
     @Override
-    public int assignRole(String bannerId, int roleId, Connection con)
+    public int assignRole(String bannerId, int roleId)
     {
+        IDatabaseAccess db = databaseAbstractFactory.makeDatabaseAccess();
         int rs = 0;
         try
         {
-            PreparedStatement stmt = con.prepareStatement(ASSIGN_ROLE_QUERY);
+            PreparedStatement stmt = db.getPreparedStatement(ASSIGN_ROLE_QUERY);
             stmt.setString(1, bannerId);
             stmt.setInt(2, roleId);
 
@@ -32,17 +37,21 @@ public class RoleDaoImpl implements IRoleDao
         } catch (Exception e)
         {
             e.printStackTrace();
+        } finally
+        {
+            db.cleanUp();
         }
         return rs;
     }
 
     @Override
-    public int addInstructor(String courseId, int userRoleId, Connection con)
+    public int addInstructor(String courseId, int userRoleId)
     {
+        IDatabaseAccess db = databaseAbstractFactory.makeDatabaseAccess();
         int rs = 0;
         try
         {
-            PreparedStatement stmt = con.prepareStatement(INSERT_COURSE_INSTRUCTOR_QUERY);
+            PreparedStatement stmt = db.getPreparedStatement(INSERT_COURSE_INSTRUCTOR_QUERY);
             stmt.setString(1, courseId);
             stmt.setInt(2, userRoleId);
 
@@ -50,47 +59,57 @@ public class RoleDaoImpl implements IRoleDao
         } catch (Exception e)
         {
             e.printStackTrace();
+        } finally
+        {
+            db.cleanUp();
         }
         return rs;
     }
 
     @Override
-    public int checkCourseInstructor(String bannerId, String courseId, Connection con)
+    public int checkCourseInstructor(String bannerId, String courseId)
     {
+        IDatabaseAccess db = databaseAbstractFactory.makeDatabaseAccess();
         int rowCount = 0;
         try
         {
-            PreparedStatement stmt = con.prepareStatement(CHECK_COURSE_INSTRUCTOR_QUERY);
+            PreparedStatement stmt = db.getPreparedStatement(CHECK_COURSE_INSTRUCTOR_QUERY);
             stmt.setString(1, bannerId);
             stmt.setString(2, courseId);
 
-            ResultSet rs = stmt.executeQuery();
+            ResultSet rs = db.executeForResultSet(stmt);
             rs.next();
             rowCount = rs.getInt(1);
         } catch (SQLException e)
         {
             e.printStackTrace();
+        } finally
+        {
+            db.cleanUp();
         }
 
         return rowCount;
     }
 
     @Override
-    public int checkUserRole(String bannerId, int roleId, Connection con)
+    public int checkUserRole(String bannerId, int roleId)
     {
-
+        IDatabaseAccess db = databaseAbstractFactory.makeDatabaseAccess();
         int rowCount = 0;
         try
         {
-            PreparedStatement stmt = con.prepareStatement(CHECK_USER_ROLE);
+            PreparedStatement stmt = db.getPreparedStatement(CHECK_USER_ROLE);
             stmt.setString(1, bannerId);
             stmt.setInt(2, roleId);
-            ResultSet rs = stmt.executeQuery();
+            ResultSet rs = db.executeForResultSet(stmt);
             rs.next();
             rowCount = rs.getInt(1);
         } catch (SQLException e)
         {
             e.printStackTrace();
+        } finally
+        {
+            db.cleanUp();
         }
 
         return rowCount;
@@ -98,16 +117,16 @@ public class RoleDaoImpl implements IRoleDao
     }
 
     @Override
-    public int getUserRoleId(String bannerId, int roleId, Connection con)
+    public int getUserRoleId(String bannerId, int roleId)
     {
-
+        IDatabaseAccess db = databaseAbstractFactory.makeDatabaseAccess();
         int userRoleId = -1;
         try
         {
-            PreparedStatement stmt = con.prepareStatement(GET_USER_ROLEID_QUERY);
+            PreparedStatement stmt = db.getPreparedStatement(GET_USER_ROLEID_QUERY);
             stmt.setString(1, bannerId);
             stmt.setInt(2, roleId);
-            ResultSet rs = stmt.executeQuery();
+            ResultSet rs = db.executeForResultSet(stmt);
             rs.next();
             userRoleId = rs.getInt(1);
         } catch (SQLException e)
@@ -120,31 +139,32 @@ public class RoleDaoImpl implements IRoleDao
     }
 
     @Override
-    public String assignTa(Enrollment user, Connection con)
+    public String assignTa(Enrollment user)
     {
+        IDatabaseAccess db = databaseAbstractFactory.makeDatabaseAccess();
         String isAssigned = "";
 
         try
         {
-            userDao = BaseAbstractFactoryImpl.instance().makeAccessControlAbstractFactory().makeUserDao();
-            if (0 != userDao.checkExistingUser(user.getBannerId(), con))
+            userDao = baseAbstractFactory.makeAccessControlAbstractFactory().makeUserDao();
+            if (0 != userDao.checkExistingUser(user.getBannerId()))
             {
                 courseDao = BaseAbstractFactoryImpl.instance().makeCourseAbstractFactory().makeCourseDao();
-                if (0 != courseDao.checkCourseExists(user.getCourseId(), con))
+                if (0 != courseDao.checkCourseExists(user.getCourseId()))
                 {
-                    if (0 == courseDao.checkCourseRegistration(user.getBannerId(), user.getCourseId(), con))
+                    if (0 == courseDao.checkCourseRegistration(user.getBannerId(), user.getCourseId()))
                     {
-                        if (0 == checkCourseInstructor(user.getBannerId(), user.getCourseId(), con))
+                        if (0 == checkCourseInstructor(user.getBannerId(), user.getCourseId()))
                         {
-                            if (0 != checkUserRole(user.getBannerId(), CatmeUtil.TA_ROLE_ID, con))
+                            if (0 != checkUserRole(user.getBannerId(), CatmeUtil.TA_ROLE_ID))
                             {
-                                int userRoleId = getUserRoleId(user.getBannerId(), CatmeUtil.TA_ROLE_ID, con);
-                                addInstructor(user.getCourseId(), userRoleId, con);
+                                int userRoleId = getUserRoleId(user.getBannerId(), CatmeUtil.TA_ROLE_ID);
+                                addInstructor(user.getCourseId(), userRoleId);
                             } else
                             {
-                                assignRole(user.getBannerId(), CatmeUtil.TA_ROLE_ID, con);
-                                int userRoleId = getUserRoleId(user.getBannerId(), CatmeUtil.TA_ROLE_ID, con);
-                                addInstructor(user.getCourseId(), userRoleId, con);
+                                assignRole(user.getBannerId(), CatmeUtil.TA_ROLE_ID);
+                                int userRoleId = getUserRoleId(user.getBannerId(), CatmeUtil.TA_ROLE_ID);
+                                addInstructor(user.getCourseId(), userRoleId);
                             }
                             isAssigned = "The user is successfully assigned as TA.";
 
@@ -170,16 +190,7 @@ public class RoleDaoImpl implements IRoleDao
             e.printStackTrace();
         } finally
         {
-            if (con != null)
-            {
-                try
-                {
-                    con.close();
-                } catch (SQLException e)
-                {
-                    e.printStackTrace();
-                }
-            }
+            db.cleanUp();
         }
         return isAssigned;
     }

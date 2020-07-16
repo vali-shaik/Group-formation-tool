@@ -9,10 +9,6 @@ public interface IDatabaseAccess
 {
     Connection getConnection() throws SQLException;
 
-    ResultSet executeQuery(String query);
-
-    int executeUpdate(String query);
-
     PreparedStatement getPreparedStatement(String preparedStatementCall) throws SQLException;
 
     ResultSet executeForResultSet(PreparedStatement statement) throws SQLException;

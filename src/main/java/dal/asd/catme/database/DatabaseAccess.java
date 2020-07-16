@@ -78,33 +78,6 @@ public class DatabaseAccess implements DataSource, IDatabaseAccess
 
     }
 
-    public ResultSet executeQuery(String query)
-    {
-        try
-        {
-            statement = connection.createStatement();
-            resultSet = statement.executeQuery(query);
-        } catch (SQLException e)
-        {
-            e.printStackTrace();
-        }
-
-        return resultSet;
-    }
-
-    public int executeUpdate(String query)
-    {
-        try
-        {
-            statement = connection.createStatement();
-            result = statement.executeUpdate(query);
-        } catch (SQLException e)
-        {
-            e.printStackTrace();
-        }
-        return result;
-    }
-
     @Override
     public PreparedStatement getPreparedStatement(String preparedStatementCall) throws SQLException
     {

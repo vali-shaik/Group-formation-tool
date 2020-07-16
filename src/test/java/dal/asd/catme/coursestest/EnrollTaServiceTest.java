@@ -8,16 +8,12 @@ import dal.asd.catme.courses.ICourseModelAbstractFactory;
 import dal.asd.catme.courses.IRoleDao;
 import org.junit.jupiter.api.Test;
 
-import java.sql.Connection;
-
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
 
 
 public class EnrollTaServiceTest
 {
-    Connection con;
-
     IBaseAbstractFactory baseAbstractFactory = BaseAbstractFactoryMock.instance();
     ICourseAbstractFactory courseAbstractFactory = baseAbstractFactory.makeCourseAbstractFactory();
     ICourseModelAbstractFactory courseModelAbstractFactory = baseAbstractFactory.makeCourseModelAbstractFactory();
@@ -31,7 +27,7 @@ public class EnrollTaServiceTest
             Enrollment enrollment = courseModelAbstractFactory.makeEnrollment();
             enrollment.setBannerId("B00835717");
             enrollment.setCourseId("5306");
-            assertNotNull(roleDaoMock.assignTa(enrollment, con));
+            assertNotNull(roleDaoMock.assignTa(enrollment));
 
         } catch (Exception e)
         {

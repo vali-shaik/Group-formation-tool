@@ -4,7 +4,6 @@ import dal.asd.catme.POJOMock;
 import dal.asd.catme.accesscontrol.IUserDao;
 import dal.asd.catme.accesscontrol.User;
 
-import java.sql.Connection;
 import java.util.List;
 
 public class UserDaoMock implements IUserDao
@@ -20,7 +19,7 @@ public class UserDaoMock implements IUserDao
 
 
     @Override
-    public int checkExistingUser(String bannerId, Connection con)
+    public int checkExistingUser(String bannerId)
     {
         for (User u : users)
         {
@@ -38,7 +37,7 @@ public class UserDaoMock implements IUserDao
     }
 
     @Override
-    public int addUser(User user, Connection con)
+    public int addUser(User user)
     {
         users.add(user);
         return 1;
@@ -46,7 +45,7 @@ public class UserDaoMock implements IUserDao
     }
 
     @Override
-    public User getUser(String bannerId, Connection con)
+    public User getUser(String bannerId)
     {
         for (User u : users)
         {

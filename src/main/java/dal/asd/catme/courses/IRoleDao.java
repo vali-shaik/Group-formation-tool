@@ -1,20 +1,18 @@
 package dal.asd.catme.courses;
 
 
-import java.sql.Connection;
-
 public interface IRoleDao
 {
-    int assignRole(String bannerId, int roleId, Connection con);
+    int assignRole(String bannerId, int roleId);
 
-    int addInstructor(String courseId, int userRoleId, Connection con);
+    int addInstructor(String courseId, int userRoleId);
 
-    String assignTa(Enrollment user, Connection con);
+    String assignTa(Enrollment user);
 
-    int checkCourseInstructor(String bannerId, String courseId, Connection con);
+    int checkCourseInstructor(String bannerId, String courseId);
 
-    int checkUserRole(String bannerId, int roleId, Connection con);
+    int checkUserRole(String bannerId, int roleId);
 
-    int getUserRoleId(String bannerId, int roleId, Connection con);
+    int getUserRoleId(String bannerId, int roleId);
 
 }

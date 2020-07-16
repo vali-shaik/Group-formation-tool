@@ -10,7 +10,6 @@ import dal.asd.catme.database.IDatabaseAccess;
 import dal.asd.catme.util.CatmeUtil;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -31,34 +30,39 @@ public class UserDaoImpl implements IUserDao
     ICourseAbstractFactory courseAbstractFactory = baseAbstractFactory.makeCourseAbstractFactory();
 
     @Override
-    public int checkExistingUser(String bannerId, Connection con)
+    public int checkExistingUser(String bannerId)
     {
+        IDatabaseAccess db = databaseAbstractFactory.makeDatabaseAccess();
         int rowCount = 0;
         try
         {
-            PreparedStatement stmt = con.prepareStatement(CHECK_EXISTING_USER_QUERY);
+            PreparedStatement stmt = db.getPreparedStatement(CHECK_EXISTING_USER_QUERY);
             stmt.setString(1, bannerId);
 
-            ResultSet rs = stmt.executeQuery();
+            ResultSet rs = db.executeForResultSet(stmt);
             rs.next();
             rowCount = rs.getInt(1);
         } catch (SQLException e)
         {
             e.printStackTrace();
+        } finally
+        {
+            db.cleanUp();
         }
         return rowCount;
     }
 
     @Override
-    public int addUser(User user, Connection con)
+    public int addUser(User user)
     {
+        IDatabaseAccess db = databaseAbstractFactory.makeDatabaseAccess();
         String bannerId = user.getBannerId();
         try
         {
-            if (0 == checkExistingUser(bannerId, con))
+            if (0 == checkExistingUser(bannerId))
             {
                 p = SystemConfig.instance().getPasswordEncoder();
-                PreparedStatement stmt = con.prepareStatement(ADD_USER_QUERY);
+                PreparedStatement stmt = db.getPreparedStatement(ADD_USER_QUERY);
                 stmt.setString(1, user.getBannerId());
                 stmt.setString(2, user.getFirstName());
                 stmt.setString(3, user.getLastName());
@@ -67,26 +71,30 @@ public class UserDaoImpl implements IUserDao
 
                 stmt.executeUpdate();
                 roleDao = courseAbstractFactory.makeRoleDao();
-                roleDao.assignRole(bannerId, CatmeUtil.GUEST_ROLE_ID, con);
+                roleDao.assignRole(bannerId, CatmeUtil.GUEST_ROLE_ID);
                 return 1;
             }
         } catch (Exception e)
         {
             e.printStackTrace();
+        } finally
+        {
+            db.cleanUp();
         }
 
         return 0;
     }
 
     @Override
-    public User getUser(String bannerId, Connection con)
+    public User getUser(String bannerId)
     {
+        IDatabaseAccess db = databaseAbstractFactory.makeDatabaseAccess();
         try
         {
-            PreparedStatement getUser = con.prepareStatement(GET_USER_QUERY);
+            PreparedStatement getUser = db.getPreparedStatement(GET_USER_QUERY);
             getUser.setString(1, bannerId);
 
-            ResultSet rs = getUser.executeQuery();
+            ResultSet rs = db.executeForResultSet(getUser);
 
             rs.next();
             String firstname = rs.getString(2);
@@ -103,6 +111,9 @@ public class UserDaoImpl implements IUserDao
         } catch (Exception e)
         {
             e.printStackTrace();
+        } finally
+        {
+            db.cleanUp();
         }
 
         return null;
@@ -111,14 +122,11 @@ public class UserDaoImpl implements IUserDao
     @Override
     public List<User> getUsers()
     {
-        IDatabaseAccess db;
-        Connection connection = null;
+        IDatabaseAccess db = databaseAbstractFactory.makeDatabaseAccess();
         List<User> users = new ArrayList<>();
         try
         {
-            db = databaseAbstractFactory.makeDatabaseAccess();
-            connection = db.getConnection();
-            ResultSet resultSet = listUsers(connection, LIST_USER_QUERY);
+            ResultSet resultSet = listUsers(LIST_USER_QUERY);
 
             while (resultSet.next())
             {
@@ -133,25 +141,20 @@ public class UserDaoImpl implements IUserDao
             e.printStackTrace();
         } finally
         {
-            try
-            {
-                connection.close();
-            } catch (SQLException | NullPointerException e)
-            {
-                e.printStackTrace();
-            }
+            db.cleanUp();
         }
         return users;
     }
 
-    private ResultSet listUsers(Connection connection, String query)
+    private ResultSet listUsers(String query)
     {
+        IDatabaseAccess db = databaseAbstractFactory.makeDatabaseAccess();
         ResultSet rs = null;
         try
         {
-            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            PreparedStatement preparedStatement = db.getPreparedStatement(query);
             preparedStatement.setString(1, CatmeUtil.STUDENT_ROLE);
-            rs = preparedStatement.executeQuery();
+            rs = db.executeForResultSet(preparedStatement);
         } catch (SQLException e)
         {
             e.printStackTrace();

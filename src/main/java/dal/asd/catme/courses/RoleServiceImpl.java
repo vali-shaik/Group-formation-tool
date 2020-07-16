@@ -30,7 +30,7 @@ public class RoleServiceImpl implements IRoleService
             db = databaseAbstractFactory.makeDatabaseAccess();
             con = db.getConnection();
 
-            return (roleDao.assignTa(user, con));
+            return (roleDao.assignTa(user));
         } catch (Exception e)
         {
             e.printStackTrace();

@@ -5,7 +5,6 @@ import dal.asd.catme.IBaseAbstractFactory;
 import dal.asd.catme.questionmanager.*;
 import dal.asd.catme.util.CatmeUtil;
 
-import java.sql.Connection;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -37,8 +36,7 @@ public class QuestionDaoMock implements IQuestionDao
     @Override
     public int deleteQuestion(int questionId)
     {
-        Connection con = null;
-        if (0 != checkExistingQuestion(questionId, con))
+        if (0 != checkExistingQuestion(questionId))
         {
             for (QuestionTitle qT : questions)
             {
@@ -55,7 +53,7 @@ public class QuestionDaoMock implements IQuestionDao
     }
 
     @Override
-    public int checkExistingQuestion(int questionId, Connection con)
+    public int checkExistingQuestion(int questionId)
     {
         for (QuestionTitle qT : questions)
         {

@@ -1,18 +1,17 @@
 package dal.asd.catme.password;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
+import dal.asd.catme.survey.SurveyController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import dal.asd.catme.survey.SurveyController;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class PasswordRulesConfigImpl implements IPasswordRulesConfig
 {
-	
-	private static final Logger log = LoggerFactory.getLogger(SurveyController.class);
-	
+
+    private static final Logger log = LoggerFactory.getLogger(SurveyController.class);
+
     boolean regularExpressionMatcher(String currentPassword, String regularExpression)
     {
         Pattern pattern = Pattern.compile(regularExpression);
@@ -27,15 +26,14 @@ public class PasswordRulesConfigImpl implements IPasswordRulesConfig
         Boolean flag = true;
         if (currentPassword == null)
         {
-           log.error("Password is null");
-           throw new PasswordException("Password is empty");
-        }
-        else
+            log.error("Password is null");
+            throw new PasswordException("Password is empty");
+        } else
         {
-        	 if (currentPassword.trim().length() < minimumLength)
-             {
-                 flag = false;
-             }
+            if (currentPassword.trim().length() < minimumLength)
+            {
+                flag = false;
+            }
         }
         return flag;
     }
@@ -46,12 +44,11 @@ public class PasswordRulesConfigImpl implements IPasswordRulesConfig
         boolean flag = true;
         if (currentPassword == null)
         {
-        	log.error("Password is null");
+            log.error("Password is null");
             throw new PasswordException("Password is empty");
-        }
-        else
+        } else
         {
-        	if (currentPassword.trim().length() > maximumLength)
+            if (currentPassword.trim().length() > maximumLength)
             {
                 flag = false;
             }
@@ -67,12 +64,11 @@ public class PasswordRulesConfigImpl implements IPasswordRulesConfig
         String minimumUpperCaseRegEx = PasswordRulesUtil.MINIMUM_UPPER_CASE_REGEX + "{" + mininmumUpperLength + "}";
         if (currentPassword == null)
         {
-        	log.error("Password is null");
+            log.error("Password is null");
             throw new PasswordException("Password is empty");
-        }
-        else
+        } else
         {
-        	flag = regularExpressionMatcher(currentPassword, minimumUpperCaseRegEx);
+            flag = regularExpressionMatcher(currentPassword, minimumUpperCaseRegEx);
         }
         return flag;
     }
@@ -84,12 +80,11 @@ public class PasswordRulesConfigImpl implements IPasswordRulesConfig
         String minimumLowerCaseRegEx = PasswordRulesUtil.MINIMUM_LOWER_CASE_REGEX + "{" + mininmumLowerLength + "}";
         if (currentPassword == null)
         {
-        	log.error("Password is null");
+            log.error("Password is null");
             throw new PasswordException("Password is empty");
-        }
-        else
+        } else
         {
-        	flag = regularExpressionMatcher(currentPassword, minimumLowerCaseRegEx);
+            flag = regularExpressionMatcher(currentPassword, minimumLowerCaseRegEx);
         }
         return flag;
     }
@@ -101,12 +96,11 @@ public class PasswordRulesConfigImpl implements IPasswordRulesConfig
         String minimumSymbolSpecialRegEx = PasswordRulesUtil.MINIMUM_SYMBOL_SPECIAL_REGEX + "{" + minimumSymbolSpecialLength + "}";
         if (currentPassword == null)
         {
-        	log.error("Password is null");
+            log.error("Password is null");
             throw new PasswordException("Password is empty");
-        }
-        else
+        } else
         {
-        	flag = regularExpressionMatcher(currentPassword, minimumSymbolSpecialRegEx);
+            flag = regularExpressionMatcher(currentPassword, minimumSymbolSpecialRegEx);
         }
         return flag;
     }
@@ -118,12 +112,11 @@ public class PasswordRulesConfigImpl implements IPasswordRulesConfig
         String notAllowedCharactersRegEx = PasswordRulesUtil.NOT_ALLOWED_CHARACTER_REGEX;
         if (currentPassword != null)
         {
-        	log.error("Password is null");
+            log.error("Password is null");
             throw new PasswordException("Password is empty");
-        }
-        else
+        } else
         {
-        	if (regularExpressionMatcher(currentPassword, notAllowedCharactersRegEx))
+            if (regularExpressionMatcher(currentPassword, notAllowedCharactersRegEx))
             {
                 flag = false;
             }

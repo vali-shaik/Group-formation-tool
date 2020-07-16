@@ -8,7 +8,6 @@ import dal.asd.catme.database.IDatabaseAccess;
 import dal.asd.catme.util.CatmeUtil;
 import org.springframework.stereotype.Component;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -22,7 +21,6 @@ public class AdminDaoImpl implements IAdminDao
     IDatabaseAccess db;
     PreparedStatement preparedStatement;
     ResultSet rs;
-    Connection connection;
 
     IBaseAbstractFactory baseAbstractFactory = BaseAbstractFactoryImpl.instance();
     IDatabaseAbstractFactory databaseAbstractFactory = baseAbstractFactory.makeDatabaseAbstractFactory();
@@ -30,27 +28,27 @@ public class AdminDaoImpl implements IAdminDao
     @Override
     public int addCourse(Course course)
     {
-        int result = 0;
+        db = databaseAbstractFactory.makeDatabaseAccess();
+        int result = CatmeUtil.ZERO;
         try
         {
-            db = databaseAbstractFactory.makeDatabaseAccess();
-            connection = db.getConnection();
-            result = addCourse(connection, ADD_COURSE_QUERY, course);
-        } catch (Exception e)
+            preparedStatement = db.getPreparedStatement(CHECK_INSTRUCTOR);
+            preparedStatement.setString(1, course.getCourseId());
+            ResultSet rs = db.executeForResultSet(preparedStatement);
+            if (!rs.next())
+            {
+                preparedStatement = db.getPreparedStatement(ADD_COURSE_QUERY);
+                preparedStatement.setString(1, course.getCourseId());
+                preparedStatement.setString(2, course.getCourseName());
+                result = preparedStatement.executeUpdate();
+            } else
+                result = CatmeUtil.TWO;
+        } catch (SQLException e)
         {
             e.printStackTrace();
         } finally
         {
-            if (connection != null)
-            {
-                try
-                {
-                    connection.close();
-                } catch (SQLException e)
-                {
-                    e.printStackTrace();
-                }
-            }
+            db.cleanUp();
         }
         return result;
     }
@@ -59,31 +57,21 @@ public class AdminDaoImpl implements IAdminDao
     public int deleteCourse(String courseId)
     {
         int result = 0;
+        db = databaseAbstractFactory.makeDatabaseAccess();
         try
         {
             if (courseId.length() > CatmeUtil.ZERO)
             {
-                db = databaseAbstractFactory.makeDatabaseAccess();
-                connection = db.getConnection();
-                updateQuery(connection, DELETE_ENROLLMENT_QUERY, courseId);
-                updateQuery(connection, DELETE_COURSE_INSTRUCTOR_QUERY, courseId);
-                result = updateQuery(connection, DELETE_COURSE_QUERY, courseId);
+                updateQuery(DELETE_ENROLLMENT_QUERY, courseId);
+                updateQuery(DELETE_COURSE_INSTRUCTOR_QUERY, courseId);
+                result = updateQuery(DELETE_COURSE_QUERY, courseId);
             }
         } catch (Exception e)
         {
             e.printStackTrace();
         } finally
         {
-            if (connection != null)
-            {
-                try
-                {
-                    connection.close();
-                } catch (SQLException e)
-                {
-                    e.printStackTrace();
-                }
-            }
+            db.cleanUp();
         }
         return result;
     }
@@ -97,65 +85,56 @@ public class AdminDaoImpl implements IAdminDao
         {
             if (user.length() > CatmeUtil.ZERO && course.length() > CatmeUtil.ZERO)
             {
-                db = databaseAbstractFactory.makeDatabaseAccess();
-                connection = db.getConnection();
-                int roleId = selectInstructorRole(connection);
+                int roleId = selectInstructorRole();
                 System.out.println("roleId " + roleId);
-                int userRole = insertInstructorRole(connection, user, roleId);
-                result = addAsCourseInstructor(connection, course, userRole);
+                int userRole = insertInstructorRole(user, roleId);
+                result = addAsCourseInstructor(course, userRole);
             }
         } catch (Exception e)
         {
             e.printStackTrace();
-        } finally
-        {
-            if (connection != null)
-            {
-                try
-                {
-                    connection.close();
-                } catch (SQLException e)
-                {
-                    e.printStackTrace();
-                }
-            }
         }
 
         return result;
     }
 
-    public int selectInstructorRole(Connection connection)
+    public int selectInstructorRole()
     {
+        db = databaseAbstractFactory.makeDatabaseAccess();
         int result = 0;
         try
         {
-            preparedStatement = connection.prepareStatement(SELECT_ROLE_BY_ROLENAME);
+            preparedStatement = db.getPreparedStatement(SELECT_ROLE_BY_ROLENAME);
             preparedStatement.setString(1, CatmeUtil.ROLE_INSTRUCTOR);
-            rs = preparedStatement.executeQuery();
+            rs = db.executeForResultSet(preparedStatement);
             if (rs.next())
                 result = Integer.parseInt(rs.getString("roleId"));
 
         } catch (SQLException e)
         {
             e.printStackTrace();
+        } finally
+        {
+            db.cleanUp();
         }
 
         return result;
 
     }
 
-    public int addAsCourseInstructor(Connection connection, String course, int userRole)
+    public int addAsCourseInstructor(String course, int userRole)
     {
+        db = databaseAbstractFactory.makeDatabaseAccess();
         int result = 0;
         try
         {
-            preparedStatement = connection.prepareStatement(SELECT_COURSE_INSTRUCTOR_BY_USER_ROLE_COURSEID);
+            preparedStatement = db.getPreparedStatement(SELECT_COURSE_INSTRUCTOR_BY_USER_ROLE_COURSEID);
             preparedStatement.setInt(1, userRole);
             preparedStatement.setString(2, course);
-            rs = preparedStatement.executeQuery();
+            rs = db.executeForResultSet(preparedStatement);
             if (!rs.next())
             {
-                preparedStatement = connection.prepareStatement(INSERT_INTO_COURSE_INSTRUCTOR);
+                preparedStatement = db.getPreparedStatement(INSERT_INTO_COURSE_INSTRUCTOR);
                 preparedStatement.setInt(2, userRole);
                 preparedStatement.setString(1, course);
                 result = preparedStatement.executeUpdate();
@@ -167,68 +146,53 @@ public class AdminDaoImpl implements IAdminDao
         } catch (SQLException e)
         {
             e.printStackTrace();
+        } finally
+        {
+            db.cleanUp();
         }
 
         return result;
     }
 
-    public int updateQuery(Connection connection, String query, String courseId)
+    public int updateQuery(String query, String courseId)
     {
+        db = databaseAbstractFactory.makeDatabaseAccess();
         int result = 0;
         try
         {
-            preparedStatement = connection.prepareStatement(query);
+            preparedStatement = db.getPreparedStatement(query);
             preparedStatement.setString(1, courseId);
             result = preparedStatement.executeUpdate();
         } catch (SQLException e)
         {
             e.printStackTrace();
+        } finally
+        {
+            db.cleanUp();
         }
 
         return result;
     }
 
-    public int addCourse(Connection connection, String query, Course course)
+    public int insertInstructorRole(String user, int roleId)
     {
-        int result = CatmeUtil.ZERO;
-        try
-        {
-            preparedStatement = connection.prepareStatement(CHECK_INSTRUCTOR);
-            preparedStatement.setString(1, course.getCourseId());
-            ResultSet rs = preparedStatement.executeQuery();
-            if (!rs.next())
-            {
-                preparedStatement = connection.prepareStatement(query);
-                preparedStatement.setString(1, course.getCourseId());
-                preparedStatement.setString(2, course.getCourseName());
-                result = preparedStatement.executeUpdate();
-            } else
-                result = CatmeUtil.TWO;
-        } catch (SQLException e)
-        {
-            e.printStackTrace();
-        }
-        return result;
-    }
-
-    public int insertInstructorRole(Connection connection, String user, int roleId)
-    {
+        db = databaseAbstractFactory.makeDatabaseAccess();
         int userRoleId = 0;
         try
         {
-            preparedStatement = connection.prepareStatement(SELECT_USER_ROLE_BY_BANNERID);
+            preparedStatement = db.getPreparedStatement(SELECT_USER_ROLE_BY_BANNERID);
             preparedStatement.setString(1, user);
             preparedStatement.setInt(2, roleId);
-            rs = preparedStatement.executeQuery();
+            rs = db.executeForResultSet(preparedStatement);
 
             if (!rs.next())
             {
-                preparedStatement = connection.prepareStatement(INSERT_INTO_USER_ROLE);
+                preparedStatement = db.getPreparedStatement(INSERT_INTO_USER_ROLE);
                 preparedStatement.setInt(1, roleId);
                 preparedStatement.setString(2, user);
                 preparedStatement.executeUpdate();
 
-                preparedStatement = connection.prepareStatement(SELECT_USER_ROLE_BY_BANNERID);
+                preparedStatement = db.getPreparedStatement(SELECT_USER_ROLE_BY_BANNERID);
                 preparedStatement.setString(1, user);
                 preparedStatement.setInt(2, roleId);
                 rs = preparedStatement.executeQuery();
@@ -240,6 +204,9 @@ public class AdminDaoImpl implements IAdminDao
         } catch (SQLException e)
         {
             e.printStackTrace();
+        } finally
+        {
+            db.cleanUp();
         }
         return userRoleId;
     }

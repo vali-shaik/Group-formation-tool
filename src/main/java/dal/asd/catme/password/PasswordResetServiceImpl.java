@@ -7,11 +7,7 @@ import dal.asd.catme.accesscontrol.IAccessControlModelAbstractFactory;
 import dal.asd.catme.accesscontrol.IUserDao;
 import dal.asd.catme.accesscontrol.User;
 import dal.asd.catme.database.IDatabaseAbstractFactory;
-import dal.asd.catme.database.IDatabaseAccess;
 import dal.asd.catme.util.RandomTokenGenerator;
-
-import java.sql.Connection;
-import java.sql.SQLException;
 
 import static dal.asd.catme.accesscontrol.MailSenderUtil.TOKEN_LENGTH;
 
@@ -20,8 +16,6 @@ public class PasswordResetServiceImpl implements IPasswordResetService
 {
     IUserDao userDao;
     IPasswordDao passwordDao;
-    IDatabaseAccess db;
-    Connection con;
 
     IBaseAbstractFactory baseAbstractFactory = BaseAbstractFactoryImpl.instance();
     IDatabaseAbstractFactory databaseAbstractFactory = baseAbstractFactory.makeDatabaseAbstractFactory();
@@ -38,15 +32,12 @@ public class PasswordResetServiceImpl implements IPasswordResetService
     {
         try
         {
-            db = databaseAbstractFactory.makeDatabaseAccess();
-            con = db.getConnection();
-
-            if (userDao.checkExistingUser(bannerid, con) == 0)
+            if (userDao.checkExistingUser(bannerid) == 0)
             {
                 return null;
 
             }
-            User u = userDao.getUser(bannerid, con);
+            User u = userDao.getUser(bannerid);
 
             if (u == null)
             {
@@ -60,23 +51,10 @@ public class PasswordResetServiceImpl implements IPasswordResetService
             passwordDao.generatePasswordResetToken(u, token);
 
             return u;
-        } catch (SQLException throwables)
-        {
-            throwables.printStackTrace();
         } catch (CatmeException e)
         {
             return null;
-        } finally
-        {
-            try
-            {
-                con.close();
-            } catch (SQLException | NullPointerException e)
-            {
-                e.printStackTrace();
-            }
         }
-        return null;
     }
 
     @Override
@@ -101,29 +79,7 @@ public class PasswordResetServiceImpl implements IPasswordResetService
         u.setBannerId(bannerId);
         u.setPassword(password);
 
-        try
-        {
-            db = databaseAbstractFactory.makeDatabaseAccess();
-            con = db.getConnection();
-
-            passwordDao.resetPassword(u, con);
-            passwordDao.removeToken(bannerId);
-
-
-        } catch (SQLException throwables)
-        {
-            throwables.printStackTrace();
-            throw new CatmeException("Error Reseting Password");
-        } finally
-        {
-            try
-            {
-                con.close();
-                System.out.println("Connection closed");
-            } catch (SQLException | NullPointerException e)
-            {
-                e.printStackTrace();
-            }
-        }
+        passwordDao.resetPassword(u);
+        passwordDao.removeToken(bannerId);
     }
 }
