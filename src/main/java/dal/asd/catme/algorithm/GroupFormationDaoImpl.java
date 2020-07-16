@@ -144,7 +144,7 @@ public class GroupFormationDaoImpl implements IGroupFormationDao {
 				question.setQuestionId(Integer.parseInt(rs.getString("QuestionId")));
 				question.setPriority(Integer.parseInt(rs.getString("Priority")));
 				question.setQuestionType(rs.getString("QuestionType"));
-				if (rs.getString("QuestionType").equalsIgnoreCase(CatmeUtil.SIMILAR)) {
+				if (rs.getString("RuleType").equalsIgnoreCase(CatmeUtil.SIMILAR)) {
 					question.setRule(CatmeUtil.ONE);
 				} else if (rs.getString("QuestionType").equalsIgnoreCase(CatmeUtil.DISSIMILAR)) {
 					question.setRule(CatmeUtil.TWO);

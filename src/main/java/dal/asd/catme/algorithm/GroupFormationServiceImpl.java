@@ -54,7 +54,7 @@ public class GroupFormationServiceImpl implements IGroupFormationService {
 	@Override
 	public HashMap formGroups() {
 
-
+		
 		for (Question q : algorithmParameters.getQuestions()) {
 			if (q.questionType.equalsIgnoreCase("RadioButton") || q.questionType.equalsIgnoreCase("Numeric")) {
 				questionTypeOne.add(q);
@@ -64,12 +64,20 @@ public class GroupFormationServiceImpl implements IGroupFormationService {
 				questionTypeTwo.add(q);
 				noOfQuestionsMcqMultiple += 1;
 			}
-		}
+		} /*
+			 * for (Question q : questionTypeOne) {
+			 * System.out.println("question id "+q.getQuestionId()+"\tquestion prior "+q.
+			 * getPriority()); } for (Question q : questionTypeTwo) {
+			 * System.out.println("question id "+q.getQuestionId()+"\tquestion prior "+q.
+			 * getPriority()); }
+			 */
 
 		answerTableMcqNumeric = new int[noOfQuestionsMcqNumeric][noOfStudents];
 		answerTableMcqMultiple = new MCQMultiple[noOfQuestionsMcqMultiple][noOfStudents];
+		System.out.println(noOfQuestionsMcqNumeric + "\t" + noOfQuestionsMcqNumeric+"\t" + noOfStudents);
 
 		for(Student student :algorithmParameters.getStudents()){
+			System.out.println("student id "+student.getBannerId());
 			students.add(student.getBannerId());
 		}
 
@@ -91,8 +99,8 @@ public class GroupFormationServiceImpl implements IGroupFormationService {
 			for(int j=0;j<questionTypeOne.size();j++){
 				Question question = questionTypeOne.get(j);
 				for(Answer answer:answersList){
-//					System.out.println("answer.getQuestionId()"+answer.getQuestionId());
-//					System.out.println("question.getQuestionId()"+question.getQuestionId());
+					System.out.println("answer.getQuestionId()"+answer.getQuestionId());
+					System.out.println("question.getQuestionId()"+question.getQuestionId());
 					if (answer.getQuestionId() == question.getQuestionId()){
 						System.out.println("answer.getAnswers().get(0) "+answer.getAnswers().get(0));
 						answerTableMcqNumeric[i][j] = answer.getAnswers().get(0);
