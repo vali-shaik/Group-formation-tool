@@ -1,5 +1,22 @@
 package dal.asd.catme.courses;
 
+import static dal.asd.catme.accesscontrol.MailSenderUtil.TOKEN_LENGTH;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.mail.MessagingException;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
+
 import dal.asd.catme.BaseAbstractFactoryImpl;
 import dal.asd.catme.accesscontrol.IAccessControlAbstractFactory;
 import dal.asd.catme.accesscontrol.IMailSenderService;
@@ -14,21 +31,8 @@ import dal.asd.catme.studentlistimport.ICSVParserAbstractFactory;
 import dal.asd.catme.studentlistimport.ICSVReader;
 import dal.asd.catme.util.CatmeUtil;
 import dal.asd.catme.util.RandomTokenGenerator;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.ModelAndView;
 
-import javax.mail.MessagingException;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import static dal.asd.catme.accesscontrol.MailSenderUtil.TOKEN_LENGTH;
-
+@Controller
 public class CourseManageController
 {
     ICSVParserAbstractFactory icsvParserAbstractFactory = BaseAbstractFactoryImpl.instance().makeCSVParserAbstractFactory();

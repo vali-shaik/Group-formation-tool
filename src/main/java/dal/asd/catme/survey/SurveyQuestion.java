@@ -32,11 +32,5 @@ public class SurveyQuestion {
 	public void setRule(Rule rule) {
 		this.rule = rule;
 	}
-	@Override
-	public String toString() {
-		return "SurveyQuestion [surveyQuestionId=" + surveyQuestionId + ", question=" + question + ", rule=" + rule
-				+ ", priority=" + priority + "]";
-	}
-	
-	
+
 	}
