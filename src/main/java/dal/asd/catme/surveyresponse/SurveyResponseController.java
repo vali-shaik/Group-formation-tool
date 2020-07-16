@@ -59,19 +59,17 @@ public class SurveyResponseController
             binder.setCourseId(courseId);
 
             m.addAttribute("response", binder);
-        }
-        catch (SurveyResponseException e)
+        } catch (SurveyResponseException e)
         {
             m.addAttribute("surveyPublished", true);
             m.addAttribute("attempted", false);
-            if(m.getAttribute("message")==null)
-                m.addAttribute("message",e.getMessage());
+            m.addAttribute("message", e.getMessage());
         }
         return CatmeUtil.SURVEY_PAGE;
     }
 
     @PostMapping("/saveResponse")
-    public String saveResponse(@ModelAttribute SurveyResponseBinder binder ,Model m)
+    public String saveResponse(@ModelAttribute SurveyResponseBinder binder, Model m)
     {
         log.info("Responses Received");
         try
@@ -80,10 +78,9 @@ public class SurveyResponseController
             surveyService.saveResponses(binder, bannerId);
         } catch (SurveyResponseException e)
         {
-            System.out.println("Exception for saving responses");
             m.addAttribute("surveyPublished", true);
             m.addAttribute("attempted", false);
-            m.addAttribute("message",e.getMessage());
+            m.addAttribute("message", e.getMessage());
             m.addAttribute("courseId", binder.getCourseId());
             return CatmeUtil.SURVEY_PAGE;
         }

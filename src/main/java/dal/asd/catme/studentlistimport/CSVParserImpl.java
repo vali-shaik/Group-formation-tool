@@ -44,7 +44,7 @@ public class CSVParserImpl implements ICSVParser
                     students.add(student);
                 } else
                 {
-                    log.info("Invalid data in line: "+line);
+                    log.info("Invalid data in line: " + line);
                     return null;
                 }
             }

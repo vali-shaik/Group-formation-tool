@@ -1,4 +1,3 @@
-
 package dal.asd.catme.studentlistimport;
 
 import org.slf4j.Logger;
@@ -33,7 +32,7 @@ public class CSVReader implements ICSVReader
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
 
         String line;
-        while ((line = reader.readLine())==null==false)
+        while ((line = reader.readLine()) == null == false)
         {
             if (line.isEmpty())
                 continue;
@@ -55,7 +54,7 @@ public class CSVReader implements ICSVReader
     @Override
     public void validateFile(MultipartFile file) throws InvalidFileFormatException
     {
-        log.info("Validating file: "+file.getName());
+        log.info("Validating file: " + file.getName());
         if (file.isEmpty())
         {
             throw new InvalidFileFormatException("Please Upload File");

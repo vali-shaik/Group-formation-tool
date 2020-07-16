@@ -1,7 +1,7 @@
 package dal.asd.catme;
 
-import dal.asd.catme.accesscontrol.User;
 import dal.asd.catme.accesscontrol.Role;
+import dal.asd.catme.accesscontrol.User;
 import dal.asd.catme.courses.Course;
 import dal.asd.catme.util.CatmeUtil;
 

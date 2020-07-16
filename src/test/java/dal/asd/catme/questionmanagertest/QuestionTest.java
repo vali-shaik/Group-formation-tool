@@ -139,7 +139,7 @@ public class QuestionTest
         option.setDisplayText("Option 1");
         question.addOption(option);
 
-        assertEquals("Option 1",question.getOptionWithOrder().get(0).getDisplayText());
+        assertEquals("Option 1", question.getOptionWithOrder().get(0).getDisplayText());
     }
 
     private List<Option> listOption()

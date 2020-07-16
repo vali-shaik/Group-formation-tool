@@ -38,7 +38,7 @@ public class SurveyResponseServiceImpl implements ISurveyResponseService
 
     public boolean saveResponses(SurveyResponseBinder binder, String bannerId) throws SurveyResponseException
     {
-        log.info("calling service method to save responses of student: "+bannerId);
+        log.info("calling service method to save responses of student: " + bannerId);
         if (stringNullOrEmpty(bannerId))
             return false;
         return surveyDao.saveResponses(binder, bannerId) &&
@@ -47,7 +47,7 @@ public class SurveyResponseServiceImpl implements ISurveyResponseService
 
     public boolean isSurveyAttempted(String suveyId, String bannerId) throws SurveyResponseException
     {
-        log.info("calling service method to check if survey is already attempted by student: "+bannerId);
+        log.info("calling service method to check if survey is already attempted by student: " + bannerId);
         return surveyDao.isSurveyAttempted(suveyId, bannerId);
     }
 

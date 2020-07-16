@@ -2,8 +2,6 @@ package dal.asd.catme.questionmanager;
 
 import dal.asd.catme.BaseAbstractFactoryImpl;
 import dal.asd.catme.IBaseAbstractFactory;
-import dal.asd.catme.config.SystemConfig;
-import dal.asd.catme.database.DatabaseAccess;
 import dal.asd.catme.database.IDatabaseAbstractFactory;
 import dal.asd.catme.database.IDatabaseAccess;
 import dal.asd.catme.util.CatmeUtil;
@@ -85,7 +83,7 @@ public class QuestionDaoImpl implements IQuestionDao
         try
         {
             con = db.getConnection();
-            if (0 == checkExistingQuestion(questionId, con)==false)
+            if (0 == checkExistingQuestion(questionId, con) == false)
             {
                 PreparedStatement stmt = con.prepareStatement(DBQueriesUtil.DELETE_QUESTION_QUERY);
                 stmt.setInt(1, questionId);
@@ -282,7 +280,7 @@ public class QuestionDaoImpl implements IQuestionDao
         for (int i = 0; i < options.size(); i++)
         {
             Option option = options.get(i);
-            if (option.getDisplayText().trim().length() > 0 && option.getDisplayText().isEmpty()==false)
+            if (option.getDisplayText().trim().length() > 0 && option.getDisplayText().isEmpty() == false)
             {
                 try
                 {

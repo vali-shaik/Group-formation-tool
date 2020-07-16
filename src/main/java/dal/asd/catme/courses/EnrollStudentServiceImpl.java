@@ -3,8 +3,6 @@ package dal.asd.catme.courses;
 import dal.asd.catme.BaseAbstractFactoryImpl;
 import dal.asd.catme.IBaseAbstractFactory;
 import dal.asd.catme.accesscontrol.User;
-import dal.asd.catme.config.SystemConfig;
-import dal.asd.catme.database.DatabaseAccess;
 import dal.asd.catme.database.IDatabaseAbstractFactory;
 import dal.asd.catme.database.IDatabaseAccess;
 import dal.asd.catme.util.CatmeUtil;
@@ -35,7 +33,7 @@ public class EnrollStudentServiceImpl implements IEnrollStudentService
     @Override
     public boolean enrollStudentsIntoCourse(ArrayList<User> students, Course c)
     {
-        log.info("Enrolling students in course: "+c.getCourseId());
+        log.info("Enrolling students in course: " + c.getCourseId());
         try
         {
             db = databaseAbstractFactory.makeDatabaseAccess();
@@ -49,7 +47,7 @@ public class EnrollStudentServiceImpl implements IEnrollStudentService
                     enrollStudent(s, c);
                 } catch (EnrollmentException e)
                 {
-                    log.error("Error enrolling students: "+e.getMessage());
+                    log.error("Error enrolling students: " + e.getMessage());
                     e.printStackTrace();
                     return false;
                 }

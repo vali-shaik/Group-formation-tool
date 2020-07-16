@@ -2,7 +2,6 @@ package dal.asd.catme.questionmanagertest;
 
 import dal.asd.catme.BaseAbstractFactoryMock;
 import dal.asd.catme.IBaseAbstractFactory;
-import dal.asd.catme.questionmanager.QuestionDatabaseException;
 import dal.asd.catme.questionmanager.*;
 import dal.asd.catme.util.CatmeUtil;
 

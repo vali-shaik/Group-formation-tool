@@ -8,7 +8,7 @@ import java.sql.*;
 import java.util.logging.Logger;
 
 @Configuration
-public class DatabaseAccess implements DataSource,IDatabaseAccess
+public class DatabaseAccess implements DataSource, IDatabaseAccess
 {
 
     private Connection connection;

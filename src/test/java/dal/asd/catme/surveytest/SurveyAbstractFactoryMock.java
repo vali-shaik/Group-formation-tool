@@ -7,26 +7,26 @@ import dal.asd.catme.survey.SurveyServiceImpl;
 
 public class SurveyAbstractFactoryMock implements ISurveyAbstractFactory
 {
-	static ISurveyAbstractFactory surveyAbstractFactory=null;
-	ISurveyService surveyService;
-	ISurveyDao surveyDao;
-	
-	public SurveyAbstractFactoryMock()
-	{
-		surveyDao=new SurveyDaoMock();
-		surveyService=new SurveyServiceImpl(surveyDao);
-	}
+    static ISurveyAbstractFactory surveyAbstractFactory = null;
+    ISurveyService surveyService;
+    ISurveyDao surveyDao;
 
-	@Override
-	public ISurveyService makeSurveyService() 
-	{
-		return surveyService;
-	}
+    public SurveyAbstractFactoryMock()
+    {
+        surveyDao = new SurveyDaoMock();
+        surveyService = new SurveyServiceImpl(surveyDao);
+    }
 
-	@Override
-	public ISurveyDao makeSurveyDao() 
-	{
-		return surveyDao;
-	}
+    @Override
+    public ISurveyService makeSurveyService()
+    {
+        return surveyService;
+    }
+
+    @Override
+    public ISurveyDao makeSurveyDao()
+    {
+        return surveyDao;
+    }
 
 }

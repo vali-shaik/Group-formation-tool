@@ -1,21 +1,18 @@
 package dal.asd.catme.courses;
 
 import dal.asd.catme.BaseAbstractFactoryImpl;
-import dal.asd.catme.accesscontrol.IAccessControlAbstractFactory;
-import dal.asd.catme.accesscontrol.IMailSenderService;
-import dal.asd.catme.accesscontrol.IUserService;
-import dal.asd.catme.accesscontrol.User;
+import dal.asd.catme.accesscontrol.*;
 import dal.asd.catme.config.CatmeSecurityConfig;
 import dal.asd.catme.config.SystemConfig;
-import dal.asd.catme.accesscontrol.CatmeException;
-import dal.asd.catme.studentlistimport.InvalidFileFormatException;
 import dal.asd.catme.studentlistimport.ICSVParser;
 import dal.asd.catme.studentlistimport.ICSVParserAbstractFactory;
 import dal.asd.catme.studentlistimport.ICSVReader;
+import dal.asd.catme.studentlistimport.InvalidFileFormatException;
 import dal.asd.catme.util.CatmeUtil;
 import dal.asd.catme.util.RandomTokenGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -29,6 +26,7 @@ import java.util.List;
 
 import static dal.asd.catme.accesscontrol.MailSenderUtil.TOKEN_LENGTH;
 
+@Controller
 public class CourseManageController
 {
     ICSVParserAbstractFactory icsvParserAbstractFactory = BaseAbstractFactoryImpl.instance().makeCSVParserAbstractFactory();
@@ -37,7 +35,6 @@ public class CourseManageController
 
     ICourseModelAbstractFactory modelAbstractFactory = BaseAbstractFactoryImpl.instance().makeCourseModelAbstractFactory();
     private static final Logger log = LoggerFactory.getLogger(CourseController.class);
-
 
     @RequestMapping("/manageCourse")
     public ModelAndView manageCourse(@RequestParam(name = "courseId") String courseId)
@@ -80,7 +77,7 @@ public class CourseManageController
         ModelAndView model = new ModelAndView();
         model.setViewName(CatmeUtil.MANAGE_COURSE_PAGE);
 
-        log.info("File Received at Server: "+file.getName());
+        log.info("File Received at Server: " + file.getName());
         try
         {
             ICSVReader icsvReader = icsvParserAbstractFactory.makeCSVReader(file.getInputStream());

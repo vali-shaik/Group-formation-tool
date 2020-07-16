@@ -1,26 +1,26 @@
 package dal.asd.catme.surveytest;
 
-import static org.junit.Assert.assertNotNull;
-
-import org.junit.jupiter.api.Test;
-
 import dal.asd.catme.BaseAbstractFactoryImpl;
 import dal.asd.catme.survey.ISurveyDao;
 import dal.asd.catme.survey.ISurveyService;
+import org.junit.jupiter.api.Test;
 
-public class SurveyAbstractFactoryTest 
+import static org.junit.Assert.assertNotNull;
+
+public class SurveyAbstractFactoryTest
 {
-	@Test
-	public void makeSurveyServiceTest()
-	{
-		ISurveyService surveyService = BaseAbstractFactoryImpl.instance().makeSurveyAbstractFactory().makeSurveyService();
+    @Test
+    public void makeSurveyServiceTest()
+    {
+        ISurveyService surveyService = BaseAbstractFactoryImpl.instance().makeSurveyAbstractFactory().makeSurveyService();
         assertNotNull(surveyService);
 
-	}
-	@Test
-	public void makeSurveyDaoTest()
-	{
-		ISurveyDao surveyDao = BaseAbstractFactoryImpl.instance().makeSurveyAbstractFactory().makeSurveyDao();
+    }
+
+    @Test
+    public void makeSurveyDaoTest()
+    {
+        ISurveyDao surveyDao = BaseAbstractFactoryImpl.instance().makeSurveyAbstractFactory().makeSurveyDao();
         assertNotNull(surveyDao);
-	}
+    }
 }

@@ -3,23 +3,23 @@ package dal.asd.catme.util;
 public class DBQueriesUtil
 {
 
-    public static final String SELECT_USER_SECURITY_QUERY ="CALL getUserSecurity(?)";
+    public static final String SELECT_USER_SECURITY_QUERY = "CALL getUserSecurity(?)";
     public static final String SELECT_ROLE_SECURITY_QUERY = "CALL getRoleSecurity(?)";
-    public static final String SELECT_GUEST_COURSES_QUERY ="CALL getAllCourseDetails()";
-    public static final String SELECT_INSTRUTOR_COURSES_QUERY ="CALL getInstructorCourseDetails(?)";
-    public static final String SELECT_COURSE_ROLE_QUERY ="CALL getCourseRole(?,?)";
-    public static final String SELECT_COURSE_QUERY ="CALL getCourseDetails(?)";
+    public static final String SELECT_GUEST_COURSES_QUERY = "CALL getAllCourseDetails()";
+    public static final String SELECT_INSTRUTOR_COURSES_QUERY = "CALL getInstructorCourseDetails(?)";
+    public static final String SELECT_COURSE_ROLE_QUERY = "CALL getCourseRole(?,?)";
+    public static final String SELECT_COURSE_QUERY = "CALL getCourseDetails(?)";
     public static final String SELECT_STUDENT_COURSES_QUERY = "CALL getStudentCourseDetails(?)";
-    public static final String SELECT_STUDENT_INSTRUCTOR_COURSE="CALL getStudentInstructorCourseDetails(?)";
+    public static final String SELECT_STUDENT_INSTRUCTOR_COURSE = "CALL getStudentInstructorCourseDetails(?)";
     public static final String SELECT_COURSE = "CALL getAllCourses()";
-    
-    
+
+
     public static final String SELECT_COURSE_INSTRUCTOR_BY_USER_ROLE_COURSEID = "select * from CourseInstructor where userRoleId=? and courseId=?";
     //public static final String SELECT_COURSE_INSTRUCTOR_BY_USER_ROLE_COURSEID="CALL fetchCourseInstructor(?,?)";
     public static final String DELETE_COURSE_INSTRUCTOR_QUERY = "delete from CourseInstructor where CourseId=?";
     //public static final String DELETE_COURSE_INSTRUCTOR_QUERY="CALL deleteCourseInstructor(?)";
     public static final String DELETE_ENROLLMENT_QUERY = "delete from Enrollment where CourseId=?";
-   // public static final String DELETE_ENROLLMENT_QUERY = "CALL deleteEnrollment(?)";
+    // public static final String DELETE_ENROLLMENT_QUERY = "CALL deleteEnrollment(?)";
     public static final String DELETE_COURSE_QUERY = "delete from Course where CourseId=?";
     //public static final String DELETE_COURSE_QUERY = "CALL deleteCourse(?)";
     public static final String ADD_COURSE_QUERY = "insert into Course values(?,?)";
@@ -80,25 +80,25 @@ public class DBQueriesUtil
     //public static final String CHECK_QUESTION_OPTION = "checkQuestionOption(?,?)";
     public static final String INSERT_QUESTION_OPTION = "insert into QuestionOption(QuestionId,QuestionOption,OptionOrder) values(?,?,?)";
     //public static final String INSERT_QUESTION_OPTION = "CALL insertQuestionOption(?,?,?)";
-    
+
     public static final String GET_QUESTIONS = "CALL GetQuestionsList(?)";
     public static final String CHECK_EXISTING_QUESTION_QUERY = "SELECT EXISTS(SELECT * FROM Question WHERE QuestionId = ? );";
     //public static final String CHECK_EXISTING_QUESTION_QUERY = "CALL checkQuestionExists(?)";
     public static final String DELETE_QUESTION_QUERY = "DELETE FROM Question WHERE QuestionId = ? ;";
-    public static final String FETCH_SURVEY_QUESTIONS="CALL getSurveyQuestionsByCourse(?)";
-    public static final String GET_SURVEY_QUESTION_RULE="CALL getSurveyQuestionRule(?)";
-    public static final String GET_SURVEY_BY_COURSE="CALL getSurveyByCourse(?)";
-    public static final String CREATE_SURVEY="CALL createSurvey(?)";
-    public static final String ADD_QUESTION_TO_SURVEY="CALL createSurveyQuestion(?,?,?,?)";
-    public static final String ADD_RULE_SURVEY_QUESTION="CALL createSurveyQuestionRule(?,?)";
-    public static final String DELETE_ALL_SURVEY_QUESTIONS="CALL deleteAllSurveyQuestions(?)";
-    public static final String IS_PUBLISHED="CALL GetPublishedSurvey(?)";
-    public static final String PUBLISH_SURVEY="CALL publishSurvey(?)";
-    public static final String UPDATE_SURVEY_GROUPSIZE="CALL updateSurvey(?,?)";
-    public static final String GET_PRIORITY="CALL getPriority(?,?)";
-    public static final int DEFAULT_SURVEY_QUESTION_RULE=1;
-    public static final int DEFAULT_PRIORITY=1;
-    public static final String DELETE_SURVEY_QUESTION="CALL deleteSurveyQuestion(?,?)";
+    public static final String FETCH_SURVEY_QUESTIONS = "CALL getSurveyQuestionsByCourse(?)";
+    public static final String GET_SURVEY_QUESTION_RULE = "CALL getSurveyQuestionRule(?)";
+    public static final String GET_SURVEY_BY_COURSE = "CALL getSurveyByCourse(?)";
+    public static final String CREATE_SURVEY = "CALL createSurvey(?)";
+    public static final String ADD_QUESTION_TO_SURVEY = "CALL createSurveyQuestion(?,?,?,?)";
+    public static final String ADD_RULE_SURVEY_QUESTION = "CALL createSurveyQuestionRule(?,?)";
+    public static final String DELETE_ALL_SURVEY_QUESTIONS = "CALL deleteAllSurveyQuestions(?)";
+    public static final String IS_PUBLISHED = "CALL GetPublishedSurvey(?)";
+    public static final String PUBLISH_SURVEY = "CALL publishSurvey(?)";
+    public static final String UPDATE_SURVEY_GROUPSIZE = "CALL updateSurvey(?,?)";
+    public static final String GET_PRIORITY = "CALL getPriority(?,?)";
+    public static final int DEFAULT_SURVEY_QUESTION_RULE = 1;
+    public static final int DEFAULT_PRIORITY = 1;
+    public static final String DELETE_SURVEY_QUESTION = "CALL deleteSurveyQuestion(?,?)";
     public static final String GET_PUBLISHED_SURVEY = "call GetPublishedSurvey(?);";
     public static final String GET_SURVEY_QUESTIONS = "call GetSurveyQuestions(?);";
     public static final String SAVE_ANSWER = "call SaveAnswer(?,?,?);";

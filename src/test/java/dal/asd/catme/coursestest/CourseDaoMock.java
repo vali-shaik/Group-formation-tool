@@ -1,10 +1,10 @@
 package dal.asd.catme.coursestest;
 
 import dal.asd.catme.POJOMock;
+import dal.asd.catme.accesscontrol.CatmeException;
 import dal.asd.catme.accesscontrol.User;
 import dal.asd.catme.courses.Course;
 import dal.asd.catme.courses.ICourseDao;
-import dal.asd.catme.accesscontrol.CatmeException;
 import dal.asd.catme.util.CatmeUtil;
 
 import java.sql.Connection;

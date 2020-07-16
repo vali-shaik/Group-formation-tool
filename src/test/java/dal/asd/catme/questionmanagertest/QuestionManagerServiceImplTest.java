@@ -7,7 +7,6 @@ import dal.asd.catme.util.CatmeUtil;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;

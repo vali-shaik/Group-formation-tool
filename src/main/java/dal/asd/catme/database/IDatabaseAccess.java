@@ -6,9 +6,9 @@ import java.sql.SQLException;
 
 public interface IDatabaseAccess
 {
-    public Connection getConnection() throws SQLException;
+    Connection getConnection() throws SQLException;
 
-    public ResultSet executeQuery(String query);
+    ResultSet executeQuery(String query);
 
-    public int executeUpdate(String query);
+    int executeUpdate(String query);
 }

@@ -2,9 +2,9 @@ package dal.asd.catme.coursestest;
 
 import dal.asd.catme.BaseAbstractFactoryMock;
 import dal.asd.catme.IBaseAbstractFactory;
+import dal.asd.catme.courses.Enrollment;
 import dal.asd.catme.courses.ICourseAbstractFactory;
 import dal.asd.catme.courses.ICourseModelAbstractFactory;
-import dal.asd.catme.courses.Enrollment;
 import dal.asd.catme.courses.IRoleDao;
 import org.junit.jupiter.api.Test;
 

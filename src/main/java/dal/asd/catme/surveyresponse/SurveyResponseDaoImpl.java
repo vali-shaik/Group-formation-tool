@@ -2,8 +2,6 @@ package dal.asd.catme.surveyresponse;
 
 import dal.asd.catme.BaseAbstractFactoryImpl;
 import dal.asd.catme.IBaseAbstractFactory;
-import dal.asd.catme.config.SystemConfig;
-import dal.asd.catme.database.DatabaseAccess;
 import dal.asd.catme.database.IDatabaseAbstractFactory;
 import dal.asd.catme.database.IDatabaseAccess;
 import dal.asd.catme.questionmanager.IQuestionManagerModelAbstractFactory;
@@ -38,7 +36,7 @@ public class SurveyResponseDaoImpl implements ISurveyResponseDao
 
     public String getPublishedSurveyId(String courseId) throws SurveyResponseException
     {
-        log.info("Checking database for publish status of Survey of course: "+courseId);
+        log.info("Checking database for publish status of Survey of course: " + courseId);
         IDatabaseAccess db = databaseAbstractFactory.makeDatabaseAccess();
         Connection con = null;
 
@@ -78,7 +76,7 @@ public class SurveyResponseDaoImpl implements ISurveyResponseDao
 
     public List<SurveyResponse> getSurveyQuestions(String surveyId) throws SurveyResponseException
     {
-        log.info("Getting survey questions from database of surveyId: "+surveyId);
+        log.info("Getting survey questions from database of surveyId: " + surveyId);
         IDatabaseAccess db = databaseAbstractFactory.makeDatabaseAccess();
         Connection con = null;
         List<SurveyResponse> questions = null;
@@ -98,8 +96,7 @@ public class SurveyResponseDaoImpl implements ISurveyResponseDao
             log.error("Error Connecting database");
             throwables.printStackTrace();
             throw new SurveyResponseException("Error Connecting Database\nCannot Get Questions");
-        }
-        finally
+        } finally
         {
             if (con != null)
             {
@@ -120,7 +117,7 @@ public class SurveyResponseDaoImpl implements ISurveyResponseDao
 
     public boolean saveResponses(SurveyResponseBinder binder, String bannerId) throws SurveyResponseException
     {
-        log.info("Saving survey responses of student: "+bannerId);
+        log.info("Saving survey responses of student: " + bannerId);
         IDatabaseAccess db = databaseAbstractFactory.makeDatabaseAccess();
         Connection con = null;
 
@@ -172,7 +169,7 @@ public class SurveyResponseDaoImpl implements ISurveyResponseDao
 
     public boolean saveAttempt(String surveyId, String bannerId) throws SurveyResponseException
     {
-        log.info("Marking survey as attempted: \nSurvey: "+surveyId+"/tStudent: "+bannerId);
+        log.info("Marking survey as attempted: \nSurvey: " + surveyId + "/tStudent: " + bannerId);
         IDatabaseAccess db = databaseAbstractFactory.makeDatabaseAccess();
         Connection con = null;
 
@@ -210,7 +207,7 @@ public class SurveyResponseDaoImpl implements ISurveyResponseDao
 
     public boolean isSurveyAttempted(String surveyId, String bannerId) throws SurveyResponseException
     {
-        log.info("Checking if student "+bannerId+" has already attempted survey "+surveyId);
+        log.info("Checking if student " + bannerId + " has already attempted survey " + surveyId);
         IDatabaseAccess db = databaseAbstractFactory.makeDatabaseAccess();
         Connection con = null;
 
@@ -260,7 +257,7 @@ public class SurveyResponseDaoImpl implements ISurveyResponseDao
             SurveyResponse q = modelAbstractFactory.makeSurveyResponse();
             while (rs.next())
             {
-                if ((rs.getInt(ID)==prevId)==false)
+                if ((rs.getInt(ID) == prevId) == false)
                 {
                     q = modelAbstractFactory.makeSurveyResponse();
                     q.setQuestion(new Question());

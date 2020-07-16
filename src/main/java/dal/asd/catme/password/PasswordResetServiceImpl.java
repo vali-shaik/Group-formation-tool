@@ -2,12 +2,10 @@ package dal.asd.catme.password;
 
 import dal.asd.catme.BaseAbstractFactoryImpl;
 import dal.asd.catme.IBaseAbstractFactory;
+import dal.asd.catme.accesscontrol.CatmeException;
 import dal.asd.catme.accesscontrol.IAccessControlModelAbstractFactory;
 import dal.asd.catme.accesscontrol.IUserDao;
 import dal.asd.catme.accesscontrol.User;
-import dal.asd.catme.config.SystemConfig;
-import dal.asd.catme.database.DatabaseAccess;
-import dal.asd.catme.accesscontrol.CatmeException;
 import dal.asd.catme.database.IDatabaseAbstractFactory;
 import dal.asd.catme.database.IDatabaseAccess;
 import dal.asd.catme.util.RandomTokenGenerator;

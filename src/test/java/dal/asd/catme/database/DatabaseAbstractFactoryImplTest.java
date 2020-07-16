@@ -9,6 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 public class DatabaseAbstractFactoryImplTest
 {
     IBaseAbstractFactory baseAbstractFactory = BaseAbstractFactoryImpl.instance();
+
     @Test
     void makeDatabaseAccessTest()
     {
