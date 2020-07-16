@@ -1,9 +1,11 @@
 package dal.asd.catme.passwordtest;
 
+import dal.asd.catme.password.IPasswordRulesConfig;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class PassordRulesConfigMock
+public class PassordRulesConfigMock implements IPasswordRulesConfig
 {
 
     public boolean regularExpressionMatcher(String currentPassword, String regularExpression)

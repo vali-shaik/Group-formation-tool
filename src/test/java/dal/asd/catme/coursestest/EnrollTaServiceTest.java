@@ -1,50 +1,42 @@
 package dal.asd.catme.coursestest;
 
-import dal.asd.catme.POJOMock;
-import dal.asd.catme.accesscontrol.IUser;
-import dal.asd.catme.accesscontrol.User;
+import dal.asd.catme.BaseAbstractFactoryMock;
+import dal.asd.catme.IBaseAbstractFactory;
 import dal.asd.catme.courses.Enrollment;
-
+import dal.asd.catme.courses.ICourseAbstractFactory;
+import dal.asd.catme.courses.ICourseModelAbstractFactory;
+import dal.asd.catme.courses.IRoleDao;
 import org.junit.jupiter.api.Test;
 
 import java.sql.Connection;
-import java.util.ArrayList;
-import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.fail;
 
 
 public class EnrollTaServiceTest
 {
     Connection con;
 
+    IBaseAbstractFactory baseAbstractFactory = BaseAbstractFactoryMock.instance();
+    ICourseAbstractFactory courseAbstractFactory = baseAbstractFactory.makeCourseAbstractFactory();
+    ICourseModelAbstractFactory courseModelAbstractFactory = baseAbstractFactory.makeCourseModelAbstractFactory();
 
     @Test
     void enrollTa()
     {
-        RoleDaoMock roleDaoMock = new RoleDaoMock(formUsers(), POJOMock.getCourses());
+        IRoleDao roleDaoMock = courseAbstractFactory.makeRoleDao();
         try
         {
-            assertNull(roleDaoMock.assignTa(new Enrollment("B00835717", "5306"), con));
+            Enrollment enrollment = courseModelAbstractFactory.makeEnrollment();
+            enrollment.setBannerId("B00835717");
+            enrollment.setCourseId("5306");
+            assertNotNull(roleDaoMock.assignTa(enrollment, con));
 
         } catch (Exception e)
         {
             e.printStackTrace();
             fail();
         }
-    }
-
-
-    public ArrayList<IUser> formUsers()
-    {
-        List<IUser> listOfUsers = new ArrayList<>();
-        IUser user = new User();
-        user.setBannerId("B00835717");
-        listOfUsers.add(user);
-        IUser user1 = new User();
-        user1.setBannerId("B00835718");
-        listOfUsers.add(user1);
-
-        return (ArrayList<IUser>) listOfUsers;
     }
 }

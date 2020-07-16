@@ -1,11 +1,12 @@
 package dal.asd.catme.password;
 
-import dal.asd.catme.accesscontrol.IUser;
+import dal.asd.catme.BaseAbstractFactoryImpl;
+import dal.asd.catme.IBaseAbstractFactory;
+import dal.asd.catme.accesscontrol.CatmeException;
 import dal.asd.catme.accesscontrol.User;
 import dal.asd.catme.config.SystemConfig;
-import dal.asd.catme.database.DatabaseAccess;
-import dal.asd.catme.exception.CatmeException;
-
+import dal.asd.catme.database.IDatabaseAbstractFactory;
+import dal.asd.catme.database.IDatabaseAccess;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.sql.Connection;
@@ -17,11 +18,12 @@ import static dal.asd.catme.util.DBQueriesUtil.*;
 
 public class PasswordDaoImpl implements IPasswordDao
 {
-
+    IBaseAbstractFactory baseAbstractFactory = BaseAbstractFactoryImpl.instance();
+    IDatabaseAbstractFactory databaseAbstractFactory = baseAbstractFactory.makeDatabaseAbstractFactory();
     PasswordEncoder p;
 
     @Override
-    public void resetPassword(IUser u, Connection con) throws CatmeException
+    public void resetPassword(User u, Connection con) throws CatmeException
     {
         p = SystemConfig.instance().getPasswordEncoder();
         try
@@ -60,9 +62,9 @@ public class PasswordDaoImpl implements IPasswordDao
         }
     }
 
-    public void generatePasswordResetToken(IUser u, String token) throws CatmeException
+    public void generatePasswordResetToken(User u, String token) throws CatmeException
     {
-        DatabaseAccess db = SystemConfig.instance().getDatabaseAccess();
+        IDatabaseAccess db = databaseAbstractFactory.makeDatabaseAccess();
         Connection con = null;
         try
         {
@@ -92,7 +94,7 @@ public class PasswordDaoImpl implements IPasswordDao
 
     public String readBannerIdFromToken(String token) throws CatmeException
     {
-        DatabaseAccess db = SystemConfig.instance().getDatabaseAccess();
+        IDatabaseAccess db = databaseAbstractFactory.makeDatabaseAccess();
         Connection con = null;
         try
         {
@@ -127,7 +129,7 @@ public class PasswordDaoImpl implements IPasswordDao
 
     public void removeToken(String bannerId)
     {
-        DatabaseAccess db = SystemConfig.instance().getDatabaseAccess();
+        IDatabaseAccess db = databaseAbstractFactory.makeDatabaseAccess();
         Connection con = null;
         try
         {
@@ -155,7 +157,7 @@ public class PasswordDaoImpl implements IPasswordDao
     @Override
     public boolean matchWithPasswordHistory(String bannerId, String password) throws CatmeException
     {
-        DatabaseAccess db = SystemConfig.instance().getDatabaseAccess();
+        IDatabaseAccess db = databaseAbstractFactory.makeDatabaseAccess();
         Connection con = null;
         PasswordEncoder p = SystemConfig.instance().getPasswordEncoder();
 
@@ -193,7 +195,7 @@ public class PasswordDaoImpl implements IPasswordDao
     @Override
     public void deleteOverLimitPasswords(String bannerId) throws CatmeException
     {
-        DatabaseAccess db = SystemConfig.instance().getDatabaseAccess();
+        IDatabaseAccess db = databaseAbstractFactory.makeDatabaseAccess();
         Connection con = null;
 
         try

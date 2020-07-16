@@ -1,22 +1,19 @@
 package dal.asd.catme.accesscontroltest;
 
-import java.sql.Connection;
-import java.util.ArrayList;
-import java.util.List;
-
-import dal.asd.catme.accesscontrol.IUser;
+import dal.asd.catme.POJOMock;
 import dal.asd.catme.accesscontrol.IUserDao;
 import dal.asd.catme.accesscontrol.User;
-import dal.asd.catme.courses.Course;
-import dal.asd.catme.POJOMock;
+
+import java.sql.Connection;
+import java.util.List;
 
 public class UserDaoMock implements IUserDao
 {
 
-    List<IUser> users;
+    List<User> users;
 
 
-    public UserDaoMock(List<IUser> users)
+    public UserDaoMock(List<User> users)
     {
         this.users = users;
     }
@@ -25,8 +22,7 @@ public class UserDaoMock implements IUserDao
     @Override
     public int checkExistingUser(String bannerId, Connection con)
     {
-        // TODO Auto-generated method stub
-        for (IUser u : users)
+        for (User u : users)
         {
             if (u.getBannerId().equalsIgnoreCase(bannerId))
                 return 1;
@@ -36,24 +32,23 @@ public class UserDaoMock implements IUserDao
     }
 
     @Override
-    public List<IUser> getUsers()
+    public List<User> getUsers()
     {
         return POJOMock.getUsers();
     }
 
     @Override
-    public int addUser(IUser user, Connection con)
+    public int addUser(User user, Connection con)
     {
-        // TODO Auto-generated method stub
         users.add(user);
         return 1;
 
     }
 
     @Override
-    public IUser getUser(String bannerId, Connection con)
+    public User getUser(String bannerId, Connection con)
     {
-        for (IUser u : users)
+        for (User u : users)
         {
             if (u.getBannerId().equalsIgnoreCase(bannerId))
                 return u;

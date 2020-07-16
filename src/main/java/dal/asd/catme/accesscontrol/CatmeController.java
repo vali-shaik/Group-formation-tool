@@ -1,9 +1,9 @@
 package dal.asd.catme.accesscontrol;
 
-import java.util.List;
-
 import dal.asd.catme.BaseAbstractFactoryImpl;
+import dal.asd.catme.config.CatmeSecurityConfig;
 import dal.asd.catme.config.SystemConfig;
+import dal.asd.catme.util.CatmeUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -12,9 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import dal.asd.catme.config.CatmeSecurityConfig;
-import dal.asd.catme.exception.CatmeException;
-import dal.asd.catme.util.CatmeUtil;
+import java.util.List;
 
 @Controller
 @RequestMapping("/")
@@ -44,7 +42,7 @@ public class CatmeController
     }
 
     @RequestMapping("signup")
-    public String signupPage(@ModelAttribute IUser user, Model model)
+    public String signupPage(@ModelAttribute User user, Model model)
     {
         userService = accessControlAbstractFactory.makeUserService();
         String message = userService.addUser(user);
@@ -66,34 +64,34 @@ public class CatmeController
         {
             if (roles.contains("ROLE_ADMIN"))
             {
-                log.info("IUser idetified as Admin");
+                log.info("User idetified as Admin");
                 return "redirect:/" + CatmeUtil.ADMIN_HOME;
             }
             if (roles.contains("ROLE_INSTRUCTOR"))
             {
-                log.info("IUser idetified as Instructor");
+                log.info("User idetified as Instructor");
                 return "redirect:/" + CatmeUtil.INSTRUCTOR_HOME;
             }
             if (roles.contains("ROLE_TA"))
             {
-                log.info("IUser idetified as TA");
+                log.info("User idetified as TA");
                 return "redirect:/" + CatmeUtil.TA_HOME;
             }
             if (roles.contains("ROLE_STUDENT"))
             {
-                log.info("IUser idetified as Student");
+                log.info("User idetified as Student");
                 return "redirect:/" + CatmeUtil.STUDENT_HOME;
             }
             if (roles.contains("ROLE_GUEST"))
             {
-                log.info("IUser idetified as Guest");
+                log.info("User idetified as Guest");
                 return "redirect:/" + CatmeUtil.GUEST_HOME;
             }
         }
         if (page.trim().length() == 0)
         {
             page = "error";
-            throw new CatmeException("IUser Role is not found in Database");
+            throw new CatmeException("User Role is not found in Database");
         }
         return page;
     }

@@ -1,19 +1,21 @@
-
 package dal.asd.catme.courses;
 
 import dal.asd.catme.BaseAbstractFactoryImpl;
-import dal.asd.catme.accesscontrol.AccessControlModelAbstractFactoryImpl;
+import dal.asd.catme.IBaseAbstractFactory;
+import dal.asd.catme.accesscontrol.CatmeException;
 import dal.asd.catme.accesscontrol.IAccessControlModelAbstractFactory;
-import dal.asd.catme.accesscontrol.IUser;
-import dal.asd.catme.config.SystemConfig;
-import dal.asd.catme.database.DatabaseAccess;
-import dal.asd.catme.exception.CatmeException;
+import dal.asd.catme.accesscontrol.User;
+import dal.asd.catme.database.IDatabaseAbstractFactory;
+import dal.asd.catme.database.IDatabaseAccess;
 import dal.asd.catme.util.CatmeUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,10 +23,8 @@ import static dal.asd.catme.util.DBQueriesUtil.*;
 
 public class CourseDaoImpl implements ICourseDao
 {
-    public CourseDaoImpl(DatabaseAccess database)
-    {
-        this.database = database;
-    }
+    IBaseAbstractFactory baseAbstractFactory = BaseAbstractFactoryImpl.instance();
+    IDatabaseAbstractFactory databaseAbstractFactory = baseAbstractFactory.makeDatabaseAbstractFactory();
 
     public CourseDaoImpl()
     {
@@ -32,25 +32,24 @@ public class CourseDaoImpl implements ICourseDao
 
     private static final Logger log = LoggerFactory.getLogger(CourseDaoImpl.class);
 
-    DatabaseAccess database;
+    IDatabaseAccess database;
     ICourseModelAbstractFactory modelAbstractFactory = BaseAbstractFactoryImpl.instance().makeCourseModelAbstractFactory();
     IAccessControlModelAbstractFactory accessControlModelAbstractFactory = BaseAbstractFactoryImpl.instance().makeAccessControlModelAbstractFactory();
 
     @Override
-    public List<ICourse> getCourses(String role) throws CatmeException
+    public List<Course> getCourses(String role) throws CatmeException
     {
         log.info("Fetching all courses related to User");
 
-        List<ICourse> listOfCourses = new ArrayList<>();
+        List<Course> listOfCourses = new ArrayList<>();
         ResultSet resultSet = null;
-        Statement statement = null;
+        PreparedStatement statement = null;
         Connection connection = null;
 
         try
         {
-            database = SystemConfig.instance().getDatabaseAccess();
+            database = databaseAbstractFactory.makeDatabaseAccess();
             connection = database.getConnection();
-            statement = connection.createStatement();
 
             if (connection != null)
             {
@@ -61,22 +60,29 @@ public class CourseDaoImpl implements ICourseDao
                 {
                     case CatmeUtil.GUEST_ROLE:
                         log.info("Fetching courses of User " + currentUser + ": GUEST");
-                        resultSet = statement.executeQuery(SELECT_GUEST_COURSES_QUERY);
+                        statement = connection.prepareStatement(SELECT_GUEST_COURSES_QUERY);
+                        resultSet = statement.executeQuery();
                         break;
 
                     case CatmeUtil.TA_ROLE:
                         log.info("Fetching courses of User " + currentUser + ": TA");
-                        resultSet = statement.executeQuery(SELECT_STUDENT_COURSES_QUERY + "'" + currentUser + "'" + " UNION " + SELECT_INSTRUTOR_COURSES_QUERY + "'" + currentUser + "'");
+                        statement = connection.prepareStatement(SELECT_STUDENT_INSTRUCTOR_COURSE);
+                        statement.setString(1, currentUser);
+                        resultSet = statement.executeQuery();
                         break;
 
                     case CatmeUtil.INSTRUCTOR_ROLE:
                         log.info("Fetching courses of User " + currentUser + ": INSTRUCTOR");
-                        resultSet = statement.executeQuery(SELECT_INSTRUTOR_COURSES_QUERY + "" + "'" + currentUser + "'");
+                        statement = connection.prepareStatement(SELECT_INSTRUTOR_COURSES_QUERY);
+                        statement.setString(1, currentUser);
+                        resultSet = statement.executeQuery();
                         break;
 
                     case CatmeUtil.STUDENT_ROLE:
                         log.info("Fetching courses of User " + currentUser + ": STUDENT");
-                        resultSet = statement.executeQuery(SELECT_STUDENT_COURSES_QUERY + "" + "'" + currentUser + "'");
+                        statement = connection.prepareStatement(SELECT_STUDENT_COURSES_QUERY);
+                        statement.setString(1, currentUser);
+                        resultSet = statement.executeQuery();
                         break;
 
                     default:
@@ -86,7 +92,7 @@ public class CourseDaoImpl implements ICourseDao
                 while (resultSet.next())
                 {
                     log.info("Fetched all courses from Database");
-                    ICourse course = modelAbstractFactory.makeCourse();
+                    Course course = modelAbstractFactory.makeCourse();
                     course.setCourseId(resultSet.getString(CatmeUtil.COURSE_ID_FIELD));
                     course.setCourseName(resultSet.getString(CatmeUtil.COURSE_NAME_FIELD));
 
@@ -116,21 +122,22 @@ public class CourseDaoImpl implements ICourseDao
     }
 
     @Override
-    public List<ICourse> getAllCourses()
+    public List<Course> getAllCourses()
     {
-        DatabaseAccess db;
-        Connection connection=null;
-        List<ICourse> courses = new ArrayList<>();
+        Connection connection = null;
+        PreparedStatement statement = null;
+        List<Course> courses = new ArrayList<>();
 
         try
         {
-            db = SystemConfig.instance().getDatabaseAccess();
-            connection = db.getConnection();
-
-            ResultSet resultSet = db.executeQuery(SELECT_COURSE);
+            database = databaseAbstractFactory.makeDatabaseAccess();
+            connection = database.getConnection();
+            System.out.println("&&&&&&&%$^%$#$%^");
+            statement = connection.prepareStatement(SELECT_COURSE);
+            ResultSet resultSet = statement.executeQuery();
             while (resultSet.next())
             {
-                ICourse course =  modelAbstractFactory.makeCourse();
+                Course course = modelAbstractFactory.makeCourse();
                 course.setCourseId(resultSet.getString(CatmeUtil.COURSE_ID));
                 course.setCourseName(resultSet.getString(CatmeUtil.COURSE_NAME));
                 courses.add(course);
@@ -155,23 +162,25 @@ public class CourseDaoImpl implements ICourseDao
     }
 
     @Override
-    public ICourse displayCourseById(String courseId) throws CatmeException
+    public Course displayCourseById(String courseId) throws CatmeException
     {
         ResultSet resultSet = null;
-        Statement statement = null;
+        PreparedStatement statement = null;
         Connection connection = null;
 
-        ICourse course = modelAbstractFactory.makeCourse();
+        Course course = modelAbstractFactory.makeCourse();
         try
         {
-            database = SystemConfig.instance().getDatabaseAccess();
+            database = databaseAbstractFactory.makeDatabaseAccess();
             connection = database.getConnection();
 
-            statement = connection.createStatement();
 
             if (connection != null)
             {
-                resultSet = statement.executeQuery(SELECT_COURSE_QUERY + "'" + courseId + "'");
+                statement = connection.prepareStatement(SELECT_COURSE_QUERY);
+                statement.setString(1, courseId);
+                resultSet = statement.executeQuery();
+
 
                 while (resultSet.next())
                 {
@@ -202,24 +211,23 @@ public class CourseDaoImpl implements ICourseDao
     }
 
     @Override
-    public String findRoleByCourse(IUser user, String courseId) throws CatmeException
+    public String findRoleByCourse(User user, String courseId) throws CatmeException
     {
         ResultSet resultSet = null;
-        Statement statement = null;
+        PreparedStatement statement = null;
         Connection connection = null;
         String role = "";
 
         try
         {
-            database = SystemConfig.instance().getDatabaseAccess();
+            database = databaseAbstractFactory.makeDatabaseAccess();
             connection = database.getConnection();
-
-            statement = connection.createStatement();
-
             if (connection != null)
             {
-                resultSet = statement.executeQuery(SELECT_COURSE_ROLE_QUERY + "'" + user.getBannerId() + "' and  c.courseId='" + courseId + "'");
-
+                statement = connection.prepareStatement(SELECT_COURSE_ROLE_QUERY);
+                statement.setString(1, user.getBannerId());
+                statement.setString(2, courseId);
+                resultSet = statement.executeQuery();
                 while (resultSet.next())
                 {
                     role = resultSet.getString(CatmeUtil.ROLE_NAME_FIELD);
@@ -247,14 +255,14 @@ public class CourseDaoImpl implements ICourseDao
     }
 
     @Override
-    public ArrayList<IUser> getRegisteredStudents(String courseId)
+    public ArrayList<User> getRegisteredStudents(String courseId)
     {
-        ArrayList<IUser> registeredStudents = new ArrayList<>();
+        ArrayList<User> registeredStudents = new ArrayList<>();
 
         Connection con = null;
         try
         {
-            database = SystemConfig.instance().getDatabaseAccess();
+            database = databaseAbstractFactory.makeDatabaseAccess();
             con = database.getConnection();
 
             PreparedStatement stmt = con.prepareStatement(SEELCT_ENROLLED_STUDENTS_QUERY);
@@ -264,7 +272,7 @@ public class CourseDaoImpl implements ICourseDao
 
             while (rs.next())
             {
-                IUser u = accessControlModelAbstractFactory.makeUser();
+                User u = accessControlModelAbstractFactory.makeUser();
                 u.setBannerId(rs.getString(1));
                 u.setLastName(rs.getString(2));
                 u.setFirstName(rs.getString(3));

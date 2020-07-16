@@ -12,15 +12,6 @@ public class SurveyResponseAbstractFactoryMock implements ISurveyResponseAbstrac
         surveyResponseService = new SurveyResponseServiceImpl(surveyResponseDao);
     }
 
-    public static ISurveyResponseAbstractFactory instance()
-    {
-        if(abstractFactory==null)
-        {
-            abstractFactory = new SurveyResponseAbstractFactoryMock();
-        }
-        return abstractFactory;
-    }
-
     @Override
     public ISurveyResponseDao makeSurveyResponseDao()
     {

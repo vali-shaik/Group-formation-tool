@@ -1,10 +1,8 @@
 package dal.asd.catme.accesscontrol;
 
 import dal.asd.catme.BaseAbstractFactoryImpl;
-import dal.asd.catme.courses.CourseAbstractFactoryImpl;
 import dal.asd.catme.courses.ICourseAbstractFactory;
 import dal.asd.catme.courses.ICourseService;
-import dal.asd.catme.exception.CatmeException;
 import dal.asd.catme.util.CatmeUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,14 +22,14 @@ public class ProfileController
     @RequestMapping("access")
     public String redirectHomePage()
     {
-        log.info("Finding the Role of IUser and redirecting to respetive IUser's home page");
+        log.info("Finding the Role of User and redirecting to respetive User's home page");
         return "redirect:/access";
     }
 
     @RequestMapping("student")
     public ModelAndView displayStudentHomePage() throws CatmeException
     {
-        log.info("IUser is identified as a Student");
+        log.info("User is identified as a Student");
         ModelAndView modelAndView = new ModelAndView();
 
         courseService = courseAbstractFactory.makeCourseService();
@@ -43,7 +41,7 @@ public class ProfileController
     @RequestMapping("ta")
     public ModelAndView displayTaHomePage() throws CatmeException
     {
-        log.info("IUser is identified as a Student/TA");
+        log.info("User is identified as a Student/TA");
         ModelAndView modelAndView = new ModelAndView();
 
         courseService = courseAbstractFactory.makeCourseService();
@@ -55,7 +53,7 @@ public class ProfileController
     @RequestMapping("instructor")
     public ModelAndView displayInstructorHomePage() throws CatmeException
     {
-        log.info("IUser is identified as a Instructor");
+        log.info("User is identified as a Instructor");
         ModelAndView modelAndView = new ModelAndView();
         courseService = courseAbstractFactory.makeCourseService();
         modelAndView.addObject("listOfCourses", courseService.getCourses(CatmeUtil.INSTRUCTOR_ROLE));
@@ -66,7 +64,7 @@ public class ProfileController
     @RequestMapping("guest")
     public ModelAndView displayGuestHomePage() throws CatmeException
     {
-        log.info("IUser is identified as Guest");
+        log.info("User is identified as Guest");
         ModelAndView modelAndView = new ModelAndView();
         courseService = courseAbstractFactory.makeCourseService();
         modelAndView.addObject("listOfCourses", courseService.getCourses(CatmeUtil.GUEST_ROLE));

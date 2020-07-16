@@ -5,17 +5,15 @@ import dal.asd.catme.password.PasswordPolicyCheckerImpl;
 
 public class AccessControlAbstractFactoryImpl implements IAccessControlAbstractFactory
 {
-    private static IAccessControlAbstractFactory abstractFactory = null;
+    private final IAdminDao adminDao;
+    private final IUserDao userDao;
 
-    private IAdminDao adminDao;
-    private IUserDao userDao;
+    private final IAdminService adminService;
+    private final IMailSenderService mailSenderService;
+    private final IUserService userService;
+    private final IPasswordPolicyCheckerService passwordPolicyCheckerService;
 
-    private IAdminService adminService;
-    private IMailSenderService mailSenderService;
-    private IUserService userService;
-    private IPasswordPolicyCheckerService passwordPolicyCheckerService;
-
-    AccessControlAbstractFactoryImpl()
+    public AccessControlAbstractFactoryImpl()
     {
         adminDao = new AdminDaoImpl();
         userDao = new UserDaoImpl();
@@ -23,16 +21,7 @@ public class AccessControlAbstractFactoryImpl implements IAccessControlAbstractF
         adminService = new AdminServiceImpl(adminDao);
         mailSenderService = new MailSenderServiceImpl();
         passwordPolicyCheckerService = new PasswordPolicyCheckerImpl();
-        userService = new UserServiceImpl(userDao,passwordPolicyCheckerService);
-    }
-
-    public static IAccessControlAbstractFactory instance()
-    {
-        if(abstractFactory==null)
-        {
-            abstractFactory = new AccessControlAbstractFactoryImpl();
-        }
-        return abstractFactory;
+        userService = new UserServiceImpl(userDao, passwordPolicyCheckerService);
     }
 
     @Override

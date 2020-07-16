@@ -5,30 +5,20 @@ import dal.asd.catme.accesscontrol.UserDaoImpl;
 
 public class PasswordAbstractFactoryImpl implements IPasswordAbstractFactory
 {
-    private static IPasswordAbstractFactory passwordAbstractFactory=null;
 
-    private IPasswordDao passwordDao;
-    private IPasswordRulesConfig passwordRulesConfig;
-    private IPasswordResetService passwordResetService;
-    private IPasswordPolicyCheckerService passwordPolicyCheckerService;
-    private IUserDao userDao;
+    private final IPasswordDao passwordDao;
+    private final IPasswordRulesConfig passwordRulesConfig;
+    private final IPasswordResetService passwordResetService;
+    private final IPasswordPolicyCheckerService passwordPolicyCheckerService;
+    private final IUserDao userDao;
 
     public PasswordAbstractFactoryImpl()
     {
         passwordDao = new PasswordDaoImpl();
         userDao = new UserDaoImpl();
         passwordPolicyCheckerService = new PasswordPolicyCheckerImpl();
-        passwordResetService = new PasswordResetService(userDao,passwordDao);
+        passwordResetService = new PasswordResetServiceImpl(userDao, passwordDao);
         passwordRulesConfig = new PasswordRulesConfigImpl();
-    }
-
-    public static IPasswordAbstractFactory instance()
-    {
-        if(passwordAbstractFactory == null)
-        {
-            passwordAbstractFactory = new PasswordAbstractFactoryImpl();
-        }
-        return passwordAbstractFactory;
     }
 
     @Override
