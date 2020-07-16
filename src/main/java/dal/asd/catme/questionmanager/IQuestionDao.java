@@ -1,23 +1,18 @@
 package dal.asd.catme.questionmanager;
 
-import dal.asd.catme.exception.QuestionDatabaseException;
-
-import java.sql.Connection;
 import java.util.List;
 
 public interface IQuestionDao
 {
-    public List<Question> getQuestionTitles(String instructor) throws QuestionDatabaseException;
+    List<Question> getQuestionTitles(String instructor) throws QuestionDatabaseException;
 
-    public int deleteQuestion(int questionId);
+    int deleteQuestion(int questionId);
 
-    public int checkExistingQuestion(int questionId, Connection con);
+    int checkExistingQuestion(int questionId);
 
-    public int createQuestion(Question question, String user);
+    int createQuestion(Question question, String user);
 
-    public int createQuestionTitle(String questionTitle, String user);
+    int createQuestionTitle(String questionTitle, String user);
 
-    public int createOptions(int questionId, List<Option> options);
+    int createOptions(int questionId, List<Option> options);
 }
-
-

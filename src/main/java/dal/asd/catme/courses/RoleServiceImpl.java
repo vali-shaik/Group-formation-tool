@@ -1,18 +1,25 @@
 package dal.asd.catme.courses;
 
-import dal.asd.catme.accesscontrol.IRoleDao;
-import dal.asd.catme.config.SystemConfig;
-import dal.asd.catme.database.DatabaseAccess;
+import dal.asd.catme.BaseAbstractFactoryImpl;
+import dal.asd.catme.IBaseAbstractFactory;
+import dal.asd.catme.database.IDatabaseAbstractFactory;
+import dal.asd.catme.database.IDatabaseAccess;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 
 public class RoleServiceImpl implements IRoleService
 {
-
     IRoleDao roleDao;
+    IDatabaseAccess db;
 
-    DatabaseAccess db;
+    IBaseAbstractFactory baseAbstractFactory = BaseAbstractFactoryImpl.instance();
+    IDatabaseAbstractFactory databaseAbstractFactory = baseAbstractFactory.makeDatabaseAbstractFactory();
+
+    public RoleServiceImpl(IRoleDao roleDao)
+    {
+        this.roleDao = roleDao;
+    }
 
     @Override
     public int assignTa(Enrollment user)
@@ -20,16 +27,10 @@ public class RoleServiceImpl implements IRoleService
         Connection con = null;
         try
         {
-            db = SystemConfig.instance().getDatabaseAccess();
+            db = databaseAbstractFactory.makeDatabaseAccess();
             con = db.getConnection();
-        } catch (SQLException e1)
-        {
-            e1.printStackTrace();
-        }
-        try
-        {
-            roleDao = SystemConfig.instance().getRoleDao();
-            return (roleDao.assignTa(user, con));
+
+            return (roleDao.assignTa(user));
         } catch (Exception e)
         {
             e.printStackTrace();

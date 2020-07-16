@@ -1,8 +1,8 @@
 package dal.asd.catme.accesscontrol;
 
-import dal.asd.catme.config.SystemConfig;
+import dal.asd.catme.BaseAbstractFactoryImpl;
+import dal.asd.catme.courses.ICourseAbstractFactory;
 import dal.asd.catme.courses.ICourseService;
-import dal.asd.catme.exception.CatmeException;
 import dal.asd.catme.util.CatmeUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,6 +17,7 @@ public class ProfileController
     private static final Logger log = LoggerFactory.getLogger(ProfileController.class);
 
     ICourseService courseService;
+    ICourseAbstractFactory courseAbstractFactory = BaseAbstractFactoryImpl.instance().makeCourseAbstractFactory();
 
     @RequestMapping("access")
     public String redirectHomePage()
@@ -31,7 +32,7 @@ public class ProfileController
         log.info("User is identified as a Student");
         ModelAndView modelAndView = new ModelAndView();
 
-        courseService = SystemConfig.instance().getCourseService();
+        courseService = courseAbstractFactory.makeCourseService();
         modelAndView.addObject("listOfCourses", courseService.getCourses(CatmeUtil.STUDENT_ROLE));
         modelAndView.setViewName(CatmeUtil.HOME_PAGE);
         return modelAndView;
@@ -43,7 +44,7 @@ public class ProfileController
         log.info("User is identified as a Student/TA");
         ModelAndView modelAndView = new ModelAndView();
 
-        courseService = SystemConfig.instance().getCourseService();
+        courseService = courseAbstractFactory.makeCourseService();
         modelAndView.addObject("listOfCourses", courseService.getCourses(CatmeUtil.TA_ROLE));
         modelAndView.setViewName(CatmeUtil.HOME_PAGE);
         return modelAndView;
@@ -54,7 +55,7 @@ public class ProfileController
     {
         log.info("User is identified as a Instructor");
         ModelAndView modelAndView = new ModelAndView();
-        courseService = SystemConfig.instance().getCourseService();
+        courseService = courseAbstractFactory.makeCourseService();
         modelAndView.addObject("listOfCourses", courseService.getCourses(CatmeUtil.INSTRUCTOR_ROLE));
         modelAndView.setViewName(CatmeUtil.HOME_PAGE);
         return modelAndView;
@@ -65,7 +66,7 @@ public class ProfileController
     {
         log.info("User is identified as Guest");
         ModelAndView modelAndView = new ModelAndView();
-        courseService = SystemConfig.instance().getCourseService();
+        courseService = courseAbstractFactory.makeCourseService();
         modelAndView.addObject("listOfCourses", courseService.getCourses(CatmeUtil.GUEST_ROLE));
         modelAndView.setViewName(CatmeUtil.HOME_PAGE);
         return modelAndView;

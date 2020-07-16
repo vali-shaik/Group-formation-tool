@@ -4,18 +4,8 @@ import java.util.List;
 
 public class QuestionTitle
 {
-
     String questionTitle;
     List<Question> questions;
-
-    public QuestionTitle(String questionTitle)
-    {
-        this.questionTitle = questionTitle;
-    }
-
-    public QuestionTitle()
-    {
-    }
 
     public String getQuestionTitle()
     {
@@ -36,6 +26,4 @@ public class QuestionTitle
     {
         this.questions = questions;
     }
-
-
 }

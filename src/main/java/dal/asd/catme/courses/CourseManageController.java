@@ -1,130 +1,133 @@
 package dal.asd.catme.courses;
 
-import static dal.asd.catme.accesscontrol.MailSenderUtil.TOKEN_LENGTH;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.mail.MessagingException;
-
+import dal.asd.catme.BaseAbstractFactoryImpl;
+import dal.asd.catme.accesscontrol.*;
+import dal.asd.catme.config.CatmeSecurityConfig;
+import dal.asd.catme.config.SystemConfig;
+import dal.asd.catme.studentlistimport.ICSVParser;
+import dal.asd.catme.studentlistimport.ICSVParserAbstractFactory;
+import dal.asd.catme.studentlistimport.ICSVReader;
+import dal.asd.catme.studentlistimport.InvalidFileFormatException;
+import dal.asd.catme.util.CatmeUtil;
+import dal.asd.catme.util.RandomTokenGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import dal.asd.catme.accesscontrol.IMailSenderService;
-import dal.asd.catme.accesscontrol.IUserService;
-import dal.asd.catme.accesscontrol.Student;
-import dal.asd.catme.config.CatmeSecurityConfig;
-import dal.asd.catme.config.SystemConfig;
-import dal.asd.catme.exception.CatmeException;
-import dal.asd.catme.exception.InvalidFileFormatException;
-import dal.asd.catme.studentlistimport.ICSVReader;
-import dal.asd.catme.util.CatmeUtil;
-import dal.asd.catme.util.RandomTokenGenerator;
+import javax.mail.MessagingException;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
-public class CourseManageController {
-	
-	 ICourseService courseService;
+import static dal.asd.catme.accesscontrol.MailSenderUtil.TOKEN_LENGTH;
 
-	    IEnrollStudentService enrollStudentService;
+@Controller
+public class CourseManageController
+{
+    ICSVParserAbstractFactory icsvParserAbstractFactory = BaseAbstractFactoryImpl.instance().makeCSVParserAbstractFactory();
+    ICourseAbstractFactory courseAbstractFactory = BaseAbstractFactoryImpl.instance().makeCourseAbstractFactory();
+    IAccessControlAbstractFactory accessControlAbstractFactory = BaseAbstractFactoryImpl.instance().makeAccessControlAbstractFactory();
 
-	    IUserService userService;
+    ICourseModelAbstractFactory modelAbstractFactory = BaseAbstractFactoryImpl.instance().makeCourseModelAbstractFactory();
+    private static final Logger log = LoggerFactory.getLogger(CourseController.class);
 
-	    IMailSenderService mailSenderService;
+    @RequestMapping("/manageCourse")
+    public ModelAndView manageCourse(@RequestParam(name = "courseId") String courseId)
+    {
+        log.info("Manage Course " + courseId);
+        ModelAndView uploadPage = new ModelAndView();
 
-	    CatmeSecurityConfig catmeSecurityConfig;
+        try
+        {
+            CatmeSecurityConfig catmeSecurityConfig = SystemConfig.instance().getCatmeServiceConfig();
+            List<String> roles = catmeSecurityConfig.fetchRolesHomePage();
 
-	    ICSVReader csvReaderImpl;
+            if (roles.contains(CatmeUtil.INSTRUCTOR_ROLE) || roles.contains(CatmeUtil.TA_ROLE))
+            {
+                log.info("Loading CSV File Upload Page");
+                uploadPage.setViewName(CatmeUtil.MANAGE_COURSE_PAGE);
 
-	    IRoleService roleService;
+                uploadPage.addObject("courseId", courseId);
+                ICourseService courseService = courseAbstractFactory.makeCourseService();
+                uploadPage.addObject("studentList", courseService.getEnrolledStudents(courseId));
+            } else
+            {
+                log.info("User is not TA or Instructor");
+                log.info("Loading Login Page");
+                uploadPage.setViewName(CatmeUtil.LOGIN_PAGE);
+                return uploadPage;
+            }
 
-	    private static final Logger log = LoggerFactory.getLogger(CourseController.class);
+        } catch (CatmeException e)
+        {
+            e.printStackTrace();
+        }
 
-	
-	 @RequestMapping("/manageCourse")
-	    public ModelAndView manageCourse(@RequestParam(name = "courseId") String courseId)
-	    {
-	        log.info("Manage Course " + courseId);
-	        ModelAndView uploadPage = new ModelAndView();
+        return uploadPage;
+    }
 
-	        try
-	        {
-	            catmeSecurityConfig = SystemConfig.instance().getCatmeServiceConfig();
-	            List<String> roles = catmeSecurityConfig.fetchRolesHomePage();
+    @PostMapping("/manageCourse")
+    public ModelAndView uploadFile(@RequestParam("student-list-csv") MultipartFile file, @RequestParam("courseId") String courseId)
+    {
+        ModelAndView model = new ModelAndView();
+        model.setViewName(CatmeUtil.MANAGE_COURSE_PAGE);
 
-	            if (roles.contains(CatmeUtil.INSTRUCTOR_ROLE) || roles.contains(CatmeUtil.TA_ROLE))
-	            {
-	                uploadPage.setViewName(CatmeUtil.MANAGE_COURSE_PAGE);
+        log.info("File Received at Server: " + file.getName());
+        try
+        {
+            ICSVReader icsvReader = icsvParserAbstractFactory.makeCSVReader(file.getInputStream());
+            ICSVParser icsvParser = icsvParserAbstractFactory.makeCSVParser();
+            IUserService userService = accessControlAbstractFactory.makeUserService();
+            IEnrollStudentService enrollStudentService = courseAbstractFactory.makeEnrollmentService();
+            IMailSenderService mailSenderService = accessControlAbstractFactory.makeMailSenderService();
 
-	                uploadPage.addObject("courseId", courseId);
-	                courseService = SystemConfig.instance().getCourseService();
-	                uploadPage.addObject("studentList", courseService.getEnrolledStudents(courseId));
-	            }
-	            else
-	            {
-	                uploadPage.setViewName(CatmeUtil.LOGIN_PAGE);
-	                return uploadPage;
-	            }
+            icsvReader.validateFile(file);
+            Course c = modelAbstractFactory.makeCourse();
+            c.setCourseId(courseId);
 
-	        } catch (CatmeException e)
-	        {
-	            e.printStackTrace();
-	        }
+            ArrayList<User> students = icsvParser.getStudentsFromFile(icsvReader);
 
-	        return uploadPage;
-	    }
+            if (students == null)
+            {
+                model.addObject("message", "Error Enrolling Students");
+                return model;
+            }
 
-	    @PostMapping("/manageCourse")
-	    public ModelAndView uploadFile(@RequestParam("student-list-csv") MultipartFile file, @RequestParam("courseId") String courseId)
-	    {
-	        ModelAndView model = new ModelAndView();
+            for (User s : students)
+            {
+                s.setPassword(RandomTokenGenerator.generateRandomPassword(TOKEN_LENGTH));
+                if (userService.addUser(s).equals(CatmeUtil.USER_CREATED))
+                {
+                    mailSenderService.sendCredentialsToStudent(s, c);
+                }
+            }
 
-	        csvReaderImpl = SystemConfig.instance().getCsvReaderImpl();
-
-	        try
-	        {
-	            csvReaderImpl.validateFile(file);
-	            Course c = new Course();
-	            c.setCourseId(courseId);
-	            ArrayList<Student> students = csvReaderImpl.readFile(file.getInputStream());
-
-	            userService = SystemConfig.instance().getUserService();
-	            enrollStudentService = SystemConfig.instance().getEnrollStudentService();
-	            mailSenderService = SystemConfig.instance().getMailSenderService();
-
-	            for (Student s : students)
-	            {
-	                s.setPassword(RandomTokenGenerator.generateRandomPassword(TOKEN_LENGTH));
-	                if (userService.addUser(s).equals(CatmeUtil.USER_CREATED))
-	                {
-	                    mailSenderService.sendCredentialsToStudent(s, c);
-	                }
-	            }
-
-	            if (enrollStudentService.enrollStudentsIntoCourse(students, c))
-	            {
-	                model.addObject("message", "Students Enrolled");
-	            } else
-	            {
-	                model.addObject("message", "Error Enrolling Students");
-	            }
-	        } catch (InvalidFileFormatException e)
-	        {
-	            model.addObject("message", e.getMessage());
-	        } catch (IOException e)
-	        {
-	            e.printStackTrace();
-	        } catch (MessagingException e)
-	        {
-	            model.addObject("message", e.getMessage());
-	        }
-	        model.setViewName(CatmeUtil.MANAGE_COURSE_PAGE);
-	        return model;
-	    }
-
+            if (enrollStudentService.enrollStudentsIntoCourse(students, c))
+            {
+                log.info("Students Enrolled");
+                model.addObject("message", "Students Enrolled");
+            } else
+            {
+                log.error("Error Enrolling Students... Check content of file");
+                model.addObject("message", "Error Enrolling Students");
+            }
+        } catch (InvalidFileFormatException e)
+        {
+            log.error(e.getMessage());
+            model.addObject("message", e.getMessage());
+        } catch (IOException e)
+        {
+            e.printStackTrace();
+        } catch (MessagingException e)
+        {
+            log.error(e.getMessage());
+            model.addObject("message", e.getMessage());
+        }
+        return model;
+    }
 }

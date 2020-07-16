@@ -5,17 +5,6 @@ public class Enrollment
     public String bannerId;
     public String courseId;
 
-    public Enrollment()
-    {
-    }
-
-    public Enrollment(String bannerId, String courseId)
-    {
-        super();
-        this.bannerId = bannerId;
-        this.courseId = courseId;
-    }
-
     public String getBannerId()
     {
         return bannerId;

@@ -1,7 +1,9 @@
 package dal.asd.catme.accesscontrol;
 
-import java.util.List;
-
+import dal.asd.catme.BaseAbstractFactoryImpl;
+import dal.asd.catme.config.CatmeSecurityConfig;
+import dal.asd.catme.config.SystemConfig;
+import dal.asd.catme.util.CatmeUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -10,10 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import dal.asd.catme.config.CatmeSecurityConfig;
-import dal.asd.catme.config.SystemConfig;
-import dal.asd.catme.exception.CatmeException;
-import dal.asd.catme.util.CatmeUtil;
+import java.util.List;
 
 @Controller
 @RequestMapping("/")
@@ -22,6 +21,9 @@ public class CatmeController
     IUserService userService;
 
     CatmeSecurityConfig catmeServiceConfig;
+
+    IAccessControlModelAbstractFactory modelAbstractFactory = BaseAbstractFactoryImpl.instance().makeAccessControlModelAbstractFactory();
+    IAccessControlAbstractFactory accessControlAbstractFactory = BaseAbstractFactoryImpl.instance().makeAccessControlAbstractFactory();
 
     private static final Logger log = LoggerFactory.getLogger(CatmeController.class);
 
@@ -35,14 +37,14 @@ public class CatmeController
     @GetMapping("register")
     public String signupPage(Model model)
     {
-        model.addAttribute("user", new User());
+        model.addAttribute("user", modelAbstractFactory.makeUser());
         return CatmeUtil.SIGNUP_PAGE;
     }
 
     @RequestMapping("signup")
     public String signupPage(@ModelAttribute User user, Model model)
     {
-        userService = SystemConfig.instance().getUserService();
+        userService = accessControlAbstractFactory.makeUserService();
         String message = userService.addUser(user);
         model.addAttribute("message", message);
         return CatmeUtil.SIGNEDUP_PAGE;

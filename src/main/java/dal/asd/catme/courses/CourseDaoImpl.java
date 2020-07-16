@@ -1,16 +1,20 @@
 package dal.asd.catme.courses;
 
-import dal.asd.catme.accesscontrol.Student;
+import dal.asd.catme.BaseAbstractFactoryImpl;
+import dal.asd.catme.IBaseAbstractFactory;
+import dal.asd.catme.accesscontrol.CatmeException;
+import dal.asd.catme.accesscontrol.IAccessControlModelAbstractFactory;
 import dal.asd.catme.accesscontrol.User;
-import dal.asd.catme.config.SystemConfig;
-import dal.asd.catme.database.DatabaseAccess;
-import dal.asd.catme.exception.CatmeException;
+import dal.asd.catme.database.IDatabaseAbstractFactory;
+import dal.asd.catme.database.IDatabaseAccess;
 import dal.asd.catme.util.CatmeUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-import java.sql.*;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,17 +22,18 @@ import static dal.asd.catme.util.DBQueriesUtil.*;
 
 public class CourseDaoImpl implements ICourseDao
 {
-    public CourseDaoImpl(DatabaseAccess database)
-    {
-        this.database = database;
-    }
+    IBaseAbstractFactory baseAbstractFactory = BaseAbstractFactoryImpl.instance();
+    IDatabaseAbstractFactory databaseAbstractFactory = baseAbstractFactory.makeDatabaseAbstractFactory();
 
     public CourseDaoImpl()
     {
     }
+
     private static final Logger log = LoggerFactory.getLogger(CourseDaoImpl.class);
 
-    DatabaseAccess database;
+    IDatabaseAccess database;
+    ICourseModelAbstractFactory modelAbstractFactory = BaseAbstractFactoryImpl.instance().makeCourseModelAbstractFactory();
+    IAccessControlModelAbstractFactory accessControlModelAbstractFactory = BaseAbstractFactoryImpl.instance().makeAccessControlModelAbstractFactory();
 
     @Override
     public List<Course> getCourses(String role) throws CatmeException
@@ -37,120 +42,122 @@ public class CourseDaoImpl implements ICourseDao
 
         List<Course> listOfCourses = new ArrayList<>();
         ResultSet resultSet = null;
-        Statement statement = null;
-        Connection connection = null;
+        PreparedStatement statement = null;
 
         try
         {
-            database = SystemConfig.instance().getDatabaseAccess();
-            connection = database.getConnection();
-            statement = connection.createStatement();
+            database = databaseAbstractFactory.makeDatabaseAccess();
 
-            if (connection != null)
+            log.info("DB connection is succesfull");
+            String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
+
+            switch (role)
             {
-                log.info("DB connection is succesfull");
-                String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
+                case CatmeUtil.GUEST_ROLE:
+                    log.info("Fetching courses of User " + currentUser + ": GUEST");
+                    statement = database.getPreparedStatement(SELECT_GUEST_COURSES_QUERY);
+                    resultSet = database.executeForResultSet(statement);
+                    break;
 
-                switch (role)
-                {
-                    case CatmeUtil.GUEST_ROLE:
-                        log.info("Fetching courses of User " + currentUser + ": GUEST");
-                        resultSet = statement.executeQuery(SELECT_GUEST_COURSES_QUERY);
-                        break;
+                case CatmeUtil.TA_ROLE:
+                    log.info("Fetching courses of User " + currentUser + ": TA");
+                    statement = database.getPreparedStatement(SELECT_STUDENT_INSTRUCTOR_COURSE);
+                    statement.setString(1, currentUser);
+                    resultSet = database.executeForResultSet(statement);
+                    break;
 
-                    case CatmeUtil.TA_ROLE:
-                        log.info("Fetching courses of User " + currentUser + ": TA");
-                        resultSet = statement.executeQuery(SELECT_STUDENT_COURSES_QUERY + "'" + currentUser + "'" + " UNION " + SELECT_INSTRUTOR_COURSES_QUERY + "'" + currentUser + "'");
-                        break;
+                case CatmeUtil.INSTRUCTOR_ROLE:
+                    log.info("Fetching courses of User " + currentUser + ": INSTRUCTOR");
+                    statement = database.getPreparedStatement(SELECT_INSTRUTOR_COURSES_QUERY);
+                    statement.setString(1, currentUser);
+                    resultSet = database.executeForResultSet(statement);
+                    break;
 
-                    case CatmeUtil.INSTRUCTOR_ROLE:
-                        log.info("Fetching courses of User " + currentUser + ": INSTRUCTOR");
-                        resultSet = statement.executeQuery(SELECT_INSTRUTOR_COURSES_QUERY + "" + "'" + currentUser + "'");
-                        break;
+                case CatmeUtil.STUDENT_ROLE:
+                    log.info("Fetching courses of User " + currentUser + ": STUDENT");
+                    statement = database.getPreparedStatement(SELECT_STUDENT_COURSES_QUERY);
+                    statement.setString(1, currentUser);
+                    resultSet = database.executeForResultSet(statement);
+                    break;
 
-                    case CatmeUtil.STUDENT_ROLE:
-                        log.info("Fetching courses of User " + currentUser + ": STUDENT");
-                        resultSet = statement.executeQuery(SELECT_STUDENT_COURSES_QUERY + "" + "'" + currentUser + "'");
-                        break;
+                default:
+                    break;
+            }
 
-                    default:
-                        break;
-                }
+            while (resultSet.next())
+            {
+                log.info("Fetched all courses from Database");
+                Course course = modelAbstractFactory.makeCourse();
+                course.setCourseId(resultSet.getString(CatmeUtil.COURSE_ID_FIELD));
+                course.setCourseName(resultSet.getString(CatmeUtil.COURSE_NAME_FIELD));
 
-                while (resultSet.next())
-                {
-                    log.info("Fetched all courses from Database");
-                    Course course = new Course();
-                    course.setCourseId(resultSet.getString(CatmeUtil.COURSE_ID_FIELD));
-                    course.setCourseName(resultSet.getString(CatmeUtil.COURSE_NAME_FIELD));
-
-                    listOfCourses.add(course);
-                }
+                listOfCourses.add(course);
             }
         } catch (SQLException | NullPointerException e)
         {
             throw new CatmeException("Failed while connecting and fetching courses from DB " + e.getMessage());
         } finally
         {
-            try
-            {
-                if (connection != null)
-                    connection.close();
-                if (statement != null)
-                    statement.close();
-                if (resultSet != null)
-                    resultSet.close();
-            } catch (SQLException | NullPointerException e)
-            {
-                throw new CatmeException("Failed while closing connection with database " + e.getMessage());
-            }
+            database.cleanUp();
         }
 
         return listOfCourses;
     }
 
     @Override
+    public List<Course> getAllCourses()
+    {
+        PreparedStatement statement = null;
+        List<Course> courses = new ArrayList<>();
+
+        database = databaseAbstractFactory.makeDatabaseAccess();
+        try
+        {
+            statement = database.getPreparedStatement(SELECT_COURSE);
+            ResultSet resultSet = database.executeForResultSet(statement);
+            while (resultSet.next())
+            {
+                Course course = modelAbstractFactory.makeCourse();
+                course.setCourseId(resultSet.getString(CatmeUtil.COURSE_ID));
+                course.setCourseName(resultSet.getString(CatmeUtil.COURSE_NAME));
+                courses.add(course);
+            }
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+        } finally
+        {
+            database.cleanUp();
+        }
+        return courses;
+    }
+
+    @Override
     public Course displayCourseById(String courseId) throws CatmeException
     {
         ResultSet resultSet = null;
-        Statement statement = null;
-        Connection connection = null;
+        PreparedStatement statement = null;
 
-        Course course = new Course();
+        database = databaseAbstractFactory.makeDatabaseAccess();
+        Course course = modelAbstractFactory.makeCourse();
         try
         {
-            database = SystemConfig.instance().getDatabaseAccess();
-            connection = database.getConnection();
+            statement = database.getPreparedStatement(SELECT_COURSE_QUERY);
+            statement.setString(1, courseId);
+            resultSet = database.executeForResultSet(statement);
 
-            statement = connection.createStatement();
 
-            if (connection != null)
+            while (resultSet.next())
             {
-                resultSet = statement.executeQuery(SELECT_COURSE_QUERY + "'" + courseId + "'");
-
-                while (resultSet.next())
-                {
-                    course.setCourseId(resultSet.getString(CatmeUtil.COURSE_ID_FIELD));
-                    course.setCourseName(resultSet.getString(CatmeUtil.COURSE_NAME_FIELD));
-                }
+                course.setCourseId(resultSet.getString(CatmeUtil.COURSE_ID_FIELD));
+                course.setCourseName(resultSet.getString(CatmeUtil.COURSE_NAME_FIELD));
             }
         } catch (SQLException | NullPointerException e)
         {
             throw new CatmeException("Failed while connecting and fetching Course from DB " + e.getMessage());
         } finally
         {
-            try
-            {
-                if (connection != null)
-                    connection.close();
-                if (statement != null)
-                    statement.close();
-                if (resultSet != null)
-                    resultSet.close();
-            } catch (SQLException | NullPointerException e)
-            {
-                throw new CatmeException("Failed while closing conection with DB " + e.getMessage());
-            }
+            database.cleanUp();
         }
 
         return course;
@@ -160,67 +167,52 @@ public class CourseDaoImpl implements ICourseDao
     public String findRoleByCourse(User user, String courseId) throws CatmeException
     {
         ResultSet resultSet = null;
-        Statement statement = null;
-        Connection connection = null;
+        PreparedStatement statement = null;
         String role = "";
 
+        database = databaseAbstractFactory.makeDatabaseAccess();
         try
         {
-            database = SystemConfig.instance().getDatabaseAccess();
-            connection = database.getConnection();
-
-            statement = connection.createStatement();
-
-            if (connection != null)
+            statement = database.getPreparedStatement(SELECT_COURSE_ROLE_QUERY);
+            statement.setString(1, user.getBannerId());
+            statement.setString(2, courseId);
+            resultSet = database.executeForResultSet(statement);
+            while (resultSet.next())
             {
-                resultSet = statement.executeQuery(SELECT_COURSE_ROLE_QUERY + "'" + user.getBannerId() + "' and  c.courseId='" + courseId + "'");
-
-                while (resultSet.next())
-                {
-                    role = resultSet.getString(CatmeUtil.ROLE_NAME_FIELD);
-                }
+                role = resultSet.getString(CatmeUtil.ROLE_NAME_FIELD);
             }
         } catch (SQLException | NullPointerException e)
         {
             throw new CatmeException("Failed while connecting and Fetching Role for a Course in DB" + e.getMessage());
         } finally
         {
-            try
-            {
-                if (connection != null)
-                    connection.close();
-                if (statement != null)
-                    statement.close();
-                if (resultSet != null)
-                    resultSet.close();
-            } catch (SQLException | NullPointerException e)
-            {
-                throw new CatmeException("Failed while closing conection with DB " + e.getMessage());
-            }
+            database.cleanUp();
         }
         return role;
     }
 
     @Override
-    public ArrayList<Student> getRegisteredStudents(String courseId)
+    public ArrayList<User> getRegisteredStudents(String courseId)
     {
-        ArrayList<Student> registeredStudents = new ArrayList<>();
+        ArrayList<User> registeredStudents = new ArrayList<>();
 
-        Connection con = null;
         try
         {
-            database = SystemConfig.instance().getDatabaseAccess();
-            con = database.getConnection();
+            database = databaseAbstractFactory.makeDatabaseAccess();
 
-            PreparedStatement stmt = con.prepareStatement(SEELCT_ENROLLED_STUDENTS_QUERY);
+            PreparedStatement stmt = database.getPreparedStatement(SEELCT_ENROLLED_STUDENTS_QUERY);
             stmt.setString(1, courseId);
 
-            ResultSet rs = stmt.executeQuery();
+            ResultSet rs = database.executeForResultSet(stmt);
 
             while (rs.next())
             {
-                Student s = new Student(rs.getString(1), rs.getString(2), rs.getString(3), "");
-                registeredStudents.add(s);
+                User u = accessControlModelAbstractFactory.makeUser();
+                u.setBannerId(rs.getString(1));
+                u.setLastName(rs.getString(2));
+                u.setFirstName(rs.getString(3));
+                u.setEmail("");
+                registeredStudents.add(u);
             }
 
             return registeredStudents;
@@ -230,53 +222,54 @@ public class CourseDaoImpl implements ICourseDao
             throwables.printStackTrace();
         } finally
         {
-            try
-            {
-                con.close();
-            } catch (SQLException | NullPointerException throwables)
-            {
-                throwables.printStackTrace();
-            }
+            database.cleanUp();
         }
         return null;
     }
 
-
     @Override
-    public int checkCourseExists(String courseId, Connection con)
+    public int checkCourseExists(String courseId)
     {
+        IDatabaseAccess db = databaseAbstractFactory.makeDatabaseAccess();
         int rowCount = 0;
         try
         {
-            PreparedStatement stmt = con.prepareStatement(CHECK_COURSE_QUERY);
+            PreparedStatement stmt = db.getPreparedStatement(CHECK_COURSE_QUERY);
             stmt.setString(1, courseId);
 
-            ResultSet rs = stmt.executeQuery();
+            ResultSet rs = db.executeForResultSet(stmt);
             rs.next();
             rowCount = rs.getInt(1);
         } catch (SQLException e)
         {
             e.printStackTrace();
+        } finally
+        {
+            db.cleanUp();
         }
 
         return rowCount;
     }
 
     @Override
-    public int checkCourseRegistration(String bannerId, String courseId, Connection con)
+    public int checkCourseRegistration(String bannerId, String courseId)
     {
+        IDatabaseAccess db = databaseAbstractFactory.makeDatabaseAccess();
         int rowCount = 0;
         try
         {
-            PreparedStatement stmt = con.prepareStatement(CHECK_COURSE_REGISTRATION_QUERY);
+            PreparedStatement stmt = db.getPreparedStatement(CHECK_COURSE_REGISTRATION_QUERY);
             stmt.setString(1, bannerId);
             stmt.setString(2, courseId);
-            ResultSet rs = stmt.executeQuery();
+            ResultSet rs = db.executeForResultSet(stmt);
             rs.next();
             rowCount = rs.getInt(1);
         } catch (SQLException e)
         {
             e.printStackTrace();
+        } finally
+        {
+            db.cleanUp();
         }
 
         return rowCount;
