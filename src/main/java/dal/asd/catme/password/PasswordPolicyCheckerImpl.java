@@ -12,7 +12,7 @@ public class PasswordPolicyCheckerImpl implements IPasswordPolicyCheckerService
     IPasswordRulesConfig passwordRulesConfig;
 
     @Override
-    public boolean enforcePasswordPolicy(User user) throws CatmeException
+    public boolean enforcePasswordPolicy(User user) throws CatmeException, PasswordException
     {
         boolean flag = true;
         passwordRulesConfig = BaseAbstractFactoryImpl.instance().makePasswordAbstractFactory().makePasswordRulesConfig();

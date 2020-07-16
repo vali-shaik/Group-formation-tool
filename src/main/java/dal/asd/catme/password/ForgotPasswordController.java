@@ -74,7 +74,7 @@ public class ForgotPasswordController
     }
 
     @PostMapping("reset-password")
-    public String updatePassword(@RequestParam(name = "password") String password, Model model)
+    public String updatePassword(@RequestParam(name = "password") String password, Model model) throws PasswordException
     {
         IPasswordResetService passwordResetService = passwordAbstractFactory.makePasswordResetService();
         IPasswordPolicyCheckerService passwordPolicyCheckerService = passwordAbstractFactory.makePasswordPolicyCheckerService();
