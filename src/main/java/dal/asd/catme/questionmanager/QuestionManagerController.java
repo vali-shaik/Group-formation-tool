@@ -1,10 +1,8 @@
 package dal.asd.catme.questionmanager;
 
 import dal.asd.catme.BaseAbstractFactoryImpl;
-import dal.asd.catme.accesscontrol.AccessControlModelAbstractFactoryImpl;
 import dal.asd.catme.accesscontrol.IAccessControlModelAbstractFactory;
-import dal.asd.catme.accesscontrol.IUser;
-import dal.asd.catme.exception.QuestionDatabaseException;
+import dal.asd.catme.accesscontrol.User;
 import dal.asd.catme.util.CatmeUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,7 +31,7 @@ public class QuestionManagerController
     @RequestMapping("")
     public ModelAndView loadPage()
     {
-        IUser currentUser = accessControlModelAbstractFactory.makeUser();
+        User currentUser = accessControlModelAbstractFactory.makeUser();
         currentUser.setBannerId(SecurityContextHolder.getContext().getAuthentication().getName());
         ModelAndView questionsPage = new ModelAndView();
         questionsPage.setViewName(CatmeUtil.QUESTION_MANAGER_HOME);
@@ -42,7 +40,7 @@ public class QuestionManagerController
         try
         {
             listQuestionsService.getQuestions(currentUser.getBannerId());
-            List<IQuestion> questionList = listQuestionsService.sortByTitle();
+            List<Question> questionList = listQuestionsService.sortByTitle();
             questionsPage.addObject("questions", questionList);
         } catch (QuestionDatabaseException e)
         {
@@ -59,7 +57,7 @@ public class QuestionManagerController
         IListQuestionsService listQuestionsService = questionManagerAbstractFactory.makeListQuestionsService();
         ModelAndView questionsPage = new ModelAndView();
         questionsPage.setViewName(CatmeUtil.QUESTION_MANAGER_HOME);
-        List<IQuestion> questionList;
+        List<Question> questionList;
 
         if (sortBy.equalsIgnoreCase("Date"))
         {
@@ -97,14 +95,16 @@ public class QuestionManagerController
     @RequestMapping(value = "/addQuestion", method = RequestMethod.POST, params = "action=addOption")
     public String addOption(@ModelAttribute Question question)
     {
-        List<IOption> options = question.getOptionWithOrder();
-        options.add(new Option(options.size() + 1));
+        List<Option> options = question.getOptionWithOrder();
+        Option o = modelAbstractFactory.makeOption();
+        o.setStoredAs(options.size() + 1);
+        options.add(o);
         question.setOptionWithOrder(options);
         return "optionEditor";
     }
 
     @RequestMapping(value = "/addQuestion", method = RequestMethod.POST, params = "action=create")
-    public String addQuestion(@ModelAttribute IQuestion question)
+    public String addQuestion(@ModelAttribute Question question)
     {
         log.info("****QuestionManagerController - addQuestion Invoked*****");
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();

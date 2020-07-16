@@ -1,8 +1,8 @@
 package dal.asd.catme.password;
 
 import dal.asd.catme.BaseAbstractFactoryImpl;
-import dal.asd.catme.accesscontrol.IUser;
-import dal.asd.catme.exception.CatmeException;
+import dal.asd.catme.accesscontrol.CatmeException;
+import dal.asd.catme.accesscontrol.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +12,7 @@ public class PasswordPolicyCheckerImpl implements IPasswordPolicyCheckerService
     IPasswordRulesConfig passwordRulesConfig;
 
     @Override
-    public boolean enforcePasswordPolicy(IUser user) throws CatmeException
+    public boolean enforcePasswordPolicy(User user) throws CatmeException
     {
         boolean flag = true;
         passwordRulesConfig = BaseAbstractFactoryImpl.instance().makePasswordAbstractFactory().makePasswordRulesConfig();

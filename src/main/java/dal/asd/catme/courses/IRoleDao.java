@@ -6,16 +6,16 @@ import java.sql.Connection;
 
 public interface IRoleDao
 {
-    public int assignRole(String bannerId, int roleId, Connection con);
+    int assignRole(String bannerId, int roleId, Connection con);
 
-    public int addInstructor(String courseId, int userRoleId, Connection con);
+    int addInstructor(String courseId, int userRoleId, Connection con);
 
-    public int assignTa(IEnrollment user, Connection con);
+    int assignTa(Enrollment user, Connection con);
 
-    public int checkCourseInstructor(String bannerId, String courseId, Connection con);
+    int checkCourseInstructor(String bannerId, String courseId, Connection con);
 
-    public int checkUserRole(String bannerId, int roleId, Connection con);
+    int checkUserRole(String bannerId, int roleId, Connection con);
 
-    public int getUserRoleId(String bannerId, int roleId, Connection con);
+    int getUserRoleId(String bannerId, int roleId, Connection con);
 
 }

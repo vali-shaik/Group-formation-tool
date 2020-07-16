@@ -1,20 +1,19 @@
 package dal.asd.catme.courses;
 
-import dal.asd.catme.accesscontrol.IUser;
+import dal.asd.catme.accesscontrol.CatmeException;
 import dal.asd.catme.accesscontrol.User;
-import dal.asd.catme.exception.CatmeException;
 
 import java.util.List;
 
 public interface ICourseService
 {
-    public List<ICourse> getCourses(String role) throws CatmeException;
+    List<Course> getCourses(String role) throws CatmeException;
 
-    public List<ICourse> getAllCourses();
+    List<Course> getAllCourses();
 
-    public ICourse displayCourseById(String courseId) throws CatmeException;
+    Course displayCourseById(String courseId) throws CatmeException;
 
-    public String findRoleByCourse(IUser user, String courseId) throws CatmeException;
+    String findRoleByCourse(User user, String courseId) throws CatmeException;
 
-    public List<IUser> getEnrolledStudents(String courseId);
+    List<User> getEnrolledStudents(String courseId);
 }

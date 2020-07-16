@@ -1,8 +1,8 @@
 package dal.asd.catme.studentlistimport;
 
-import dal.asd.catme.accesscontrol.IUser;
 import dal.asd.catme.accesscontrol.User;
-import dal.asd.catme.exception.InvalidFileFormatException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -10,6 +10,7 @@ import java.util.regex.Pattern;
 
 public class CSVParserImpl implements ICSVParser
 {
+    private static final Logger log = LoggerFactory.getLogger(CSVParserImpl.class);
     static int BANNERID = 0;
     static int LASTNAME = 1;
     static int FIRSTNAME = 2;
@@ -19,31 +20,31 @@ public class CSVParserImpl implements ICSVParser
     static int CSV_COLUMNS = 4;
 
     @Override
-    public ArrayList<IUser> getStudentsFromFile(ICSVReader reader)
+    public ArrayList<User> getStudentsFromFile(ICSVReader reader)
     {
-        if(reader==null)
+        if (reader == null)
             return null;
 
         try
         {
             ArrayList<String> lines = reader.readFile();
-            ArrayList<IUser> students = new ArrayList<>();
+            ArrayList<User> students = new ArrayList<>();
 
-            for(String line : lines)
+            for (String line : lines)
             {
                 String[] parts = line.split(",");
-                if(validLine(parts))
+                if (validLine(parts))
                 {
-                    IUser student = new User();
+                    User student = new User();
                     student.setBannerId(parts[BANNERID]);
                     student.setFirstName(parts[FIRSTNAME]);
                     student.setLastName(parts[LASTNAME]);
                     student.setEmail(parts[EMAILID]);
 
                     students.add(student);
-                }
-                else
+                } else
                 {
+                    log.info("Invalid data in line: " + line);
                     return null;
                 }
             }
@@ -71,21 +72,18 @@ public class CSVParserImpl implements ICSVParser
     {
         bannerId = bannerId.trim();
 
-        if (bannerId.length() < BANNERID_LENGTH || bannerId.length()>BANNERID_LENGTH)
+        if (bannerId.length() < BANNERID_LENGTH || bannerId.length() > BANNERID_LENGTH)
         {
+            log.info("Invalid length for Banner Id");
             return false;
         }
-        if (bannerId.substring(0, 3).equalsIgnoreCase("B00")==false)
+        if (bannerId.substring(0, 3).equalsIgnoreCase("B00") == false)
         {
-            return false;
-        }
-
-        if (Pattern.matches("\\d{6}", bannerId.substring(3))==false)
-        {
+            log.info("Banner Id not starting with 'B00'");
             return false;
         }
 
-        return true;
+        return Pattern.matches("\\d{6}", bannerId.substring(3));
     }
 
     @Override
@@ -94,13 +92,13 @@ public class CSVParserImpl implements ICSVParser
 
         if (firstname == null || firstname.trim().isEmpty())
         {
-            System.out.println("Invalid Firstname");
+            log.info("Invalid Firstname");
             return false;
         }
 
         if (lastname == null || lastname.trim().isEmpty())
         {
-            System.out.println("Invalid Lastname");
+            log.info("Invalid Lastname");
             return false;
         }
 
@@ -112,11 +110,6 @@ public class CSVParserImpl implements ICSVParser
     {
         emailId = emailId.trim();
         //credit for regex: https://regexr.com/2rhq7
-        if (Pattern.matches("[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", emailId))
-        {
-            return true;
-        }
-
-        return false;
+        return Pattern.matches("[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", emailId);
     }
 }

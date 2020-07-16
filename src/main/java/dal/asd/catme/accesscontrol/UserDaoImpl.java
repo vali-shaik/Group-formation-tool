@@ -1,11 +1,12 @@
-
 package dal.asd.catme.accesscontrol;
 
 import dal.asd.catme.BaseAbstractFactoryImpl;
+import dal.asd.catme.IBaseAbstractFactory;
 import dal.asd.catme.config.SystemConfig;
 import dal.asd.catme.courses.ICourseAbstractFactory;
 import dal.asd.catme.courses.IRoleDao;
-import dal.asd.catme.database.DatabaseAccess;
+import dal.asd.catme.database.IDatabaseAbstractFactory;
+import dal.asd.catme.database.IDatabaseAccess;
 import dal.asd.catme.util.CatmeUtil;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -24,8 +25,10 @@ public class UserDaoImpl implements IUserDao
 
     PasswordEncoder p;
 
-    IAccessControlModelAbstractFactory modelAbstractFactory = BaseAbstractFactoryImpl.instance().makeAccessControlModelAbstractFactory();
-    ICourseAbstractFactory courseAbstractFactory = BaseAbstractFactoryImpl.instance().makeCourseAbstractFactory();
+    IBaseAbstractFactory baseAbstractFactory = BaseAbstractFactoryImpl.instance();
+    IDatabaseAbstractFactory databaseAbstractFactory = baseAbstractFactory.makeDatabaseAbstractFactory();
+    IAccessControlModelAbstractFactory modelAbstractFactory = baseAbstractFactory.makeAccessControlModelAbstractFactory();
+    ICourseAbstractFactory courseAbstractFactory = baseAbstractFactory.makeCourseAbstractFactory();
 
     @Override
     public int checkExistingUser(String bannerId, Connection con)
@@ -47,7 +50,7 @@ public class UserDaoImpl implements IUserDao
     }
 
     @Override
-    public int addUser(IUser user, Connection con)
+    public int addUser(User user, Connection con)
     {
         String bannerId = user.getBannerId();
         try
@@ -76,7 +79,7 @@ public class UserDaoImpl implements IUserDao
     }
 
     @Override
-    public IUser getUser(String bannerId, Connection con)
+    public User getUser(String bannerId, Connection con)
     {
         try
         {
@@ -90,7 +93,7 @@ public class UserDaoImpl implements IUserDao
             String lastname = rs.getString(3);
             String emailid = rs.getString(4);
 
-            IUser u = modelAbstractFactory.makeUser();
+            User u = modelAbstractFactory.makeUser();
             u.setBannerId(bannerId);
             u.setFirstName(firstname);
             u.setLastName(lastname);
@@ -106,20 +109,20 @@ public class UserDaoImpl implements IUserDao
     }
 
     @Override
-    public List<IUser> getUsers()
+    public List<User> getUsers()
     {
-        DatabaseAccess db;
+        IDatabaseAccess db;
         Connection connection = null;
-        List<IUser> users = new ArrayList<>();
+        List<User> users = new ArrayList<>();
         try
         {
-            db = SystemConfig.instance().getDatabaseAccess();
+            db = databaseAbstractFactory.makeDatabaseAccess();
             connection = db.getConnection();
             ResultSet resultSet = listUsers(connection, LIST_USER_QUERY);
 
             while (resultSet.next())
             {
-                IUser user = modelAbstractFactory.makeUser();
+                User user = modelAbstractFactory.makeUser();
                 user.setBannerId(resultSet.getString(CatmeUtil.BANNER_ID));
                 user.setFirstName(resultSet.getString(CatmeUtil.FIRST_NAME));
                 user.setLastName(resultSet.getString(CatmeUtil.LAST_NAME));
@@ -133,7 +136,7 @@ public class UserDaoImpl implements IUserDao
             try
             {
                 connection.close();
-            } catch (SQLException|NullPointerException e)
+            } catch (SQLException | NullPointerException e)
             {
                 e.printStackTrace();
             }

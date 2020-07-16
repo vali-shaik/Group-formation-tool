@@ -20,7 +20,7 @@ public class RandomTokenGenerator
     private static final String PASSWORD_ALLOW_BASE_SHUFFLE = shuffleString(PASSWORD_ALLOW_BASE);
     private static final String PASSWORD_ALLOW = PASSWORD_ALLOW_BASE_SHUFFLE;
 
-    private static SecureRandom random = new SecureRandom();
+    private static final SecureRandom random = new SecureRandom();
 
     public static String generateRandomPassword(int length)
     {
@@ -36,6 +36,7 @@ public class RandomTokenGenerator
         return sb.toString();
 
     }
+
     public static String shuffleString(String string)
     {
         List<String> letters = Arrays.asList(string.split(""));

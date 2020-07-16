@@ -2,14 +2,12 @@ package dal.asd.catme.courses;
 
 public class CourseAbstractFactoryImpl implements ICourseAbstractFactory
 {
-    private static ICourseAbstractFactory courseAbstractFactory = null;
-
-    private ICourseDao courseDao;
-    private ICourseService courseService;
-    private IRoleDao roleDao;
-    private IRoleService roleService;
-    private IStudentDao studentDao;
-    private IEnrollStudentService enrollStudentService;
+    private final ICourseDao courseDao;
+    private final ICourseService courseService;
+    private final IRoleDao roleDao;
+    private final IRoleService roleService;
+    private final IStudentDao studentDao;
+    private final IEnrollStudentService enrollStudentService;
 
     public CourseAbstractFactoryImpl()
     {
@@ -19,16 +17,7 @@ public class CourseAbstractFactoryImpl implements ICourseAbstractFactory
 
         courseService = new CourseServiceImpl(courseDao);
         roleService = new RoleServiceImpl(roleDao);
-        enrollStudentService = new EnrollStudentService(roleDao,studentDao);
-    }
-
-    public static ICourseAbstractFactory instance()
-    {
-        if(courseAbstractFactory==null)
-        {
-            courseAbstractFactory = new CourseAbstractFactoryImpl();
-        }
-        return courseAbstractFactory;
+        enrollStudentService = new EnrollStudentServiceImpl(roleDao, studentDao);
     }
 
     @Override

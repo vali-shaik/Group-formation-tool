@@ -189,7 +189,10 @@ public class GroupFormationServiceImpl implements IGroupFormationService {
 			for(int j=0;j<questionTypeOne.size();j++){
 				Question question = questionTypeOne.get(j);
 				for(Answer answer:answersList){
-					if (answer.getQuestionId() == question.questionId){
+//					System.out.println("answer.getQuestionId()"+answer.getQuestionId());
+//					System.out.println("question.getQuestionId()"+question.getQuestionId());
+					if (answer.getQuestionId() == question.getQuestionId()){
+						System.out.println("answer.getAnswers().get(0) "+answer.getAnswers().get(0));
 						answerTableMcqNumeric[i][j] = answer.getAnswers().get(0);
 					}
 				}
@@ -216,8 +219,10 @@ public class GroupFormationServiceImpl implements IGroupFormationService {
 		}
 		System.out.println();
 		for(int i=0; i<questionTypeOne.size();i++){
-			System.out.print(questionTypeOne.get(i)+"\t");
+			Question ques=questionTypeOne.get(i);
+			System.out.print(ques.getQuestionId()+"\t");
 			for(int j=0;j<students.size();j++){
+				System.out.println(i+" "+j);
 
 				System.out.print(answerTableMcqNumeric[i][j]+"\t");
 			}

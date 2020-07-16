@@ -91,4 +91,9 @@ public class CatmeUtil
     public static final String GREATER_THAN = "Greater than";
     public static final String LESSER_THAN = "Lesser than";
     
+    public static final String PUBLISH_SURVEY_PAGE = "publishSurvey";
+    public static final String CREATE_SURVEY_PAGE = "createSurvey";
+    public static final String SAVE_SURVEY_PAGE = "saveSurvey";
+    public static final String ADD_QUESTION_SURVEY_PAGE = "redirect:/createSurvey?courseId=";
+
 }

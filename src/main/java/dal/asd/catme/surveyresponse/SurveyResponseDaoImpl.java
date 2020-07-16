@@ -1,12 +1,16 @@
 package dal.asd.catme.surveyresponse;
 
 import dal.asd.catme.BaseAbstractFactoryImpl;
-import dal.asd.catme.config.SystemConfig;
-import dal.asd.catme.database.DatabaseAccess;
+import dal.asd.catme.IBaseAbstractFactory;
+import dal.asd.catme.database.IDatabaseAbstractFactory;
+import dal.asd.catme.database.IDatabaseAccess;
+import dal.asd.catme.questionmanager.IQuestionManagerModelAbstractFactory;
 import dal.asd.catme.questionmanager.Option;
 import dal.asd.catme.questionmanager.Question;
 import dal.asd.catme.util.CatmeUtil;
 import dal.asd.catme.util.DBQueriesUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -17,44 +21,52 @@ import java.util.List;
 
 public class SurveyResponseDaoImpl implements ISurveyResponseDao
 {
-    private static int ID=1;
-    private static int TEXT=2;
-    private static int TYPE=3;
-    private static int OPTIONTEXT=4;
-    private static int OPTIONORDER=5;
+    private static final Logger log = LoggerFactory.getLogger(SurveyResponseDaoImpl.class);
 
-    ISurveyResponseModelAbstractFactory modelAbstractFactory = BaseAbstractFactoryImpl.instance().makeSurveyResponseModelAbstractFactory();
+    private static final int ID = 1;
+    private static final int TEXT = 2;
+    private static final int TYPE = 3;
+    private static final int OPTIONTEXT = 4;
+    private static final int OPTIONORDER = 5;
 
-    public String isSurveyPublished(String courseId)
+    IBaseAbstractFactory baseAbstractFactory = BaseAbstractFactoryImpl.instance();
+    IDatabaseAbstractFactory databaseAbstractFactory = baseAbstractFactory.makeDatabaseAbstractFactory();
+    ISurveyResponseModelAbstractFactory modelAbstractFactory = baseAbstractFactory.makeSurveyResponseModelAbstractFactory();
+    IQuestionManagerModelAbstractFactory questionManagerModelAbstractFactory = baseAbstractFactory.makeQuestionManagerModelAbstractFactory();
+
+    public String getPublishedSurveyId(String courseId) throws SurveyResponseException
     {
-        DatabaseAccess db = SystemConfig.instance().getDatabaseAccess();
+        log.info("Checking database for publish status of Survey of course: " + courseId);
+        IDatabaseAccess db = databaseAbstractFactory.makeDatabaseAccess();
         Connection con = null;
 
         try
         {
             con = db.getConnection();
             PreparedStatement stmt = con.prepareStatement(DBQueriesUtil.GET_PUBLISHED_SURVEY);
-            stmt.setString(1,courseId);
+            stmt.setString(1, courseId);
 
             ResultSet rs = stmt.executeQuery();
 
-            if(rs.next())
+            if (rs.next())
             {
                 return rs.getString(1);
             }
         } catch (SQLException throwables)
         {
+            log.warn("Error connecting database");
             throwables.printStackTrace();
-        }
-        finally
+            throw new SurveyResponseException("Error Connecting Database\nCannot Get Survey");
+        } finally
         {
-            if(con!=null)
+            if (con != null)
             {
                 try
                 {
                     con.close();
                 } catch (SQLException throwables)
                 {
+                    log.warn("Error closing connection");
                     throwables.printStackTrace();
                 }
             }
@@ -62,17 +74,18 @@ public class SurveyResponseDaoImpl implements ISurveyResponseDao
         return null;
     }
 
-    public List<ISurveyResponse> getSurveyQuestions(String surveyId)
+    public List<SurveyResponse> getSurveyQuestions(String surveyId) throws SurveyResponseException
     {
-        DatabaseAccess db = SystemConfig.instance().getDatabaseAccess();
-        Connection con=null;
-        List<ISurveyResponse> questions = null;
+        log.info("Getting survey questions from database of surveyId: " + surveyId);
+        IDatabaseAccess db = databaseAbstractFactory.makeDatabaseAccess();
+        Connection con = null;
+        List<SurveyResponse> questions = null;
 
         try
         {
             con = db.getConnection();
             PreparedStatement stmt = con.prepareStatement(DBQueriesUtil.GET_SURVEY_QUESTIONS);
-            stmt.setString(1,surveyId);
+            stmt.setString(1, surveyId);
 
             ResultSet rs = stmt.executeQuery();
 
@@ -80,14 +93,19 @@ public class SurveyResponseDaoImpl implements ISurveyResponseDao
 
         } catch (SQLException throwables)
         {
+            log.error("Error Connecting database");
             throwables.printStackTrace();
-            if(con!=null)
+            throw new SurveyResponseException("Error Connecting Database\nCannot Get Questions");
+        } finally
+        {
+            if (con != null)
             {
                 try
                 {
                     con.close();
                 } catch (SQLException e)
                 {
+                    log.warn("Error closing connection");
                     e.printStackTrace();
                 }
             }
@@ -97,32 +115,32 @@ public class SurveyResponseDaoImpl implements ISurveyResponseDao
 
     }
 
-    public boolean saveResponses(ISurveyResponseBinder binder, String bannerId)
+    public boolean saveResponses(SurveyResponseBinder binder, String bannerId) throws SurveyResponseException
     {
-        DatabaseAccess db = SystemConfig.instance().getDatabaseAccess();
+        log.info("Saving survey responses of student: " + bannerId);
+        IDatabaseAccess db = databaseAbstractFactory.makeDatabaseAccess();
         Connection con = null;
 
         try
         {
             con = db.getConnection();
             PreparedStatement stmt = con.prepareStatement(DBQueriesUtil.SAVE_ANSWER);
-            stmt.setString(2,bannerId);
+            stmt.setString(2, bannerId);
 
-            for(ISurveyResponse question: binder.getQuestionList())
+            for (SurveyResponse question : binder.getQuestionList())
             {
-                stmt.setInt(1,question.getQuestion().getQuestionId());
+                stmt.setInt(1, question.getQuestion().getQuestionId());
 
-                if(question.getQuestion().getQuestionType().equals(CatmeUtil.CHECKBOX))
+                if (question.getQuestion().getQuestionType().equals(CatmeUtil.CHECKBOX))
                 {
-                    for(String ans: question.getAnswer())
+                    for (String ans : question.getAnswer())
                     {
-                        stmt.setString(3,ans);
+                        stmt.setString(3, ans);
                         stmt.executeUpdate();
                     }
-                }
-                else
+                } else
                 {
-                    stmt.setString(3,question.getAnswer().get(0));
+                    stmt.setString(3, question.getAnswer().get(0));
                     stmt.executeUpdate();
                 }
             }
@@ -130,28 +148,29 @@ public class SurveyResponseDaoImpl implements ISurveyResponseDao
 
         } catch (SQLException throwables)
         {
+            log.warn("Error saving responses");
             throwables.printStackTrace();
-        }
-        finally
+            throw new SurveyResponseException("Error Connecting Database\nCannot Save Response");
+        } finally
         {
-            if(con!=null)
+            if (con != null)
             {
                 try
                 {
                     con.close();
                 } catch (SQLException throwables)
                 {
+                    log.warn("Error closing connection");
                     throwables.printStackTrace();
                 }
             }
         }
-        return false;
     }
 
-    @Override
-    public boolean saveAttempt(String surveyId, String bannerId)
+    public boolean saveAttempt(String surveyId, String bannerId) throws SurveyResponseException
     {
-        DatabaseAccess db = SystemConfig.instance().getDatabaseAccess();
+        log.info("Marking survey as attempted: \nSurvey: " + surveyId + "/tStudent: " + bannerId);
+        IDatabaseAccess db = databaseAbstractFactory.makeDatabaseAccess();
         Connection con = null;
 
         try
@@ -159,7 +178,7 @@ public class SurveyResponseDaoImpl implements ISurveyResponseDao
             con = db.getConnection();
             PreparedStatement stmt = con.prepareStatement(DBQueriesUtil.SAVE_ATTEMPT);
             stmt.setInt(1, Integer.parseInt(surveyId));
-            stmt.setString(2,bannerId);
+            stmt.setString(2, bannerId);
 
             stmt.executeUpdate();
 
@@ -167,56 +186,59 @@ public class SurveyResponseDaoImpl implements ISurveyResponseDao
 
         } catch (SQLException throwables)
         {
+            log.warn("Error connecting database");
             throwables.printStackTrace();
-        }
-        finally
+            throw new SurveyResponseException("Error Connecting Database\nCannot Mark Attempt");
+        } finally
         {
-            if(con!=null)
+            if (con != null)
             {
                 try
                 {
                     con.close();
                 } catch (SQLException throwables)
                 {
+                    log.warn("Error closing connection");
                     throwables.printStackTrace();
                 }
             }
         }
-        return false;
     }
 
-    @Override
-    public boolean isSurveyAttempted(String surveyId, String bannerId)
+    public boolean isSurveyAttempted(String surveyId, String bannerId) throws SurveyResponseException
     {
-        DatabaseAccess db = SystemConfig.instance().getDatabaseAccess();
+        log.info("Checking if student " + bannerId + " has already attempted survey " + surveyId);
+        IDatabaseAccess db = databaseAbstractFactory.makeDatabaseAccess();
         Connection con = null;
 
         try
         {
             con = db.getConnection();
             PreparedStatement stmt = con.prepareStatement(DBQueriesUtil.GET_ATTEMPT);
-            stmt.setInt(1,Integer.parseInt(surveyId));
+            stmt.setInt(1, Integer.parseInt(surveyId));
             stmt.setString(2, bannerId);
 
             ResultSet rs = stmt.executeQuery();
 
-            if(rs.next())
+            if (rs.next())
             {
                 return true;
             }
         } catch (SQLException throwables)
         {
+            log.warn("Error connecting database");
             throwables.printStackTrace();
-        }
-        finally
+            throw new SurveyResponseException("Error Connecting Database\nTry Again Later");
+        } finally
         {
-            if(con!=null)
+            if (con != null)
             {
                 try
                 {
                     con.close();
                 } catch (SQLException throwables)
                 {
+                    log.warn("Error closing connection");
                     throwables.printStackTrace();
                 }
             }
@@ -224,19 +246,20 @@ public class SurveyResponseDaoImpl implements ISurveyResponseDao
         return false;
     }
 
-    private List<ISurveyResponse> createQuestionsList(ResultSet rs)
+    private List<SurveyResponse> createQuestionsList(ResultSet rs) throws SurveyResponseException
     {
-        List<ISurveyResponse> questions = new ArrayList<>();
+        log.info("Converting database response to List of Survey Questions");
+        List<SurveyResponse> questions = new ArrayList<>();
 
         try
         {
-            int prevId=-1;
-            ISurveyResponse q=modelAbstractFactory.makeSurveyResponse();
-            while(rs.next())
+            int prevId = -1;
+            SurveyResponse q = modelAbstractFactory.makeSurveyResponse();
+            while (rs.next())
             {
-                if(rs.getInt(ID)!=prevId)
+                if ((rs.getInt(ID) == prevId) == false)
                 {
-                    q=modelAbstractFactory.makeSurveyResponse();
+                    q = modelAbstractFactory.makeSurveyResponse();
                     q.setQuestion(new Question());
                     q.getQuestion().setQuestionId(rs.getInt(ID));
                     q.getQuestion().setQuestionText(rs.getString(TEXT));
@@ -246,15 +269,19 @@ public class SurveyResponseDaoImpl implements ISurveyResponseDao
                 }
                 prevId = rs.getInt(ID);
 
-                if(q.getQuestion().getQuestionType().equals(CatmeUtil.RADIOBUTTON) || q.getQuestion().getQuestionType().equals(CatmeUtil.CHECKBOX))
+                if (q.getQuestion().getQuestionType().equals(CatmeUtil.RADIOBUTTON) || q.getQuestion().getQuestionType().equals(CatmeUtil.CHECKBOX))
                 {
-                    q.getQuestion().addOption(new Option(rs.getString(OPTIONTEXT),rs.getInt(OPTIONORDER)));
+                    Option option = questionManagerModelAbstractFactory.makeOption();
+                    option.setDisplayText(rs.getString(OPTIONTEXT));
+                    option.setStoredAs(rs.getInt(OPTIONORDER));
+                    q.getQuestion().addOption(option);
                 }
-
             }
         } catch (SQLException throwables)
         {
+            log.warn("Error Reading result of database");
             throwables.printStackTrace();
+            throw new SurveyResponseException("Error Reading Result from Database");
         }
 
         return questions;

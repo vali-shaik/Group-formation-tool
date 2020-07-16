@@ -1,18 +1,50 @@
 package dal.asd.catme.studentlistimporttest;
 
-import dal.asd.catme.BaseAbstractFactoryImpl;
-import dal.asd.catme.studentlistimport.CSVParserAbstractFactoryImpl;
+import dal.asd.catme.BaseAbstractFactoryMock;
+import dal.asd.catme.IBaseAbstractFactory;
 import dal.asd.catme.studentlistimport.ICSVParser;
+import dal.asd.catme.studentlistimport.ICSVParserAbstractFactory;
+import dal.asd.catme.studentlistimport.ICSVReader;
 import org.junit.jupiter.api.Test;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class CSVParserTest
 {
+    IBaseAbstractFactory baseAbstractFactory = BaseAbstractFactoryMock.instance();
+    ICSVParserAbstractFactory icsvParserAbstractFactory = baseAbstractFactory.makeCSVParserAbstractFactory();
+
+    @Test
+    void getStudentsFromFileTest()
+    {
+        ICSVParser icsvParser = icsvParserAbstractFactory.makeCSVParser();
+
+        File file1 = new File("src/test/java/dal/asd/catme/studentlistimporttest/test.csv");
+        File file2 = new File("src/test/java/dal/asd/catme/studentlistimporttest/test1.csv");
+        try
+        {
+            ICSVReader icsvReader = icsvParserAbstractFactory.makeCSVReader(new FileInputStream(file1));
+            ICSVReader icsvReader1 = icsvParserAbstractFactory.makeCSVReader(new FileInputStream(file2));
+            assertNotNull(icsvParser.getStudentsFromFile(icsvReader));
+            assertNull(icsvParser.getStudentsFromFile(icsvReader1));
+        } catch (FileNotFoundException e)
+        {
+            fail();
+            e.printStackTrace();
+        }
+
+        assertNull(icsvParser.getStudentsFromFile(null));
+
+    }
 
     @Test
     void validBannerIdTest()
     {
-        ICSVParser icsvParser= BaseAbstractFactoryImpl.instance().makeIcsvParserAbstractFactory().makeCSVParser();
+        ICSVParser icsvParser = icsvParserAbstractFactory.makeCSVParser();
 
         assertTrue(icsvParser.validBannerId("B00851820"));
         assertTrue(icsvParser.validBannerId("B00000000"));
@@ -30,7 +62,7 @@ public class CSVParserTest
     {
         System.out.println("Validating Names");
 
-        ICSVParser icsvParser= BaseAbstractFactoryImpl.instance().makeIcsvParserAbstractFactory().makeCSVParser();
+        ICSVParser icsvParser = icsvParserAbstractFactory.makeCSVParser();
 
         assertTrue(icsvParser.validNames("A", "A"));
         assertTrue(icsvParser.validNames("1", "A"));
@@ -46,7 +78,7 @@ public class CSVParserTest
     @Test
     void validEmailIdTest()
     {
-        ICSVParser icsvParser= BaseAbstractFactoryImpl.instance().makeIcsvParserAbstractFactory().makeCSVParser();
+        ICSVParser icsvParser = icsvParserAbstractFactory.makeCSVParser();
 
         assertTrue(icsvParser.validEmailId("tp890953@dal.ca"));
         assertTrue(icsvParser.validEmailId("Tapan.Prajapati@dal.ca"));
