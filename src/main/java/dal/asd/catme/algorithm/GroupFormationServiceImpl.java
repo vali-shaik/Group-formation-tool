@@ -201,7 +201,6 @@ public class GroupFormationServiceImpl implements IGroupFormationService {
 			}
 		}
 
-
 		for(int i=0; i<students.size();i++){
 			System.out.print(students.get(i)+"\t");
 		}
@@ -211,7 +210,6 @@ public class GroupFormationServiceImpl implements IGroupFormationService {
 			System.out.print(ques.getQuestionId()+"\t");
 			for(int j=0;j<students.size();j++){
 				System.out.println(i+" "+j);
-
 				System.out.print(answerTableMcqNumeric[i][j]+"\t");
 			}
 			System.out.println();
@@ -254,8 +252,6 @@ public class GroupFormationServiceImpl implements IGroupFormationService {
 		}
 		distributeRemaining();
 		Map groupsMap = returnGroups();
-
-
 		return groupsMap;
 	}
 

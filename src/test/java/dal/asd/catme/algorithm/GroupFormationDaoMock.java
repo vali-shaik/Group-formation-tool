@@ -5,7 +5,7 @@ import java.util.List;
 
 public class GroupFormationDaoMock {
     List<Question> questionTypeOne;
-    List<Question> questionTypeTwo = new ArrayList<>();
+    List<Question> questionTypeTwo;
     List students;
 
     List getStudents(){
@@ -32,8 +32,17 @@ public class GroupFormationDaoMock {
         questionTypeOne.add(new Question(1,7,3));
         questionTypeOne.add(new Question(1,8,4));
         return questionTypeOne;
-
     }
+
+    List getQuestionTypeTwo(){
+        questionTypeTwo = new ArrayList<>();
+        questionTypeTwo.add(new Question(1,9,10, 5));
+        questionTypeTwo.add(new Question(1,10,5,5));
+        questionTypeTwo.add(new Question(1,11,8, 5));
+        return  getQuestionTypeTwo();
+    }
+
+
 
 
 }
