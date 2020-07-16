@@ -31,7 +31,7 @@ private static final Logger log = LoggerFactory.getLogger(AdminDaoImpl.class);
     @Override
     public int addCourse(Course course)
     {
-log.info("Adding a new Course");
+    	log.info("Adding a new Course");
         db = databaseAbstractFactory.makeDatabaseAccess();
         int result = CatmeUtil.ZERO;
         try

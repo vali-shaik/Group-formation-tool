@@ -35,7 +35,9 @@ public class UserDaoImpl implements IUserDao
     @Override
     public int checkExistingUser(String bannerId)
     {
-log.info("Checking whether user already exists");        int rowCount = 0;
+    	 IDatabaseAccess db = databaseAbstractFactory.makeDatabaseAccess();
+    	 log.info("Checking whether user already exists");        
+    	 int rowCount = 0;
         try
         {
             PreparedStatement stmt = db.getPreparedStatement(CHECK_EXISTING_USER_QUERY);
@@ -58,7 +60,9 @@ log.info("Checking whether user already exists");        int rowCount = 0;
     @Override
     public int addUser(User user)
     {
-log.info("Adding newly registered user");        String bannerId = user.getBannerId();
+    	 IDatabaseAccess db = databaseAbstractFactory.makeDatabaseAccess();
+    	log.info("Adding newly registered user");       
+    	String bannerId = user.getBannerId();
         try
         {
             if (0 == checkExistingUser(bannerId))
@@ -91,7 +95,8 @@ log.info("Adding newly registered user");        String bannerId = user.getBanne
     @Override
     public User getUser(String bannerId)
     {
-log.info("Fetching the user details based on user id");
+    	 IDatabaseAccess db = databaseAbstractFactory.makeDatabaseAccess();
+    	log.info("Fetching the user details based on user id");
         try
         {
             PreparedStatement getUser = db.getPreparedStatement(GET_USER_QUERY);
@@ -126,7 +131,8 @@ log.info("Fetching the user details based on user id");
     @Override
     public List<User> getUsers()
     {
-log.info("Fetching all the users");
+    	 IDatabaseAccess db = databaseAbstractFactory.makeDatabaseAccess();
+    	log.info("Fetching all the users");
         List<User> users = new ArrayList<>();
         try
         {
@@ -153,7 +159,8 @@ log.info("Fetching all the users");
 
     private ResultSet listUsers(String query)
     {
-log.info("Fetching the list of users with student role");
+    	 IDatabaseAccess db = databaseAbstractFactory.makeDatabaseAccess();
+    	log.info("Fetching the list of users with student role");
         ResultSet rs = null;
         try
         {

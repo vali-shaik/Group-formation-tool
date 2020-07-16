@@ -22,11 +22,11 @@ public class PasswordDaoImpl implements IPasswordDao
     IBaseAbstractFactory baseAbstractFactory = BaseAbstractFactoryImpl.instance();
     IDatabaseAbstractFactory databaseAbstractFactory = baseAbstractFactory.makeDatabaseAbstractFactory();
     PasswordEncoder p;
-private static final Logger log = LoggerFactory.getLogger(PasswordDaoImpl.class);
+    private static final Logger log = LoggerFactory.getLogger(PasswordDaoImpl.class);
     @Override
     public void resetPassword(User u) throws CatmeException
     {
-log.info("Restting password");
+    	log.info("Restting password");
         IDatabaseAccess db = databaseAbstractFactory.makeDatabaseAccess();
         p = SystemConfig.instance().getPasswordEncoder();
         try
@@ -132,8 +132,8 @@ log.info("Deleting reset token");
             stmt.executeUpdate();
 
         } catch (SQLException throwables)
-log.error("Error deleting reset token");
         {
+        	log.error("Error deleting reset token");
         } finally
         {
             db.cleanUp();
