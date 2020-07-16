@@ -2,7 +2,7 @@ package dal.asd.catme.algorithm;
 
 import java.util.List;
 
-public class Student {
+public class Student implements IStudent{
 	String bannerId;
 	List<Answer> answers;
 	

@@ -151,7 +151,7 @@ function deleteAlert()
 <button type="submit" class="btn btn-dark" name="action" value="Publish">Publish</button>
 </span>
             <span th:if="${isPublished== true}">
-<a href="##html" class="btn btn-dark" name="action">Generate Groups</a>
+<a href="@{'/surveyGroups/formGroups'+${survey.surveyId}}" class="btn btn-dark" name="action">Generate Groups</a>
 </span>
         </form>
     </div>

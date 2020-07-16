@@ -13,10 +13,8 @@ import org.slf4j.LoggerFactory;
 import dal.asd.catme.BaseAbstractFactoryImpl;
 import dal.asd.catme.config.SystemConfig;
 import dal.asd.catme.database.DatabaseAccess;
-import dal.asd.catme.surveyresponse.ISurveyResponseModelAbstractFactory;
 import dal.asd.catme.util.CatmeUtil;
 import dal.asd.catme.util.DBQueriesUtil;
-import org.springframework.jdbc.core.namedparam.NamedParameterUtils;
 
 public class GroupFormationDaoImpl implements IGroupFormationDao {
 
@@ -26,7 +24,7 @@ public class GroupFormationDaoImpl implements IGroupFormationDao {
 
 	@Override
 	public IAlgorithmParameters setAlgorithmParameter(int surveyId) {
-		System.out.println("inside dao");
+		logger.info("*** GroupFormationDaoImpl - setAlgorithmParameter invoked");
 		IAlgorithmParameters algorithmParameter = modelAbstractFactory.makeAlgorithmParameters();
 
 
@@ -41,17 +39,17 @@ public class GroupFormationDaoImpl implements IGroupFormationDao {
 			
 		} catch (NullPointerException e) {
 			logger.error("Null exception occurred in ListGroups method.");
-			e.printStackTrace();
+			
 		}
 		catch (Exception e) {
 			logger.error("Exeption occurred in ListGroups method.");
-			e.printStackTrace();
 		}
 		return algorithmParameter;
 
 	}
 
-	public int getGroupSize(Connection con, int surveyId) {
+	public int getGroupSize(Connection con, int surveyId) throws AlgorithmException {
+		logger.info("*** GroupFormationDaoImpl - getGroupSize invoked");
 		PreparedStatement stmt;
 		try {
 			stmt = con.prepareStatement(DBQueriesUtil.GET_GROUP_SIZE);
@@ -63,13 +61,17 @@ public class GroupFormationDaoImpl implements IGroupFormationDao {
 
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+
+			logger.error("Exeption occurred in getGroupSize method.");
+			throw new AlgorithmException("Exeption occurred in getGroupSize method.");
 		}
 
 		return 0;
 	}
 
-	public int getNumberOfStudents(Connection con, int surveyId,List<Question> questions,IAlgorithmParameters algorithmParameters) {
+	public int getNumberOfStudents(Connection con, int surveyId,List<Question> questions,IAlgorithmParameters algorithmParameters) throws AlgorithmException{
+
+		logger.info("*** GroupFormationDaoImpl - getNumberOfStudents invoked");
 		PreparedStatement stmt;
 		Answer answerList ;
 		int numberOfStudents=0;
@@ -125,13 +127,14 @@ public class GroupFormationDaoImpl implements IGroupFormationDao {
 			algorithmParameters.setStudents(studentList);
 			
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.error("Exeption occurred in getNumberOfStudents method.");
+			throw new AlgorithmException("Exeption occurred in getNumberOfStudents method.");
 		}
 
 		return 0;
 	}
 
-	public List<Question> getQuestionList(Connection con, int surveyId) {
+	public List<Question> getQuestionList(Connection con, int surveyId) throws AlgorithmException {
 		List<Question> questions = new ArrayList<Question>();
 		PreparedStatement stmt;
 		try {
@@ -173,7 +176,8 @@ public class GroupFormationDaoImpl implements IGroupFormationDao {
 			}
 			
 		} catch (SQLException e) {
-			e.printStackTrace();
+			logger.error("Exeption occurred in getQuestionList method.");
+			throw new AlgorithmException("Exeption occurred in getQuestionList method.");
 		}
 
 		return questions;

@@ -9,7 +9,7 @@ public class AlgorithmAbstractFactoryImpl implements IAlgorithmAbstractFactory{
 	
 	public AlgorithmAbstractFactoryImpl() {
 		groupFormationDao=new GroupFormationDaoImpl();
-		groupFormationService=new GroupFormationServiceImpl();
+		
 		listGroupsService=new ListGroupsServiceImpl();
 	}
 	
@@ -29,8 +29,8 @@ public class AlgorithmAbstractFactoryImpl implements IAlgorithmAbstractFactory{
     }
 
 	@Override
-	public IGroupFormationService makeGroupFormationService() {
-		return groupFormationService;
+	public IGroupFormationService makeGroupFormationService(int surveyId) {
+		return groupFormationService=new GroupFormationServiceImpl(surveyId);
 	}
 
 	@Override
