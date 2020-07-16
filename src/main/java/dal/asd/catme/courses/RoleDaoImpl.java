@@ -122,9 +122,10 @@ public class RoleDaoImpl implements IRoleDao
     }
 
     @Override
-    public String assignTa(IEnrollment user, Connection con)
+    public int assignTa(IEnrollment user, Connection con)
     {
         String isAssigned = "";
+        int result = 0;
 
         try
         {
@@ -141,14 +142,14 @@ public class RoleDaoImpl implements IRoleDao
                             if (0 != checkUserRole(user.getBannerId(), CatmeUtil.TA_ROLE_ID, con))
                             {
                                 int userRoleId = getUserRoleId(user.getBannerId(), CatmeUtil.TA_ROLE_ID, con);
-                                addInstructor(user.getCourseId(), userRoleId, con);
+                                result=addInstructor(user.getCourseId(), userRoleId, con);
                             }
 
                             else
                             {
                                 assignRole(user.getBannerId(), CatmeUtil.TA_ROLE_ID, con);
                                 int userRoleId = getUserRoleId(user.getBannerId(), CatmeUtil.TA_ROLE_ID, con);
-                                addInstructor(user.getCourseId(), userRoleId, con);
+                                result=addInstructor(user.getCourseId(), userRoleId, con);
                             }
                             isAssigned = "The user is successfully assigned as TA.";
 
@@ -185,6 +186,6 @@ public class RoleDaoImpl implements IRoleDao
                 }
             }
         }
-        return isAssigned;
+        return result;
     }
 }

@@ -53,6 +53,11 @@ public class DBQueriesUtil
 
     public static final String GET_PUBLISHED_SURVEY = "call GetPublishedSurvey(?);";
     public static final String GET_SURVEY_QUESTIONS = "call GetSurveyQuestions(?);";
+    public static final String GET_SURVEY_GROUPS = "call selectSurveyGroupsWithSurveyId(?);";
+    public static final String GET_GROUP_SIZE="call selectGroupSize(?);";
+    public static final String GET_QUESTIONS_LIST="GET_QUESTIONS(?)";
+    public static final String GET_ANSWER_OPTION="getAnswerOption(?)";
+    public static final String GET_NUMBER_OF_STUDENTS="call selectNumberOfStudents(?)"; 
     public static final String SAVE_ANSWER = "call SaveAnswer(?,?,?);";
     public static final String SAVE_ATTEMPT = "call SaveSurveyAttempt(?,?)";
     public static final String GET_ATTEMPT = "call GetSurveyAttempt(?,?)";

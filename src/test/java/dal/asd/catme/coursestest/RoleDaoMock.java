@@ -65,7 +65,7 @@ public class RoleDaoMock implements IRoleDao
     }
 
     @Override
-    public String assignTa(IEnrollment user, Connection con)
+    public int assignTa(IEnrollment user, Connection con)
     {
         if (0 != userDao.checkExistingUser(user.getBannerId(), con))
         {
@@ -87,7 +87,7 @@ public class RoleDaoMock implements IRoleDao
                                 {
                                     if (u.getBannerId().equalsIgnoreCase(user.getBannerId()))
                                     {
-                                        return "Success";
+                                        return 1;
                                     }
                                 }
                             }
@@ -96,7 +96,7 @@ public class RoleDaoMock implements IRoleDao
                 }
             }
         }
-        return null;
+        return 0;
     }
 
     @Override

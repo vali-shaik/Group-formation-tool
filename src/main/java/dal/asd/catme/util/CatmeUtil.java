@@ -4,6 +4,8 @@ public class CatmeUtil
 {
     public static final int TWO = 2;
     public static final int ZERO = 0;
+    public static final int THREE = 3;
+    public static final int FOUR = 4;
     public static final int ONE = 1;
 
     public static final String HOME_PAGE = "home";
@@ -84,4 +86,9 @@ public class CatmeUtil
     public static final String QUESTION_FAILURE_PAGE = "questionCreationFailure";
 
     public static final String SURVEY_PAGE="survey/survey";
+    public static final String SIMILAR = "Similar";
+    public static final String DISSIMILAR = "Dissimilar";
+    public static final String GREATER_THAN = "Greater than";
+    public static final String LESSER_THAN = "Lesser than";
+    
 }
