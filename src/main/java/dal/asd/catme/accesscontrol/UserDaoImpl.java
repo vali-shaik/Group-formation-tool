@@ -8,6 +8,9 @@ import dal.asd.catme.courses.IRoleDao;
 import dal.asd.catme.database.IDatabaseAbstractFactory;
 import dal.asd.catme.database.IDatabaseAccess;
 import dal.asd.catme.util.CatmeUtil;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.sql.Connection;
@@ -29,10 +32,11 @@ public class UserDaoImpl implements IUserDao
     IDatabaseAbstractFactory databaseAbstractFactory = baseAbstractFactory.makeDatabaseAbstractFactory();
     IAccessControlModelAbstractFactory modelAbstractFactory = baseAbstractFactory.makeAccessControlModelAbstractFactory();
     ICourseAbstractFactory courseAbstractFactory = baseAbstractFactory.makeCourseAbstractFactory();
-
+    private static final Logger log = LoggerFactory.getLogger(UserDaoImpl.class);
     @Override
     public int checkExistingUser(String bannerId, Connection con)
     {
+    	log.info("Checking whether user already exists");
         int rowCount = 0;
         try
         {
@@ -44,6 +48,7 @@ public class UserDaoImpl implements IUserDao
             rowCount = rs.getInt(1);
         } catch (SQLException e)
         {
+        	log.error("Error while checking for a user");
             e.printStackTrace();
         }
         return rowCount;
@@ -52,6 +57,7 @@ public class UserDaoImpl implements IUserDao
     @Override
     public int addUser(User user, Connection con)
     {
+    	log.info("Adding newly registered user");
         String bannerId = user.getBannerId();
         try
         {
@@ -72,6 +78,7 @@ public class UserDaoImpl implements IUserDao
             }
         } catch (Exception e)
         {
+        	log.error("Error while adding a new registered user");
             e.printStackTrace();
         }
 
@@ -81,6 +88,7 @@ public class UserDaoImpl implements IUserDao
     @Override
     public User getUser(String bannerId, Connection con)
     {
+    	log.info("Fetching the user details based on user id");
         try
         {
             PreparedStatement getUser = con.prepareStatement(GET_USER_QUERY);
@@ -102,6 +110,7 @@ public class UserDaoImpl implements IUserDao
             return u;
         } catch (Exception e)
         {
+        	log.error("Unable to fetch the user details");
             e.printStackTrace();
         }
 
@@ -111,6 +120,7 @@ public class UserDaoImpl implements IUserDao
     @Override
     public List<User> getUsers()
     {
+    	log.info("Fetching all the users");
         IDatabaseAccess db;
         Connection connection = null;
         List<User> users = new ArrayList<>();
@@ -130,6 +140,7 @@ public class UserDaoImpl implements IUserDao
             }
         } catch (SQLException e)
         {
+        	log.error("Fetch all the users");
             e.printStackTrace();
         } finally
         {
@@ -146,6 +157,7 @@ public class UserDaoImpl implements IUserDao
 
     private ResultSet listUsers(Connection connection, String query)
     {
+    	log.info("Fetching the list of users with student role");
         ResultSet rs = null;
         try
         {
@@ -154,6 +166,7 @@ public class UserDaoImpl implements IUserDao
             rs = preparedStatement.executeQuery();
         } catch (SQLException e)
         {
+        	log.error("Unable to list all the users (Students) in application");
             e.printStackTrace();
         }
         return rs;

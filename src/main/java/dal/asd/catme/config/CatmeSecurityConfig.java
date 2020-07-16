@@ -33,7 +33,6 @@ import static dal.asd.catme.util.DBQueriesUtil.SELECT_USER_SECURITY_QUERY;
 public class CatmeSecurityConfig extends WebSecurityConfigurerAdapter
 {
     private static final Logger log = LoggerFactory.getLogger(CatmeSecurityConfig.class);
-
     DatabaseAccess dataSource;
 
     @Override
@@ -87,6 +86,7 @@ public class CatmeSecurityConfig extends WebSecurityConfigurerAdapter
                     .authoritiesByUsernameQuery(SELECT_ROLE_SECURITY_QUERY);
         } catch (Exception e)
         {
+        	log.error("Authentication failed to fetch username and password!!");
             throw new CatmeException("Authentication failed to fetch username and password!! " + e.getMessage());
         }
     }
@@ -104,6 +104,7 @@ public class CatmeSecurityConfig extends WebSecurityConfigurerAdapter
             }
         } catch (Exception e)
         {
+        	log.error("Authentication failed to roles of User!!");
             throw new CatmeException("Failed to fetch User roles from database!! " + e.getMessage());
         }
 

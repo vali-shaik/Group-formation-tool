@@ -9,6 +9,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import static dal.asd.catme.util.DBQueriesUtil.*;
 
 public class RoleDaoImpl implements IRoleDao
@@ -16,10 +19,11 @@ public class RoleDaoImpl implements IRoleDao
     IUserDao userDao;
 
     ICourseDao courseDao;
-
+    private static final Logger log = LoggerFactory.getLogger(RoleDaoImpl.class);
     @Override
     public int assignRole(String bannerId, int roleId, Connection con)
     {
+    	log.info("Assing a new role to the user");
         int rs = 0;
         try
         {
@@ -31,6 +35,7 @@ public class RoleDaoImpl implements IRoleDao
             return rs;
         } catch (Exception e)
         {
+        	log.error("Unable to assign a new role to the user");
             e.printStackTrace();
         }
         return rs;
@@ -39,6 +44,7 @@ public class RoleDaoImpl implements IRoleDao
     @Override
     public int addInstructor(String courseId, int userRoleId, Connection con)
     {
+    	log.info("Adding an instrcutor to the course");
         int rs = 0;
         try
         {
@@ -49,6 +55,7 @@ public class RoleDaoImpl implements IRoleDao
             rs = stmt.executeUpdate();
         } catch (Exception e)
         {
+        	log.error("Adding an instructor to course is failed");
             e.printStackTrace();
         }
         return rs;
@@ -57,6 +64,7 @@ public class RoleDaoImpl implements IRoleDao
     @Override
     public int checkCourseInstructor(String bannerId, String courseId, Connection con)
     {
+    	log.info("Checking for an course instructor");
         int rowCount = 0;
         try
         {
@@ -69,6 +77,7 @@ public class RoleDaoImpl implements IRoleDao
             rowCount = rs.getInt(1);
         } catch (SQLException e)
         {
+        	log.error("Failed while checking for an instructor");
             e.printStackTrace();
         }
 
@@ -78,7 +87,7 @@ public class RoleDaoImpl implements IRoleDao
     @Override
     public int checkUserRole(String bannerId, int roleId, Connection con)
     {
-
+    	log.info("Finding the role of an user");
         int rowCount = 0;
         try
         {
@@ -90,6 +99,7 @@ public class RoleDaoImpl implements IRoleDao
             rowCount = rs.getInt(1);
         } catch (SQLException e)
         {
+        	log.error("Unable to find an user role");
             e.printStackTrace();
         }
 
@@ -100,7 +110,7 @@ public class RoleDaoImpl implements IRoleDao
     @Override
     public int getUserRoleId(String bannerId, int roleId, Connection con)
     {
-
+    	log.info("Finding the role Id of current user");
         int userRoleId = -1;
         try
         {
@@ -112,18 +122,17 @@ public class RoleDaoImpl implements IRoleDao
             userRoleId = rs.getInt(1);
         } catch (SQLException e)
         {
+        	log.error("Unable to find the role Id of current user");
             e.printStackTrace();
         }
-
         return userRoleId;
-
     }
 
     @Override
     public String assignTa(Enrollment user, Connection con)
     {
         String isAssigned = "";
-
+        log.info("Assigning a TA to the course");
         try
         {
             userDao = BaseAbstractFactoryImpl.instance().makeAccessControlAbstractFactory().makeUserDao();
@@ -167,6 +176,7 @@ public class RoleDaoImpl implements IRoleDao
             }
         } catch (Exception e)
         {
+        	log.info("Failed while assigning the TA");
             e.printStackTrace();
         } finally
         {

@@ -7,6 +7,9 @@ import dal.asd.catme.accesscontrol.User;
 import dal.asd.catme.config.SystemConfig;
 import dal.asd.catme.database.IDatabaseAbstractFactory;
 import dal.asd.catme.database.IDatabaseAccess;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.sql.Connection;
@@ -21,10 +24,11 @@ public class PasswordDaoImpl implements IPasswordDao
     IBaseAbstractFactory baseAbstractFactory = BaseAbstractFactoryImpl.instance();
     IDatabaseAbstractFactory databaseAbstractFactory = baseAbstractFactory.makeDatabaseAbstractFactory();
     PasswordEncoder p;
-
+    private static final Logger log = LoggerFactory.getLogger(PasswordDaoImpl.class);
     @Override
     public void resetPassword(User u, Connection con) throws CatmeException
     {
+    	log.info("Restting password");
         p = SystemConfig.instance().getPasswordEncoder();
         try
         {
@@ -58,13 +62,15 @@ public class PasswordDaoImpl implements IPasswordDao
             System.out.println("Password Reset Successful");
         } catch (SQLException e)
         {
+        	log.error("Resetting password failed while updating in DB");
             e.printStackTrace();
         }
     }
 
     public void generatePasswordResetToken(User u, String token) throws CatmeException
     {
-        IDatabaseAccess db = databaseAbstractFactory.makeDatabaseAccess();
+        log.info("Generating the reset password token");
+    	IDatabaseAccess db = databaseAbstractFactory.makeDatabaseAccess();
         Connection con = null;
         try
         {
@@ -78,6 +84,7 @@ public class PasswordDaoImpl implements IPasswordDao
             System.out.println("Token: " + token);
         } catch (SQLException throwables)
         {
+        	log.error("Failed while generating token");
             throwables.printStackTrace();
             throw new CatmeException("Error Generating Token.. Try Again");
         } finally
@@ -94,6 +101,7 @@ public class PasswordDaoImpl implements IPasswordDao
 
     public String readBannerIdFromToken(String token) throws CatmeException
     {
+    	log.info("Checking the user for reset token");
         IDatabaseAccess db = databaseAbstractFactory.makeDatabaseAccess();
         Connection con = null;
         try
@@ -114,6 +122,7 @@ public class PasswordDaoImpl implements IPasswordDao
 
         } catch (SQLException throwables)
         {
+        	log.error("Error Generating Token.. Try Again");
             throw new CatmeException("Error Generating Token.. Try Again");
         } finally
         {
@@ -129,6 +138,7 @@ public class PasswordDaoImpl implements IPasswordDao
 
     public void removeToken(String bannerId)
     {
+    	log.info("Deleting reset token");
         IDatabaseAccess db = databaseAbstractFactory.makeDatabaseAccess();
         Connection con = null;
         try
@@ -140,9 +150,12 @@ public class PasswordDaoImpl implements IPasswordDao
 
             stmt.executeUpdate();
 
-        } catch (SQLException throwables)
+        } catch (SQLException e)
         {
-        } finally
+        	log.error("Error deleting reset token");
+        	e.printStackTrace();
+        } 
+        finally
         {
             try
             {
@@ -157,6 +170,7 @@ public class PasswordDaoImpl implements IPasswordDao
     @Override
     public boolean matchWithPasswordHistory(String bannerId, String password) throws CatmeException
     {
+    	log.info("Checking password history");
         IDatabaseAccess db = databaseAbstractFactory.makeDatabaseAccess();
         Connection con = null;
         PasswordEncoder p = SystemConfig.instance().getPasswordEncoder();
@@ -178,6 +192,7 @@ public class PasswordDaoImpl implements IPasswordDao
             return false;
         } catch (SQLException throwables)
         {
+        	log.error("Unable to load password history");
             throwables.printStackTrace();
         } finally
         {
@@ -195,6 +210,7 @@ public class PasswordDaoImpl implements IPasswordDao
     @Override
     public void deleteOverLimitPasswords(String bannerId) throws CatmeException
     {
+    	log.info("Deleting old passwords");
         IDatabaseAccess db = databaseAbstractFactory.makeDatabaseAccess();
         Connection con = null;
 
@@ -225,6 +241,7 @@ public class PasswordDaoImpl implements IPasswordDao
             }
         } catch (SQLException throwables)
         {
+        	log.error("Error removing old passwords");
             throwables.printStackTrace();
         } finally
         {

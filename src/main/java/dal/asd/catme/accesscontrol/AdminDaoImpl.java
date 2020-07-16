@@ -6,6 +6,9 @@ import dal.asd.catme.courses.Course;
 import dal.asd.catme.database.IDatabaseAbstractFactory;
 import dal.asd.catme.database.IDatabaseAccess;
 import dal.asd.catme.util.CatmeUtil;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.sql.Connection;
@@ -26,10 +29,11 @@ public class AdminDaoImpl implements IAdminDao
 
     IBaseAbstractFactory baseAbstractFactory = BaseAbstractFactoryImpl.instance();
     IDatabaseAbstractFactory databaseAbstractFactory = baseAbstractFactory.makeDatabaseAbstractFactory();
-
+    private static final Logger log = LoggerFactory.getLogger(AdminDaoImpl.class);
     @Override
     public int addCourse(Course course)
     {
+    	log.info("Adding a new Course");
         int result = 0;
         try
         {
@@ -38,6 +42,7 @@ public class AdminDaoImpl implements IAdminDao
             result = addCourse(connection, ADD_COURSE_QUERY, course);
         } catch (Exception e)
         {
+        	log.error("Failed while adding a new course");
             e.printStackTrace();
         } finally
         {
@@ -58,6 +63,7 @@ public class AdminDaoImpl implements IAdminDao
     @Override
     public int deleteCourse(String courseId)
     {
+    	log.info("Deleting a course from application");
         int result = 0;
         try
         {
@@ -71,6 +77,7 @@ public class AdminDaoImpl implements IAdminDao
             }
         } catch (Exception e)
         {
+        	log.error("Failed while deleting a course");
             e.printStackTrace();
         } finally
         {
@@ -91,7 +98,7 @@ public class AdminDaoImpl implements IAdminDao
     @Override
     public int addInstructorToCourse(String user, String course)
     {
-
+    	log.info("Adding an instructor to respective course "+course);
         int result = 0;
         try
         {
@@ -106,6 +113,7 @@ public class AdminDaoImpl implements IAdminDao
             }
         } catch (Exception e)
         {
+        	log.error("Failed while adding a instructor to a course");
             e.printStackTrace();
         } finally
         {
@@ -126,6 +134,7 @@ public class AdminDaoImpl implements IAdminDao
 
     public int selectInstructorRole(Connection connection)
     {
+    	log.info("Finding the role Id for Course instructor");
         int result = 0;
         try
         {
@@ -137,6 +146,7 @@ public class AdminDaoImpl implements IAdminDao
 
         } catch (SQLException e)
         {
+        	log.error("Failed while finding a role Id for current user");
             e.printStackTrace();
         }
 
@@ -146,6 +156,7 @@ public class AdminDaoImpl implements IAdminDao
 
     public int addAsCourseInstructor(Connection connection, String course, int userRole)
     {
+    	log.info("Adding a user as instructor to a course");
         int result = 0;
         try
         {
@@ -166,6 +177,7 @@ public class AdminDaoImpl implements IAdminDao
             }
         } catch (SQLException e)
         {
+        	log.error("Failed while adding a role Id as instructor to a course");
             e.printStackTrace();
         }
 
@@ -174,6 +186,7 @@ public class AdminDaoImpl implements IAdminDao
 
     public int updateQuery(Connection connection, String query, String courseId)
     {
+    	log.info("Updating the courses in the DB");
         int result = 0;
         try
         {
@@ -182,6 +195,7 @@ public class AdminDaoImpl implements IAdminDao
             result = preparedStatement.executeUpdate();
         } catch (SQLException e)
         {
+        	log.error("Failed while updating the courses in the DB");
             e.printStackTrace();
         }
 
@@ -190,6 +204,7 @@ public class AdminDaoImpl implements IAdminDao
 
     public int addCourse(Connection connection, String query, Course course)
     {
+    	log.info("Adding a new course by Admin");
         int result = CatmeUtil.ZERO;
         try
         {
@@ -206,6 +221,7 @@ public class AdminDaoImpl implements IAdminDao
                 result = CatmeUtil.TWO;
         } catch (SQLException e)
         {
+        	log.error("Failed while adding the courses in the DB");
             e.printStackTrace();
         }
         return result;
@@ -213,6 +229,7 @@ public class AdminDaoImpl implements IAdminDao
 
     public int insertInstructorRole(Connection connection, String user, int roleId)
     {
+    	log.info("Assigning the new role to the user as an instructor");
         int userRoleId = 0;
         try
         {
@@ -239,6 +256,7 @@ public class AdminDaoImpl implements IAdminDao
 
         } catch (SQLException e)
         {
+        	log.error("Failed while adding the new instructor role");
             e.printStackTrace();
         }
         return userRoleId;

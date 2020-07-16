@@ -4,6 +4,7 @@ import dal.asd.catme.BaseAbstractFactoryImpl;
 import dal.asd.catme.IBaseAbstractFactory;
 import dal.asd.catme.database.IDatabaseAbstractFactory;
 import dal.asd.catme.database.IDatabaseAccess;
+import dal.asd.catme.survey.SurveyController;
 import dal.asd.catme.util.CatmeUtil;
 import dal.asd.catme.util.DBQueriesUtil;
 
@@ -14,13 +15,17 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class QuestionDaoImpl implements IQuestionDao
 {
     IDatabaseAccess db;
     IBaseAbstractFactory baseAbstractFactory = BaseAbstractFactoryImpl.instance();
     IDatabaseAbstractFactory databaseAbstractFactory = baseAbstractFactory.makeDatabaseAbstractFactory();
     IQuestionManagerModelAbstractFactory modelAbstractFactory = baseAbstractFactory.makeQuestionManagerModelAbstractFactory();
-
+    private static final Logger log = LoggerFactory.getLogger(QuestionDaoImpl.class);
+    
     public QuestionDaoImpl()
     {
     }
@@ -28,12 +33,12 @@ public class QuestionDaoImpl implements IQuestionDao
     @Override
     public List<Question> getQuestionTitles(String instructor) throws QuestionDatabaseException
     {
+    	log.info("Fetch all question titles");
         int QUESTIONID = 1;
         int QUESTIONTITLE = 2;
         int QUESTION = 3;
         int QUESTIONTYPE = 4;
         int CREATEDDATE = 5;
-
 
         List<Question> questionList = new ArrayList<>();
         db = databaseAbstractFactory.makeDatabaseAccess();
@@ -77,6 +82,7 @@ public class QuestionDaoImpl implements IQuestionDao
     @Override
     public int deleteQuestion(int questionId)
     {
+    	log.info("Deleting a question");
         int questionDeleted = 0;
         db = databaseAbstractFactory.makeDatabaseAccess();
         Connection con = null;
@@ -113,6 +119,7 @@ public class QuestionDaoImpl implements IQuestionDao
     @Override
     public int checkExistingQuestion(int questionId, Connection con)
     {
+    	log.info("Checking for an existing question");
         int rowCount = 0;
         try
         {
@@ -132,6 +139,7 @@ public class QuestionDaoImpl implements IQuestionDao
     @Override
     public int createQuestion(Question question, String user)
     {
+    	log.info("Creating a new question");
         int result = 0;
         db = databaseAbstractFactory.makeDatabaseAccess();
         Connection con = null;
@@ -183,6 +191,7 @@ public class QuestionDaoImpl implements IQuestionDao
     @Override
     public int createQuestionTitle(String questionTitle, String user)
     {
+    	log.info("Creating a new question title");
         int result = 0;
 
         db = databaseAbstractFactory.makeDatabaseAccess();
@@ -232,6 +241,7 @@ public class QuestionDaoImpl implements IQuestionDao
 
     private int getUserRoleId(Connection con, String user)
     {
+    	log.info("Fetching the user role id");
         int userRoleId = 0;
         try
         {
@@ -274,6 +284,7 @@ public class QuestionDaoImpl implements IQuestionDao
     @Override
     public int createOptions(int questionId, List<Option> options)
     {
+    	log.info("Creating options for the given question");
         int result = 0;
         db = databaseAbstractFactory.makeDatabaseAccess();
         Connection con = null;
