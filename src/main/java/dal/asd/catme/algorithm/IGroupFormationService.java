@@ -1,7 +1,7 @@
 package dal.asd.catme.algorithm;
 
-import java.util.HashMap;
+import java.util.Map;
 
 public interface IGroupFormationService {
-	public HashMap formGroups();
+	public Map formGroups();
 }

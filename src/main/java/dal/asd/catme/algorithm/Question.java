@@ -7,8 +7,24 @@ public class Question implements IQuestion{
     int priority;
     int totalNoOfOptions;
 
-    
-    public int getTotalNoOfOptions() {
+    public Question() {
+
+	}
+
+	public Question(int rule, int questionId, int priority) {
+		this.rule = rule;
+		this.questionId = questionId;
+		this.priority = priority;
+	}
+	public Question(int rule, int questionId, int priority, int totalNoOfOptions) {
+		this.rule = rule;
+		this.questionId = questionId;
+		this.priority = priority;
+		this.totalNoOfOptions = totalNoOfOptions;
+	}
+
+
+	public int getTotalNoOfOptions() {
 		return totalNoOfOptions;
 	}
 	public void setTotalNoOfOptions(int totalNoOfOptions) {
