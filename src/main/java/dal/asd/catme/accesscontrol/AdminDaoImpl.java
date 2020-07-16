@@ -23,11 +23,10 @@ public class AdminDaoImpl implements IAdminDao
     IDatabaseAccess db;
     PreparedStatement preparedStatement;
     ResultSet rs;
-
     IBaseAbstractFactory baseAbstractFactory = BaseAbstractFactoryImpl.instance();
     IDatabaseAbstractFactory databaseAbstractFactory = baseAbstractFactory.makeDatabaseAbstractFactory();
-
-private static final Logger log = LoggerFactory.getLogger(AdminDaoImpl.class);
+    private static final Logger log = LoggerFactory.getLogger(AdminDaoImpl.class);
+    
     @Override
     public int addCourse(Course course)
     {
@@ -49,7 +48,7 @@ private static final Logger log = LoggerFactory.getLogger(AdminDaoImpl.class);
                 result = CatmeUtil.TWO;
         } catch (SQLException e)
         {
-log.error("Failed while adding a new course");
+        	log.error("Failed while adding a new course");
             e.printStackTrace();
         } finally
         {
