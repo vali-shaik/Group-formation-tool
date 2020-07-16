@@ -29,7 +29,6 @@ public class GroupFormationDaoImpl implements IGroupFormationDao {
 		System.out.println("inside dao");
 		IAlgorithmParameters algorithmParameter = modelAbstractFactory.makeAlgorithmParameters();
 
-//		DatabaseAccess db = new DatabaseAccess();
 
 		Connection con = null;
 		try {
@@ -37,7 +36,7 @@ public class GroupFormationDaoImpl implements IGroupFormationDao {
 			algorithmParameter.setGroupSize(getGroupSize(con, surveyId));
 			List<Question> questions =getQuestionList(con, surveyId);
 			algorithmParameter.setQuestions(questions);
-			algorithmParameter.setNoOfStudents(getNumberOfStudents(con, surveyId,questions));
+			algorithmParameter.setNoOfStudents(getNumberOfStudents(con, surveyId,questions,algorithmParameter));
 			
 			
 		} catch (NullPointerException e) {
@@ -70,9 +69,11 @@ public class GroupFormationDaoImpl implements IGroupFormationDao {
 		return 0;
 	}
 
-	public int getNumberOfStudents(Connection con, int surveyId,List<Question> questions) {
+	public int getNumberOfStudents(Connection con, int surveyId,List<Question> questions,IAlgorithmParameters algorithmParameters) {
 		PreparedStatement stmt;
 		Answer answerList ;
+		int numberOfStudents=0;
+		List<Student> studentList = new ArrayList<Student>();
 		List<Answer> listOfAnswers = new ArrayList<Answer>();
 		try {
 			stmt = con.prepareStatement(DBQueriesUtil.GET_STUDENTS);
@@ -80,7 +81,7 @@ public class GroupFormationDaoImpl implements IGroupFormationDao {
 
 			ResultSet rs = stmt.executeQuery();
 			while(rs.next()) {
-				String bannerId=rs.getString(0);
+				String bannerId=rs.getString(1);
 				//********** need to be changed
 				Student student = new Student();
 				for(int i=0;i<questions.size();i++) {
@@ -91,10 +92,10 @@ public class GroupFormationDaoImpl implements IGroupFormationDao {
 					int questionId=question.getQuestionId();
 					
 					PreparedStatement statement = con.prepareStatement(DBQueriesUtil.GET_STUDENTS_WITH_ANSWERS);
-					statement.setString(1, bannerId);
-					statement.setInt(2, questionId);
+					statement.setString(2, bannerId);
+					statement.setInt(1, questionId);
 
-					ResultSet resultSet = stmt.executeQuery();
+					ResultSet resultSet = statement.executeQuery();
 					List<String> answers = new ArrayList<String>();
 					while(resultSet.next()) {
 						String answer= resultSet.getString("Answer");
@@ -117,8 +118,12 @@ public class GroupFormationDaoImpl implements IGroupFormationDao {
 				student.setAnswers(listOfAnswers);
 				student.setBannerId(bannerId);
 				
+				studentList.add(student);
+				
 
 			}
+			algorithmParameters.setStudents(studentList);
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -137,7 +142,7 @@ public class GroupFormationDaoImpl implements IGroupFormationDao {
 			while (rs.next()) {
 				Question question = new Question();
 				question.setQuestionId(Integer.parseInt(rs.getString("QuestionId")));
-				question.setPriority(Integer.parseInt(rs.getString("Prority")));
+				question.setPriority(Integer.parseInt(rs.getString("Priority")));
 				question.setQuestionType(rs.getString("QuestionType"));
 				if (rs.getString("QuestionType").equalsIgnoreCase(CatmeUtil.SIMILAR)) {
 					question.setRule(CatmeUtil.ONE);
@@ -148,19 +153,25 @@ public class GroupFormationDaoImpl implements IGroupFormationDao {
 				} else if (rs.getString("QuestionType").equalsIgnoreCase(CatmeUtil.LESSER_THAN)) {
 					question.setRule(CatmeUtil.FOUR);
 				}
-				if (rs.getString("QuestionType").equalsIgnoreCase(CatmeUtil.CHECKBOX)) {
-					PreparedStatement statement = con.prepareStatement(DBQueriesUtil.GET_QUESTIONS_LIST);
-					statement.setInt(1, Integer.parseInt(rs.getString("QuestionId")));
+				
+				
+				questions.add(question);
+			}
+			
+			for(Question question : questions) {
+				if (question.getQuestionType().equalsIgnoreCase(CatmeUtil.CHECKBOX)) {
+					PreparedStatement statement = con.prepareStatement(DBQueriesUtil.GET_TOTAL_OPTIONS);
+					statement.setInt(1, question.getQuestionId());
 
 					ResultSet resultSet = stmt.executeQuery();
 					if(resultSet.next())
 					{
-						question.setTotalNoOfOptions(Integer.parseInt(resultSet.getString(0)));
+						question.setTotalNoOfOptions(Integer.parseInt(resultSet.getString(1)));
 					}
 					
 				}
-				questions.add(question);
 			}
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

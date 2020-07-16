@@ -14,12 +14,7 @@ public class DBQueriesUtil
     public static final String SELECT_STUDENT_INSTRUCTOR_COURSE = "CALL getStudentInstructorCourseDetails(?)";
     public static final String SELECT_COURSE = "CALL getAllCourses()";
 
-    public static final String SELECT_GUEST_COURSES_QUERY = "Select * from Course";
-    public static final String SELECT_INSTRUTOR_COURSES_QUERY = "SELECT c.CourseId,c.CourseName FROM Course c,CourseInstructor ci,UserRole ur where c.CourseId=ci.CourseId and ci.UserRoleId=ur.UserRoleId and ur.BannerId=";
-    public static final String SELECT_COURSE_ROLE_QUERY = "SELECT r.RoleName FROM Course c,CourseInstructor ci,UserRole ur,Role r where c.CourseId=ci.CourseId and ci.UserRoleId=ur.UserRoleId and r.RoleId=ur.RoleId and ur.BannerId=";
-    public static final String SELECT_COURSE_QUERY = "Select * from Course where courseId=";
-    public static final String SELECT_STUDENT_COURSES_QUERY = "SELECT c.CourseId,c.CourseName FROM Course c,Enrollment e where c.CourseId=e.CourseId and e.BannerId=";
-
+   
     public static final String SELECT_COURSE_INSTRUCTOR_BY_USER_ROLE_COURSEID = "select * from CourseInstructor where userRoleId=? and courseId=?";
     //public static final String SELECT_COURSE_INSTRUCTOR_BY_USER_ROLE_COURSEID="CALL fetchCourseInstructor(?,?)";
     public static final String DELETE_COURSE_INSTRUCTOR_QUERY = "delete from CourseInstructor where CourseId=?";
@@ -109,13 +104,14 @@ public class DBQueriesUtil
     public static final String GET_SURVEY_QUESTIONS = "call GetSurveyQuestions(?);";
     public static final String GET_SURVEY_GROUPS = "call selectSurveyGroupsWithSurveyId(?);";
     public static final String GET_GROUP_SIZE="call selectGroupSize(?);";
-    public static final String GET_QUESTIONS_LIST="GET_QUESTIONS(?)";
+    public static final String GET_QUESTIONS_LIST="call GET_QUESTIONS_LIST(?);";
+    public static final String GET_TOTAL_OPTIONS="call GET_TOTAL_OPTIONS(?);";
     public static final String GET_ANSWER_OPTION="getAnswerOption(?)";
     public static final String GET_STUDENTS="call getBannerIds(?)"; 
     public static final String SAVE_ANSWER = "call SaveAnswer(?,?,?);";
     public static final String SAVE_ANSWER_WITH_VALUE = "call SaveAnswerWithValue(?,?,?,?);";
     public static final String SAVE_ATTEMPT = "call SaveSurveyAttempt(?,?)";
     public static final String GET_ATTEMPT = "call GetSurveyAttempt(?,?)";
-    public static final String GET_STUDENTS_WITH_ANSWERS = "getStudentsWithAnswerList(?,?)";
+    public static final String GET_STUDENTS_WITH_ANSWERS = "call getStudentsWithAnswerList(?,?)";
 }
 

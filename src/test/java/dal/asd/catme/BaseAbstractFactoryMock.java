@@ -4,6 +4,8 @@ import dal.asd.catme.accesscontrol.AccessControlModelAbstractFactoryImpl;
 import dal.asd.catme.accesscontrol.IAccessControlAbstractFactory;
 import dal.asd.catme.accesscontrol.IAccessControlModelAbstractFactory;
 import dal.asd.catme.accesscontroltest.AccessControlAbstractFactoryMock;
+import dal.asd.catme.algorithm.IAlgorithmAbstractFactory;
+import dal.asd.catme.algorithm.IAlgorithmModelAbstractFactory;
 import dal.asd.catme.courses.CourseModelAbstractFactoryImpl;
 import dal.asd.catme.courses.ICourseAbstractFactory;
 import dal.asd.catme.courses.ICourseModelAbstractFactory;
@@ -183,5 +185,23 @@ public class BaseAbstractFactoryMock implements IBaseAbstractFactory
         }
         return surveyModelAbstractFactory;
     }
+
+	@Override
+	public ICSVParserAbstractFactory makeIcsvParserAbstractFactory() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public IAlgorithmAbstractFactory makeAlgorithmAbstractFactory() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public IAlgorithmModelAbstractFactory makeAlgorithmModelAbstractFactory() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }

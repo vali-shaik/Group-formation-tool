@@ -40,32 +40,16 @@ public interface IBaseAbstractFactory {
 	public IAlgorithmAbstractFactory makeAlgorithmAbstractFactory();
 
 	public IAlgorithmModelAbstractFactory makeAlgorithmModelAbstractFactory();
+	 IDatabaseAbstractFactory makeDatabaseAbstractFactory();
 
-public interface IBaseAbstractFactory
-{
+
     ISurveyAbstractFactory makeSurveyAbstractFactory();
 
     ISurveyModelAbstractFactory makeSurveyModelAbstractFactory();
 
-    IAccessControlAbstractFactory makeAccessControlAbstractFactory();
-
-    IAccessControlModelAbstractFactory makeAccessControlModelAbstractFactory();
-
-    ICourseAbstractFactory makeCourseAbstractFactory();
-
-    ICourseModelAbstractFactory makeCourseModelAbstractFactory();
-
-    IDatabaseAbstractFactory makeDatabaseAbstractFactory();
-
-    IPasswordAbstractFactory makePasswordAbstractFactory();
-
-    IQuestionManagerAbstractFactory makeQuestionManagerAbstractFactory();
-
-    IQuestionManagerModelAbstractFactory makeQuestionManagerModelAbstractFactory();
+    
 
     ICSVParserAbstractFactory makeCSVParserAbstractFactory();
 
-    ISurveyResponseAbstractFactory makeSurveyResponseAbstractFactory();
-
-    ISurveyResponseModelAbstractFactory makeSurveyResponseModelAbstractFactory();
+    
 }

@@ -47,6 +47,8 @@ public class BaseAbstractFactoryImpl implements IBaseAbstractFactory
     private ICSVParserAbstractFactory icsvParserAbstractFactory = null;
     private ISurveyResponseAbstractFactory surveyResponseAbstractFactory = null;
     private ISurveyResponseModelAbstractFactory surveyResponseModelAbstractFactory = null;
+    public IAlgorithmModelAbstractFactory algorithmModelAbstractFactory=null;
+    public IAlgorithmAbstractFactory algorithmAbstractFactory=null;
 
     public static IBaseAbstractFactory instance()
     {
@@ -74,15 +76,25 @@ public class BaseAbstractFactoryImpl implements IBaseAbstractFactory
     }
         return accessControlModelAbstractFactory;
     }
+    
+   
 
     public IAlgorithmAbstractFactory makeAlgorithmAbstractFactory()
     {
-        return AlgorithmAbstractFactoryImpl.instance();
+    	if(algorithmAbstractFactory == null)
+    	{
+    		algorithmAbstractFactory = new AlgorithmAbstractFactoryImpl();
+    	}
+    	return algorithmAbstractFactory;
     }
 
     public IAlgorithmModelAbstractFactory makeAlgorithmModelAbstractFactory()
     {
-        return AlgorithmModelAbstractFactoryImpl.instance();
+    	if(algorithmModelAbstractFactory == null)
+    	{
+    		algorithmModelAbstractFactory = new AlgorithmModelAbstractFactoryImpl();
+    	}
+    	return algorithmModelAbstractFactory;
     }
 
     
@@ -188,4 +200,10 @@ public class BaseAbstractFactoryImpl implements IBaseAbstractFactory
         }
         return surveyModelAbstractFactory;
     }
+
+	@Override
+	public ICSVParserAbstractFactory makeIcsvParserAbstractFactory() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
