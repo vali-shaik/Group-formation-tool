@@ -4,6 +4,7 @@ import dal.asd.catme.BaseAbstractFactoryMock;
 import dal.asd.catme.POJOMock;
 import dal.asd.catme.accesscontrol.*;
 import dal.asd.catme.courses.*;
+import dal.asd.catme.courses.IRoleDao;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,12 +58,12 @@ public class RoleDaoMock implements IRoleDao
     }
 
     @Override
-    public String assignTa(Enrollment user)
+    public int assignTa(Enrollment user)
     {
-        if (0 != userDao.checkExistingUser(user.getBannerId()))
+        if (1 == userDao.checkExistingUser(user.getBannerId()))
         {
 
-            if (0 != courseDao.checkCourseExists(user.getCourseId()))
+            if (1 == courseDao.checkCourseExists(user.getCourseId()))
             {
 
                 if (0 == courseDao.checkCourseRegistration(user.getBannerId(), user.getCourseId()))
@@ -79,7 +80,7 @@ public class RoleDaoMock implements IRoleDao
                                 {
                                     if (u.getBannerId().equalsIgnoreCase(user.getBannerId()))
                                     {
-                                        return "Success";
+                                        return 1;
                                     }
                                 }
                             }
@@ -88,7 +89,7 @@ public class RoleDaoMock implements IRoleDao
                 }
             }
         }
-        return "";
+        return 0;
     }
 
     @Override

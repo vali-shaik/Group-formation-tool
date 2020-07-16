@@ -7,7 +7,7 @@ public interface IRoleDao
 
     int addInstructor(String courseId, int userRoleId);
 
-    String assignTa(Enrollment user);
+    int assignTa(Enrollment user);
 
     int checkCourseInstructor(String bannerId, String courseId);
 

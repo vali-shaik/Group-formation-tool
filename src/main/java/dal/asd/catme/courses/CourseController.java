@@ -48,7 +48,13 @@ public class CourseController
         user.setBannerId(bannerId);
         user.setCourseId(courseId);
         model.addAttribute("user", user);
-        String message = roleService.assignTa(user);
+        String message="";
+        int result = roleService.assignTa(user);
+        if(result==CatmeUtil.ONE) {
+        	message="TA enrolled successfully";
+        }else {
+        	message ="Error in enrolling TA.";
+        }
         model.addAttribute("message", message);
         return CatmeUtil.TA_ENROLLED_PAGE;
     }
