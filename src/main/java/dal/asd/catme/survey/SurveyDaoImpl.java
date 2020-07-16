@@ -11,7 +11,6 @@ import dal.asd.catme.util.DBQueriesUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -33,7 +32,6 @@ public class SurveyDaoImpl implements ISurveyDao
     {
         List<Question> questionList = new ArrayList<>();
         database = databaseAbstractFactory.makeDatabaseAccess();
-        Connection connection = null;
         if (courseId == null || courseId.length() == 0)
         {
             log.error("Course Id is null ");
@@ -45,11 +43,10 @@ public class SurveyDaoImpl implements ISurveyDao
             try
             {
                 log.info("Opening connection to DB");
-                connection = database.getConnection();
                 log.info("Executing the Query");
-                statement = connection.prepareStatement(DBQueriesUtil.FETCH_SURVEY_QUESTIONS);
+                statement = database.getPreparedStatement(DBQueriesUtil.FETCH_SURVEY_QUESTIONS);
                 statement.setString(1, courseId);
-                rs = statement.executeQuery();
+                rs = database.executeForResultSet(statement);
                 while (rs.next())
                 {
                     log.info("Fetched Survey quesitons from DB ");
@@ -67,38 +64,7 @@ public class SurveyDaoImpl implements ISurveyDao
                 throw new SurveyException("Error Getting Questions for this Course");
             } finally
             {
-                try
-                {
-                    if (connection == null)
-                    {
-                        log.info("No connetionsfound");
-                    } else
-                    {
-                        log.warn("Closing DB connections");
-                        connection.close();
-                    }
-                    if (statement == null)
-                    {
-                        log.info("No open Statements found");
-                    } else
-                    {
-                        log.warn("Closing DB Statements");
-                        statement.close();
-                    }
-                    if (rs == null)
-                    {
-                        log.info("No open Resultset found");
-                    } else
-                    {
-                        log.warn("Closing DB Result set");
-                        rs.close();
-                    }
-
-                } catch (SQLException | NullPointerException throwables)
-                {
-                    log.error("Error closing DB connections");
-                    throw new SurveyException("Error while closing DB connection");
-                }
+                database.cleanUp();
             }
         }
     }
@@ -108,16 +74,14 @@ public class SurveyDaoImpl implements ISurveyDao
     {
         Rule rule = null;
         database = databaseAbstractFactory.makeDatabaseAccess();
-        Connection connection = null;
         PreparedStatement statement = null;
         ResultSet rs = null;
         try
         {
             log.info("Opening connection to DB");
-            connection = database.getConnection();
-            statement = connection.prepareStatement(DBQueriesUtil.GET_SURVEY_QUESTION_RULE);
+            statement = database.getPreparedStatement(DBQueriesUtil.GET_SURVEY_QUESTION_RULE);
             statement.setInt(1, questionId);
-            rs = statement.executeQuery();
+            rs = database.executeForResultSet(statement);
             while (rs.next())
             {
                 log.info("Fetched Rule for the question");
@@ -131,38 +95,7 @@ public class SurveyDaoImpl implements ISurveyDao
             e.printStackTrace();
         } finally
         {
-            try
-            {
-                if (connection == null)
-                {
-                    log.info("No connetionsfound");
-                } else
-                {
-                    log.warn("Closing DB connections");
-                    connection.close();
-                }
-                if (statement == null)
-                {
-                    log.info("No open Statements found");
-                } else
-                {
-                    log.warn("Closing DB Statements");
-                    statement.close();
-                }
-                if (rs == null)
-                {
-                    log.info("No open Resultset found");
-                } else
-                {
-                    log.warn("Closing DB Result set");
-                    rs.close();
-                }
-
-            } catch (SQLException | NullPointerException throwables)
-            {
-                log.error("Error closing DB connections");
-                throw new SurveyException("Error while closing DB connection");
-            }
+            database.cleanUp();
         }
         return rule;
     }
@@ -172,7 +105,6 @@ public class SurveyDaoImpl implements ISurveyDao
     {
         Survey survey = new Survey();
         database = databaseAbstractFactory.makeDatabaseAccess();
-        Connection connection = null;
         PreparedStatement statement = null;
         PreparedStatement statement2 = null;
         ResultSet rs = null;
@@ -187,11 +119,10 @@ public class SurveyDaoImpl implements ISurveyDao
             try
             {
                 log.info("Opening connection to DB");
-                connection = database.getConnection();
                 log.info("Executing the query to fetch survey details");
-                statement = connection.prepareStatement(DBQueriesUtil.GET_SURVEY_BY_COURSE);
+                statement = database.getPreparedStatement(DBQueriesUtil.GET_SURVEY_BY_COURSE);
                 statement.setString(1, courseId);
-                rs = statement.executeQuery();
+                rs = database.executeForResultSet(statement);
                 if (rs.next())
                 {
                     log.info("Fetched the survey details");
@@ -201,9 +132,9 @@ public class SurveyDaoImpl implements ISurveyDao
                     survey.setSurveyName(rs.getString("SurveyName"));
                 } else
                 {
-                    statement2 = connection.prepareStatement(DBQueriesUtil.CREATE_SURVEY);
+                    statement2 = database.getPreparedStatement(DBQueriesUtil.CREATE_SURVEY);
                     statement2.setString(1, courseId);
-                    rs2 = statement2.executeQuery();
+                    rs2 = database.executeForResultSet(statement2);
                     while (rs2.next())
                     {
                         survey.setSurveyId(rs.getInt(1));
@@ -214,54 +145,7 @@ public class SurveyDaoImpl implements ISurveyDao
                 e.printStackTrace();
             } finally
             {
-                try
-                {
-                    if (connection == null)
-                    {
-                        log.info("No connetionsfound");
-                    } else
-                    {
-                        log.warn("Closing DB connections");
-                        connection.close();
-                    }
-                    if (statement == null)
-                    {
-                        log.info("No open Statements found");
-                    } else
-                    {
-                        log.warn("Closing DB Statements");
-                        statement.close();
-                    }
-                    if (rs == null)
-                    {
-                        log.info("No open Resultset found");
-                    } else
-                    {
-                        log.warn("Closing DB Result set");
-                        rs.close();
-                    }
-                    if (statement2 == null)
-                    {
-                        log.info("No open Statements found");
-                    } else
-                    {
-                        log.warn("Closing DB Statements");
-                        statement2.close();
-                    }
-                    if (rs2 == null)
-                    {
-                        log.info("No open Resultset found");
-                    } else
-                    {
-                        log.warn("Closing DB Result set");
-                        rs2.close();
-                    }
-
-                } catch (SQLException | NullPointerException throwables)
-                {
-                    log.error("Error closing DB connections");
-                    throw new SurveyException("Error while closing DB connection");
-                }
+                database.cleanUp();
             }
         }
         return survey;
@@ -272,7 +156,6 @@ public class SurveyDaoImpl implements ISurveyDao
     {
 
         database = databaseAbstractFactory.makeDatabaseAccess();
-        Connection connection = null;
         int rowsAdded = 0;
         PreparedStatement statement = null;
         if (survey == null || question == null)
@@ -284,9 +167,8 @@ public class SurveyDaoImpl implements ISurveyDao
             try
             {
                 log.info("Opening connection to DB");
-                connection = database.getConnection();
                 log.info("Executing the sql query");
-                statement = connection.prepareStatement(DBQueriesUtil.ADD_QUESTION_TO_SURVEY);
+                statement = database.getPreparedStatement(DBQueriesUtil.ADD_QUESTION_TO_SURVEY);
                 statement.setInt(1, survey.getSurveyId());
                 statement.setInt(2, question.getQuestionId());
                 statement.setInt(3, DBQueriesUtil.DEFAULT_SURVEY_QUESTION_RULE);
@@ -297,29 +179,7 @@ public class SurveyDaoImpl implements ISurveyDao
                 e.printStackTrace();
             } finally
             {
-                try
-                {
-                    if (connection == null)
-                    {
-                        log.info("No connetionsfound");
-                    } else
-                    {
-                        log.warn("Closing DB connections");
-                        connection.close();
-                    }
-                    if (statement == null)
-                    {
-                        log.info("No open Statements found");
-                    } else
-                    {
-                        log.warn("Closing DB Statements");
-                        statement.close();
-                    }
-                } catch (SQLException | NullPointerException throwables)
-                {
-                    log.error("Error closing DB connections");
-                    throw new SurveyException("Error while closing DB connection");
-                }
+                database.cleanUp();
             }
         }
         return rowsAdded;
@@ -330,7 +190,6 @@ public class SurveyDaoImpl implements ISurveyDao
     {
 
         database = databaseAbstractFactory.makeDatabaseAccess();
-        Connection connection = null;
         int rowsDeleted = 0;
         PreparedStatement statement = null;
         if (survey == null || question == null)
@@ -341,10 +200,8 @@ public class SurveyDaoImpl implements ISurveyDao
         {
             try
             {
-                log.info("Opening connection to DB");
-                connection = database.getConnection();
                 log.info("Executing SQL query for deleting survey question");
-                statement = connection.prepareStatement(DBQueriesUtil.DELETE_SURVEY_QUESTION);
+                statement = database.getPreparedStatement(DBQueriesUtil.DELETE_SURVEY_QUESTION);
                 statement.setInt(1, survey.getSurveyId());
                 statement.setInt(2, question.getQuestionId());
                 rowsDeleted = statement.executeUpdate();
@@ -353,29 +210,7 @@ public class SurveyDaoImpl implements ISurveyDao
                 e.printStackTrace();
             } finally
             {
-                try
-                {
-                    if (connection == null)
-                    {
-                        log.info("No connetionsfound");
-                    } else
-                    {
-                        log.warn("Closing DB connections");
-                        connection.close();
-                    }
-                    if (statement == null)
-                    {
-                        log.info("No open Statements found");
-                    } else
-                    {
-                        log.warn("Closing DB Statements");
-                        statement.close();
-                    }
-                } catch (SQLException | NullPointerException throwables)
-                {
-                    log.error("Error closing DB connections");
-                    throw new SurveyException("Error while closing DB connection");
-                }
+                database.cleanUp();
             }
         }
         return rowsDeleted;
@@ -385,7 +220,6 @@ public class SurveyDaoImpl implements ISurveyDao
     public int saveSurvey(Survey survey) throws SurveyException
     {
         database = databaseAbstractFactory.makeDatabaseAccess();
-        Connection connection = null;
         int rowsAdded = 0;
         PreparedStatement statement = null;
         PreparedStatement statement2 = null;
@@ -402,9 +236,8 @@ public class SurveyDaoImpl implements ISurveyDao
             {
                 log.info("Saving Survey details");
                 log.info("Opening connection to DB");
-                connection = database.getConnection();
                 log.info("Executing sql query");
-                statement = connection.prepareStatement(DBQueriesUtil.DELETE_ALL_SURVEY_QUESTIONS);
+                statement = database.getPreparedStatement(DBQueriesUtil.DELETE_ALL_SURVEY_QUESTIONS);
                 statement.setInt(1, survey.getSurveyId());
                 statement.executeUpdate();
                 if (survey.getSurveyQuestions() == null && survey.getSurveyQuestions().size() == 0)
@@ -415,10 +248,10 @@ public class SurveyDaoImpl implements ISurveyDao
                     for (SurveyQuestion surveyQuestion : survey.getSurveyQuestions())
                     {
                         log.info("Adding rule to each question");
-                        statement3 = connection.prepareStatement(DBQueriesUtil.ADD_RULE_SURVEY_QUESTION);
+                        statement3 = database.getPreparedStatement(DBQueriesUtil.ADD_RULE_SURVEY_QUESTION);
                         statement3.setString(1, surveyQuestion.getRule().getRuleType().trim());
                         statement3.setString(2, surveyQuestion.getRule().getRuleValue());
-                        rs = statement3.executeQuery();
+                        rs = database.executeForResultSet(statement3);
 
                         while (rs.next())
                         {
@@ -427,7 +260,7 @@ public class SurveyDaoImpl implements ISurveyDao
                         }
                         statement3.close();
                         log.info("Adding question to surveys");
-                        statement2 = connection.prepareStatement(DBQueriesUtil.ADD_QUESTION_TO_SURVEY);
+                        statement2 = database.getPreparedStatement(DBQueriesUtil.ADD_QUESTION_TO_SURVEY);
                         statement2.setInt(1, survey.getSurveyId());
                         statement2.setInt(2, surveyQuestion.getQuestion().getQuestionId());
                         statement2.setInt(3, surveyQuestion.getRule().getRuleId());
@@ -436,7 +269,7 @@ public class SurveyDaoImpl implements ISurveyDao
                         statement2.close();
                     }
                     log.info("Updating group size of a survey");
-                    statement4 = connection.prepareStatement(DBQueriesUtil.UPDATE_SURVEY_GROUPSIZE);
+                    statement4 = database.getPreparedStatement(DBQueriesUtil.UPDATE_SURVEY_GROUPSIZE);
                     statement4.setInt(1, survey.getSurveyId());
                     statement4.setInt(2, survey.getGroupSize());
                     statement4.executeUpdate();
@@ -447,38 +280,7 @@ public class SurveyDaoImpl implements ISurveyDao
                 e.printStackTrace();
             } finally
             {
-                try
-                {
-                    if (connection == null)
-                    {
-                        log.info("No connetionsfound");
-                    } else
-                    {
-                        log.warn("Closing DB connections");
-                        connection.close();
-                    }
-                    if (statement == null)
-                    {
-                        log.info("No open Statements found");
-                    } else
-                    {
-                        log.warn("Closing DB Statements");
-                        statement.close();
-                    }
-                    if (rs == null)
-                    {
-                        log.info("No open Resultset found");
-                    } else
-                    {
-                        log.warn("Closing DB Result set");
-                        rs.close();
-                    }
-
-                } catch (SQLException | NullPointerException throwables)
-                {
-                    log.error("Error closing DB connections");
-                    throw new SurveyException("Error while closing DB connection");
-                }
+                database.cleanUp();
             }
         }
         return rowsAdded;
@@ -488,7 +290,6 @@ public class SurveyDaoImpl implements ISurveyDao
     public boolean isSurveyPublished(Course course) throws SurveyException
     {
         database = databaseAbstractFactory.makeDatabaseAccess();
-        Connection connection = null;
         PreparedStatement statement = null;
         ResultSet rs = null;
         if (course == null)
@@ -499,11 +300,9 @@ public class SurveyDaoImpl implements ISurveyDao
         {
             try
             {
-                log.info("Opening connection to DB");
-                connection = database.getConnection();
-                statement = connection.prepareStatement(DBQueriesUtil.IS_PUBLISHED);
+                statement = database.getPreparedStatement(DBQueriesUtil.IS_PUBLISHED);
                 statement.setString(1, course.getCourseId());
-                rs = statement.executeQuery();
+                rs = database.executeForResultSet(statement);
                 while (rs.next())
                 {
                     log.info("Survey is published");
@@ -514,38 +313,7 @@ public class SurveyDaoImpl implements ISurveyDao
                 e.printStackTrace();
             } finally
             {
-                try
-                {
-                    if (connection == null)
-                    {
-                        log.info("No connetionsfound");
-                    } else
-                    {
-                        log.warn("Closing DB connections");
-                        connection.close();
-                    }
-                    if (statement == null)
-                    {
-                        log.info("No open Statements found");
-                    } else
-                    {
-                        log.warn("Closing DB Statements");
-                        statement.close();
-                    }
-                    if (rs == null)
-                    {
-                        log.info("No open Resultset found");
-                    } else
-                    {
-                        log.warn("Closing DB Result set");
-                        rs.close();
-                    }
-
-                } catch (SQLException | NullPointerException throwables)
-                {
-                    log.error("Error closing DB connections");
-                    throw new SurveyException("Error while closing DB connection");
-                }
+                database.cleanUp();
             }
         }
         return false;
@@ -555,7 +323,6 @@ public class SurveyDaoImpl implements ISurveyDao
     public int publishSurvey(Survey survey) throws SurveyException
     {
         database = databaseAbstractFactory.makeDatabaseAccess();
-        Connection connection = null;
         int rowsAdded = 0;
         PreparedStatement statement = null;
         if (survey == null)
@@ -566,9 +333,7 @@ public class SurveyDaoImpl implements ISurveyDao
         {
             try
             {
-                log.info("Opening connection to DB");
-                connection = database.getConnection();
-                statement = connection.prepareStatement(DBQueriesUtil.PUBLISH_SURVEY);
+                statement = database.getPreparedStatement(DBQueriesUtil.PUBLISH_SURVEY);
                 statement.setInt(1, survey.getSurveyId());
                 rowsAdded = statement.executeUpdate();
             } catch (SQLException e)
@@ -576,29 +341,7 @@ public class SurveyDaoImpl implements ISurveyDao
                 e.printStackTrace();
             } finally
             {
-                try
-                {
-                    if (connection == null)
-                    {
-                        log.info("No connetionsfound");
-                    } else
-                    {
-                        log.warn("Closing DB connections");
-                        connection.close();
-                    }
-                    if (statement == null)
-                    {
-                        log.info("No open Statements found");
-                    } else
-                    {
-                        log.warn("Closing DB Statements");
-                        statement.close();
-                    }
-                } catch (SQLException | NullPointerException throwables)
-                {
-                    log.error("Error closing DB connections");
-                    throw new SurveyException("Error while closing DB connection");
-                }
+                database.cleanUp();
             }
         }
         return rowsAdded;
@@ -609,7 +352,6 @@ public class SurveyDaoImpl implements ISurveyDao
     {
 
         database = databaseAbstractFactory.makeDatabaseAccess();
-        Connection connection = null;
         PreparedStatement statement = null;
         ResultSet rs = null;
         if (survey == null || question == null)
@@ -620,12 +362,10 @@ public class SurveyDaoImpl implements ISurveyDao
         {
             try
             {
-                log.info("Opening connection to DB");
-                connection = database.getConnection();
-                statement = connection.prepareStatement(DBQueriesUtil.GET_PRIORITY);
+                statement = database.getPreparedStatement(DBQueriesUtil.GET_PRIORITY);
                 statement.setInt(1, survey.getSurveyId());
                 statement.setInt(2, question.getQuestionId());
-                rs = statement.executeQuery();
+                rs = database.executeForResultSet(statement);
                 while (rs.next())
                 {
                     log.info("Priority fetched from DB");
@@ -637,38 +377,7 @@ public class SurveyDaoImpl implements ISurveyDao
                 throw new SurveyException("Error in fetching Priority");
             } finally
             {
-                try
-                {
-                    if (connection == null)
-                    {
-                        log.info("No connetionsfound");
-                    } else
-                    {
-                        log.warn("Closing DB connections");
-                        connection.close();
-                    }
-                    if (statement == null)
-                    {
-                        log.info("No open Statements found");
-                    } else
-                    {
-                        log.warn("Closing DB Statements");
-                        statement.close();
-                    }
-                    if (rs == null)
-                    {
-                        log.info("No open Resultset found");
-                    } else
-                    {
-                        log.warn("Closing DB Result set");
-                        rs.close();
-                    }
-
-                } catch (SQLException | NullPointerException throwables)
-                {
-                    log.error("Error closing DB connections");
-                    throw new SurveyException("Error while closing DB connection");
-                }
+                database.cleanUp();
             }
         }
         return 0;

@@ -38,7 +38,7 @@ public class UserServiceImpl implements IUserService
 
             if (passwordPolicyCheckerService.enforcePasswordPolicy(user))
             {
-                if (1 == userDao.addUser(user, con))
+                if (1 == userDao.addUser(user))
                 {
                     isUserAdded = "Successfully Signed Up.";
                 }

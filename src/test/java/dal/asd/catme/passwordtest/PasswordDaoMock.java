@@ -4,12 +4,10 @@ import dal.asd.catme.accesscontrol.CatmeException;
 import dal.asd.catme.accesscontrol.User;
 import dal.asd.catme.password.IPasswordDao;
 
-import java.sql.Connection;
-
 public class PasswordDaoMock implements IPasswordDao
 {
     @Override
-    public void resetPassword(User u, Connection con) throws CatmeException
+    public void resetPassword(User u) throws CatmeException
     {
         if (u.getPassword() == null)
             throw new CatmeException();

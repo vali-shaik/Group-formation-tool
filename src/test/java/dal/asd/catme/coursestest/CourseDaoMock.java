@@ -7,7 +7,6 @@ import dal.asd.catme.courses.Course;
 import dal.asd.catme.courses.ICourseDao;
 import dal.asd.catme.util.CatmeUtil;
 
-import java.sql.Connection;
 import java.util.List;
 
 public class CourseDaoMock implements ICourseDao
@@ -82,7 +81,7 @@ public class CourseDaoMock implements ICourseDao
     }
 
     @Override
-    public int checkCourseRegistration(String bannerId, String courseId, Connection con)
+    public int checkCourseRegistration(String bannerId, String courseId)
     {
         for (Course c : listOfCourses)
         {
@@ -101,7 +100,7 @@ public class CourseDaoMock implements ICourseDao
     }
 
     @Override
-    public int checkCourseExists(String courseId, Connection con)
+    public int checkCourseExists(String courseId)
     {
         for (Course c : listOfCourses)
         {

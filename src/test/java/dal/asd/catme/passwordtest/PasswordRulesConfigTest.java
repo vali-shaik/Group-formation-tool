@@ -5,7 +5,6 @@ import dal.asd.catme.IBaseAbstractFactory;
 import dal.asd.catme.password.IPasswordAbstractFactory;
 import dal.asd.catme.password.IPasswordRulesConfig;
 import dal.asd.catme.password.PasswordException;
-
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

@@ -11,8 +11,8 @@ public class DBQueriesUtil
     public static final String SELECT_STUDENT_COURSES_QUERY = "CALL getStudentCourseDetails(?)";
     public static final String SELECT_STUDENT_INSTRUCTOR_COURSE = "CALL getStudentInstructorCourseDetails(?)";
     public static final String SELECT_COURSE = "CALL getAllCourses()";
-    public static final String SELECT_COURSE_INSTRUCTOR_BY_USER_ROLE_COURSEID="CALL fetchCourseInstructor(?,?)";
-    public static final String DELETE_COURSE_INSTRUCTOR_QUERY="CALL deleteCourseInstructor(?)";
+    public static final String SELECT_COURSE_INSTRUCTOR_BY_USER_ROLE_COURSEID = "CALL fetchCourseInstructor(?,?)";
+    public static final String DELETE_COURSE_INSTRUCTOR_QUERY = "CALL deleteCourseInstructor(?)";
     public static final String DELETE_ENROLLMENT_QUERY = "CALL deleteEnrollment(?)";
     public static final String DELETE_COURSE_QUERY = "CALL deleteCourse(?)";
     public static final String ADD_COURSE_QUERY = "CALL addCourse(?,?)";
@@ -41,8 +41,8 @@ public class DBQueriesUtil
     public static final String CHECK_QUESTION_TITLE = "CALL checkQuestionTitle(?)";
     public static final String INSERT_QUESTION_TITLE = "CALL insertQuestionTitle(?,?)";
     public static final String CHECK_QUESTION = "CALL checkQuestion(?,?)";
-    public static final String INSERT_QUESTION = "insertQuestion(?,?,?)";
-    public static final String CHECK_QUESTION_OPTION = "checkQuestionOption(?,?)";
+    public static final String INSERT_QUESTION = "call insertQuestion(?,?,?)";
+    public static final String CHECK_QUESTION_OPTION = "call checkQuestionOption(?,?)";
     public static final String INSERT_QUESTION_OPTION = "CALL insertQuestionOption(?,?,?)";
     public static final String GET_QUESTIONS = "CALL GetQuestionsList(?)";
     public static final String CHECK_EXISTING_QUESTION_QUERY = "CALL checkQuestionExists(?)";

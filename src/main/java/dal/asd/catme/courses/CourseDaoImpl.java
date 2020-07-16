@@ -12,7 +12,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -44,78 +43,62 @@ public class CourseDaoImpl implements ICourseDao
         List<Course> listOfCourses = new ArrayList<>();
         ResultSet resultSet = null;
         PreparedStatement statement = null;
-        Connection connection = null;
 
         try
         {
             database = databaseAbstractFactory.makeDatabaseAccess();
-            connection = database.getConnection();
 
-            if (connection != null)
+            log.info("DB connection is succesfull");
+            String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
+
+            switch (role)
             {
-                log.info("DB connection is succesfull");
-                String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
+                case CatmeUtil.GUEST_ROLE:
+                    log.info("Fetching courses of User " + currentUser + ": GUEST");
+                    statement = database.getPreparedStatement(SELECT_GUEST_COURSES_QUERY);
+                    resultSet = database.executeForResultSet(statement);
+                    break;
 
-                switch (role)
-                {
-                    case CatmeUtil.GUEST_ROLE:
-                        log.info("Fetching courses of User " + currentUser + ": GUEST");
-                        statement = connection.prepareStatement(SELECT_GUEST_COURSES_QUERY);
-                        resultSet = statement.executeQuery();
-                        break;
+                case CatmeUtil.TA_ROLE:
+                    log.info("Fetching courses of User " + currentUser + ": TA");
+                    statement = database.getPreparedStatement(SELECT_STUDENT_INSTRUCTOR_COURSE);
+                    statement.setString(1, currentUser);
+                    resultSet = database.executeForResultSet(statement);
+                    break;
 
-                    case CatmeUtil.TA_ROLE:
-                        log.info("Fetching courses of User " + currentUser + ": TA");
-                        statement = connection.prepareStatement(SELECT_STUDENT_INSTRUCTOR_COURSE);
-                        statement.setString(1, currentUser);
-                        resultSet = statement.executeQuery();
-                        break;
+                case CatmeUtil.INSTRUCTOR_ROLE:
+                    log.info("Fetching courses of User " + currentUser + ": INSTRUCTOR");
+                    statement = database.getPreparedStatement(SELECT_INSTRUTOR_COURSES_QUERY);
+                    statement.setString(1, currentUser);
+                    resultSet = database.executeForResultSet(statement);
+                    break;
 
-                    case CatmeUtil.INSTRUCTOR_ROLE:
-                        log.info("Fetching courses of User " + currentUser + ": INSTRUCTOR");
-                        statement = connection.prepareStatement(SELECT_INSTRUTOR_COURSES_QUERY);
-                        statement.setString(1, currentUser);
-                        resultSet = statement.executeQuery();
-                        break;
+                case CatmeUtil.STUDENT_ROLE:
+                    log.info("Fetching courses of User " + currentUser + ": STUDENT");
+                    statement = database.getPreparedStatement(SELECT_STUDENT_COURSES_QUERY);
+                    statement.setString(1, currentUser);
+                    resultSet = database.executeForResultSet(statement);
+                    break;
 
-                    case CatmeUtil.STUDENT_ROLE:
-                        log.info("Fetching courses of User " + currentUser + ": STUDENT");
-                        statement = connection.prepareStatement(SELECT_STUDENT_COURSES_QUERY);
-                        statement.setString(1, currentUser);
-                        resultSet = statement.executeQuery();
-                        break;
+                default:
+                    break;
+            }
 
-                    default:
-                        break;
-                }
+            while (resultSet.next())
+            {
+                log.info("Fetched all courses from Database");
+                Course course = modelAbstractFactory.makeCourse();
+                course.setCourseId(resultSet.getString(CatmeUtil.COURSE_ID_FIELD));
+                course.setCourseName(resultSet.getString(CatmeUtil.COURSE_NAME_FIELD));
 
-                while (resultSet.next())
-                {
-                    log.info("Fetched all courses from Database");
-                    Course course = modelAbstractFactory.makeCourse();
-                    course.setCourseId(resultSet.getString(CatmeUtil.COURSE_ID_FIELD));
-                    course.setCourseName(resultSet.getString(CatmeUtil.COURSE_NAME_FIELD));
-
-                    listOfCourses.add(course);
-                }
+                listOfCourses.add(course);
             }
         } catch (SQLException | NullPointerException e)
         {
             throw new CatmeException("Failed while connecting and fetching courses from DB " + e.getMessage());
         } finally
         {
-            try
-            {
-                if (connection != null)
-                    connection.close();
-                if (statement != null)
-                    statement.close();
-                if (resultSet != null)
-                    resultSet.close();
-            } catch (SQLException | NullPointerException e)
-            {
-                throw new CatmeException("Failed while closing connection with database " + e.getMessage());
-            }
+            database.cleanUp();
         }
 
         return listOfCourses;
@@ -124,17 +107,14 @@ public class CourseDaoImpl implements ICourseDao
     @Override
     public List<Course> getAllCourses()
     {
-        Connection connection = null;
         PreparedStatement statement = null;
         List<Course> courses = new ArrayList<>();
 
+        database = databaseAbstractFactory.makeDatabaseAccess();
         try
         {
-            database = databaseAbstractFactory.makeDatabaseAccess();
-            connection = database.getConnection();
-            System.out.println("&&&&&&&%$^%$#$%^");
-            statement = connection.prepareStatement(SELECT_COURSE);
-            ResultSet resultSet = statement.executeQuery();
+            statement = database.getPreparedStatement(SELECT_COURSE);
+            ResultSet resultSet = database.executeForResultSet(statement);
             while (resultSet.next())
             {
                 Course course = modelAbstractFactory.makeCourse();
@@ -147,16 +127,7 @@ public class CourseDaoImpl implements ICourseDao
             e.printStackTrace();
         } finally
         {
-            if (connection != null)
-            {
-                try
-                {
-                    connection.close();
-                } catch (SQLException e)
-                {
-                    e.printStackTrace();
-                }
-            }
+            database.cleanUp();
         }
         return courses;
     }
@@ -166,45 +137,27 @@ public class CourseDaoImpl implements ICourseDao
     {
         ResultSet resultSet = null;
         PreparedStatement statement = null;
-        Connection connection = null;
 
+        database = databaseAbstractFactory.makeDatabaseAccess();
         Course course = modelAbstractFactory.makeCourse();
         try
         {
-            database = databaseAbstractFactory.makeDatabaseAccess();
-            connection = database.getConnection();
+            statement = database.getPreparedStatement(SELECT_COURSE_QUERY);
+            statement.setString(1, courseId);
+            resultSet = database.executeForResultSet(statement);
 
 
-            if (connection != null)
+            while (resultSet.next())
             {
-                statement = connection.prepareStatement(SELECT_COURSE_QUERY);
-                statement.setString(1, courseId);
-                resultSet = statement.executeQuery();
-
-
-                while (resultSet.next())
-                {
-                    course.setCourseId(resultSet.getString(CatmeUtil.COURSE_ID_FIELD));
-                    course.setCourseName(resultSet.getString(CatmeUtil.COURSE_NAME_FIELD));
-                }
+                course.setCourseId(resultSet.getString(CatmeUtil.COURSE_ID_FIELD));
+                course.setCourseName(resultSet.getString(CatmeUtil.COURSE_NAME_FIELD));
             }
         } catch (SQLException | NullPointerException e)
         {
             throw new CatmeException("Failed while connecting and fetching Course from DB " + e.getMessage());
         } finally
         {
-            try
-            {
-                if (connection != null)
-                    connection.close();
-                if (statement != null)
-                    statement.close();
-                if (resultSet != null)
-                    resultSet.close();
-            } catch (SQLException | NullPointerException e)
-            {
-                throw new CatmeException("Failed while closing conection with DB " + e.getMessage());
-            }
+            database.cleanUp();
         }
 
         return course;
@@ -215,41 +168,25 @@ public class CourseDaoImpl implements ICourseDao
     {
         ResultSet resultSet = null;
         PreparedStatement statement = null;
-        Connection connection = null;
         String role = "";
 
+        database = databaseAbstractFactory.makeDatabaseAccess();
         try
         {
-            database = databaseAbstractFactory.makeDatabaseAccess();
-            connection = database.getConnection();
-            if (connection != null)
+            statement = database.getPreparedStatement(SELECT_COURSE_ROLE_QUERY);
+            statement.setString(1, user.getBannerId());
+            statement.setString(2, courseId);
+            resultSet = database.executeForResultSet(statement);
+            while (resultSet.next())
             {
-                statement = connection.prepareStatement(SELECT_COURSE_ROLE_QUERY);
-                statement.setString(1, user.getBannerId());
-                statement.setString(2, courseId);
-                resultSet = statement.executeQuery();
-                while (resultSet.next())
-                {
-                    role = resultSet.getString(CatmeUtil.ROLE_NAME_FIELD);
-                }
+                role = resultSet.getString(CatmeUtil.ROLE_NAME_FIELD);
             }
         } catch (SQLException | NullPointerException e)
         {
             throw new CatmeException("Failed while connecting and Fetching Role for a Course in DB" + e.getMessage());
         } finally
         {
-            try
-            {
-                if (connection != null)
-                    connection.close();
-                if (statement != null)
-                    statement.close();
-                if (resultSet != null)
-                    resultSet.close();
-            } catch (SQLException | NullPointerException e)
-            {
-                throw new CatmeException("Failed while closing conection with DB " + e.getMessage());
-            }
+            database.cleanUp();
         }
         return role;
     }
@@ -259,16 +196,14 @@ public class CourseDaoImpl implements ICourseDao
     {
         ArrayList<User> registeredStudents = new ArrayList<>();
 
-        Connection con = null;
         try
         {
             database = databaseAbstractFactory.makeDatabaseAccess();
-            con = database.getConnection();
 
-            PreparedStatement stmt = con.prepareStatement(SEELCT_ENROLLED_STUDENTS_QUERY);
+            PreparedStatement stmt = database.getPreparedStatement(SEELCT_ENROLLED_STUDENTS_QUERY);
             stmt.setString(1, courseId);
 
-            ResultSet rs = stmt.executeQuery();
+            ResultSet rs = database.executeForResultSet(stmt);
 
             while (rs.next())
             {
@@ -287,52 +222,54 @@ public class CourseDaoImpl implements ICourseDao
             throwables.printStackTrace();
         } finally
         {
-            try
-            {
-                con.close();
-            } catch (SQLException | NullPointerException throwables)
-            {
-                throwables.printStackTrace();
-            }
+            database.cleanUp();
         }
         return null;
     }
 
     @Override
-    public int checkCourseExists(String courseId, Connection con)
+    public int checkCourseExists(String courseId)
     {
+        IDatabaseAccess db = databaseAbstractFactory.makeDatabaseAccess();
         int rowCount = 0;
         try
         {
-            PreparedStatement stmt = con.prepareStatement(CHECK_COURSE_QUERY);
+            PreparedStatement stmt = db.getPreparedStatement(CHECK_COURSE_QUERY);
             stmt.setString(1, courseId);
 
-            ResultSet rs = stmt.executeQuery();
+            ResultSet rs = db.executeForResultSet(stmt);
             rs.next();
             rowCount = rs.getInt(1);
         } catch (SQLException e)
         {
             e.printStackTrace();
+        } finally
+        {
+            db.cleanUp();
         }
 
         return rowCount;
     }
 
     @Override
-    public int checkCourseRegistration(String bannerId, String courseId, Connection con)
+    public int checkCourseRegistration(String bannerId, String courseId)
     {
+        IDatabaseAccess db = databaseAbstractFactory.makeDatabaseAccess();
         int rowCount = 0;
         try
         {
-            PreparedStatement stmt = con.prepareStatement(CHECK_COURSE_REGISTRATION_QUERY);
+            PreparedStatement stmt = db.getPreparedStatement(CHECK_COURSE_REGISTRATION_QUERY);
             stmt.setString(1, bannerId);
             stmt.setString(2, courseId);
-            ResultSet rs = stmt.executeQuery();
+            ResultSet rs = db.executeForResultSet(stmt);
             rs.next();
             rowCount = rs.getInt(1);
         } catch (SQLException e)
         {
             e.printStackTrace();
+        } finally
+        {
+            db.cleanUp();
         }
 
         return rowCount;
