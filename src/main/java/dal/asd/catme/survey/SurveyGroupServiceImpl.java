@@ -25,7 +25,11 @@ public class SurveyGroupServiceImpl implements ISurveyGroupService
 		}
 
 		int groupSize = surveyGroupDao.getGroupSize(surveyId);
-    	List<User> students = surveyGroupDao.getStudents(surveyId);
+    	List<User> students = surveyGroupDao.getSurveyParticipants(surveyId);
+    	if(students==null)
+		{
+			return null;
+		}
 
     	return formGroups(students,groupSize);
     }

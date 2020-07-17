@@ -21,7 +21,7 @@ public class SurveyGroupController
 	{
 		List<List<User>> groups=surveyGroupService.displaySurveyGroups(surveyId);
 		ModelAndView modelAndView=new ModelAndView();
-		modelAndView.setViewName(CatmeUtil.SURVEY_PAGE);
+		modelAndView.setViewName(CatmeUtil.SURVEY_GROUP);
 		if(groups==null)
 		{
 			modelAndView.addObject("message","Error Creating groups");

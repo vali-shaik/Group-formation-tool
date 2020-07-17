@@ -25,12 +25,6 @@ public class SurveyGroupDaoImpl implements ISurveyGroupDao
 	IAccessControlModelAbstractFactory accessControlModelAbstractFactory = baseAbstractFactory.makeAccessControlModelAbstractFactory();
 
 	@Override
-	public List<User> displaySurveyGroups(int surveyId) 
-	{
-		return null;
-	}
-
-	@Override
 	public int getGroupSize(int surveyId)
 	{
 		IDatabaseAccess db = databaseAbstractFactory.makeDatabaseAccess();
@@ -60,7 +54,7 @@ public class SurveyGroupDaoImpl implements ISurveyGroupDao
 	}
 
 	@Override
-	public List<User> getStudents(int surveyId)
+	public List<User> getSurveyParticipants(int surveyId)
 	{
 		IDatabaseAccess db = databaseAbstractFactory.makeDatabaseAccess();
 		List<User> users = new ArrayList<>();
