@@ -29,6 +29,7 @@ public class SurveyGroupDaoImpl implements ISurveyGroupDao
 	{
 		IDatabaseAccess db = databaseAbstractFactory.makeDatabaseAccess();
 
+		log.info("Getting Group size for survey: "+surveyId);
 		try
 		{
 			PreparedStatement stmt = db.getPreparedStatement(DBQueriesUtil.GET_SURVEY_GROUP_SIZE);
@@ -38,11 +39,14 @@ public class SurveyGroupDaoImpl implements ISurveyGroupDao
 
 			if(rs.next())
 			{
+				log.info("Group size: "+rs.getInt(1));
 				return rs.getInt(1);
 			}
+			log.info("Group size: 0");
 			return 0;
 		} catch (SQLException throwables)
 		{
+			log.info("Error Getting group size");
 			throwables.printStackTrace();
 		}
 		finally
@@ -57,6 +61,7 @@ public class SurveyGroupDaoImpl implements ISurveyGroupDao
 	public List<User> getSurveyParticipants(int surveyId)
 	{
 		IDatabaseAccess db = databaseAbstractFactory.makeDatabaseAccess();
+		log.info("Getting survey participants for survey: "+surveyId);
 		List<User> users = new ArrayList<>();
 		try
 		{
@@ -74,6 +79,7 @@ public class SurveyGroupDaoImpl implements ISurveyGroupDao
 			return users;
 		} catch (SQLException throwables)
 		{
+			log.info("Error Getting participants");
 			throwables.printStackTrace();
 		}
 		finally

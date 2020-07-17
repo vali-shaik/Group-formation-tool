@@ -7,12 +7,17 @@ public class SurveyAbstractFactoryMock implements ISurveyAbstractFactory
     static ISurveyAbstractFactory surveyAbstractFactory = null;
     ISurveyService surveyService;
     ISurveyDao surveyDao;
+    ISurveyGroupDao groupDao;
+    ISurveyGroupService surveyGroupService;
 
     public SurveyAbstractFactoryMock()
     {
         surveyDao = new SurveyDaoMock();
         surveyService = new SurveyServiceImpl(surveyDao);
+        groupDao = new SurveyGroupDaoImplMock();
+        surveyGroupService = new SurveyGroupServiceImpl(groupDao);
     }
+
 
     @Override
     public ISurveyService makeSurveyService()
@@ -29,12 +34,12 @@ public class SurveyAbstractFactoryMock implements ISurveyAbstractFactory
     @Override
     public ISurveyGroupService makeSurveyGroupService()
     {
-        return null;
+        return surveyGroupService;
     }
 
     @Override
     public ISurveyGroupDao makeSurveyGroupDao()
     {
-        return null;
+        return groupDao;
     }
 }
