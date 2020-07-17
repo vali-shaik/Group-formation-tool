@@ -68,6 +68,7 @@ public class DBQueriesUtil
     public static final String SAVE_ATTEMPT = "call SaveSurveyAttempt(?,?)";
     public static final String GET_ATTEMPT = "call GetSurveyAttempt(?,?)";
     public static final String GET_SURVEY_GROUP_SIZE="CALL getGroupSize(?)";
+    public static final String GET_BANNER_ID = "call getBannerIds(?)";
 
 }
 
