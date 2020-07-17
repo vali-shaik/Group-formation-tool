@@ -1,6 +1,9 @@
 package dal.asd.catme.survey;
 
 import dal.asd.catme.accesscontrol.User;
+import dal.asd.catme.surveyresponse.SurveyResponseServiceImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -8,8 +11,9 @@ import java.util.List;
 
 public class SurveyGroupServiceImpl implements ISurveyGroupService
 {
+	private static final Logger log = LoggerFactory.getLogger(SurveyResponseServiceImpl.class);
 
-    ISurveyGroupDao surveyGroupDao;
+	ISurveyGroupDao surveyGroupDao;
 
     public SurveyGroupServiceImpl(ISurveyGroupDao surveyGroupDao)
     {
@@ -36,6 +40,7 @@ public class SurveyGroupServiceImpl implements ISurveyGroupService
 
     private List<List<User>> formGroups(List<User> students, int groupSize)
 	{
+		log.info("Creating groups");
 		Collections.shuffle(students);
 		List<List<User>> groups = new ArrayList<>();
 		int indexOfStudent = 0;
