@@ -24,6 +24,6 @@ public class RoleServiceImplTest
         enrollment.setBannerId("B00835717");
         enrollment.setCourseId("5306");
 
-        assertEquals("", roleService.assignTa(enrollment));
+        assertEquals(0, roleService.assignTa(enrollment));
     }
 }
