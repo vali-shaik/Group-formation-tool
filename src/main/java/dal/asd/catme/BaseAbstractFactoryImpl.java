@@ -4,10 +4,6 @@ import dal.asd.catme.accesscontrol.AccessControlAbstractFactoryImpl;
 import dal.asd.catme.accesscontrol.AccessControlModelAbstractFactoryImpl;
 import dal.asd.catme.accesscontrol.IAccessControlAbstractFactory;
 import dal.asd.catme.accesscontrol.IAccessControlModelAbstractFactory;
-import dal.asd.catme.algorithm.AlgorithmAbstractFactoryImpl;
-import dal.asd.catme.algorithm.AlgorithmModelAbstractFactoryImpl;
-import dal.asd.catme.algorithm.IAlgorithmAbstractFactory;
-import dal.asd.catme.algorithm.IAlgorithmModelAbstractFactory;
 import dal.asd.catme.courses.CourseAbstractFactoryImpl;
 import dal.asd.catme.courses.CourseModelAbstractFactoryImpl;
 import dal.asd.catme.courses.ICourseAbstractFactory;
@@ -47,8 +43,6 @@ public class BaseAbstractFactoryImpl implements IBaseAbstractFactory
     private ICSVParserAbstractFactory icsvParserAbstractFactory = null;
     private ISurveyResponseAbstractFactory surveyResponseAbstractFactory = null;
     private ISurveyResponseModelAbstractFactory surveyResponseModelAbstractFactory = null;
-    public IAlgorithmModelAbstractFactory algorithmModelAbstractFactory = null;
-    public IAlgorithmAbstractFactory algorithmAbstractFactory = null;
 
     public static IBaseAbstractFactory instance()
     {
@@ -76,26 +70,6 @@ public class BaseAbstractFactoryImpl implements IBaseAbstractFactory
         }
         return accessControlModelAbstractFactory;
     }
-
-
-    public IAlgorithmAbstractFactory makeAlgorithmAbstractFactory()
-    {
-        if (algorithmAbstractFactory == null)
-        {
-            algorithmAbstractFactory = new AlgorithmAbstractFactoryImpl();
-        }
-        return algorithmAbstractFactory;
-    }
-
-    public IAlgorithmModelAbstractFactory makeAlgorithmModelAbstractFactory()
-    {
-        if (algorithmModelAbstractFactory == null)
-        {
-            algorithmModelAbstractFactory = new AlgorithmModelAbstractFactoryImpl();
-        }
-        return algorithmModelAbstractFactory;
-    }
-
 
     public ICourseAbstractFactory makeCourseAbstractFactory()
     {

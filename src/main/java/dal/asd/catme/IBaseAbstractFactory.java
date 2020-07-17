@@ -2,8 +2,6 @@ package dal.asd.catme;
 
 import dal.asd.catme.accesscontrol.IAccessControlAbstractFactory;
 import dal.asd.catme.accesscontrol.IAccessControlModelAbstractFactory;
-import dal.asd.catme.algorithm.IAlgorithmAbstractFactory;
-import dal.asd.catme.algorithm.IAlgorithmModelAbstractFactory;
 import dal.asd.catme.courses.ICourseAbstractFactory;
 import dal.asd.catme.courses.ICourseModelAbstractFactory;
 import dal.asd.catme.database.IDatabaseAbstractFactory;
@@ -38,17 +36,11 @@ public interface IBaseAbstractFactory
 
     ISurveyResponseModelAbstractFactory makeSurveyResponseModelAbstractFactory();
 
-    IAlgorithmAbstractFactory makeAlgorithmAbstractFactory();
-
-    IAlgorithmModelAbstractFactory makeAlgorithmModelAbstractFactory();
-
     IDatabaseAbstractFactory makeDatabaseAbstractFactory();
-
 
     ISurveyAbstractFactory makeSurveyAbstractFactory();
 
     ISurveyModelAbstractFactory makeSurveyModelAbstractFactory();
-
 
     ICSVParserAbstractFactory makeCSVParserAbstractFactory();
 
