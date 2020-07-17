@@ -6,13 +6,14 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 
 @SpringBootApplication
-//Excluding the default Data source Connection
 @EnableAutoConfiguration(exclude = DataSourceAutoConfiguration.class)
-public class CatmeSpringProjectApplication {
+public class CatmeSpringProjectApplication
+{
 
-	public static void main(String[] args) {
-		SpringApplication.run(CatmeSpringProjectApplication.class, args);
-	}
-	
+    public static void main(String[] args)
+    {
+        SpringApplication.run(CatmeSpringProjectApplication.class, args);
+    }
+
 
 }
