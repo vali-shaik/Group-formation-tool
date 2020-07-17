@@ -8,7 +8,6 @@ import dal.asd.catme.courses.IRoleDao;
 import dal.asd.catme.database.IDatabaseAbstractFactory;
 import dal.asd.catme.database.IDatabaseAccess;
 import dal.asd.catme.util.CatmeUtil;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -32,12 +31,13 @@ public class UserDaoImpl implements IUserDao
     IAccessControlModelAbstractFactory modelAbstractFactory = baseAbstractFactory.makeAccessControlModelAbstractFactory();
     ICourseAbstractFactory courseAbstractFactory = baseAbstractFactory.makeCourseAbstractFactory();
     private static final Logger log = LoggerFactory.getLogger(UserDaoImpl.class);
+
     @Override
     public int checkExistingUser(String bannerId)
     {
-    	 IDatabaseAccess db = databaseAbstractFactory.makeDatabaseAccess();
-    	 log.info("Checking whether user already exists");        
-    	 int rowCount = 0;
+        IDatabaseAccess db = databaseAbstractFactory.makeDatabaseAccess();
+        log.info("Checking whether user already exists");
+        int rowCount = 0;
         try
         {
             PreparedStatement stmt = db.getPreparedStatement(CHECK_EXISTING_USER_QUERY);
@@ -48,7 +48,7 @@ public class UserDaoImpl implements IUserDao
             rowCount = rs.getInt(1);
         } catch (SQLException e)
         {
-        	log.error("Error while checking for a user");
+            log.error("Error while checking for a user");
             e.printStackTrace();
         } finally
         {
@@ -60,9 +60,9 @@ public class UserDaoImpl implements IUserDao
     @Override
     public int addUser(User user)
     {
-    	 IDatabaseAccess db = databaseAbstractFactory.makeDatabaseAccess();
-    	log.info("Adding newly registered user");       
-    	String bannerId = user.getBannerId();
+        IDatabaseAccess db = databaseAbstractFactory.makeDatabaseAccess();
+        log.info("Adding newly registered user");
+        String bannerId = user.getBannerId();
         try
         {
             if (0 == checkExistingUser(bannerId))
@@ -82,7 +82,7 @@ public class UserDaoImpl implements IUserDao
             }
         } catch (Exception e)
         {
-        	log.error("Error while adding a new registered user");
+            log.error("Error while adding a new registered user");
             e.printStackTrace();
         } finally
         {
@@ -95,8 +95,8 @@ public class UserDaoImpl implements IUserDao
     @Override
     public User getUser(String bannerId)
     {
-    	 IDatabaseAccess db = databaseAbstractFactory.makeDatabaseAccess();
-    	log.info("Fetching the user details based on user id");
+        IDatabaseAccess db = databaseAbstractFactory.makeDatabaseAccess();
+        log.info("Fetching the user details based on user id");
         try
         {
             PreparedStatement getUser = db.getPreparedStatement(GET_USER_QUERY);
@@ -118,7 +118,7 @@ public class UserDaoImpl implements IUserDao
             return u;
         } catch (Exception e)
         {
-        	log.error("Unable to fetch the user details");
+            log.error("Unable to fetch the user details");
             e.printStackTrace();
         } finally
         {
@@ -131,8 +131,8 @@ public class UserDaoImpl implements IUserDao
     @Override
     public List<User> getUsers()
     {
-    	 IDatabaseAccess db = databaseAbstractFactory.makeDatabaseAccess();
-    	log.info("Fetching all the users");
+        IDatabaseAccess db = databaseAbstractFactory.makeDatabaseAccess();
+        log.info("Fetching all the users");
         List<User> users = new ArrayList<>();
         try
         {
@@ -148,7 +148,7 @@ public class UserDaoImpl implements IUserDao
             }
         } catch (SQLException e)
         {
-        	log.error("Fetch all the users");
+            log.error("Fetch all the users");
             e.printStackTrace();
         } finally
         {
@@ -159,8 +159,8 @@ public class UserDaoImpl implements IUserDao
 
     private ResultSet listUsers(String query)
     {
-    	 IDatabaseAccess db = databaseAbstractFactory.makeDatabaseAccess();
-    	log.info("Fetching the list of users with student role");
+        IDatabaseAccess db = databaseAbstractFactory.makeDatabaseAccess();
+        log.info("Fetching the list of users with student role");
         ResultSet rs = null;
         try
         {
@@ -169,7 +169,7 @@ public class UserDaoImpl implements IUserDao
             rs = db.executeForResultSet(preparedStatement);
         } catch (SQLException e)
         {
-        	log.error("Unable to list all the users (Students) in application");
+            log.error("Unable to list all the users (Students) in application");
             e.printStackTrace();
         }
         return rs;

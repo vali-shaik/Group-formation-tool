@@ -1,21 +1,23 @@
 package dal.asd.catme.surveytest;
 
-import dal.asd.catme.survey.ISurveyAbstractFactory;
-import dal.asd.catme.survey.ISurveyDao;
-import dal.asd.catme.survey.ISurveyService;
-import dal.asd.catme.survey.SurveyServiceImpl;
+import dal.asd.catme.survey.*;
 
 public class SurveyAbstractFactoryMock implements ISurveyAbstractFactory
 {
     static ISurveyAbstractFactory surveyAbstractFactory = null;
     ISurveyService surveyService;
     ISurveyDao surveyDao;
+    ISurveyGroupDao groupDao;
+    ISurveyGroupService surveyGroupService;
 
     public SurveyAbstractFactoryMock()
     {
         surveyDao = new SurveyDaoMock();
         surveyService = new SurveyServiceImpl(surveyDao);
+        groupDao = new SurveyGroupDaoImplMock();
+        surveyGroupService = new SurveyGroupServiceImpl(groupDao);
     }
+
 
     @Override
     public ISurveyService makeSurveyService()
@@ -29,4 +31,15 @@ public class SurveyAbstractFactoryMock implements ISurveyAbstractFactory
         return surveyDao;
     }
 
+    @Override
+    public ISurveyGroupService makeSurveyGroupService()
+    {
+        return surveyGroupService;
+    }
+
+    @Override
+    public ISurveyGroupDao makeSurveyGroupDao()
+    {
+        return groupDao;
+    }
 }

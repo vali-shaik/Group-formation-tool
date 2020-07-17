@@ -86,7 +86,7 @@ public class CatmeSecurityConfig extends WebSecurityConfigurerAdapter
                     .authoritiesByUsernameQuery(SELECT_ROLE_SECURITY_QUERY);
         } catch (Exception e)
         {
-        	log.error("Authentication failed to fetch username and password!!");
+            log.error("Authentication failed to fetch username and password!!");
             throw new CatmeException("Authentication failed to fetch username and password!! " + e.getMessage());
         }
     }
@@ -104,7 +104,7 @@ public class CatmeSecurityConfig extends WebSecurityConfigurerAdapter
             }
         } catch (Exception e)
         {
-        	log.error("Authentication failed to roles of User!!");
+            log.error("Authentication failed to roles of User!!");
             throw new CatmeException("Failed to fetch User roles from database!! " + e.getMessage());
         }
 

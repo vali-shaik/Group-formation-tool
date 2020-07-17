@@ -26,11 +26,11 @@ public class AdminDaoImpl implements IAdminDao
     IBaseAbstractFactory baseAbstractFactory = BaseAbstractFactoryImpl.instance();
     IDatabaseAbstractFactory databaseAbstractFactory = baseAbstractFactory.makeDatabaseAbstractFactory();
     private static final Logger log = LoggerFactory.getLogger(AdminDaoImpl.class);
-    
+
     @Override
     public int addCourse(Course course)
     {
-    	log.info("Adding a new Course");
+        log.info("Adding a new Course");
         db = databaseAbstractFactory.makeDatabaseAccess();
         int result = CatmeUtil.ZERO;
         try
@@ -48,7 +48,7 @@ public class AdminDaoImpl implements IAdminDao
                 result = CatmeUtil.TWO;
         } catch (SQLException e)
         {
-        	log.error("Failed while adding a new course");
+            log.error("Failed while adding a new course");
             e.printStackTrace();
         } finally
         {
@@ -60,7 +60,7 @@ public class AdminDaoImpl implements IAdminDao
     @Override
     public int deleteCourse(String courseId)
     {
-log.info("Deleting a course from application");
+        log.info("Deleting a course from application");
         int result = 0;
         db = databaseAbstractFactory.makeDatabaseAccess();
         try
@@ -73,7 +73,7 @@ log.info("Deleting a course from application");
             }
         } catch (Exception e)
         {
-log.error("Failed while deleting a course");
+            log.error("Failed while deleting a course");
             e.printStackTrace();
         } finally
         {
@@ -86,7 +86,7 @@ log.error("Failed while deleting a course");
     public int addInstructorToCourse(String user, String course)
     {
 
-log.info("Adding an instructor to respective course "+course);
+        log.info("Adding an instructor to respective course " + course);
         int result = 0;
         try
         {
@@ -99,7 +99,7 @@ log.info("Adding an instructor to respective course "+course);
             }
         } catch (Exception e)
         {
-log.error("Failed while adding a instructor to a course");
+            log.error("Failed while adding a instructor to a course");
             e.printStackTrace();
         }
 
@@ -108,7 +108,7 @@ log.error("Failed while adding a instructor to a course");
 
     public int selectInstructorRole()
     {
-log.info("Finding the role Id for Course instructor");
+        log.info("Finding the role Id for Course instructor");
         db = databaseAbstractFactory.makeDatabaseAccess();
         int result = 0;
         try
@@ -121,7 +121,7 @@ log.info("Finding the role Id for Course instructor");
 
         } catch (SQLException e)
         {
-log.error("Failed while finding a role Id for current user");
+            log.error("Failed while finding a role Id for current user");
             e.printStackTrace();
         } finally
         {
@@ -134,7 +134,7 @@ log.error("Failed while finding a role Id for current user");
 
     public int addAsCourseInstructor(String course, int userRole)
     {
-log.info("Adding a user as instructor to a course");
+        log.info("Adding a user as instructor to a course");
         db = databaseAbstractFactory.makeDatabaseAccess();
         int result = 0;
         try
@@ -156,7 +156,7 @@ log.info("Adding a user as instructor to a course");
             }
         } catch (SQLException e)
         {
-log.error("Failed while adding a role Id as instructor to a course");
+            log.error("Failed while adding a role Id as instructor to a course");
             e.printStackTrace();
         } finally
         {
@@ -168,7 +168,7 @@ log.error("Failed while adding a role Id as instructor to a course");
 
     public int updateQuery(String query, String courseId)
     {
-log.info("Updating the courses in the DB");
+        log.info("Updating the courses in the DB");
         db = databaseAbstractFactory.makeDatabaseAccess();
         int result = 0;
         try
@@ -178,7 +178,7 @@ log.info("Updating the courses in the DB");
             result = preparedStatement.executeUpdate();
         } catch (SQLException e)
         {
-log.error("Failed while updating the courses in the DB");
+            log.error("Failed while updating the courses in the DB");
             e.printStackTrace();
         } finally
         {
@@ -191,7 +191,8 @@ log.error("Failed while updating the courses in the DB");
     public int insertInstructorRole(String user, int roleId)
     {
         db = databaseAbstractFactory.makeDatabaseAccess();
-log.info("Assigning the new role to the user as an instructor");        int userRoleId = 0;
+        log.info("Assigning the new role to the user as an instructor");
+        int userRoleId = 0;
         try
         {
             preparedStatement = db.getPreparedStatement(SELECT_USER_ROLE_BY_BANNERID);

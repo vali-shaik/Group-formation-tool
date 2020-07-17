@@ -1,5 +1,6 @@
 package dal.asd.catme.algorithm;
 
-public class GroupFormationServiceImplTest {
+public class GroupFormationServiceImplTest
+{
 
 }

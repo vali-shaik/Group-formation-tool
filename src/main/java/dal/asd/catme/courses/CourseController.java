@@ -1,5 +1,9 @@
 package dal.asd.catme.courses;
 
+import dal.asd.catme.BaseAbstractFactoryImpl;
+import dal.asd.catme.accesscontrol.CatmeException;
+import dal.asd.catme.accesscontrol.User;
+import dal.asd.catme.util.CatmeUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -11,11 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import dal.asd.catme.BaseAbstractFactoryImpl;
-import dal.asd.catme.accesscontrol.CatmeException;
-import dal.asd.catme.accesscontrol.User;
-import dal.asd.catme.util.CatmeUtil;
-
 @Controller
 public class CourseController
 {
@@ -23,11 +22,11 @@ public class CourseController
 
     ICourseAbstractFactory courseAbstractFactory = BaseAbstractFactoryImpl.instance().makeCourseAbstractFactory();
     ICourseModelAbstractFactory modelAbstractFactory = BaseAbstractFactoryImpl.instance().makeCourseModelAbstractFactory();
-    
+
     @GetMapping("taEnrollment/{courseId}")
     public String enrollTa(@PathVariable("courseId") String courseId, Model model)
     {
-    	log.info("Enrolling a TA for a course");
+        log.info("Enrolling a TA for a course");
         model.addAttribute("courseId", courseId);
         return CatmeUtil.TA_ENROLLMENT_PAGE;
     }
@@ -43,17 +42,19 @@ public class CourseController
     public String enrollTa(@PathVariable("courseId") String courseId, @RequestParam String bannerId, Model model)
     {
         log.info("Enrollling TA for course for given banner ID");
-    	IRoleService roleService = courseAbstractFactory.makeRoleService();
+        IRoleService roleService = courseAbstractFactory.makeRoleService();
         Enrollment user = modelAbstractFactory.makeEnrollment();
         user.setBannerId(bannerId);
         user.setCourseId(courseId);
         model.addAttribute("user", user);
-        String message="";
+        String message = "";
         int result = roleService.assignTa(user);
-        if(result==CatmeUtil.ONE) {
-        	message="TA enrolled successfully";
-        }else {
-        	message ="Error in enrolling TA.";
+        if (result == CatmeUtil.ONE)
+        {
+            message = "TA enrolled successfully";
+        } else
+        {
+            message = "Error in enrolling TA.";
         }
         model.addAttribute("message", message);
         return CatmeUtil.TA_ENROLLED_PAGE;

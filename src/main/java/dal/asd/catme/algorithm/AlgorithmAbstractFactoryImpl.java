@@ -1,21 +1,23 @@
 package dal.asd.catme.algorithm;
 
 
-public class AlgorithmAbstractFactoryImpl implements IAlgorithmAbstractFactory{
-	private static IAlgorithmAbstractFactory abstractFactory = null;
-	private IGroupFormationDao groupFormationDao;
-	private IGroupFormationService groupFormationService;
-	private IListGroupsService listGroupsService;
-	
-	public AlgorithmAbstractFactoryImpl() {
-		groupFormationDao=new GroupFormationDaoImpl();
-		
-		listGroupsService=new ListGroupsServiceImpl();
-	}
-	
-	public static IAlgorithmAbstractFactory instance()
-	{
-        if(abstractFactory==null)
+public class AlgorithmAbstractFactoryImpl implements IAlgorithmAbstractFactory
+{
+    private static IAlgorithmAbstractFactory abstractFactory = null;
+    private final IGroupFormationDao groupFormationDao;
+    private IGroupFormationService groupFormationService;
+    private final IListGroupsService listGroupsService;
+
+    public AlgorithmAbstractFactoryImpl()
+    {
+        groupFormationDao = new GroupFormationDaoImpl();
+
+        listGroupsService = new ListGroupsServiceImpl();
+    }
+
+    public static IAlgorithmAbstractFactory instance()
+    {
+        if (abstractFactory == null)
         {
             abstractFactory = new AlgorithmAbstractFactoryImpl();
         }
@@ -28,13 +30,15 @@ public class AlgorithmAbstractFactoryImpl implements IAlgorithmAbstractFactory{
         return groupFormationDao;
     }
 
-	@Override
-	public IGroupFormationService makeGroupFormationService(int surveyId) {
-		return groupFormationService=new GroupFormationServiceImpl(surveyId);
-	}
+    @Override
+    public IGroupFormationService makeGroupFormationService(int surveyId)
+    {
+        return groupFormationService = new GroupFormationServiceImpl(surveyId);
+    }
 
-	@Override
-	public IListGroupsService makeListGroupService() {
-		return listGroupsService;
-	}
+    @Override
+    public IListGroupsService makeListGroupService()
+    {
+        return listGroupsService;
+    }
 }

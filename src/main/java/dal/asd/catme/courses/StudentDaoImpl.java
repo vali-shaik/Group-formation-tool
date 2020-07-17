@@ -7,20 +7,21 @@ import dal.asd.catme.database.IDatabaseAbstractFactory;
 import dal.asd.catme.database.IDatabaseAccess;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import java.sql.PreparedStatement;
 
 import static dal.asd.catme.util.DBQueriesUtil.STUDENT_ENROLL_QUERY;
 
 public class StudentDaoImpl implements IStudentDao
 {
-private static final Logger log = LoggerFactory.getLogger(StudentDaoImpl.class);
+    private static final Logger log = LoggerFactory.getLogger(StudentDaoImpl.class);
     IBaseAbstractFactory baseAbstractFactory = BaseAbstractFactoryImpl.instance();
     IDatabaseAbstractFactory databaseAbstractFactory = baseAbstractFactory.makeDatabaseAbstractFactory();
 
     @Override
     public boolean enroll(User s, Course c)
     {
-log.info("Enrolling the student");
+        log.info("Enrolling the student");
         IDatabaseAccess databaseAccess = databaseAbstractFactory.makeDatabaseAccess();
         try
         {
@@ -32,7 +33,7 @@ log.info("Enrolling the student");
             return true;
         } catch (Exception e)
         {
-log.error("Failed to enroll the student as the details are insufficient");
+            log.error("Failed to enroll the student as the details are insufficient");
             e.printStackTrace();
             return false;
         } finally

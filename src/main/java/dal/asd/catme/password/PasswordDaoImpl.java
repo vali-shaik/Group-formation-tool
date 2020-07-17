@@ -23,10 +23,11 @@ public class PasswordDaoImpl implements IPasswordDao
     IDatabaseAbstractFactory databaseAbstractFactory = baseAbstractFactory.makeDatabaseAbstractFactory();
     PasswordEncoder p;
     private static final Logger log = LoggerFactory.getLogger(PasswordDaoImpl.class);
+
     @Override
     public void resetPassword(User u) throws CatmeException
     {
-    	log.info("Restting password");
+        log.info("Restting password");
         IDatabaseAccess db = databaseAbstractFactory.makeDatabaseAccess();
         p = SystemConfig.instance().getPasswordEncoder();
         try
@@ -59,7 +60,7 @@ public class PasswordDaoImpl implements IPasswordDao
 
         } catch (SQLException e)
         {
-log.error("Resetting password failed while updating in DB");
+            log.error("Resetting password failed while updating in DB");
             e.printStackTrace();
         } finally
         {
@@ -70,7 +71,7 @@ log.error("Resetting password failed while updating in DB");
     public void generatePasswordResetToken(User u, String token) throws CatmeException
     {
         IDatabaseAccess db = databaseAbstractFactory.makeDatabaseAccess();
-   log.info("Generating the reset password token");
+        log.info("Generating the reset password token");
         try
         {
 
@@ -81,7 +82,7 @@ log.error("Resetting password failed while updating in DB");
             stmt.executeUpdate();
         } catch (SQLException throwables)
         {
-log.error("Failed while generating token");
+            log.error("Failed while generating token");
             throwables.printStackTrace();
             throw new CatmeException("Error Generating Token.. Try Again");
         } finally
@@ -92,7 +93,7 @@ log.error("Failed while generating token");
 
     public String readBannerIdFromToken(String token) throws CatmeException
     {
-log.info("Checking the user for reset token");
+        log.info("Checking the user for reset token");
         IDatabaseAccess db = databaseAbstractFactory.makeDatabaseAccess();
         try
         {
@@ -111,7 +112,7 @@ log.info("Checking the user for reset token");
 
         } catch (SQLException throwables)
         {
-log.error("Error Generating Token.. Try Again");
+            log.error("Error Generating Token.. Try Again");
             throw new CatmeException("Error Generating Token.. Try Again");
         } finally
         {
@@ -121,7 +122,7 @@ log.error("Error Generating Token.. Try Again");
 
     public void removeToken(String bannerId)
     {
-log.info("Deleting reset token");
+        log.info("Deleting reset token");
         IDatabaseAccess db = databaseAbstractFactory.makeDatabaseAccess();
         try
         {
@@ -133,7 +134,7 @@ log.info("Deleting reset token");
 
         } catch (SQLException throwables)
         {
-        	log.error("Error deleting reset token");
+            log.error("Error deleting reset token");
         } finally
         {
             db.cleanUp();
@@ -143,7 +144,7 @@ log.info("Deleting reset token");
     @Override
     public boolean matchWithPasswordHistory(String bannerId, String password) throws CatmeException
     {
-log.info("Checking password history");
+        log.info("Checking password history");
         IDatabaseAccess db = databaseAbstractFactory.makeDatabaseAccess();
         PasswordEncoder p = SystemConfig.instance().getPasswordEncoder();
 
@@ -162,7 +163,7 @@ log.info("Checking password history");
             return false;
         } catch (SQLException throwables)
         {
-log.error("Unable to load password history");
+            log.error("Unable to load password history");
             throwables.printStackTrace();
         } finally
         {
@@ -174,7 +175,7 @@ log.error("Unable to load password history");
     @Override
     public void deleteOverLimitPasswords(String bannerId) throws CatmeException
     {
-log.info("Deleting old passwords");
+        log.info("Deleting old passwords");
         IDatabaseAccess db = databaseAbstractFactory.makeDatabaseAccess();
 
         try
@@ -202,7 +203,7 @@ log.info("Deleting old passwords");
             }
         } catch (SQLException throwables)
         {
-log.error("Error removing old passwords");
+            log.error("Error removing old passwords");
             throwables.printStackTrace();
         } finally
         {

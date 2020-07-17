@@ -1,64 +1,78 @@
 package dal.asd.catme.algorithm;
 
-import java.util.List;
 import dal.asd.catme.surveyresponse.SurveyResponse;
 
-public class SurveyGroups {
-	int surveyId;
+import java.util.List;
 
-	int groupNumber;
-	String bannerId;
-	String firstName;
-	String lastName;
+public class SurveyGroups
+{
+    int surveyId;
 
-	List<SurveyResponse> surveyResponses;
+    int groupNumber;
+    String bannerId;
+    String firstName;
+    String lastName;
 
-	public int getSurveyId() {
-		return surveyId;
-	}
+    List<SurveyResponse> surveyResponses;
 
-	public void setSurveyId(int surveyId) {
-		this.surveyId = surveyId;
-	}
+    public int getSurveyId()
+    {
+        return surveyId;
+    }
 
-	public int getGroupNumber() {
-		return groupNumber;
-	}
+    public void setSurveyId(int surveyId)
+    {
+        this.surveyId = surveyId;
+    }
 
-	public void setGroupNumber(int groupNumber) {
-		this.groupNumber = groupNumber;
-	}
+    public int getGroupNumber()
+    {
+        return groupNumber;
+    }
 
-	public String getBannerId() {
-		return bannerId;
-	}
+    public void setGroupNumber(int groupNumber)
+    {
+        this.groupNumber = groupNumber;
+    }
 
-	public void setBannerId(String bannerId) {
-		this.bannerId = bannerId;
-	}
+    public String getBannerId()
+    {
+        return bannerId;
+    }
 
-	public String getFirstName() {
-		return firstName;
-	}
+    public void setBannerId(String bannerId)
+    {
+        this.bannerId = bannerId;
+    }
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
+    public String getFirstName()
+    {
+        return firstName;
+    }
 
-	public String getLastName() {
-		return lastName;
-	}
+    public void setFirstName(String firstName)
+    {
+        this.firstName = firstName;
+    }
 
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
+    public String getLastName()
+    {
+        return lastName;
+    }
 
-	public List<SurveyResponse> getSurveyResponses() {
-		return surveyResponses;
-	}
+    public void setLastName(String lastName)
+    {
+        this.lastName = lastName;
+    }
 
-	public void setSurveyResponses(List<SurveyResponse> surveyResponses) {
-		this.surveyResponses = surveyResponses;
-	}
+    public List<SurveyResponse> getSurveyResponses()
+    {
+        return surveyResponses;
+    }
+
+    public void setSurveyResponses(List<SurveyResponse> surveyResponses)
+    {
+        this.surveyResponses = surveyResponses;
+    }
 
 }

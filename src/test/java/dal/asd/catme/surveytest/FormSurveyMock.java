@@ -1,6 +1,8 @@
 package dal.asd.catme.surveytest;
 
 import dal.asd.catme.BaseAbstractFactoryImpl;
+import dal.asd.catme.accesscontrol.IAccessControlModelAbstractFactory;
+import dal.asd.catme.accesscontrol.User;
 import dal.asd.catme.questionmanager.IQuestionManagerModelAbstractFactory;
 import dal.asd.catme.questionmanager.Question;
 import dal.asd.catme.survey.ISurveyModelAbstractFactory;
@@ -15,6 +17,7 @@ public class FormSurveyMock
 {
     static ISurveyModelAbstractFactory surveyModelAbstractFactory = BaseAbstractFactoryImpl.instance().makeSurveyModelAbstractFactory();
     static IQuestionManagerModelAbstractFactory questionManagerModelAbstractFactory = BaseAbstractFactoryImpl.instance().makeQuestionManagerModelAbstractFactory();
+    static IAccessControlModelAbstractFactory accessControlAbstractFactory = BaseAbstractFactoryImpl.instance().makeAccessControlModelAbstractFactory();
 
     public static Survey formSurvey()
     {
@@ -90,6 +93,18 @@ public class FormSurveyMock
         rule.setRuleType("Group Similar");
         rule.setRuleValue("9 rating");
         return rule;
+    }
+
+    public static List<User> formParticipants()
+    {
+        List<User> users = new ArrayList<>();
+        User user = accessControlAbstractFactory.makeUser();
+        user.setBannerId("B00835822");
+        users.add(user);
+        User user1 = accessControlAbstractFactory.makeUser();
+        user1.setBannerId("B00835823");
+        users.add(user1);
+        return users;
     }
 
 

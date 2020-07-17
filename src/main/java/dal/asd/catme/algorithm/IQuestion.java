@@ -1,24 +1,25 @@
 package dal.asd.catme.algorithm;
 
-public interface IQuestion {
+public interface IQuestion
+{
 
-	public int getTotalNoOfOptions();
+    int getTotalNoOfOptions();
 
-	public void setTotalNoOfOptions(int totalNumberOfAnswerOption);
+    void setTotalNoOfOptions(int totalNumberOfAnswerOption);
 
-	public int getRule();
+    int getRule();
 
-	public void setRule(int rule);
+    void setRule(int rule);
 
-	public int getQuestionId();
+    int getQuestionId();
 
-	public void setQuestionId(int questionId);
+    void setQuestionId(int questionId);
 
-	public String getQuestionType();
+    String getQuestionType();
 
-	public void setQuestionType(String questionType);
+    void setQuestionType(String questionType);
 
-	public int getPriority();
+    int getPriority();
 
-	public void setPriority(int priority);
+    void setPriority(int priority);
 }

@@ -3,8 +3,8 @@ package dal.asd.catme.coursestest;
 import dal.asd.catme.BaseAbstractFactoryMock;
 import dal.asd.catme.POJOMock;
 import dal.asd.catme.accesscontrol.*;
-import dal.asd.catme.courses.*;
 import dal.asd.catme.courses.IRoleDao;
+import dal.asd.catme.courses.*;
 
 import java.util.ArrayList;
 import java.util.List;

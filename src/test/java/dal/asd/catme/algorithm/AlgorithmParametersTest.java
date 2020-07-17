@@ -1,5 +1,6 @@
 package dal.asd.catme.algorithm;
 
-public class AlgorithmParametersTest {
+public class AlgorithmParametersTest
+{
 
 }

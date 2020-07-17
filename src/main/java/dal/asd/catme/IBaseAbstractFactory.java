@@ -16,40 +16,41 @@ import dal.asd.catme.survey.ISurveyModelAbstractFactory;
 import dal.asd.catme.surveyresponse.ISurveyResponseAbstractFactory;
 import dal.asd.catme.surveyresponse.ISurveyResponseModelAbstractFactory;
 
-public interface IBaseAbstractFactory {
-	public IAccessControlAbstractFactory makeAccessControlAbstractFactory();
+public interface IBaseAbstractFactory
+{
+    IAccessControlAbstractFactory makeAccessControlAbstractFactory();
 
-	public IAccessControlModelAbstractFactory makeAccessControlModelAbstractFactory();
+    IAccessControlModelAbstractFactory makeAccessControlModelAbstractFactory();
 
-	public ICourseAbstractFactory makeCourseAbstractFactory();
+    ICourseAbstractFactory makeCourseAbstractFactory();
 
-	public ICourseModelAbstractFactory makeCourseModelAbstractFactory();
+    ICourseModelAbstractFactory makeCourseModelAbstractFactory();
 
-	public IPasswordAbstractFactory makePasswordAbstractFactory();
+    IPasswordAbstractFactory makePasswordAbstractFactory();
 
-	public IQuestionManagerAbstractFactory makeQuestionManagerAbstractFactory();
+    IQuestionManagerAbstractFactory makeQuestionManagerAbstractFactory();
 
-	public IQuestionManagerModelAbstractFactory makeQuestionManagerModelAbstractFactory();
+    IQuestionManagerModelAbstractFactory makeQuestionManagerModelAbstractFactory();
 
-	public ICSVParserAbstractFactory makeIcsvParserAbstractFactory();
+    ICSVParserAbstractFactory makeIcsvParserAbstractFactory();
 
-	public ISurveyResponseAbstractFactory makeSurveyResponseAbstractFactory();
+    ISurveyResponseAbstractFactory makeSurveyResponseAbstractFactory();
 
-	public ISurveyResponseModelAbstractFactory makeSurveyResponseModelAbstractFactory();
+    ISurveyResponseModelAbstractFactory makeSurveyResponseModelAbstractFactory();
 
-	public IAlgorithmAbstractFactory makeAlgorithmAbstractFactory();
+    IAlgorithmAbstractFactory makeAlgorithmAbstractFactory();
 
-	public IAlgorithmModelAbstractFactory makeAlgorithmModelAbstractFactory();
-	 IDatabaseAbstractFactory makeDatabaseAbstractFactory();
+    IAlgorithmModelAbstractFactory makeAlgorithmModelAbstractFactory();
+
+    IDatabaseAbstractFactory makeDatabaseAbstractFactory();
 
 
     ISurveyAbstractFactory makeSurveyAbstractFactory();
 
     ISurveyModelAbstractFactory makeSurveyModelAbstractFactory();
 
-    
 
     ICSVParserAbstractFactory makeCSVParserAbstractFactory();
 
-    
+
 }

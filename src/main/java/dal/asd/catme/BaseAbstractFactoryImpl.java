@@ -47,12 +47,12 @@ public class BaseAbstractFactoryImpl implements IBaseAbstractFactory
     private ICSVParserAbstractFactory icsvParserAbstractFactory = null;
     private ISurveyResponseAbstractFactory surveyResponseAbstractFactory = null;
     private ISurveyResponseModelAbstractFactory surveyResponseModelAbstractFactory = null;
-    public IAlgorithmModelAbstractFactory algorithmModelAbstractFactory=null;
-    public IAlgorithmAbstractFactory algorithmAbstractFactory=null;
+    public IAlgorithmModelAbstractFactory algorithmModelAbstractFactory = null;
+    public IAlgorithmAbstractFactory algorithmAbstractFactory = null;
 
     public static IBaseAbstractFactory instance()
     {
-        if(baseAbstractFactory == null)
+        if (baseAbstractFactory == null)
         {
             baseAbstractFactory = new BaseAbstractFactoryImpl();
         }
@@ -64,7 +64,7 @@ public class BaseAbstractFactoryImpl implements IBaseAbstractFactory
         if (accessControlAbstractFactory == null)
         {
             accessControlAbstractFactory = new AccessControlAbstractFactoryImpl();
-    }
+        }
         return accessControlAbstractFactory;
     }
 
@@ -73,37 +73,36 @@ public class BaseAbstractFactoryImpl implements IBaseAbstractFactory
         if (accessControlModelAbstractFactory == null)
         {
             accessControlModelAbstractFactory = new AccessControlModelAbstractFactoryImpl();
-    }
+        }
         return accessControlModelAbstractFactory;
     }
-    
-   
+
 
     public IAlgorithmAbstractFactory makeAlgorithmAbstractFactory()
     {
-    	if(algorithmAbstractFactory == null)
-    	{
-    		algorithmAbstractFactory = new AlgorithmAbstractFactoryImpl();
-    	}
-    	return algorithmAbstractFactory;
+        if (algorithmAbstractFactory == null)
+        {
+            algorithmAbstractFactory = new AlgorithmAbstractFactoryImpl();
+        }
+        return algorithmAbstractFactory;
     }
 
     public IAlgorithmModelAbstractFactory makeAlgorithmModelAbstractFactory()
     {
-    	if(algorithmModelAbstractFactory == null)
-    	{
-    		algorithmModelAbstractFactory = new AlgorithmModelAbstractFactoryImpl();
-    	}
-    	return algorithmModelAbstractFactory;
+        if (algorithmModelAbstractFactory == null)
+        {
+            algorithmModelAbstractFactory = new AlgorithmModelAbstractFactoryImpl();
+        }
+        return algorithmModelAbstractFactory;
     }
 
-    
+
     public ICourseAbstractFactory makeCourseAbstractFactory()
     {
         if (courseAbstractFactory == null)
         {
             courseAbstractFactory = new CourseAbstractFactoryImpl();
-    }
+        }
         return courseAbstractFactory;
     }
 
@@ -112,7 +111,7 @@ public class BaseAbstractFactoryImpl implements IBaseAbstractFactory
         if (courseModelAbstractFactory == null)
         {
             courseModelAbstractFactory = new CourseModelAbstractFactoryImpl();
-    }
+        }
         return courseModelAbstractFactory;
     }
 
@@ -131,7 +130,7 @@ public class BaseAbstractFactoryImpl implements IBaseAbstractFactory
         if (passwordAbstractFactory == null)
         {
             passwordAbstractFactory = new PasswordAbstractFactoryImpl();
-    }
+        }
         return passwordAbstractFactory;
     }
 
@@ -140,7 +139,7 @@ public class BaseAbstractFactoryImpl implements IBaseAbstractFactory
         if (questionManagerAbstractFactory == null)
         {
             questionManagerAbstractFactory = new QuestionManagerAbstractFactoryImpl();
-    }
+        }
         return questionManagerAbstractFactory;
     }
 
@@ -149,7 +148,7 @@ public class BaseAbstractFactoryImpl implements IBaseAbstractFactory
         if (questionManagerModelAbstractFactory == null)
         {
             questionManagerModelAbstractFactory = new QuestionManagerModelAbstractFactoryImpl();
-    }
+        }
         return questionManagerModelAbstractFactory;
     }
 
@@ -158,7 +157,7 @@ public class BaseAbstractFactoryImpl implements IBaseAbstractFactory
         if (icsvParserAbstractFactory == null)
         {
             icsvParserAbstractFactory = new CSVParserAbstractFactoryImpl();
-    }
+        }
         return icsvParserAbstractFactory;
     }
 
@@ -167,7 +166,7 @@ public class BaseAbstractFactoryImpl implements IBaseAbstractFactory
         if (surveyResponseAbstractFactory == null)
         {
             surveyResponseAbstractFactory = new SurveyResponseAbstractFactoryImpl();
-    }
+        }
         return surveyResponseAbstractFactory;
     }
 
@@ -176,9 +175,9 @@ public class BaseAbstractFactoryImpl implements IBaseAbstractFactory
         if (surveyResponseModelAbstractFactory == null)
         {
             surveyResponseModelAbstractFactory = new SurveyResponseModelAbstractFactoryImpl();
-    }
+        }
         return surveyResponseModelAbstractFactory;
-}
+    }
 
     @Override
     public ISurveyAbstractFactory makeSurveyAbstractFactory()
@@ -201,9 +200,10 @@ public class BaseAbstractFactoryImpl implements IBaseAbstractFactory
         return surveyModelAbstractFactory;
     }
 
-	@Override
-	public ICSVParserAbstractFactory makeIcsvParserAbstractFactory() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public ICSVParserAbstractFactory makeIcsvParserAbstractFactory()
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
 }
